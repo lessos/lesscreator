@@ -52,16 +52,17 @@
     <td width="10px"></td>
 
     <td id="hdev_layout_leftbar">
-        <div id="hdev_project" class="hdev-layout-container"></div>
+        <div id="hdev_project" class="hdev-box-shadow"></div>
     </td>
 
     <td width="10px"></td>
 
     <td id="hdev_layout_middle" class="hdev-layout-container">
 
-      <div id="hdev_tabs">
+      <div class="hdev-pgtabs-box">
+        <div id="hdev_pgtabs" class="hdev-pgtabs"></div>
       </div>
-
+      
       <div id="hdev_ws_editor" class="hdev-ws"></div>
       <div id="hdev_ws_content" class="hdev-ws"></div>
     

@@ -77,13 +77,13 @@ foreach (glob($glob) as $f) {
             $fmi = 'application_osx_terminal';
         }
         
-        $href = "javascript:hdev_page_open('{$p}','editor')";
+        $href = "javascript:hdev_page_open('{$p}','editor','','{$fmi}')";
         
     } else if (substr($fm, 0, 5) == 'image') {
         $fmi = 'page_white_picture';
     }
     
-    $li  = "<div id=\"ptp{$pdiv}\" class=\"hdev-proj-path hdev-proj-tree\">";
+    $li  = "<div id=\"ptp{$pdiv}\" class=\"hdev-proj-path hdev-proj-tree fileitem\">";
     $li .= "<img src='/app/lesscreator/static/img/{$fmi}.png' align='absmiddle' title='{$fm}' /> ";
     $li .= ($href === null) ? $fn : "<a href=\"{$href}\" class=\"anoline\">{$fn}</a>";
     
@@ -106,7 +106,7 @@ foreach (glob($glob) as $f) {
     }
     
     if (strlen($lip)) {
-        $li .= "<div class=\"rcmenu displaynone\">".$lip."</div>";
+        $li .= "<div class=\"hdev-rcmenu displaynone\">".$lip."</div>";
     }
     
     $li .= "</div>";

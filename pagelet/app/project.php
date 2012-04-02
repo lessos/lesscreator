@@ -31,38 +31,48 @@ $info = hwl\Yaml\Yaml::decode(file_get_contents($projpath."/hootoapp.yaml"));
 $ptpath = md5("");
 ?>
 
-<table class="hdev-proj-info">
-  <tr>
-    <td>
-      <a href="javascript:hdev_project_setting('<?=$proj?>')">
-          <div><b><?=$info['name']?></b></div>
-      </a>
-    </td>
-    <td align="right" valign="middle">
-        <button id="hdev-proj-set" class="btn border_radius_2 hdev-proj-path">
-            <span>Setting</span>
-            <span class="caret"></span>
-            <div class="rcmenu displaynone">
-                <div class="item" onclick="javascript:hdev_project_setting('<?=$proj?>')">
-                    <img src="/app/lesscreator/static/img/app-t3-16.png" align="absmiddle" />
-                    <span>Project Setting</span>
-                </div>
-                <div class="sep_li"></div>
-                <div class="item hdev_rcobj_file"><span>New File</span></div>
-                <div class="item hdev_rcobj_upload"><span>New File from Location</span></div>
-                <div class="item hdev_rcobj_dir"><span>New Folder</span></div>
+<div class="hdev-tabs-nav hdev-tabs border_radius_t5">
+    <div class="tabitem cur">
+        <div class="ctn">Files</div>
+    </div>
+</div>
+<div class="hdev-tabs-nav2 hdev-tabs">
+    <div class="tabitem">
+        <div class="ico"><img src="/app/lesscreator/static/img/page_white_add.png" align="absmiddle" /></div>
+        <div class="ctn">New File</div>
+    </div>
+    <div class="tabitemline"></div>
+    <div class="tabitem">
+        <div class="ico"><img src="/app/lesscreator/static/img/folder_add.png" align="absmiddle" /></div>
+        <div class="ctn">New Folder</div>
+    </div>
+    <div class="tabitem hdev-btn-caret florig hdev-proj-path" id="hdev-proj-set">
+        <div class="ctn">More</div>
+        <span class="caret"></span>
+        <div class="hdev-rcmenu displaynone">
+            <div class="rcitem" onclick="javascript:hdev_project_setting('<?=$proj?>')">
+                <div class="rcico"><img src="/app/lesscreator/static/img/app-t3-16.png" align="absmiddle" /></div>
+                <div class="rcctn">Application Setting</div>
             </div>
-        </button>
-    </td>
-  </tr>
-</table>
-
-
-
-<div id="pt<?=$ptpath?>" class="hdev-proj-files hdev-scrollbar">
-
+            <div class="rcsepli"></div>
+            <div class="rcitem hdev_rcobj_file">
+                <div class="rcico"><img src="/app/lesscreator/static/img/page_white_add.png" align="absmiddle" /></div>
+                <div class="rcctn">New File</div>
+            </div>
+            <div class="rcitem hdev_rcobj_dir">
+                <div class="rcico"><img src="/app/lesscreator/static/img/folder_add.png" align="absmiddle" /></div>
+                <div class="rcctn">New Folder</div>
+            </div>
+            <div class="rcitem hdev_rcobj_upload">
+                <div class="rcico"><img src="/app/lesscreator/static/img/page_white_get.png" align="absmiddle" /></div>
+                <div class="rcctn">Upload</div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!--FilesManager-->
+<div id="pt<?=$ptpath?>" class="hdev-proj-files hdev-scrollbar"></div>
 
 <div id="hdev-proj-olrcm-std" class="hdev-proj-olrcm border_radius_5">
     <div class="header">
@@ -129,7 +139,7 @@ function _proj_set_refresh()
 {
     $("#hdev-proj-set").bind("click", function(e) {
     
-        $(this).find(".rcmenu").css({
+        $(this).find(".hdev-rcmenu").css({
             top: e.pageY+'px',
             left: e.pageX+'px'
         }).toggle();
@@ -148,7 +158,7 @@ function _proj_set_refresh()
         });
         
         $(document).click(function() {
-            $('.rcmenu').hide();
+            $('.hdev-rcmenu').hide();
         });
         
         return false;
@@ -317,15 +327,15 @@ function _refresh_tree()
 {
     $(".hdev-proj-tree").bind("contextmenu", function(e) {
 
-        $('.rcmenu').hide();
+        $('.hdev-rcmenu').hide();
         
-        $(this).find(".rcmenu").css({
+        $(this).find(".hdev-rcmenu").css({
             top: e.pageY+'px',
             left: e.pageX+'px'
         }).show();
     
-        $(this).find(".rcmenu").click(function() {
-            $(this).find(".rcmenu").hide();
+        $(this).find(".hdev-rcmenu").click(function() {
+            $(this).find(".hdev-rcmenu").hide();
         });
         
         $(this).find(".hdev_rcobj_file").click(function() {
@@ -346,7 +356,7 @@ function _refresh_tree()
         });
         
         $(document).click(function() {
-            $('.rcmenu').hide();
+            $('.hdev-rcmenu').hide();
         });
     
         return false;

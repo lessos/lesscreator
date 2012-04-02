@@ -1,7 +1,7 @@
 
 function hdev_applist()
 {
-    hdev_page_open('app/list', 'content', 'My Projects');
+    hdev_page_open('app/list', 'content', 'My Projects', 'app-t3-16');
 }
 
 function hdev_project_new()
@@ -11,14 +11,14 @@ function hdev_project_new()
 
 function hdev_project_setting(proj)
 {
-    hdev_page_open('app/project-edit?proj='+proj, 'content', 'Project Setting');
+    hdev_page_open('app/project-edit?proj='+proj, 'content', 'Project Setting', 'app-t3-16');
 }
 
 function hdev_project(proj)
 {
     // New Project
     if (!proj) {
-        hdev_page_open('app/project-new', 'content', 'New Project');
+        hdev_page_open('app/project-new', 'content', 'New Project', 'app-t3-16');
         return;
     }
     
@@ -73,6 +73,7 @@ function hdev_layout_resize()
     
     lo_lw = $('#hdev_layout_leftbar').innerWidth();
     lo_mw = $('#hdev_layout_middle').innerWidth();
+    lo_mp = $('#hdev_layout_middle').position();
 
     //
     lo_p = $('#hdev_layout').position();    
@@ -89,6 +90,15 @@ function hdev_layout_resize()
     }
 
     //
+    $('.hdev-pgtabs-box').width(lo_mw);
+    /*$(".hdev-pgtabs-box").css({
+        position: "absolute",
+        width: lo_mw + "px",
+        top: lo_mp.top + "px",
+        left: lo_mp.left + "px"
+    }).show();*/
+    
+    //
     if ($('#hdev_project').length) {
         $('#hdev_project').height(lo_h);        
         if ($('.hdev-proj-files').length) {
@@ -101,17 +111,6 @@ function hdev_layout_resize()
     console.log("body resize: "+bh+"px, "+bw+"px; layout height: "+lo_h);
 }
 
-function hdev_tabs_resize()
-{
-    w = $('#hdev_tabs').innerWidth();
-    n = $("#hdev_tabs div").length;
-    
-    if ((l = parseInt(w/n) - 35) > 160) {
-        l = 160;
-    }    
-    $(".hdev_tabstitle").width(l);
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 /** Editor **/
 var projCurrent = null;
@@ -122,7 +121,7 @@ var pageCurrent = 0;
 var editor_page = null;
 var editor_pgid = 0;
 
-function hdev_page_open(path, type, title)
+function hdev_page_open(path, type, title, img)
 {
     var pgid = Crypto.MD5(path);
     
@@ -142,14 +141,16 @@ function hdev_page_open(path, type, title)
             if (!title) {
                 title = path.replace(/^.*[\\\/]/, '');
             }
-            entry  = '<div id="pgtab'+pgid+'" class="hdev_tabs_item border_radius_t5">';
-            entry += '<a href="javascript:hdev_page_open(\''+path+'\',\''+type+'\')" class="hdev_tabstitle">'+title+'</a>';
-            entry += '<a href="javascript:hdev_page_close(\''+path+'\')" class="close">×</a>';
-            entry += '</div>';
-            $("#hdev_tabs").append(entry);
-        }
-        
-        hdev_tabs_switch('pgtab'+pgid);
+            
+            entry  = '<table id="pgtab'+pgid+'" class="pgtabitem"><tr>';
+            entry += "<td class='ico'><img src='/app/lesscreator/static/img/"+img+".png' align='absmiddle' /></td>";
+            entry += "<td class=\"pgtabtitle\"><a href=\"javascript:hdev_page_open('"+path+"','"+type+"','"+title+"','"+img+"')\">"+title+"</a></td>";
+            entry += '<td class="close"><a href="javascript:hdev_page_close(\''+path+'\')">×</a></td>';
+            entry += '</tr></table>';
+
+            $("#hdev_pgtabs").append(entry);            
+        }        
+        hdev_pgtabs_switch('pgtab'+pgid);
 
         break;
     default :
@@ -167,7 +168,7 @@ function hdev_page_open(path, type, title)
         return;
     }
     
-    pageArray[pgid] = {'type': type, 'path': path};
+    pageArray[pgid] = {'type': type, 'path': path, 'title': title, 'img': img};
     pageCurrent     = pgid;
     
     hdev_layout_resize();
@@ -197,7 +198,7 @@ function hdev_page_close(path)
     pageCurrent = 0;    
     // Closed and Open new page
     for (var i in pageArray) {        
-        hdev_page_open(pageArray[i]['path'], pageArray[i]['type']);
+        hdev_page_open(pageArray[i]['path'], pageArray[i]['type'], pageArray[i]['title'], pageArray[i]['img']);
         break;
     }
     
@@ -315,9 +316,20 @@ function hdev_page_editor_save(path)
     });
 }
 
-function hdev_tabs_switch(id)
+function hdev_pgtabs_switch(id)
 {
-    $('.hdev_tabs_item.current').removeClass('current');
+    $('.pgtabitem.current').removeClass('current');
     $("#"+id).addClass("current");
-    hdev_tabs_resize();
+    
+    lo_mw = $('#hdev_layout_middle').innerWidth();
+    
+    tabp = $('#'+id).position();
+    console.log("tab pos left:"+ tabp.left);
+    
+    mov = tabp.left + $('#'+id).outerWidth(true) + 50 - lo_mw;
+    if (mov < 0)
+        mov = 0;        
+
+    $('.hdev-pgtabs').animate({left: "-"+mov+"px"}); // COOL!
+    console.log("tab mov left:"+ mov);
 }
