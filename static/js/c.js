@@ -326,7 +326,7 @@ function hdev_pgtabs_switch(id)
     tabp = $('#'+id).position();
     console.log("tab pos left:"+ tabp.left);
     
-    mov = tabp.left + $('#'+id).outerWidth(true) + 50 - lo_mw;
+    mov = tabp.left + $('#'+id).outerWidth(true) + 80 - lo_mw;
     if (mov < 0)
         mov = 0;        
 

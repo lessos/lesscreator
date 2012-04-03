@@ -344,47 +344,6 @@ input.input_button:hover {border: 2px solid #333;}
 }
 
 /**  */
-
-/** Right Click Menu */
-.hdev-rcmenu {
-    display: none;
-    position: absolute;
-    text-align: left;
-    padding: 3px;
-    background-color: #fff;
-    border: 1px solid #aaa;
-    min-width: 220px;
-    z-index: 100;
-}
-.hdev-rcmenu .rcsepli {
-    border-top: 1px ridge #aaa; margin:2px 0;
-}
-.hdev-rcmenu .rcitem {
-    clear: both; display: block; padding: 4px 2px; 
-    font-size: 13px; line-height: 13px; color: #333;
-}
-.hdev-rcmenu .rcitem .rcico {
-    display: inline-block; width: 20px;
-}
-.hdev-rcmenu .rcitem .rcico img {
-    width: 16px;
-}
-.hdev-rcmenu .rcitem .rcctn {
-    display: inline-block; color: #333;
-}
-.hdev-rcmenu .rcitem:hover {
-    background-color: #d6e9f8;
-}
-
-.hdev-proj-path {
-    text-decoration: none; font-size: 13px;
-}
-
-.hdev-proj-path a {
-    text-decoration: none; text-overflow: ellipsis; white-space: nowrap;
-}
-
-
 .hdev-proj-files {
     margin: 0; padding: 0;
     line-height: 100%;
@@ -401,42 +360,40 @@ input.input_button:hover {border: 2px solid #333;}
     text-decoration: underline;
 }
 
-
-.hdev-proj-path-bak {
-    padding: 3px; text-decoration: none; font-size: 13px;
-}
-.hdev-proj-path-bak:hover {
-    background-color: #C9E2FC; color: #555;
-}
-.hdev-proj-path-bak a {
-    text-decoration: none; text-overflow: ellipsis; white-space: nowrap;
-}
-.hdev-proj-path-bak .rcmenu {
+/** Right Click Menu */
+.hdev-rcmenu {
     display: none;
     position: absolute;
     text-align: left;
-    padding: 2px;
+    padding: 3px;
     background-color: #fff;
     border: 1px solid #aaa;
-    min-width: 160px;
+    min-width: 220px;
     z-index: 100;
 }
-.hdev-proj-path-bak .sep_li {
-    border-top: 1px ridge #aaa; margin:3px 0;
+.hdev-rcmenu .rcsepli {
+    border-top: 1px ridge #aaa; margin:2px 0;
 }
-.hdev-proj-path-bak .rcmenu .item {
-    clear: both; display: block; padding: 6px 5px; color: #333;
+.hdev-rcmenu .rcitem {
+    clear: both; display: block; padding: 5px 2px; 
+    font-size: 13px; line-height: 13px; color: #333;
 }
-.hdev-proj-path-bak .rcmenu .item img {
-    display: inline-block;
+.hdev-rcmenu .rcitem:hover {
+    background-color: #d6e9f8;
 }
-.hdev-proj-path-bak .rcmenu .item a {
-    left: 20px;
+.hdev-rcmenu .rcitem a {
+    color: #000; text-decoration: none;
+}
+.hdev-rcmenu .rcitem .rcico {
+    display: inline-block; width: 20px;
+}
+.hdev-rcmenu .rcitem .rcico img {
+    width: 16px; height: 16px;
+}
+.hdev-rcmenu .rcitem .rcctn {
     display: inline-block; color: #333;
 }
-.hdev-proj-path-bak .rcmenu .item:hover {
-    background-color: #d6e9f8;/*#eee*/
-}
+
 
 .hdev-proj-olrcm {
     display: none;
@@ -466,5 +423,5 @@ input.input_button:hover {border: 2px solid #333;}
 .hdev-proj-olrcm div.sep {
     clear: both; border-top: 1px ridge #aaa; margin:5px 0;
 }
-.hdev-proj-olrcm input.inputname {width:120px;}
+.hdev-proj-olrcm input.inputname {width: 300px;}
 

@@ -37,16 +37,16 @@ $ptpath = md5("");
     </div>
 </div>
 <div class="hdev-tabs-nav2 hdev-tabs">
-    <div class="tabitem">
+    <div class="tabitem" onclick="_proj_set_nav2('file')">
         <div class="ico"><img src="/app/lesscreator/static/img/page_white_add.png" align="absmiddle" /></div>
         <div class="ctn">New File</div>
     </div>
     <div class="tabitemline"></div>
-    <div class="tabitem">
+    <div class="tabitem" onclick="_proj_set_nav2('dir')">
         <div class="ico"><img src="/app/lesscreator/static/img/folder_add.png" align="absmiddle" /></div>
         <div class="ctn">New Folder</div>
     </div>
-    <div class="tabitem hdev-btn-caret florig hdev-proj-path" id="hdev-proj-set">
+    <div id="hdev-proj-set" class="tabitem hdev-btn-caret florig" >
         <div class="ctn">More</div>
         <span class="caret"></span>
         <div class="hdev-rcmenu displaynone">
@@ -82,9 +82,9 @@ $ptpath = md5("");
     <div class="sep clearhr"></div>
     <form id="form_file_std_commit" action="/lesscreator/app/file/" method="post">
     <div>
-        <img src="/app/lesscreator/static/img/folder_add.png" align="absmiddle" />
+        <img src="/app/lesscreator/static/img/folder.png" align="absmiddle" />
         <span class="path"></span> /
-        <input type="text" size="15" name="name" class="inputname" value="" />
+        <input type="text" size="30" name="name" class="inputname" value="" />
         <input type="hidden" name="proj" value="<?=$proj?>" />
         <input type="hidden" name="path" class="inputpath" value="" />
         <input type="hidden" name="type" class="inputtype" value="file" />
@@ -102,9 +102,9 @@ $ptpath = md5("");
     <div class="sep clearhr"></div>
     <form id="form_file_mv_commit" action="/lesscreator/app/file-mv/" method="post">
     <div>
-        <img src="/app/lesscreator/static/img/folder_add.png" align="absmiddle" />
+        <img src="/app/lesscreator/static/img/page_white_copy.png" align="absmiddle" />
         <span class="parfold"></span> /
-        <input type="text" size="15" name="name" class="inputname" value="" />
+        <input type="text" size="30" name="name" class="inputname" value="" />
         <input type="hidden" name="proj" value="<?=$proj?>" />
         <input type="hidden" name="path" class="inputpath" value="" />
         <input type="hidden" name="type" class="inputtype" value="file" />
@@ -121,7 +121,7 @@ $ptpath = md5("");
     </div>
     <div class="sep clearhr"></div>
     <form id="form_file_upload_commit" enctype="multipart/form-data" action="/lesscreator/app/file-upload" method="post">
-    <img src="/app/lesscreator/static/img/folder_add.png" align="absmiddle" />
+    <img src="/app/lesscreator/static/img/page_white_get.png" align="absmiddle" />
     <span class="path"></span> /
     <input id="attachment" name="attachment" size="40" type="file" />
     <input id="proj" name="proj" type="hidden" value="<?=$proj?>"/>
@@ -133,7 +133,15 @@ $ptpath = md5("");
 
 <script type="text/javascript">
 
-
+function _proj_set_nav2(q)
+{
+    e = window.event;
+    if (q == 'file') {
+        _file_std_show("file", "", e.pageY, e.pageX);
+    } else if (q == 'dir') {
+        _file_std_show("dir", "", e.pageY, e.pageX);
+    }
+}
 
 function _proj_set_refresh()
 {
@@ -339,6 +347,9 @@ function _refresh_tree()
         });
         
         $(this).find(".hdev_rcobj_file").click(function() {
+            p = $(this).position();
+            console.log("click left: "+p.left+", top: "+p.top);
+            console.log("click left: "+e.pageY+", top: "+e.pageX);
             path = $(this).attr('href').substr(1);
             _file_std_show("file", path, e.pageY, e.pageX);
         });
