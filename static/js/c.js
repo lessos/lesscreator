@@ -192,13 +192,17 @@ function hdev_page_close(path)
     $('#pgtab'+pgid).remove();
     delete pageArray[pgid];
     
-    if (pgid != pageCurrent)
-        return;
     
-    pageCurrent = 0;    
+    if (pgid != pageCurrent) {
+        return;
+    }
+    
+    pageCurrent = 0;
+    
     // Closed and Open new page
-    for (var i in pageArray) {        
+    for (var i in pageArray) {
         hdev_page_open(pageArray[i]['path'], pageArray[i]['type'], pageArray[i]['title'], pageArray[i]['img']);
+        pageCurrent = i;
         break;
     }
     
@@ -235,14 +239,18 @@ function hdev_page_editor_close(path)
 
     console.log("editor remove: "+pgid+", editor_pgid: "+editor_pgid);
 
-    if (pgid == editor_pgid)
+    if (pgid == editor_pgid) {
         editor_page.toTextArea();
+        console.log("editor remove codemirror");
+    }
     
     hdev_page_editor_save(path);
     
-    $('#src'+pgid).remove();
-    editor_page = null;
-    editor_pgid = 0;
+    if (pgid == editor_pgid) {
+        $('#src'+pgid).remove();
+        editor_page = null;
+        editor_pgid = 0;
+    }
     
     hdev_layout_resize();
 }
