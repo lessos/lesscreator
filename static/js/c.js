@@ -51,19 +51,6 @@ function hdev_header_alert(status, alert)
     $("#hdev_header_alert").addClass(status);
 }
 
-function isValidBrowser()
-{
-    var browser = BrowserDetect.browser;
-    var version = BrowserDetect.version;
-    var OS = BrowserDetect.OS;
-    console.log(browser+','+version+','+OS);    
-    return (
-        (browser == 'Chrome' && version >= 6) ||
-        (browser == 'Firefox' && version >= 3.6) ||
-	    (browser == 'Safari' && version >= 5.0 && OS == 'Mac') ||
-        ("FileReader" in self && "ondrag" in document)
-    );
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 function hdev_layout_resize()
@@ -91,12 +78,6 @@ function hdev_layout_resize()
 
     //
     $('.hdev-pgtabs-box').width(lo_mw);
-    /*$(".hdev-pgtabs-box").css({
-        position: "absolute",
-        width: lo_mw + "px",
-        top: lo_mp.top + "px",
-        left: lo_mp.left + "px"
-    }).show();*/
     
     //
     if ($('#hdev_project').length) {
@@ -341,3 +322,4 @@ function hdev_pgtabs_switch(id)
     $('.hdev-pgtabs').animate({left: "-"+mov+"px"}); // COOL!
     console.log("tab mov left:"+ mov);
 }
+

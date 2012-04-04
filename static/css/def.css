@@ -87,6 +87,27 @@ input.input_button:hover {border: 2px solid #333;}
 .hdev_alert.info {background-color: #D9EDF7; color: #3A87AD; border: 1px solid #BCE8F1;}
 .hdev_alert span {margin-left: 20px;}
 
+/** body-alert **/
+.hdev-body-alert {
+    padding: 20px; border: 2px solid transparent;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;    
+}
+.hdev-body-alert .title {
+    margin: 5px 0 15px 0; font-size: 20px; font-weight: bold;
+}
+.hdev-body-alert .summary {
+    font-size: 16px; padding: 5px 0;
+}
+.hdev-body-alert .tbl td {
+    padding: 10px;
+}
+.hdev-body-alert.notice {
+    background-color: #ffffe0; color: #C09853; border: 1px solid #FBEED5;
+}
+
+
 .border_radius_2 {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -424,4 +445,6 @@ input.input_button:hover {border: 2px solid #333;}
     clear: both; border-top: 1px ridge #aaa; margin:5px 0;
 }
 .hdev-proj-olrcm input.inputname {width: 300px;}
+
+
 
