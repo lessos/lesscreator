@@ -23,7 +23,7 @@ foreach (glob($patt, GLOB_ONLYDIR) as $st) {
 
   $appid = trim(strrchr($st, '/'), '/');
   
-  if (in_array($appid, array('lesscreator', 'hww', 'Zend'))) {
+  if (in_array($appid, array('hcreator', 'hww', 'Zend'))) {
     continue;
   }
 

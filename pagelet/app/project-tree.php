@@ -84,34 +84,34 @@ foreach (glob($glob) as $f) {
     }
     
     $li  = "<div id=\"ptp{$pdiv}\" class=\"hdev-proj-tree fileitem\">";
-    $li .= "<img src='/app/lesscreator/static/img/{$fmi}.png' align='absmiddle' title='{$fm}' /> ";
+    $li .= "<img src='/app/hcreator/static/img/{$fmi}.png' align='absmiddle' title='{$fm}' /> ";
     $li .= ($href === null) ? $fn : "<a href=\"{$href}\" class=\"anoline\">{$fn}</a>";
     
     $lip = "";
     
     if ($fm == 'directory') {
         $lip .= "<div class='rcitem'>
-            <div class='rcico'><img src='/app/lesscreator/static/img/page_white_add.png' align='absmiddle' /></div>
+            <div class='rcico'><img src='/app/hcreator/static/img/page_white_add.png' align='absmiddle' /></div>
             <a href='#{$p}' class='rcctn hdev_rcobj_file'>New File</a></div>";
         $lip .= "<div class='rcitem'>
-            <div class='rcico'><img src='/app/lesscreator/static/img/folder_add.png' align='absmiddle' /></div>
+            <div class='rcico'><img src='/app/hcreator/static/img/folder_add.png' align='absmiddle' /></div>
             <a href='#{$p}' class='rcctn hdev_rcobj_dir'>New Folder</a></div>";
         $lip .= "<div class='rcitem'>
-            <div class='rcico'><img src='/app/lesscreator/static/img/page_white_get.png' align='absmiddle' /></div>
+            <div class='rcico'><img src='/app/hcreator/static/img/page_white_get.png' align='absmiddle' /></div>
             <a href='#{$p}' class='rcctn hdev_rcobj_upload'>Upload</a></div>";
     }
     
     if (strlen($path) != 0 || $fn != 'hootoapp.yaml') {
         
         $lip .= "<div class='rcitem'>
-            <div class='rcico'><img src='/app/lesscreator/static/img/page_white_copy.png' align='absmiddle' /></div>
+            <div class='rcico'><img src='/app/hcreator/static/img/page_white_copy.png' align='absmiddle' /></div>
             <a href='#{$p}' class='rcctn hdev_rcobj_rename'>Rename</a></div>";
         
         if (strlen($lip)) {
             $lip .= "<div class=\"rcsepli\"></div>";
         }
         $lip .= "<div class='rcitem'>
-            <div class='rcico'><img src='/app/lesscreator/static/img/delete.png' align='absmiddle' /></div>
+            <div class='rcico'><img src='/app/hcreator/static/img/delete.png' align='absmiddle' /></div>
             <a href=\"javascript:_page_del('{$proj}','{$p}');\" onclick=\"return confirm('Are you sure you want to delete?')\" class='rcctn'>Delete</a></div>";
     }
     

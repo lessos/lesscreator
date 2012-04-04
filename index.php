@@ -12,7 +12,7 @@ if (stristr($req->uri, '/')) {
     $appid  = stristr($req->uri, '/', true);
     $action = trim(stristr($req->uri, '/'), '/');
 } else {
-    $appid  = 'lesscreator';
+    $appid  = 'hcreator';
     $action = 'index';
 }
 

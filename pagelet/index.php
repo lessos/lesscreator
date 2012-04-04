@@ -5,9 +5,9 @@
   
   <title><?php echo $this->headtitle; ?> - Hooto Creator</title>
   
-  <script src="/app/lesscreator/static/js/c.js"></script>
-  <script src="/app/lesscreator/static/js/crypto-min.js"></script>
-  <script src="/app/lesscreator/static/js/md5-min.js"></script>
+  <script src="/app/hcreator/static/js/c.js"></script>
+  <script src="/app/hcreator/static/js/crypto-min.js"></script>
+  <script src="/app/hcreator/static/js/md5-min.js"></script>
   <script src="/app/jquery17/jquery-1.7.min.js"></script>
 
   <link href="/app/codemirror2/lib/codemirror.css" rel="stylesheet" type="text/css" media="all" />
@@ -20,18 +20,18 @@
   <script src="/app/codemirror2/mode/clike/clike.js"></script>
   <script src="/app/codemirror2/mode/php/php.js"></script>
   
-  <link rel="shortcut icon" href="/app/lesscreator/static/img/hooto-xicon-mc.ico" type="image/x-icon" /> 
-  <link rel="stylesheet" href="/app/lesscreator/static/css/def.css" type="text/css" media="all" />
+  <link rel="shortcut icon" href="/app/hcreator/static/img/hooto-xicon-mc.ico" type="image/x-icon" /> 
+  <link rel="stylesheet" href="/app/hcreator/static/css/def.css" type="text/css" media="all" />
   <?php
   echo $this->headlink.$this->headJavascript.$this->headStylesheet;
   ?>
 </head>
-<body style="background:#D8DCE0 url(/app/lesscreator/static/img/body.png) repeat-x;">
+<body style="background:#D8DCE0 url(/app/hcreator/static/img/body.png) repeat-x;">
 
 <table id="hdev_header">
   <tr>
     <td class="header_logo" width="270px">
-      <img src="/app/lesscreator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
+      <img src="/app/hcreator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
       <span>Creator</span>
     </td>
     

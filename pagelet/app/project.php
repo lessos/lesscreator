@@ -38,12 +38,12 @@ $ptpath = md5("");
 </div>
 <div class="hdev-tabs-nav2 hdev-tabs">
     <div class="tabitem" onclick="_proj_set_nav2('file')">
-        <div class="ico"><img src="/app/lesscreator/static/img/page_white_add.png" align="absmiddle" /></div>
+        <div class="ico"><img src="/app/hcreator/static/img/page_white_add.png" align="absmiddle" /></div>
         <div class="ctn">New File</div>
     </div>
     <div class="tabitemline"></div>
     <div class="tabitem" onclick="_proj_set_nav2('dir')">
-        <div class="ico"><img src="/app/lesscreator/static/img/folder_add.png" align="absmiddle" /></div>
+        <div class="ico"><img src="/app/hcreator/static/img/folder_add.png" align="absmiddle" /></div>
         <div class="ctn">New Folder</div>
     </div>
     <div id="hdev-proj-set" class="tabitem hdev-btn-caret florig" >
@@ -51,20 +51,20 @@ $ptpath = md5("");
         <span class="caret"></span>
         <div class="hdev-rcmenu displaynone">
             <div class="rcitem" onclick="javascript:hdev_project_setting('<?=$proj?>')">
-                <div class="rcico"><img src="/app/lesscreator/static/img/app-t3-16.png" align="absmiddle" /></div>
+                <div class="rcico"><img src="/app/hcreator/static/img/app-t3-16.png" align="absmiddle" /></div>
                 <div class="rcctn">Application Setting</div>
             </div>
             <div class="rcsepli"></div>
             <div class="rcitem hdev_rcobj_file">
-                <div class="rcico"><img src="/app/lesscreator/static/img/page_white_add.png" align="absmiddle" /></div>
+                <div class="rcico"><img src="/app/hcreator/static/img/page_white_add.png" align="absmiddle" /></div>
                 <div class="rcctn">New File</div>
             </div>
             <div class="rcitem hdev_rcobj_dir">
-                <div class="rcico"><img src="/app/lesscreator/static/img/folder_add.png" align="absmiddle" /></div>
+                <div class="rcico"><img src="/app/hcreator/static/img/folder_add.png" align="absmiddle" /></div>
                 <div class="rcctn">New Folder</div>
             </div>
             <div class="rcitem hdev_rcobj_upload">
-                <div class="rcico"><img src="/app/lesscreator/static/img/page_white_get.png" align="absmiddle" /></div>
+                <div class="rcico"><img src="/app/hcreator/static/img/page_white_get.png" align="absmiddle" /></div>
                 <div class="rcctn">Upload</div>
             </div>
         </div>
@@ -80,9 +80,9 @@ $ptpath = md5("");
         <span class="close"><a href="javascript:_file_close()">×</a></span>
     </div>
     <div class="sep clearhr"></div>
-    <form id="form_file_std_commit" action="/lesscreator/app/file/" method="post">
+    <form id="form_file_std_commit" action="/hcreator/app/file/" method="post">
     <div>
-        <img src="/app/lesscreator/static/img/folder.png" align="absmiddle" />
+        <img src="/app/hcreator/static/img/folder.png" align="absmiddle" />
         <span class="path"></span> /
         <input type="text" size="30" name="name" class="inputname" value="" />
         <input type="hidden" name="proj" value="<?=$proj?>" />
@@ -100,9 +100,9 @@ $ptpath = md5("");
         <span class="close"><a href="javascript:_file_close()">×</a></span>
     </div>
     <div class="sep clearhr"></div>
-    <form id="form_file_mv_commit" action="/lesscreator/app/file-mv/" method="post">
+    <form id="form_file_mv_commit" action="/hcreator/app/file-mv/" method="post">
     <div>
-        <img src="/app/lesscreator/static/img/page_white_copy.png" align="absmiddle" />
+        <img src="/app/hcreator/static/img/page_white_copy.png" align="absmiddle" />
         <span class="parfold"></span> /
         <input type="text" size="30" name="name" class="inputname" value="" />
         <input type="hidden" name="proj" value="<?=$proj?>" />
@@ -120,8 +120,8 @@ $ptpath = md5("");
         <span class="close"><a href="javascript:_file_close()">×</a></span>
     </div>
     <div class="sep clearhr"></div>
-    <form id="form_file_upload_commit" enctype="multipart/form-data" action="/lesscreator/app/file-upload" method="post">
-    <img src="/app/lesscreator/static/img/page_white_get.png" align="absmiddle" />
+    <form id="form_file_upload_commit" enctype="multipart/form-data" action="/hcreator/app/file-upload" method="post">
+    <img src="/app/hcreator/static/img/page_white_get.png" align="absmiddle" />
     <span class="path"></span> /
     <input id="attachment" name="attachment" size="40" type="file" />
     <input id="proj" name="proj" type="hidden" value="<?=$proj?>"/>
@@ -381,7 +381,7 @@ function _page_del(proj, path)
     
     $.ajax({
         type: "GET",
-        url: '/lesscreator/app/file-del/',
+        url: '/hcreator/app/file-del/',
         data: 'proj='+proj+'&path='+path,
         success: function() {
             $("#ptp"+p).remove();
@@ -401,7 +401,7 @@ function _hdev_dir(proj, path, force)
     
     $.ajax({
         type: "GET",
-        url: '/lesscreator/app/project-tree/',
+        url: '/hcreator/app/project-tree/',
         data: 'proj='+proj+'&path='+path,
         success: function(data) {
             $("#pt"+p).html(data);

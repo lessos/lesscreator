@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 echo $msg;
 ?>
 
-<form id="hdev_appedit_form" action="/lesscreator/app/project-edit/" method="post" >
+<form id="hdev_appedit_form" action="/hcreator/app/project-edit/" method="post" >
   <table class="box" width="100%" border="0" cellpadding="0" cellspacing="10" >
     <tr>
       <td width="140px" align="right" >APP ID</td>
