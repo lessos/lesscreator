@@ -1,9 +1,9 @@
 ---
-appid: lesscreator
+appid: hcreator
 name: Hooto Creator
 summary: >
   Build custom business applications on
   your own, online
 depends: [ ]
 version: 1.0.0.dev
-boot: app/lesscreator/index.php
+boot: app/hcreator/index.php

@@ -6,7 +6,7 @@ function hdev_applist()
 
 function hdev_project_new()
 {
-    window.open("/lesscreator/index#project-new", '_blank');
+    window.open("/hcreator/index#project-new", '_blank');
 }
 
 function hdev_project_setting(proj)
@@ -29,7 +29,7 @@ function hdev_project(proj)
     
     // Open Current Project
     $.ajax({
-        url     : '/lesscreator/app/project?proj='+proj,
+        url     : '/hcreator/app/project?proj='+proj,
         type    : "GET",
         timeout : 30000,
         success : function(data) {
@@ -143,7 +143,7 @@ function hdev_page_open(path, type, title, img)
             }
             
             entry  = '<table id="pgtab'+pgid+'" class="pgtabitem"><tr>';
-            entry += "<td class='ico'><img src='/app/lesscreator/static/img/"+img+".png' align='absmiddle' /></td>";
+            entry += "<td class='ico'><img src='/app/hcreator/static/img/"+img+".png' align='absmiddle' /></td>";
             entry += "<td class=\"pgtabtitle\"><a href=\"javascript:hdev_page_open('"+path+"','"+type+"','"+title+"','"+img+"')\">"+title+"</a></td>";
             entry += '<td class="close"><a href="javascript:hdev_page_close(\''+path+'\')">×</a></td>';
             entry += '</tr></table>';
@@ -162,7 +162,7 @@ function hdev_page_open(path, type, title, img)
         hdev_page_editor_open(path);
         break;
     case 'content':
-        $('#hdev_ws_content').load('/lesscreator/'+path);
+        $('#hdev_ws_content').load('/hcreator/'+path);
         break;
     default :
         return;
@@ -224,7 +224,7 @@ function hdev_page_editor_open(path)
         page = '<textarea id="src'+pgid+'" name="src'+pgid+'" class="displaynone"></textarea>';
         $("#hdev_ws_editor").prepend(page);
 
-        $.get('/lesscreator/app/src?proj='+projCurrent+'&path='+path, function(data) {
+        $.get('/hcreator/app/src?proj='+projCurrent+'&path='+path, function(data) {
             $('#src'+pgid).text(data);
             hdev_editor(path);
         });
@@ -310,7 +310,7 @@ function hdev_page_editor_save(path)
     pgid = Crypto.MD5(path);
 
     $.ajax({
-        url     : "/lesscreator/app/src?proj="+projCurrent+"&path="+path,
+        url     : "/hcreator/app/src?proj="+projCurrent+"&path="+path,
         type    : "POST",
         data    : $("#src"+pgid).val(),
         //dataType: "text",
