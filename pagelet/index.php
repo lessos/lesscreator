@@ -105,7 +105,7 @@ $(document).ready(function() {
         info += '<div class="summary">Please install the following browser, And upgrade to the latest version</div>';
         info += '<div class="summary"><table class="tbl">';
         info += '<tr><td><img src="/app/hcreator/static/img/browser_chrome.png" /></td><td><strong>Google Chrome</strong></td><td><a href="http://www.google.com/chrome/" target="_blank">http://www.google.com/chrome/</a></td><td>Free</td></tr>';
-        info += '<tr><td><img src="/app/hcreator/static/img/browser_safari.png" /></td><td><strong>Apple Safari</strong></td><td><a href="http://www.apple.com.cn/safari/" target="_blank">http://www.apple.com.cn/safari/</a></td><td>Free</td></tr>';
+        info += '<tr><td><img src="/app/hcreator/static/img/browser_safari.png" /></td><td><strong>Apple Safari</strong></td><td><a href="http://www.apple.com/safari/" target="_blank">http://www.apple.com/safari/</a></td><td>Free</td></tr>';
         info += '</table></div>';
         info += '</div></div>';
         
