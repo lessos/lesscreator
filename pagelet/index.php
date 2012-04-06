@@ -12,14 +12,8 @@
   <script src="/app/hcreator/static/js/BrowserDetect.js"></script>
 
   <link href="/app/codemirror2/lib/codemirror.css" rel="stylesheet" type="text/css" media="all" />
-  <script src="/app/codemirror2/lib/codemirror.js"></script>
-  <script src="/app/codemirror2/lib/util/runmode.js"></script>
-  <script src="/app/codemirror2/lib/util/overlay.js"></script>
-  <script src="/app/codemirror2/mode/xml/xml.js"></script>
-  <script src="/app/codemirror2/mode/javascript/javascript.js"></script>
-  <script src="/app/codemirror2/mode/css/css.js"></script>
-  <script src="/app/codemirror2/mode/clike/clike.js"></script>
-  <script src="/app/codemirror2/mode/php/php.js"></script>
+  <script src="/app/codemirror2/lib/codemirror-mini.js"></script>
+  <script src="/app/codemirror2/mode/all.js"></script>
   
   <link rel="shortcut icon" href="/app/hcreator/static/img/hooto-xicon-mc.ico" type="image/x-icon" /> 
   <link rel="stylesheet" href="/app/hcreator/static/css/def.css" type="text/css" media="all" />
@@ -60,20 +54,25 @@
 
     <td id="hdev_layout_middle" class="hdev-layout-container">
 
-      <div class="hdev-pgtabs-box">
-        <div id="hdev_pgtabs" class="hdev-pgtabs"></div>
+      <div class="hcr-pgtabs-frame">
+        <div class="hcr-pgtabs-lm">
+            <div id="hcr_pgtabs" class="hcr-pgtabs"></div>
+        </div>
+        <div class="hcr-pgtabs-lr">
+            <div class="pgtab-openfiles" onclick="hdev_pgtab_openfiles()">»</div>
+        </div>
       </div>
       
       <div id="hdev_ws_editor" class="hdev-ws"></div>
       <div id="hdev_ws_content" class="hdev-ws"></div>
-    
+      
     </td>
   
     <td width="10px"></td>
 
   </tr>
 </table>
-
+<div class="pgtab-openfiles-ol hdev-lcmenu hdev-scrollbar"></div>
 </body>
 </html>
 

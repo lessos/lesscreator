@@ -216,6 +216,73 @@ input.input_button:hover {border: 2px solid #333;}
     margin: 0; padding: 0;
 }
 
+.hcr-pgtabs-frame {
+    position: relative; left: 0; top: 0;
+    background-color: #e7e8ea; 
+    height: 23px;
+}
+.hcr-pgtabs-lr {
+    position: absolute; top: 0; right: 0;
+    padding: 0; text-align: right;
+    border-bottom: 1px solid #cfd4d7; height: 22px;
+}
+.hcr-pgtabs-lm {
+    overflow: hidden;
+    position: relative; left: 0; top: 0;
+    height: 23px;
+}
+.hcr-pgtabs {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    width: 16384px; height: 23px; 
+    border-bottom: 1px solid #cfd4d7; cursor: default;
+}
+.hcr-pgtabs .pgtab {
+    display: inline-block; position: relative;
+    height: 23px; font-size: 13px; line-height: 20px; 
+    color: #000; padding: 0 0px; max-width: 300px; margin-right: 5px;
+    overflow: hidden; 
+    text-decoration: none; text-overflow: ellipsis; white-space: nowrap;
+    border-right: 1px solid #c6c7c9;
+    -moz-border-top-right-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.hcr-pgtabs .pgtab a {
+    color: #000;
+} 
+.hcr-pgtabs .pgtab.current {
+    background-color: #f6f7f8; height: 24px;
+}
+.hcr-pgtabs .pgtab .ico img {
+    width: 13px; height: 13px;
+}
+.hcr-pgtabs .pgtab .pgtabtitle a {
+    overflow: hidden;
+    text-decoration: none; text-overflow: ellipsis; white-space: nowrap;
+}
+.hcr-pgtabs .pgtab .pgtabtitle a:hover {
+    color: #db4a37; cursor: pointer;
+}
+.hcr-patabs .pgtab .close {
+    float: right;  width: 15px; display: inline-block;
+}
+.hcr-pgtabs .pgtab .close a {
+    margin-left: 5px; text-decoration: none;
+    font-weight: bold; font-size: 14px;
+}
+.hcr-pgtabs .pgtab .close a:hover {
+    color: #db4a37; cursor: pointer;
+}
+.pgtab-openfiles {
+    float: left; font-size: 18px; font-weight: bold;
+    width: 20px; text-align: center;
+    cursor: pointer; z-index: 100;
+    display: none;
+}
+.pgtab-openfiles-ol {
+    position: absolute;
+}
+
 .hdev-pgtabs-box {
     overflow: hidden;
     position: relative; left: 0; top: 0;
@@ -415,6 +482,42 @@ input.input_button:hover {border: 2px solid #333;}
     display: inline-block; color: #333;
 }
 
+/** Left Click Menu */
+.hdev-lcmenu {
+    display: none;
+    position: absolute;
+    text-align: left;
+    padding: 3px;
+    background-color: #fff;
+    border: 1px solid #aaa;
+    min-width: 220px;
+    z-index: 100;
+}
+.hdev-lcmenu .lcsepli {
+    border-top: 1px ridge #aaa; margin:2px 0;
+}
+.hdev-lcmenu .lcitem {
+    clear: both; display: block; padding: 5px 2px; 
+    font-size: 13px; line-height: 13px; color: #333;
+}
+.hdev-lcmenu .lcitem:hover {
+    background-color: #d6e9f8;
+}
+.hdev-lcmenu .lcitem a {
+    color: #000; text-decoration: none;
+}
+.hdev-lcmenu .lcitem a:hover {
+    color: #000; text-decoration: underline;
+}
+.hdev-lcmenu .lcitem .lcico {
+    display: inline-block; width: 20px;
+}
+.hdev-lcmenu .lcitem .lcico img {
+    width: 16px; height: 16px;
+}
+.hdev-lcmenu .lcitem .lcctn {
+    display: inline-block; color: #333;
+}
 
 .hdev-proj-olrcm {
     display: none;

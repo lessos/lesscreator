@@ -72,12 +72,15 @@ function hdev_layout_resize()
     $('#hdev_ws_editor').height(eh);
     $('#hdev_ws_editor').width(lo_mw);
     if ($('.CodeMirror-scroll').length) {
-        $('.CodeMirror-scroll').height(eh);
         $('.CodeMirror-scroll').width(lo_mw);
+        $('.CodeMirror-scroll').height(eh);
+        $('.CodeMirror-gutter').css({"min-height": eh});
     }
 
     //
-    $('.hdev-pgtabs-box').width(lo_mw);
+    $('.hcr-pgtabs-frame').width(lo_mw);
+    $('.hcr-pgtabs-lm').width(lo_mw - $('.hcr-pgtabs-lr').outerWidth(true));
+    //$('.hdev-pgtabs-box').width(lo_mw);
     
     //
     if ($('#hdev_project').length) {
@@ -123,13 +126,13 @@ function hdev_page_open(path, type, title, img)
                 title = path.replace(/^.*[\\\/]/, '');
             }
             
-            entry  = '<table id="pgtab'+pgid+'" class="pgtabitem"><tr>';
+            entry  = '<table id="pgtab'+pgid+'" class="pgtab"><tr>';
             entry += "<td class='ico'><img src='/app/hcreator/static/img/"+img+".png' align='absmiddle' /></td>";
             entry += "<td class=\"pgtabtitle\"><a href=\"javascript:hdev_page_open('"+path+"','"+type+"','"+title+"','"+img+"')\">"+title+"</a></td>";
             entry += '<td class="close"><a href="javascript:hdev_page_close(\''+path+'\')">×</a></td>';
             entry += '</tr></table>';
 
-            $("#hdev_pgtabs").append(entry);            
+            $("#hcr_pgtabs").append(entry);            
         }        
         hdev_pgtabs_switch('pgtab'+pgid);
 
@@ -169,8 +172,42 @@ function hdev_page_close(path)
     default:
         return;
     }
+        
+    // Closed and Open new page
+    j = 0;
+    for (var i in pageArray) {
+        
+        if (i == pgid) {
+        
+            $('#pgtab'+pgid).remove();
+            delete pageArray[pgid];
     
-    $('#pgtab'+pgid).remove();
+            if (pgid != pageCurrent) {
+                return;
+            }
+            
+            pageCurrent = 0;
+            
+            if (j != 0) {
+                break;
+            }
+            
+        } else {
+            
+            j = i;
+            
+            if (pageCurrent == 0) {
+                break;
+            }
+        }
+    }
+    
+    if (j != 0) {
+        hdev_page_open(pageArray[j]['path'], pageArray[j]['type'], pageArray[j]['title'], pageArray[j]['img']);
+        pageCurrent = j;
+    }
+    
+    /** $('#pgtab'+pgid).remove();
     delete pageArray[pgid];
     
     
@@ -185,7 +222,7 @@ function hdev_page_close(path)
         hdev_page_open(pageArray[i]['path'], pageArray[i]['type'], pageArray[i]['title'], pageArray[i]['img']);
         pageCurrent = i;
         break;
-    }
+    }*/
     
     hdev_layout_resize();
 }
@@ -282,7 +319,7 @@ function hdev_editor(path)
             hdev_page_editor_save(path);
         }
     });
-
+    
     hdev_layout_resize();
 }
 
@@ -307,19 +344,79 @@ function hdev_page_editor_save(path)
 
 function hdev_pgtabs_switch(id)
 {
-    $('.pgtabitem.current').removeClass('current');
+    $('.pgtab.current').removeClass('current');
     $("#"+id).addClass("current");
     
-    lo_mw = $('#hdev_layout_middle').innerWidth();
+    pg = $('.hcr-pgtabs-lm').innerWidth();
     
     tabp = $('#'+id).position();
     console.log("tab pos left:"+ tabp.left);
     
-    mov = tabp.left + $('#'+id).outerWidth(true) + 80 - lo_mw;
+    mov = tabp.left + $('#'+id).outerWidth(true) - pg;
     if (mov < 0)
-        mov = 0;        
+        mov = 0;
+    
+    pgl = $(".pgtab").last().position().left + $(".pgtab").last().outerWidth(true);
+    
+    if (pgl > pg)
+        $(".pgtab-openfiles").show();
+    else
+        $(".pgtab-openfiles").hide();
 
-    $('.hdev-pgtabs').animate({left: "-"+mov+"px"}); // COOL!
-    console.log("tab mov left:"+ mov);
+    $('.hcr-pgtabs').animate({left: "-"+mov+"px"}); // COOL!
 }
 
+function hdev_pgtab_openfiles()
+{
+    var ol = '';    
+    for (i in pageArray) {
+    
+        if (!pageArray[i].title)
+            continue;
+        
+        href = "javascript:hdev_page_open('"+pageArray[i]['path']+"','"+pageArray[i]['type']+"','"+pageArray[i].title+"','"+pageArray[i]['img']+"')";
+
+        ol += '<div class="lcitem hdev_lcobj_file">';
+        ol += '<div class="lcico"><img src="/app/hcreator/static/img/'+pageArray[i]['img']+'.png" align="absmiddle" /></div>';
+        ol += '<div class="lcctn"><a href="'+href+'">'+pageArray[i].title+'</a></div>';
+        ol += '</div>';
+    }
+    $('.pgtab-openfiles-ol').html(ol);
+    
+    e = window.event;
+    w = 100;
+    h = 100;
+    //console.log("event top:"+e.pageY+", left:"+e.pageX);
+    
+    $('.pgtab-openfiles-ol').css({
+        width: w+'px',
+        height: 'auto',
+        top: (e.pageY + 10)+'px',
+        left: (e.pageX - w - 10)+'px'
+    }).toggle();
+    
+    rw = $('.pgtab-openfiles-ol').outerWidth(true);   
+    if (rw > 400) {
+        $('.pgtab-openfiles-ol').css({
+            width: '400px',
+            left: (e.pageX - 410)+'px'
+        });
+    } else if (rw > w) {
+        $('.pgtab-openfiles-ol').css({
+            width: rw+'px',
+            left: (e.pageX - rw - 10)+'px'
+        });
+    }
+    
+    rh = $('.pgtab-openfiles-ol').height();
+    bh = $('body').height();
+    hmax = bh - e.pageY - 30;
+    //console.log("hmax: "+hmax);
+    if (rh > hmax) {
+        $('.pgtab-openfiles-ol').css({height: hmax+"px"});
+    }
+    
+    $(".pgtab-openfiles-ol").find(".hdev_lcobj_file").click(function() {
+        $('.pgtab-openfiles-ol').hide();
+    });
+}

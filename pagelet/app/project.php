@@ -166,7 +166,7 @@ function _proj_set_refresh()
         });
         
         $(document).click(function() {
-            $('.hdev-rcmenu').hide();
+            $(this).find('.hdev-rcmenu').hide();
         });
         
         return false;
@@ -335,7 +335,7 @@ function _refresh_tree()
 {
     $(".hdev-proj-tree").bind("contextmenu", function(e) {
 
-        $('.hdev-rcmenu').hide();
+        $(this).find('.hdev-rcmenu').hide();
         
         $(this).find(".hdev-rcmenu").css({
             top: e.pageY+'px',
@@ -367,7 +367,7 @@ function _refresh_tree()
         });
         
         $(document).click(function() {
-            $('.hdev-rcmenu').hide();
+            $(this).find('.hdev-rcmenu').hide();
         });
     
         return false;
