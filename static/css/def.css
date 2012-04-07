@@ -361,8 +361,11 @@ input.input_button:hover {border: 2px solid #333;}
 .hdev-proj-section {
     background-color: #f6f7f8;
     font-size: 13px; line-height: 130%;
-    font-weight: bold;
+    
     height: 23px; overflow: hidden;
+}
+.hdev-proj-section .title {
+    font-weight: bold;
 }
 
 .hdev-tabs-nav {

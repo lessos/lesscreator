@@ -61,15 +61,15 @@ echo $msg;
 <form id="hdev_appedit_form" action="/hcreator/app/project-new/" method="post" >
   <table class="box" width="100%" border="0" cellpadding="0" cellspacing="10" >
     <tr>
-      <td width="140px" align="right" >APP ID</td>
+      <td width="140px" align="right" >AppID</td>
       <td ><input id="proj" name="proj" size="30" type="text" value="<?=$item['appid']?>" /></td>
     </tr>
     <tr>
-      <td align="right" >NAME</td>
+      <td align="right" >Name</td>
       <td ><input id="name" name="name" size="30" type="text" value="<?=$item['name']?>" /></td>
     </tr>
     <tr>
-      <td align="right" >VERSION</td>
+      <td align="right" >Version</td>
       <td ><input id="version" name="version" size="30" type="text" value="<?=$item['version']?>" /></td>
     </tr>
     <tr>
@@ -77,7 +77,7 @@ echo $msg;
       <td ><input id="release" name="release" size="30" type="text" value="<?=$item['release']?>" /></td>
     </tr>
     <tr>
-      <td align="right" valign="top">SUMMARY</td>
+      <td align="right" valign="top">Description</td>
       <td ><textarea id="summary" name="summary" rows="6" style="width:500px;"><?=$item['summary']?></textarea></td>
     </tr>
     <tr>
@@ -98,10 +98,8 @@ $("#hdev_appedit_form").submit(function(event) {
         url: $(this).attr('action'),
         data: $(this).serialize(),
         success: function(data) {
-            $("#hdev_ws_content").empty().append(data);
-            console.log(proj);
-            hdev_project(proj);
-            window.scrollTo(0,0);
+            alert('Successfully created');
+            window.location = "/hcreator/index?proj="+$("#proj").val();
         }
     });
 });
