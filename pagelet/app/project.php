@@ -149,6 +149,8 @@ function _proj_set_refresh()
 {
     $("#hdev-proj-set").bind("click", function(e) {
     
+        
+    
         $(this).find(".hdev-rcmenu").css({
             top: e.pageY+'px',
             left: e.pageX+'px'
@@ -253,6 +255,13 @@ $("#form_file_std_commit").submit(function(event) {
    
 function _file_std_show(type, path, t, l)
 {
+    h = $("#hdev-proj-olrcm-std").height();
+    t = window.event.pageY;
+    bh = $('body').height() - 50;        
+    if ((t + h) > bh) {
+        t = bh - h;
+    }
+        
     $("#hdev-proj-olrcm-std .path").text(path);
     
     $("#hdev-proj-olrcm-std .inputtype").val(type);
@@ -263,6 +272,9 @@ function _file_std_show(type, path, t, l)
     } else if (type == 'dir') {
         $("#hdev-proj-olrcm-std .title").text('New Folder');
     }
+    
+    //console.log("hdev-proj-olrcm-std height: "+$("#hdev-proj-olrcm-std").height());
+    //bh = $('body').height();
     
     $("#hdev-proj-olrcm-std").css({
         top: t+'px',
@@ -301,6 +313,13 @@ function _file_upload(path, t, l)
         return;
     }
     
+    h = $("#hdev-proj-olrcm-upload").height();
+    t = window.event.pageY;
+    bh = $('body').height() - 50;        
+    if ((t + h) > bh) {
+        t = bh - h;
+    }
+    
     $("#hdev-proj-olrcm-upload .path").text(path);
     $("#hdev-proj-olrcm-upload .inputpath").val(path);
 
@@ -314,6 +333,13 @@ function _file_rename(path, t, l)
 {
     var curname = path.replace(/^.*[\\\/]/, '');
     var parfold = path.substring(0, path.lastIndexOf('/'));
+    
+    h = $("#hdev-proj-olrcm-mv").height();
+    t = window.event.pageY;
+    bh = $('body').height() - 50;        
+    if ((t + h) > bh) {
+        t = bh - h;
+    }
     
     $("#hdev-proj-olrcm-mv .parfold").text(parfold);
     $("#hdev-proj-olrcm-mv .inputname").val(curname);
@@ -336,11 +362,18 @@ function _file_rename(path, t, l)
 function _refresh_tree()
 {
     $(".hdev-proj-tree").bind("contextmenu", function(e) {
-
+        
+        h = $(this).find(".hdev-rcmenu").height();
+        t = e.pageY;
+        bh = $('body').height() - 20;        
+        if ((t + h) > bh) {
+            t = bh - h;
+        }        
+        
         $(this).find('.hdev-rcmenu').hide();
         
         $(this).find(".hdev-rcmenu").css({
-            top: e.pageY+'px',
+            top: t+'px',
             left: e.pageX+'px'
         }).show();
     

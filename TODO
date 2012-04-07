@@ -5,8 +5,6 @@ CURRENT
 
     left: tabs-close-all
     
-    bottom right click over window
-    
     editor:tools:
         save: status updater
         auto-save: 
