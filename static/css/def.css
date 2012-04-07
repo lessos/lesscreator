@@ -138,7 +138,7 @@ input.input_button:hover {border: 2px solid #333;}
 .hdev-header-alert {
     padding: 4px 6px;
     width: auto; height:16px;
-    smax-width: 500px;
+    max-width: 500px;
     font-size: 14px; line-height: 14px; overflow: hidden;
 }
 
@@ -456,7 +456,7 @@ input.input_button:hover {border: 2px solid #333;}
     background-color: #fff;
 }
 .hdev-proj-files .fileitem {
-    padding: 1px 2px;
+    padding: 1px 2px; white-space: nowrap;
 }
 .hdev-proj-files .fileitem:hover {
     background-color: #C9E2FC; color: #555;

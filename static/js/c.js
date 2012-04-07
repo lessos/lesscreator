@@ -346,6 +346,10 @@ function hdev_pgtabs_switch(id)
     $('.pgtab.current').removeClass('current');
     $("#"+id).addClass("current");
     
+    /**if ($("#"+id).width() > 100) {
+        $("#"+id).width(100);
+    }*/
+    
     pg = $('.hcr-pgtabs-lm').innerWidth();
     
     tabp = $('#'+id).position();
