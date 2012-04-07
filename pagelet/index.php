@@ -25,12 +25,12 @@
 
 <table id="hdev_header">
   <tr>
-    <td class="header_logo" width="270px">
+    <td class="header_logo" width="240px">
       <img src="/app/hcreator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
       <span>Creator</span>
     </td>
     
-    <td>
+    <td align="center">
         <div id="hdev_header_alert" class="hdev_header_alert border_radius_5 hdev_alert">
 
         </div>
@@ -72,7 +72,7 @@
 
   </tr>
 </table>
-<div class="pgtab-openfiles-ol hdev-lcmenu hdev-scrollbar"></div>
+<div class="pgtab-openfiles-ol hdev-lcmenu hdev-scrollbar border_radius_5"></div>
 </body>
 </html>
 

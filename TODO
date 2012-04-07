@@ -1,0 +1,22 @@
+
+CURRENT
+    project do not change appid
+    version display
+    
+    left: tabs-close-all
+    
+    bottom right click over window
+    
+    editor:tools:
+        save: status updater
+        auto-save: 
+        
+NEXT
+    API:helper
+    Console
+    Git
+    auto complete
+    Library Manager
+
+
+

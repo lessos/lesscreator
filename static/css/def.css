@@ -19,7 +19,7 @@ html, body {height: 100%;}
 
 body {
     font-family: Helvetica, Arial, "Liberation Sans", sans-serif;
-    font-size:14px; line-height:160%; background-color: #fbfbfb; color: #111;
+    font-size: 14px; line-height:160%; background-color: #fbfbfb; color: #111;
     word-break: break-all;
     word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
     display: block;
@@ -28,8 +28,8 @@ body {
 
 /** common */
 a {text-decoration: underline;}
-a:link {color: #1E79A7;}
-a:visited {color: #1E79A7;}
+a:link {color: #08C;}
+a:visited {color: #08C;}
 a:hover {color: #d54e21;}
 a:active {color: #004a9c; text-decoration: none;}
 a.anoline {text-decoration: none;};
@@ -128,17 +128,17 @@ input.input_button:hover {border: 2px solid #333;}
 }
 
 #hdev_header {
-    padding: 8px 10px; width: 100%;
-    color: #333; height: 60px;
+    padding: 5px 10px; width: 100%;
+    color: #333; height: 50px;
 }
 #hdev_header .header_logo {
     font-size:18px; font-weight: bold; color: #555;
 }
 
 .hdev_header_alert {
-    padding:4px 6px;
-    width: 500px; height:20px;
-    font-size: 13px; line-height:20px;
+    padding: 4px 6px;
+    min-width: 300px; max-width: 500px; height:16px;
+    font-size: 13px; line-height:13px; overflow: hidden;
 }
 
 .menu_nav {margin: 0; padding-left: 40px;}
@@ -160,7 +160,7 @@ input.input_button:hover {border: 2px solid #333;}
      width: 100%; margin: 0; padding: 0;
 }
 #hdev_layout_leftbar {
-    width: 260px; vertical-align: top;
+    width: 240px; vertical-align: top;
 }
 #hdev_leftbar_content {
     vertical-align: top;
@@ -242,7 +242,11 @@ input.input_button:hover {border: 2px solid #333;}
     color: #000; padding: 0 0px; max-width: 300px; margin-right: 5px;
     overflow: hidden; 
     text-decoration: none; text-overflow: ellipsis; white-space: nowrap;
+    border-left: 1px solid transparent;
     border-right: 1px solid #c6c7c9;
+    -moz-border-top-left-radius: 5px;
+    -webkit-border-top-left-radius: 5px;
+    border-top-left-radius: 5px;
     -moz-border-top-right-radius: 5px;
     -webkit-border-top-right-radius: 5px;
     border-top-right-radius: 5px;
@@ -251,6 +255,7 @@ input.input_button:hover {border: 2px solid #333;}
     color: #000;
 } 
 .hcr-pgtabs .pgtab.current {
+    border-left: 1px solid #c6c7c9;
     background-color: #f6f7f8; height: 24px;
 }
 .hcr-pgtabs .pgtab .ico img {
@@ -350,6 +355,16 @@ input.input_button:hover {border: 2px solid #333;}
 }
 .activeline {background: #f0fcff !important;}
 
+.hdev-proj-frame {
+    /*border: 1px solid transparent; */
+}
+.hdev-proj-section {
+    background-color: #f6f7f8;
+    font-size: 13px; line-height: 130%;
+    font-weight: bold;
+    height: 23px; overflow: hidden;
+}
+
 .hdev-tabs-nav {
     background-color: #e7e8ea; height: 23px; 
     border-bottom: 1px solid #cfd4d7;
@@ -358,7 +373,7 @@ input.input_button:hover {border: 2px solid #333;}
 }
 .hdev-tabs-nav2 {
     background-color: #f6f7f8; height: 23px;
-    border-bottom: 1px solid #bbc1c5;
+    sborder-bottom: 1px solid #bbc1c5;
     z-index: -1;
 }
 .hdev-tabs * {
@@ -406,7 +421,7 @@ input.input_button:hover {border: 2px solid #333;}
 
 
 .hdev-btn-caret {
-    color: #000;
+    color: #000; padding: 3px; 
 }
 .hdev-btn-caret:hover {
     color: #db4a37; cursor: pointer;
@@ -414,11 +429,10 @@ input.input_button:hover {border: 2px solid #333;}
 .hdev-btn-caret .ctn {
     display: inline-block;
     font-size:13px; line-height: 13px; 
-    margin-right: 5px;
     cursor: pointer;
 }
 .hdev-btn-caret .caret {
-    display: inline-block;
+    display: inline-block; 
     width: 0; height: 0;
     vertical-align: 50%;
     margin-top: -2px;
@@ -438,12 +452,11 @@ input.input_button:hover {border: 2px solid #333;}
     background-color: #fff;
 }
 .hdev-proj-files .fileitem {
-    padding: 3px;
+    padding: 1px 2px;
 }
 .hdev-proj-files .fileitem:hover {
     background-color: #C9E2FC; color: #555;
 }
-
 .hdev-proj-files .fileitem a:hover {
     text-decoration: underline;
 }

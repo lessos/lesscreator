@@ -31,22 +31,22 @@ $info = hwl\Yaml\Yaml::decode(file_get_contents($projpath."/hootoapp.yaml"));
 $ptpath = md5("");
 ?>
 
-<div class="hdev-tabs-nav hdev-tabs border_radius_t5">
+<!-- <div class="hdev-tabs-nav hdev-tabs border_radius_t5">
     <div class="tabitem cur">
-        <div class="ctn">Files</div>
+        <div class="ctn">Project</div>
     </div>
-</div>
-<div class="hdev-tabs-nav2 hdev-tabs">
-    <div class="tabitem" onclick="_proj_set_nav2('file')">
-        <div class="ico"><img src="/app/hcreator/static/img/page_white_add.png" align="absmiddle" /></div>
-        <div class="ctn">New File</div>
-    </div>
-    <div class="tabitemline"></div>
-    <div class="tabitem" onclick="_proj_set_nav2('dir')">
-        <div class="ico"><img src="/app/hcreator/static/img/folder_add.png" align="absmiddle" /></div>
-        <div class="ctn">New Folder</div>
-    </div>
-    <div id="hdev-proj-set" class="tabitem hdev-btn-caret florig" >
+</div> -->
+
+<table class="hdev-proj-section" width="100%">
+  <tr>
+    <td valign="middle" width="18">
+      <img src="/app/hcreator/static/img/app-t3-16.png" align="absmiddle" />
+    </td>
+    <td valign="middle">
+      <div class="title"><?=$info['name']?></div>
+    </td>
+    <td valign="middle" align="right">
+      <div id="hdev-proj-set" class="tabitem hdev-btn-caret florig" >
         <div class="ctn">More</div>
         <span class="caret"></span>
         <div class="hdev-rcmenu displaynone">
@@ -68,10 +68,12 @@ $ptpath = md5("");
                 <div class="rcctn">Upload</div>
             </div>
         </div>
-    </div>
-</div>
+      </div>
+    </td>
+  </tr>      
+</table>
 
-<!--FilesManager-->
+<!--ProjectFilesManager-->
 <div id="pt<?=$ptpath?>" class="hdev-proj-files hdev-scrollbar"></div>
 
 <div id="hdev-proj-olrcm-std" class="hdev-proj-olrcm border_radius_5">
