@@ -35,7 +35,7 @@
     </td>
     
     <td align="right" class="menu_nav">
-        <span><a href="javascript:hdev_applist()">My Projects</a></span>
+        <span><a href="javascript:hdev_applist()">Open Project</a></span>
         <span><a href="javascript:hdev_project_new()">New Project</a></span>
     </td>
   </tr>

@@ -24,6 +24,7 @@ function hdev_project(proj)
     
     // Open Project in New Tab
     if (projCurrent && projCurrent != proj) {
+        window.open("/hcreator/index?proj="+proj, '_blank');
         return;
     }
     
