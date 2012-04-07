@@ -75,11 +75,11 @@ input.input_button {
 input.input_button:hover {border: 2px solid #333;}
 
 .hdev_alert {
-    margin: 5px 0px; padding: 6px; border: 1px;
-    font-size: 14px; line-height: 100%;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;    
+    margin: 5px 0px; padding: 5px; border: 1px;
+    font-size: 14px; line-height: 100%; text-align: left;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;    
 }
 .hdev_alert.success {background-color: #DFF0D8; color: #468847; border: 1px solid #D6E9C6;}
 .hdev_alert.error {background-color: #f2DEDE; color: #B94A48; border: 1px solid #EED3D7;}
@@ -135,10 +135,11 @@ input.input_button:hover {border: 2px solid #333;}
     font-size:18px; font-weight: bold; color: #555;
 }
 
-.hdev_header_alert {
+.hdev-header-alert {
     padding: 4px 6px;
-    min-width: 300px; max-width: 500px; height:16px;
-    font-size: 13px; line-height:13px; overflow: hidden;
+    width: auto; height:16px;
+    smax-width: 500px;
+    font-size: 14px; line-height: 14px; overflow: hidden;
 }
 
 .menu_nav {margin: 0; padding-left: 40px;}

@@ -45,10 +45,8 @@ function hdev_project(proj)
 
 function hdev_header_alert(status, alert)
 {
-    $("#hdev_header_alert").text(alert);
-    $("#hdev_header_alert").removeClass("success");
-    $("#hdev_header_alert").removeClass("error");
-    $("#hdev_header_alert").addClass(status);
+    $(".hdev-header-alert").text(alert);
+    $(".hdev-header-alert").addClass(status);
 }
 
 

@@ -31,10 +31,9 @@
     </td>
     
     <td align="center">
-        <div id="hdev_header_alert" class="hdev_header_alert border_radius_5 hdev_alert">
-
-        </div>
+        <div class="hdev-header-alert border_radius_5 hdev_alert"></div>
     </td>
+    
     <td align="right" class="menu_nav">
         <span><a href="javascript:hdev_applist()">My Projects</a></span>
         <span><a href="javascript:hdev_project_new()">New Project</a></span>
