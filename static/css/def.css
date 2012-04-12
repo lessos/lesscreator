@@ -288,6 +288,11 @@ input.input_button:hover {border: 2px solid #333;}
 .pgtab-openfiles-ol {
     position: absolute;
 }
+.hcr-pgbar-editor {
+    background-color: #f6f7f8; height: 24px;
+    border-bottom: 1px solid #cfd4d7; 
+    display: none;
+}
 
 .hdev-pgtabs-box {
     overflow: hidden;

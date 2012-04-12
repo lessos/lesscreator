@@ -1,26 +1,24 @@
 <?php
 
-// Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(
-    SYS_ROOT.'app', get_include_path()
-)));
+define('HCR_DIR', realpath(__DIR__ . '/..'));
 
-require SYS_ROOT.'app/hwl/pagelet.php';
-
-$req = new hwl_pagelet_request();
-if (stristr($req->uri, '/')) {
-    $appid  = stristr($req->uri, '/', true);
-    $action = trim(stristr($req->uri, '/'), '/');
-} else {
-    $appid  = 'hcreator';
-    $action = 'index';
+if (!in_array(HCR_DIR, explode(':', get_include_path()))) {
+    set_include_path(HCR_DIR . PATH_SEPARATOR . get_include_path());
 }
 
-$view = new hwl_pagelet_view();
-$view->reqs = $req;
-$view->setPath(SYS_ROOT."app/{$req->appid}");
-//$view->setPath("./{$req->appid}");
+require 'LessPHP/Pagelet.php';
 
+$opt = array(
+    'path' => HCR_DIR,
+    'uri_default' => 'hcreator/index',
+);
+
+$pagelet = new LessPHP_Pagelet($opt);
+
+echo $pagelet->render();;
+
+
+/*
 switch ($action)
 { 
     case 'index' :
@@ -34,8 +32,8 @@ switch ($action)
     case 'app/file-del' :
     case 'app/file-upload' :
     case 'app/file-mv' :
-        print $view->render($action, $req);
+        print $pagelet->render($action, $req);
     default:
         // Exception
 }
-
+*/

@@ -1,32 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-Strict.dtd">
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  
-  <title><?php echo $this->headtitle; ?> - Hooto Creator</title>
-  
-  <script src="/app/hcreator/static/js/c.js"></script>
-  <script src="/app/hcreator/static/js/crypto-min.js"></script>
-  <script src="/app/hcreator/static/js/md5-min.js"></script>
-  <script src="/app/jquery17/jquery-1.7.min.js"></script>
-  <script src="/app/hcreator/static/js/BrowserDetect.js"></script>
-
-  <link href="/app/codemirror2/lib/codemirror.css" rel="stylesheet" type="text/css" media="all" />
-  <script src="/app/codemirror2/lib/codemirror-mini.js"></script>
-  <script src="/app/codemirror2/mode/all.js"></script>
-  
-  <link rel="shortcut icon" href="/app/hcreator/static/img/hooto-xicon-mc.ico" type="image/x-icon" /> 
-  <link rel="stylesheet" href="/app/hcreator/static/css/def.css" type="text/css" media="all" />
-  <?php
-  echo $this->headlink.$this->headJavascript.$this->headStylesheet;
-  ?>
+  <title>Hooto Creator</title>
+  <link rel="stylesheet" type="text/css" href="/codemirror2/lib/codemirror.css"   media="all" />
+  <link rel="stylesheet" type="text/css" href="/hcreator/static/css/def.css" media="all" />
+  <link rel="shortcut icon" type="image/x-icon" href="/hcreator/static/img/hooto-xicon-mc.ico" /> 
 </head>
-<body style="background:#D8DCE0 url(/app/hcreator/static/img/body.png) repeat-x;">
+<body style="background:#D8DCE0 url(/hcreator/static/img/body.png) repeat-x;">
 
 <table id="hdev_header">
   <tr>
     <td class="header_logo" width="240px">
-      <img src="/app/hcreator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
+      <img src="/hcreator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
       <span>Creator</span>
     </td>
     
@@ -62,6 +48,8 @@
         </div>
       </div>
       
+      <div class="hcr-pgbar-editor hdev-ws"></div>
+      
       <div id="hdev_ws_editor" class="hdev-ws"></div>
       <div id="hdev_ws_content" class="hdev-ws"></div>
       
@@ -75,6 +63,15 @@
 </body>
 </html>
 
+<script src="/jquery17/jquery-1.7.min.js"></script>
+<script src="/hcreator/static/js/c.js"></script>
+<script src="/hcreator/static/js/crypto-min.js"></script>
+<script src="/hcreator/static/js/md5-min.js"></script>
+<script src="/hcreator/static/js/BrowserDetect.js"></script>
+  
+<script src="/codemirror2/lib/codemirror-mini.js"></script>
+<script src="/codemirror2/mode/all.js"></script>
+  
 <script>
 window.onbeforeunload = function() {
     //return "Leave the page and lose your changes?";
@@ -102,8 +99,8 @@ $(document).ready(function() {
         info += '<div class="title">This Application are not fully supported in this browser</div>';
         info += '<div class="summary">Please install the following browser, And upgrade to the latest version</div>';
         info += '<div class="summary"><table class="tbl">';
-        info += '<tr><td><img src="/app/hcreator/static/img/browser_chrome.png" /></td><td><strong>Google Chrome</strong></td><td><a href="http://www.google.com/chrome/" target="_blank">http://www.google.com/chrome/</a></td><td>Free</td></tr>';
-        info += '<tr><td><img src="/app/hcreator/static/img/browser_safari.png" /></td><td><strong>Apple Safari</strong></td><td><a href="http://www.apple.com/safari/" target="_blank">http://www.apple.com/safari/</a></td><td>Free</td></tr>';
+        info += '<tr><td><img src="/hcreator/static/img/browser_chrome.png" /></td><td><strong>Google Chrome</strong></td><td><a href="http://www.google.com/chrome/" target="_blank">http://www.google.com/chrome/</a></td><td>Free</td></tr>';
+        info += '<tr><td><img src="/hcreator/static/img/browser_safari.png" /></td><td><strong>Apple Safari</strong></td><td><a href="http://www.apple.com/safari/" target="_blank">http://www.apple.com/safari/</a></td><td>Free</td></tr>';
         info += '</table></div>';
         info += '</div></div>';
         
@@ -112,6 +109,6 @@ $(document).ready(function() {
         return;
     }
     
-    hdev_project('<?=$this->reqs->params->proj?>');
+    hdev_project('<?=$this->req->proj?>');
 });
 </script>

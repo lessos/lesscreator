@@ -1,20 +1,34 @@
 
 CURRENT
-
-    version display
-
-    left: tabs-close-all
-    
-    editor:tools:
-        save: status updater
-        auto-save: 
         
+    editor tools
+        search
+        search & replace
+        undo, redo
+        go to line
+        save, auto save
+
 NEXT
+    mouse resize leftbar
+    
+    help
+        About
+        Quick start
+        Changelog (Ver 1.0.1)
+        Keyboard Shortcuts
+        Support
+            FAQ
+            Report a bug
+    
+    editor bar
+        Close All Tabs
+        Close All But Current Tab
+
+NEXT Milestone
+
     API:helper
     Console
     Git
     auto complete
     Library Manager
-
-
 

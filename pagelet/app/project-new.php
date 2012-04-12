@@ -2,11 +2,11 @@
 
 $projbase = SYS_ROOT."/app";
 
-if (!isset($this->reqs->params->proj)
-    || strlen($this->reqs->params->proj) < 1) {
+if (!isset($this->req->proj)
+    || strlen($this->req->proj) < 1) {
     $proj = hwl_string::rand(8,2);
 } else {
-    $proj = $this->reqs->params->proj;
+    $proj = $this->req->proj;
 }
 
 $proj  = preg_replace("/\/+/", "/", trim($proj, '/'));

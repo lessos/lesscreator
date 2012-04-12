@@ -1,9 +1,9 @@
 <?php
 $projbase = SYS_ROOT."/app";
-$proj = $this->reqs->params->proj;
-$path = $this->reqs->params->path;
-$name = $this->reqs->params->name;
-$type = $this->reqs->params->type;
+$proj = $this->req->proj;
+$path = $this->req->path;
+$name = $this->req->name;
+$type = $this->req->type;
 
 $status = 200;
 $msg    = 'Saved successfully';//'Internal Server Error';

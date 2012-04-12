@@ -2,18 +2,18 @@
 
 
 
-if (!isset($this->reqs->params->projbase)
-    || strlen($this->reqs->params->projbase) < 1) {
+if (!isset($this->req->projbase)
+    || strlen($this->req->projbase) < 1) {
     $projbase = SYS_ROOT."/app";
 } else {
-    $projbase = $this->reqs->params->projbase;
+    $projbase = $this->req->projbase;
 }
 
-if (!isset($this->reqs->params->proj)
-    || strlen($this->reqs->params->proj) < 1) {
+if (!isset($this->req->proj)
+    || strlen($this->req->proj) < 1) {
     header("HTTP/1.1 404 Not Found"); die('Page Not Found');
 }
-$proj  = preg_replace("/\/+/", "/", trim($this->reqs->params->proj,"/"));
+$proj  = preg_replace("/\/+/", "/", trim($this->req->proj,"/"));
 
 $status = 200;
 $msg    = '';

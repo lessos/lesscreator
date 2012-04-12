@@ -126,7 +126,7 @@ function hdev_page_open(path, type, title, img)
             }
             
             entry  = '<table id="pgtab'+pgid+'" class="pgtab"><tr>';
-            entry += "<td class='ico'><img src='/app/hcreator/static/img/"+img+".png' align='absmiddle' /></td>";
+            entry += "<td class='ico'><img src='/hcreator/static/img/"+img+".png' align='absmiddle' /></td>";
             entry += "<td class=\"pgtabtitle\"><a href=\"javascript:hdev_page_open('"+path+"','"+type+"','"+title+"','"+img+"')\">"+title+"</a></td>";
             entry += '<td class="close"><a href="javascript:hdev_page_close(\''+path+'\')">×</a></td>';
             entry += '</tr></table>';
@@ -143,6 +143,7 @@ function hdev_page_open(path, type, title, img)
     switch (type) {
     case 'editor':
         hdev_page_editor_open(path);
+        $(".hcr-pgbar-"+type).show();
         break;
     case 'content':
         $('#hdev_ws_content').load('/hcreator/'+path);
@@ -380,7 +381,7 @@ function hdev_pgtab_openfiles()
         href = "javascript:hdev_page_open('"+pageArray[i]['path']+"','"+pageArray[i]['type']+"','"+pageArray[i].title+"','"+pageArray[i]['img']+"')";
 
         ol += '<div class="lcitem hdev_lcobj_file">';
-        ol += '<div class="lcico"><img src="/app/hcreator/static/img/'+pageArray[i]['img']+'.png" align="absmiddle" /></div>';
+        ol += '<div class="lcico"><img src="/hcreator/static/img/'+pageArray[i]['img']+'.png" align="absmiddle" /></div>';
         ol += '<div class="lcctn"><a href="'+href+'">'+pageArray[i].title+'</a></div>';
         ol += '</div>';
     }

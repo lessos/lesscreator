@@ -2,17 +2,17 @@
 
 $projbase = SYS_ROOT."/app";
 
-if ($this->reqs->params->proj == null) {
+if ($this->req->proj == null) {
     die('ERROR');
 }
-$proj  = preg_replace("/\/+/", "/", trim($this->reqs->params->proj,'/'));
+$proj  = preg_replace("/\/+/", "/", trim($this->req->proj,'/'));
 $projpath = "{$projbase}/{$proj}";
 
 if (strlen($proj) < 1) {
     die("ERROR");
 }
 
-$path  = preg_replace("/\/+/", "/", $this->reqs->params->path);
+$path  = preg_replace("/\/+/", "/", $this->req->path);
 
 $paths = explode("/", trim($path, "/"));
 
@@ -40,7 +40,7 @@ $ptpath = md5("");
 <table class="hdev-proj-section" width="100%">
   <tr>
     <td valign="middle" width="18">
-      <img src="/app/hcreator/static/img/app-t3-16.png" align="absmiddle" />
+      <img src="/hcreator/static/img/app-t3-16.png" align="absmiddle" />
     </td>
     <td valign="middle">
       <div class="title"><?=$info['name']?></div>
@@ -51,20 +51,20 @@ $ptpath = md5("");
         <span class="caret"></span>
         <div class="hdev-rcmenu displaynone">
             <div class="rcitem" onclick="javascript:hdev_project_setting('<?=$proj?>')">
-                <div class="rcico"><img src="/app/hcreator/static/img/app-t3-16.png" align="absmiddle" /></div>
+                <div class="rcico"><img src="/hcreator/static/img/app-t3-16.png" align="absmiddle" /></div>
                 <div class="rcctn">Application Setting</div>
             </div>
             <div class="rcsepli"></div>
             <div class="rcitem hdev_rcobj_file">
-                <div class="rcico"><img src="/app/hcreator/static/img/page_white_add.png" align="absmiddle" /></div>
+                <div class="rcico"><img src="/hcreator/static/img/page_white_add.png" align="absmiddle" /></div>
                 <div class="rcctn">New File</div>
             </div>
             <div class="rcitem hdev_rcobj_dir">
-                <div class="rcico"><img src="/app/hcreator/static/img/folder_add.png" align="absmiddle" /></div>
+                <div class="rcico"><img src="/hcreator/static/img/folder_add.png" align="absmiddle" /></div>
                 <div class="rcctn">New Folder</div>
             </div>
             <div class="rcitem hdev_rcobj_upload">
-                <div class="rcico"><img src="/app/hcreator/static/img/page_white_get.png" align="absmiddle" /></div>
+                <div class="rcico"><img src="/hcreator/static/img/page_white_get.png" align="absmiddle" /></div>
                 <div class="rcctn">Upload</div>
             </div>
         </div>
@@ -84,7 +84,7 @@ $ptpath = md5("");
     <div class="sep clearhr"></div>
     <form id="form_file_std_commit" action="/hcreator/app/file/" method="post">
     <div>
-        <img src="/app/hcreator/static/img/folder.png" align="absmiddle" />
+        <img src="/hcreator/static/img/folder.png" align="absmiddle" />
         <span class="path"></span> /
         <input type="text" size="30" name="name" class="inputname" value="" />
         <input type="hidden" name="proj" value="<?=$proj?>" />
@@ -104,7 +104,7 @@ $ptpath = md5("");
     <div class="sep clearhr"></div>
     <form id="form_file_mv_commit" action="/hcreator/app/file-mv/" method="post">
     <div>
-        <img src="/app/hcreator/static/img/page_white_copy.png" align="absmiddle" />
+        <img src="/hcreator/static/img/page_white_copy.png" align="absmiddle" />
         <span class="parfold"></span> /
         <input type="text" size="30" name="name" class="inputname" value="" />
         <input type="hidden" name="proj" value="<?=$proj?>" />
@@ -123,7 +123,7 @@ $ptpath = md5("");
     </div>
     <div class="sep clearhr"></div>
     <form id="form_file_upload_commit" enctype="multipart/form-data" action="/hcreator/app/file-upload" method="post">
-    <img src="/app/hcreator/static/img/page_white_get.png" align="absmiddle" />
+    <img src="/hcreator/static/img/page_white_get.png" align="absmiddle" />
     <span class="path"></span> /
     <input id="attachment" name="attachment" size="40" type="file" />
     <input id="proj" name="proj" type="hidden" value="<?=$proj?>"/>

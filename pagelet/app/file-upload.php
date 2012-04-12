@@ -1,7 +1,7 @@
 <?php
 $projbase = SYS_ROOT."/app";
-$proj = $this->reqs->params->proj;
-$path = $this->reqs->params->path;
+$proj = $this->req->proj;
+$path = $this->req->path;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
