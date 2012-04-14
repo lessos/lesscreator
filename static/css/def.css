@@ -269,7 +269,13 @@ input.input_button:hover {border: 2px solid #333;}
 .hcr-pgtabs .pgtab .pgtabtitle a:hover {
     color: #db4a37; cursor: pointer;
 }
-.hcr-patabs .pgtab .close {
+.hcr-pgtabs .pgtab .chg {
+    color: #db4a37; display: none;
+}
+.hcr-pgtabs .pgtab .chglight {
+    color: #db4a37;
+}
+.hcr-pgtabs .pgtab .close {
     float: right;  width: 15px; display: inline-block;
 }
 .hcr-pgtabs .pgtab .close a {

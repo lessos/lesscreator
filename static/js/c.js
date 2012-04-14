@@ -128,6 +128,7 @@ function hdev_page_open(path, type, title, img)
             entry  = '<table id="pgtab'+pgid+'" class="pgtab"><tr>';
             entry += "<td class='ico'><img src='/hcreator/static/img/"+img+".png' align='absmiddle' /></td>";
             entry += "<td class=\"pgtabtitle\"><a href=\"javascript:hdev_page_open('"+path+"','"+type+"','"+title+"','"+img+"')\">"+title+"</a></td>";
+            entry += '<td class="chg">*</td>';
             entry += '<td class="close"><a href="javascript:hdev_page_close(\''+path+'\')">×</a></td>';
             entry += '</tr></table>';
 
@@ -262,7 +263,7 @@ function hdev_page_editor_close(path)
         console.log("editor remove codemirror");
     }
     
-    hdev_page_editor_save(path);
+    hdev_page_editor_save(pgid);
     
     if (pgid == editor_pgid) {
         $('#src'+pgid).remove();
@@ -279,7 +280,7 @@ function hdev_editor(path)
 
     if (editor_pgid && editor_pgid != pgid) {
         editor_page.toTextArea();
-        // TODO hdev_page_editor_save(path);
+        // TODO hdev_page_editor_save(pgid);
     }
 
     var ext = path.split('.').pop();
@@ -316,28 +317,36 @@ function hdev_editor(path)
         indentWithTabs: false,
         tabMode: "shift",
         onChange: function() {
-            hdev_page_editor_save(path);
+            hdev_page_editor_save(pgid);
         }
     });
+    CodeMirror.commands.save = function() {
+        hdev_page_editor_save(pageCurrent);
+    };
     
     hdev_layout_resize();
 }
 
-function hdev_page_editor_save(path)
+function hdev_page_editor_save(pgid)
 {
-    pgid = Crypto.MD5(path);
-
+    if (!pageArray[pgid].path) {
+        return;
+    }
+    if (pgid == editor_pgid && editor_page) {
+        editor_page.save();
+    }
     $.ajax({
-        url     : "/hcreator/app/src?proj="+projCurrent+"&path="+path,
+        url     : "/hcreator/app/src?proj="+projCurrent+"&path="+pageArray[pgid].path,
         type    : "POST",
         data    : $("#src"+pgid).val(),
-        //dataType: "text",
         timeout : 30000,
         success : function(data) {
             hdev_header_alert('success', data);
+            $("#pgtab"+pgid+" .chg").hide();
         },
         error: function(xhr, textStatus, error) {
             hdev_header_alert('error', xhr.responseText);
+            $("#pgtab"+pgid+" .chg").show();
         }
     });
 }
