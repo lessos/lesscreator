@@ -48,7 +48,12 @@
         </div>
       </div>
       
-      <div class="hcr-pgbar-editor hdev-ws"></div>
+      <div class="hcr-pgbar-editor hdev-ws hdev-tabs">
+        <div class="tabitem">
+            <div class="ico"><img src="/hcreator/static/img/disk.png" align="absmiddle" /></div>
+            <div class="ctn"><input onclick="hdev_editor_set('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
+        </div>
+      </div>
       
       <div id="hdev_ws_editor" class="hdev-ws"></div>
       <div id="hdev_ws_content" class="hdev-ws"></div>
@@ -109,6 +114,9 @@ $(document).ready(function() {
         return;
     }
     
+    hdev_init_setting();
+    //$("#editor_autosave").prop("checked", true);
     hdev_project('<?=$this->req->proj?>');
+    
 });
 </script>

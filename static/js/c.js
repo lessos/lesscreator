@@ -1,4 +1,29 @@
 
+function hdev_init_setting()
+{    
+    var autosave = getCookie('editor_autosave');
+    if (autosave == null) {
+        setCookie("editor_autosave", "on", 365);
+        autosave = 'on';
+    }
+    if (autosave == 'on') {
+        $("#editor_autosave").prop("checked", true);
+    }
+}
+
+function hdev_editor_set(key, val)
+{
+    if (key == "editor_autosave") {
+        if (getCookie('editor_autosave') == "on") {
+            setCookie("editor_autosave", "off", 365);
+        } else {
+            setCookie("editor_autosave", "on", 365);
+        }
+        msg = "Setting Editor::AutoSave to "+getCookie('editor_autosave');
+        hdev_header_alert("success", msg);
+    }
+}
+    
 function hdev_applist()
 {
     hdev_page_open('app/list', 'content', 'My Projects', 'app-t3-16');
@@ -240,7 +265,7 @@ function hdev_page_editor_open(path)
         hdev_editor(path);
     } else {
         $("#src"+pgid).remove(); // Force remove
-        page = '<textarea id="src'+pgid+'" name="src'+pgid+'" class="displaynone"></textarea>';
+        page = '<textarea id="src'+pgid+'" class="displaynone"></textarea>';
         $("#hdev_ws_editor").prepend(page);
 
         $.get('/hcreator/app/src?proj='+projCurrent+'&path='+path, function(data) {
@@ -263,7 +288,7 @@ function hdev_page_editor_close(path)
         console.log("editor remove codemirror");
     }
     
-    hdev_page_editor_save(pgid);
+    hdev_page_editor_save(pgid, 1);
     
     if (pgid == editor_pgid) {
         $('#src'+pgid).remove();
@@ -280,7 +305,7 @@ function hdev_editor(path)
 
     if (editor_pgid && editor_pgid != pgid) {
         editor_page.toTextArea();
-        // TODO hdev_page_editor_save(pgid);
+        // TODO hdev_page_editor_save(pgid, 0);
     }
 
     var ext = path.split('.').pop();
@@ -307,6 +332,8 @@ function hdev_editor(path)
         default:
             mode = 'htmlmixed';
     }
+    
+    
 
     editor_pgid = pgid;
     editor_page = CodeMirror.fromTextArea(document.getElementById('src'+pgid), {
@@ -317,17 +344,17 @@ function hdev_editor(path)
         indentWithTabs: false,
         tabMode: "shift",
         onChange: function() {
-            hdev_page_editor_save(pgid);
+            hdev_page_editor_save(pgid, 0);
         }
     });
     CodeMirror.commands.save = function() {
-        hdev_page_editor_save(pageCurrent);
+        hdev_page_editor_save(pageCurrent, 1);
     };
     
     hdev_layout_resize();
 }
 
-function hdev_page_editor_save(pgid)
+function hdev_page_editor_save(pgid, force)
 {
     if (!pageArray[pgid].path) {
         return;
@@ -335,6 +362,13 @@ function hdev_page_editor_save(pgid)
     if (pgid == editor_pgid && editor_page) {
         editor_page.save();
     }
+    
+    var autosave = getCookie('editor_autosave');
+    if (autosave == 'off' && force == 0) {
+        $("#pgtab"+pgid+" .chg").show();
+        return;
+    }
+    
     $.ajax({
         url     : "/hcreator/app/src?proj="+projCurrent+"&path="+pageArray[pgid].path,
         type    : "POST",
@@ -433,3 +467,36 @@ function hdev_pgtab_openfiles()
         $('.pgtab-openfiles-ol').hide();
     });
 }
+
+function setCookie(key, value, days)
+{
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days*24*60*60*1000));
+		var expires = "; expires=" + date.toGMTString();
+	} else {
+	    var expires = "";
+	}
+	
+	document.cookie = key+"="+value+expires+"; path=/";
+}
+
+function getCookie(key)
+{
+	var keyEQ = key + "=";
+	var ca = document.cookie.split(';');
+	for(var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') 
+		    c = c.substring(1, c.length);
+		if (c.indexOf(keyEQ) == 0) 
+		    return c.substring(keyEQ.length, c.length);
+	}
+	return null;
+}
+
+function delCookie(key)
+{
+	setCookie(key, "", -1);
+}
+

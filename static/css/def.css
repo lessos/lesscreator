@@ -415,10 +415,13 @@ input.input_button:hover {border: 2px solid #333;}
 }
 .hdev-tabs .tabitem .ctn {
     display: inline-block; margin-left: 4px; margin-right: 2px; 
-    font-size: 13px;
+    font-size: 13px; line-height: 13px;
 }
 .hdev-tabs .tabitem .ctn:hover {
     color: #db4a37; cursor: pointer;
+}
+.hdev-tabs input {
+    vertical-align: middle;
 }
 .hdev-tabs .tabitem.florig {
     float: right;
