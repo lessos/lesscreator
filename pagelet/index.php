@@ -4,6 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Hooto Creator</title>
   <link rel="stylesheet" type="text/css" href="/codemirror2/lib/codemirror.css"   media="all" />
+  <link rel="stylesheet" type="text/css" href="/codemirror2/theme/all.css"   media="all" />
   <link rel="stylesheet" type="text/css" href="/hcreator/static/css/def.css" media="all" />
   <link rel="shortcut icon" type="image/x-icon" href="/hcreator/static/img/hooto-xicon-mc.ico" /> 
 </head>
@@ -49,11 +50,53 @@
       </div>
       
       <div class="hcr-pgbar-editor hdev-ws hdev-tabs">
+        <div class="tabitem" onclick="hdev_editor_undo()">
+            <div class="ico"><img src="/hcreator/static/img/arrow_undo.png" align="absmiddle" /></div>
+            <div class="ctn">Undo</div>
+        </div>
+        <div class="tabitem" onclick="hdev_editor_redo()">
+            <div class="ico"><img src="/hcreator/static/img/arrow_redo.png" align="absmiddle" /></div>
+            <div class="ctn">Redo</div>
+        </div>
+        <div class="tabitemline"></div>
+        <div class="tabitem">
+            <div class="ico"><img src="/hcreator/static/img/magnifier.png" align="absmiddle" /></div>
+            <div class="ctn">Search</div>
+        </div>
+        <div class="tabitemline"></div>
         <div class="tabitem">
             <div class="ico"><img src="/hcreator/static/img/disk.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="hdev_editor_set('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div>
+                
+        <div class="tabitemline"></div>
+        <div class="tabitem">
+            <div class="ico"><img src="/hcreator/static/img/w3_vim.png" align="absmiddle" /></div>
+            <div class="ctn"><input onclick="hdev_editor_set('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> Simple VIM</div>
+        </div>
+        
+        <div class="tabitemline"></div>
+        <div class="tabitem">
+            <div class="ico"><img src="/hcreator/static/img/color_swatch.png" align="absmiddle" /></div>
+            <div class="ctn"> Theme 
+              <select id="editor_theme" onchange="hdev_editor_theme(this)">
+                <option selected="">default</option>
+                <option>night</option>
+                <option>monokai</option>
+                <option>neat</option>
+                <option>elegant</option>
+                <option>cobalt</option>
+                <option>eclipse</option>
+                <option>rubyblue</option>
+                <option>lesser-dark</option>
+              </select> 
+              
+            </div>
+        </div>
+        
       </div>
+      
+      
       
       <div id="hdev_ws_editor" class="hdev-ws"></div>
       <div id="hdev_ws_content" class="hdev-ws"></div>
@@ -76,7 +119,11 @@
   
 <script src="/codemirror2/lib/codemirror-mini.js"></script>
 <script src="/codemirror2/mode/all.js"></script>
-  
+
+<script src="/codemirror2/lib/util/dialog.js"></script>
+<script src="/codemirror2/lib/util/search.js"></script>
+<script src="/codemirror2/lib/util/searchcursor.js"></script>
+<script src="/codemirror2/keymap/vim.js"></script>
 <script>
 window.onbeforeunload = function() {
     //return "Leave the page and lose your changes?";

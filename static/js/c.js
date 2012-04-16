@@ -9,6 +9,22 @@ function hdev_init_setting()
     if (autosave == 'on') {
         $("#editor_autosave").prop("checked", true);
     }
+    
+    var theme = getCookie('editor_theme');
+    if (theme == null) {
+        setCookie("editor_theme", "default", 365);
+        theme = 'default';
+    }
+    $("#editor_theme option:contains('"+theme+"')").prop("selected", true);
+    
+    var keymap_vim = getCookie('editor_keymap_vim');
+    if (keymap_vim == null) {
+        setCookie("editor_keymap_vim", "off", 365);
+        keymap_vim = 'off';
+    }
+    if (keymap_vim == 'on') {
+        $("#editor_keymap_vim").prop("checked", true);
+    }
 }
 
 function hdev_editor_set(key, val)
@@ -21,6 +37,32 @@ function hdev_editor_set(key, val)
         }
         msg = "Setting Editor::AutoSave to "+getCookie('editor_autosave');
         hdev_header_alert("success", msg);
+    }
+    
+    if (key == "editor_keymap_vim") {
+        if (getCookie('editor_keymap_vim') == "on") {
+            setCookie("editor_keymap_vim", "off", 365);
+            editor_page.setOption("keyMap", null);
+        } else {
+            setCookie("editor_keymap_vim", "on", 365);
+            editor_page.setOption("keyMap", "vim");
+        }
+        msg = "Setting Editor::KeyMap to VIM "+getCookie('editor_keymap_vim');
+        hdev_header_alert("success", msg);
+    }
+}
+function hdev_editor_undo()
+{
+    if (editor_page) editor_page.undo();
+}
+function hdev_editor_redo()
+{
+    if (editor_page) editor_page.redo();
+}
+function hdev_editor_theme(node) {
+    if (editor_page) {
+        editor_page.setOption("theme", node.options[node.selectedIndex].innerHTML);
+        setCookie("editor_theme", node.options[node.selectedIndex].innerHTML, 365);
     }
 }
     
@@ -343,6 +385,7 @@ function hdev_editor(path)
         indentUnit: 4,
         indentWithTabs: false,
         tabMode: "shift",
+        theme: getCookie("editor_theme"),
         onChange: function() {
             hdev_page_editor_save(pgid, 0);
         }

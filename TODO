@@ -6,7 +6,6 @@ CURRENT
         search & replace
         undo, redo
         go to line
-        save, auto save
 
 NEXT
     mouse resize leftbar
