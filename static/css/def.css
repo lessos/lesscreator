@@ -359,24 +359,11 @@ input.input_button:hover {border: 2px solid #333;}
 /** CodeMirror Set **/
 .CodeMirror {
     font-size: 13px;
-    line-height: 120%;
+    line-height: 1.2em;
 }
 .CodeMirror-scroll {
     width: 800px;
     height: auto;
-}
-.CodeMirror-fullscreen {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    margin: 0;
-    padding: 0;
-    border: 0px solid #BBBBBB;
-    opacity: 1;
 }
 .activeline {background: #f0fcff !important;}
 
@@ -594,5 +581,23 @@ input.input_button:hover {border: 2px solid #333;}
 }
 .hdev-proj-olrcm input.inputname {width: 300px;}
 
-
+#hcr_editor_searchbar {
+    padding: 3px; font-size: 13px;
+}
+#hcr_editor_searchbar input {
+    padding: 2px; font-weight: normal;
+}
+#hcr_editor_searchbar button {
+    padding: 2px 5px; font-weight: bold;
+}
+#hcr_editor_searchbar .close {
+    float: right; 
+}
+#hcr_editor_searchbar .close a {
+    margin-left: 5px; text-decoration: none;
+    font-weight: bold; font-size: 14px;
+}
+#hcr_editor_searchbar .close a:hover {
+    color: #db4a37; cursor: pointer;
+}
 

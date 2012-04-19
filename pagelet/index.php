@@ -59,16 +59,17 @@
             <div class="ctn">Redo</div>
         </div>
         <div class="tabitemline"></div>
-        <div class="tabitem">
+        <div class="tabitem" onclick="hdev_editor_search()">
             <div class="ico"><img src="/hcreator/static/img/magnifier.png" align="absmiddle" /></div>
             <div class="ctn">Search</div>
         </div>
+        
         <div class="tabitemline"></div>
         <div class="tabitem">
             <div class="ico"><img src="/hcreator/static/img/disk.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="hdev_editor_set('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div>
-                
+
         <div class="tabitemline"></div>
         <div class="tabitem">
             <div class="ico"><img src="/hcreator/static/img/w3_vim.png" align="absmiddle" /></div>
@@ -81,22 +82,27 @@
             <div class="ctn"> Theme 
               <select id="editor_theme" onchange="hdev_editor_theme(this)">
                 <option selected="">default</option>
-                <option>night</option>
                 <option>monokai</option>
+                <option>night</option>
                 <option>neat</option>
                 <option>elegant</option>
                 <option>cobalt</option>
                 <option>eclipse</option>
                 <option>rubyblue</option>
-                <option>lesser-dark</option>
-              </select> 
-              
+              </select>              
             </div>
-        </div>
-        
+        </div>        
       </div>
       
-      
+      <div id="hcr_editor_searchbar" class="hdev-ws displaynone">
+        <input type="text" name="find" value="Find" size="15" /> <button onclick="hdev_editor_search_next()">Find</button> 
+        
+        <span><input onclick="hdev_editor_set('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" /> Match case</span>
+        
+        <input type="text" name="replace" value="Replace with" size="15" /> <button onclick="hdev_editor_search_replace()">Replace</button> <button onclick="hdev_editor_search_replace(true)">All</button> 
+        
+        <span class="close"><a href="javascript:hdev_editor_search()">×</a></span>
+      </div>
       
       <div id="hdev_ws_editor" class="hdev-ws"></div>
       <div id="hdev_ws_content" class="hdev-ws"></div>
@@ -132,6 +138,7 @@ window.onbeforeunload = function() {
 $(window).resize(function() {
     hdev_layout_resize();
 });
+
 
 $(document).ready(function() {
     

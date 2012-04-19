@@ -25,6 +25,15 @@ function hdev_init_setting()
     if (keymap_vim == 'on') {
         $("#editor_keymap_vim").prop("checked", true);
     }
+    
+    var search_case = getCookie('editor_search_case');
+    if (search_case == null) {
+        setCookie("editor_search_case", "off", 365);
+        search_case = 'off';
+    }
+    if (search_case == 'on') {
+        $("#editor_search_case").prop("checked", true);
+    }
 }
 
 function hdev_editor_set(key, val)
@@ -50,6 +59,17 @@ function hdev_editor_set(key, val)
         msg = "Setting Editor::KeyMap to VIM "+getCookie('editor_keymap_vim');
         hdev_header_alert("success", msg);
     }
+    
+    if (key == "editor_search_case") {
+        if (getCookie('editor_search_case') == "on") {
+            setCookie("editor_search_case", "off", 365);
+        } else {
+            setCookie("editor_search_case", "on", 365);
+        }
+        msg = "Setting Editor::Search Match case "+getCookie('editor_search_case');
+        hdev_header_alert("success", msg);
+        hdev_editor_search_clean();
+    }
 }
 function hdev_editor_undo()
 {
@@ -63,6 +83,7 @@ function hdev_editor_theme(node) {
     if (editor_page) {
         editor_page.setOption("theme", node.options[node.selectedIndex].innerHTML);
         setCookie("editor_theme", node.options[node.selectedIndex].innerHTML, 365);
+        hdev_layout_resize();
     }
 }
     
@@ -509,6 +530,119 @@ function hdev_pgtab_openfiles()
     $(".pgtab-openfiles-ol").find(".hdev_lcobj_file").click(function() {
         $('.pgtab-openfiles-ol').hide();
     });
+}
+
+var search_state_query   = null;
+var search_state_posFrom = null;
+var search_state_posTo   = null;
+var search_state_marked  = [];
+
+function hdev_editor_search()
+{
+    $("#hcr_editor_searchbar").toggle();
+    $("#hcr_editor_searchbar").find("input").css("color","#999");
+    $("#hcr_editor_searchbar").find("input[type=text]").click(function () { 
+        var check = $(this).val(); 
+        if (check == this.defaultValue) { 
+            $(this).val(""); 
+        }
+    });
+    $("#hcr_editor_searchbar").find("input[type=text]").blur(function () { 
+        if ($(this).val() == "") {
+            $(this).val(this.defaultValue); 
+        }
+    });
+    
+    hdev_layout_resize();
+
+    hdev_editor_search_next();
+}
+
+function hdev_editor_search_next(rev)
+{
+    var query = $("#hcr_editor_searchbar").find("input[name=find]").val();
+    var matchcase = (getCookie('editor_search_case') == "on") ? false : null;
+    
+    if (search_state_query != query) {
+        hdev_editor_search_clean();
+        
+        for (var cursor = editor_page.getSearchCursor(query, null, matchcase); cursor.findNext();) {
+
+            search_state_marked.push( editor_page.markText(cursor.from(), cursor.to(), "CodeMirror-searching") );
+            
+            search_state_posFrom = cursor.from();
+            search_state_posTo = cursor.to();
+        }
+        
+        search_state_query = query;
+    }
+    
+    var cursor = editor_page.getSearchCursor(
+        search_state_query, 
+        rev ? search_state_posFrom : search_state_posTo,
+        matchcase);
+    
+    if (!cursor.find(rev)) {
+        cursor = editor_page.getSearchCursor(
+            search_state_query, 
+            rev ? {line: editor_page.lineCount() - 1} : {line: 0, ch: 0},
+            matchcase);
+        if (!cursor.find(rev))
+            return;
+    }
+    
+    editor_page.setSelection(cursor.from(), cursor.to());
+    search_state_posFrom = cursor.from(); 
+    search_state_posTo = cursor.to();
+}
+
+function hdev_editor_search_replace(all)
+{
+    if (!search_state_query)
+        return;
+    
+    var text = $("#hcr_editor_searchbar").find("input[name=replace]").val();
+    if (!text)
+        return;
+    
+    var matchcase = (getCookie('editor_search_case') == "on") ? false : null;
+    
+    if (all) {
+
+        for (var cursor = editor_page.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
+            if (typeof search_state_query != "string") {
+                var match = editor_page.getRange(cursor.from(), cursor.to()).match(search_state_query);
+                cursor.replace(text.replace(/\$(\d)/, function(w, i) {return match[i];}));
+            } else cursor.replace(text);
+        }
+
+   } else {
+          
+        var cursor = editor_page.getSearchCursor(search_state_query, editor_page.getCursor(), matchcase);
+
+        var start = cursor.from(), match;
+        if (!(match = cursor.findNext())) {
+            cursor = editor_page.getSearchCursor(search_state_query, null, matchcase);
+            if (!(match = cursor.findNext()) ||
+                (cursor.from().line == start.line && cursor.from().ch == start.ch)) return;
+        }
+        editor_page.setSelection(cursor.from(), cursor.to());
+        
+        cursor.replace(typeof search_state_query == "string" ? text :
+            text.replace(/\$(\d)/, function(w, i) {return match[i];}));        
+    }
+}
+
+function hdev_editor_search_clean()
+{
+    search_state_query   = null;
+    search_state_posFrom = null;
+    search_state_posTo   = null;
+    
+    for (var i = 0; i < search_state_marked.length; ++i)
+        search_state_marked[i].clear();
+    
+    search_state_marked.length = 0;
 }
 
 function setCookie(key, value, days)
