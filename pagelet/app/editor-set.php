@@ -5,22 +5,22 @@
   <tr class="l">
     <td width="260px" class="t">Tab Stops</td>
     <td>
-        <div>Tab width <input id="tabSize" size="5" type="text" value="2" /></div>
-        <div><input type="checkbox" id="tabs2spaces" value="1" /> Insert spaces instead of tabs</div>
+        <div>Tab width <input id="tabSize" size="5" type="text" value="2" onchange="_save('Tab width')" /></div>
+        <div><input type="checkbox" id="tabs2spaces" value="1" onchange="_save('Insert spaces instead of tabs')" /> Insert spaces instead of tabs</div>
     </td>
   </tr>
   
   <tr class="l">
     <td class="t">Automatic Indentation</td>
     <td>
-        <div><input type="checkbox" id="smartIndent" value="1" /> Enable automatic indentation</div>
+        <div><input type="checkbox" id="smartIndent" value="1" onchange="_save('Enable automatic indentation')" /> Enable automatic indentation</div>
     </td>
   </tr>
   
   <tr class="l">
     <td class="t">Text Wrapping</td>
     <td>
-        <div><input type="checkbox" id="lineWrapping" value="1" /> Enable text wrapping</div>
+        <div><input type="checkbox" id="lineWrapping" value="1" onchange="_save('Enable text wrapping')" /> Enable text wrapping</div>
     </td>
   </tr>
   
@@ -40,17 +40,13 @@
         <option>rubyblue</option>        
       </select>  
     </td>
-  </tr>            
-
-  <tr>
-    <td></td>
-    <td><button onclick="_save()" class="input_button">Save</button></td>
   </tr>
+  
 </table>
 
 
 <script>
-function _save()
+function _save(title)
 {
     editorConfig.tabSize = parseInt($("#tabSize").val());
     if (editorConfig.tabSize > 12 || editorConfig.tabSize < 1)
@@ -64,6 +60,8 @@ function _save()
     
     editorConfig.lineWrapping = $("#lineWrapping").attr('checked') ? true : false;
     setCookie('editor_lineWrapping', editorConfig.lineWrapping, 365);
+    
+    hdev_header_alert('success', 'Saved successfully "'+title+'"');
 }
 
 function _init()

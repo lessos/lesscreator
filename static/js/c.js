@@ -100,9 +100,11 @@ function hdev_editor_redo()
 function hdev_editor_theme(node)
 {
     if (editor_page) {
-        editor_page.setOption("theme", node.options[node.selectedIndex].innerHTML);
-        setCookie("editor_theme", node.options[node.selectedIndex].innerHTML, 365);
+        var theme = node.options[node.selectedIndex].innerHTML;
+        editor_page.setOption("theme", theme);
+        setCookie("editor_theme", theme, 365);
         hdev_layout_resize();
+        hdev_header_alert('success', 'Change Editor color theme to "'+theme+'"');
     }
 }
     
@@ -226,13 +228,13 @@ function hdev_page_open(path, type, title, img)
     switch (type) {
     case 'editor'   :
     case 'content'  :
-        
-        $(".hdev-ws").hide();
-        $("#hdev_ws_"+type).show();
-        
+                
         if (pageCurrent == pgid) {
             return;
         }
+        
+        $(".hdev-ws").hide();
+        $("#hdev_ws_"+type).show();
 
         // tabs init
         if (!$("#pgtab"+pgid).length) {
@@ -248,7 +250,7 @@ function hdev_page_open(path, type, title, img)
             entry += '</tr></table>';
 
             $("#hcr_pgtabs").append(entry);            
-        }        
+        }
         hdev_pgtabs_switch('pgtab'+pgid);
 
         break;

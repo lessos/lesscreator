@@ -49,7 +49,7 @@
         </div>
       </div>
       
-      <div class="hcr-pgbar-editor hdev-ws hdev-tabs">
+      <div class="hdev-ws hdev-tabs hcr-pgbar-editor">
         
         <div class="tabitem" onclick="hdev_editor_undo()">
             <div class="ico"><img src="/hcreator/static/img/arrow_undo.png" align="absmiddle" /></div>
