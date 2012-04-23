@@ -55,7 +55,7 @@ input[type="submit"] {
     padding: 3px 10px; font-weight: bold; font-size: 15px;
 }
 input[type="text"], input[type="password"], input[type="file"] {
-    border: 1px #ccc solid; padding: 5px; font-size: 14px;
+    border: 1px #ccc solid; padding: 3px; font-size: 14px;
     font-weight: bold;
     background-color: #fbfbfb;
     -moz-border-radius: 2px;
@@ -65,14 +65,14 @@ input[type="text"], input[type="password"], input[type="file"] {
 textarea {
     border: 1px #ccc solid; padding: 5px;
 }
-input.input_button {
+.input_button {
     padding: 3px 15px; color: #fff; border: 2px solid #D54E21; background: #D54E21;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
     cursor: pointer;
 }
-input.input_button:hover {border: 2px solid #333;}
+.input_button:hover {border: 2px solid #333;}
 
 .hdev_alert {
     margin: 5px 0px; padding: 5px; border: 1px;
@@ -600,4 +600,16 @@ input.input_button:hover {border: 2px solid #333;}
 #hcr_editor_searchbar .close a:hover {
     color: #db4a37; cursor: pointer;
 }
+
+.tab-config {
+
+}
+.tab-config tr td {
+   padding: 8px 0;  vertical-align: top;
+}
+.tab-config .t {
+    font-weight: bold;
+}
+.tab-config .l td {border-bottom: 1px solid #ccc;}
+
 

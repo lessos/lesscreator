@@ -69,12 +69,20 @@ foreach (glob($glob) as $f) {
             $fmi = 'page_white_c';
         } else if (substr($f,-4) == '.cpp' || substr($f,-3) == '.cc') {
             $fmi = 'page_white_cplusplus';
-        }    else if (substr($f,-3) == '.js' || substr($f,-4) == '.css') {
+        } else if (substr($f,-3) == '.js' || substr($f,-4) == '.css') {
             $fmi = 'page_white_code';
         } else if (substr($f,-5) == '.html' || substr($f,-4) == '.htm' || substr($f,-6) == '.xhtml') {
             $fmi = 'page_white_world';
         } else if (substr($f,-3) == '.sh') {
             $fmi = 'application_osx_terminal';
+        } else if (substr($f,-3) == '.rb') {
+            $fmi = 'page_white_ruby';
+        } else if (substr($f,-3) == '.py' 
+            || substr($f,-3) == '.go'
+            || substr($f,-4) == '.yml'
+            || substr($f,-5) == '.yaml'
+            ) {
+            $fmi = 'page_white_code';
         }
         
         $href = "javascript:hdev_page_open('{$p}','editor','','{$fmi}')";

@@ -1,6 +1,6 @@
 
 function hdev_init_setting()
-{    
+{
     var autosave = getCookie('editor_autosave');
     if (autosave == null) {
         setCookie("editor_autosave", "on", 365);
@@ -13,9 +13,7 @@ function hdev_init_setting()
     var theme = getCookie('editor_theme');
     if (theme == null) {
         setCookie("editor_theme", "default", 365);
-        theme = 'default';
     }
-    $("#editor_theme option:contains('"+theme+"')").prop("selected", true);
     
     var keymap_vim = getCookie('editor_keymap_vim');
     if (keymap_vim == null) {
@@ -33,6 +31,26 @@ function hdev_init_setting()
     }
     if (search_case == 'on') {
         $("#editor_search_case").prop("checked", true);
+    }
+    
+    var tabSize = getCookie('editor_tabSize');
+    if (tabSize != null) {
+        editorConfig.tabSize = tabSize;
+    }
+    
+    var tabs2spaces = getCookie('editor_tabs2spaces');
+    if (tabs2spaces != null) {
+        editorConfig.tabs2spaces = tabs2spaces;
+    }
+    
+    var smartIndent = getCookie('editor_smartIndent');
+    if (smartIndent != null) {
+        editorConfig.smartIndent = smartIndent;
+    }
+    
+    var lineWrapping = getCookie('editor_lineWrapping');
+    if (lineWrapping != null) {
+        editorConfig.lineWrapping = lineWrapping;
     }
 }
 
@@ -79,7 +97,8 @@ function hdev_editor_redo()
 {
     if (editor_page) editor_page.redo();
 }
-function hdev_editor_theme(node) {
+function hdev_editor_theme(node)
+{
     if (editor_page) {
         editor_page.setOption("theme", node.options[node.selectedIndex].innerHTML);
         setCookie("editor_theme", node.options[node.selectedIndex].innerHTML, 365);
@@ -192,6 +211,14 @@ var pageCurrent = 0;
 var editor_page = null;
 var editor_pgid = 0;
 
+var editorConfig = {
+    'theme'         : 'default',
+    'tabSize'       : 4,
+    'lineWrapping'  : true,
+    'smartIndent'   : true,
+    'tabs2spaces'   : true,
+};
+
 function hdev_page_open(path, type, title, img)
 {
     var pgid = Crypto.MD5(path);
@@ -295,24 +322,7 @@ function hdev_page_close(path)
         hdev_page_open(pageArray[j]['path'], pageArray[j]['type'], pageArray[j]['title'], pageArray[j]['img']);
         pageCurrent = j;
     }
-    
-    /** $('#pgtab'+pgid).remove();
-    delete pageArray[pgid];
-    
-    
-    if (pgid != pageCurrent) {
-        return;
-    }
-    
-    pageCurrent = 0;
-    
-    // Closed and Open new page
-    for (var i in pageArray) {
-        hdev_page_open(pageArray[i]['path'], pageArray[i]['type'], pageArray[i]['title'], pageArray[i]['img']);
-        pageCurrent = i;
-        break;
-    }*/
-    
+
     hdev_layout_resize();
 }
 
@@ -384,6 +394,7 @@ function hdev_editor(path)
         case 'php':
         case 'css':
         case 'xml':
+        case 'go' :
             mode = ext;
             break;
         case 'sql':
@@ -392,21 +403,35 @@ function hdev_editor(path)
         case 'js':
             mode = 'javascript';
             break;
+        case 'sh':
+            mode = 'shell';
+            break;
+        case 'py':
+            mode = 'python';
+            break;
+        case 'yml':
+        case 'yaml':
+            mode = 'yaml';
+            break;
         default:
             mode = 'htmlmixed';
     }
-    
-    
 
     editor_pgid = pgid;
     editor_page = CodeMirror.fromTextArea(document.getElementById('src'+pgid), {
         lineNumbers: true,
         matchBrackets: true,
+        undoDepth: 1000,
         mode: mode,
-        indentUnit: 4,
-        indentWithTabs: false,
-        tabMode: "shift",
+        indentUnit: editorConfig.tabSize,
+        tabSize: editorConfig.tabSize,
         theme: getCookie("editor_theme"),
+        smartIndent: editorConfig.smartIndent,
+        lineWrapping: editorConfig.lineWrapping,
+        extraKeys: {Tab: function(cm) {
+            if (editorConfig.tabs2spaces)
+                cm.replaceSelection("    ", "end");
+        }},
         onChange: function() {
             hdev_page_editor_save(pgid, 0);
         }
@@ -647,33 +672,33 @@ function hdev_editor_search_clean()
 
 function setCookie(key, value, days)
 {
-	if (days) {
-		var date = new Date();
-		date.setTime(date.getTime() + (days*24*60*60*1000));
-		var expires = "; expires=" + date.toGMTString();
-	} else {
-	    var expires = "";
-	}
-	
-	document.cookie = key+"="+value+expires+"; path=/";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        var expires = "; expires=" + date.toGMTString();
+    } else {
+        var expires = "";
+    }
+    
+    document.cookie = key+"="+value+expires+"; path=/";
 }
 
 function getCookie(key)
 {
-	var keyEQ = key + "=";
-	var ca = document.cookie.split(';');
-	for(var i = 0; i < ca.length; i++) {
-		var c = ca[i];
-		while (c.charAt(0)==' ') 
-		    c = c.substring(1, c.length);
-		if (c.indexOf(keyEQ) == 0) 
-		    return c.substring(keyEQ.length, c.length);
-	}
-	return null;
+    var keyEQ = key + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') 
+            c = c.substring(1, c.length);
+        if (c.indexOf(keyEQ) == 0) 
+            return c.substring(keyEQ.length, c.length);
+    }
+    return null;
 }
 
 function delCookie(key)
 {
-	setCookie(key, "", -1);
+    setCookie(key, "", -1);
 }
 

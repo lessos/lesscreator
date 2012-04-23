@@ -50,14 +50,17 @@
       </div>
       
       <div class="hcr-pgbar-editor hdev-ws hdev-tabs">
+        
         <div class="tabitem" onclick="hdev_editor_undo()">
             <div class="ico"><img src="/hcreator/static/img/arrow_undo.png" align="absmiddle" /></div>
             <div class="ctn">Undo</div>
         </div>
+        
         <div class="tabitem" onclick="hdev_editor_redo()">
             <div class="ico"><img src="/hcreator/static/img/arrow_redo.png" align="absmiddle" /></div>
             <div class="ctn">Redo</div>
         </div>
+        
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="hdev_editor_search()">
             <div class="ico"><img src="/hcreator/static/img/magnifier.png" align="absmiddle" /></div>
@@ -74,24 +77,13 @@
         <div class="tabitem">
             <div class="ico"><img src="/hcreator/static/img/w3_vim.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="hdev_editor_set('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> Simple VIM</div>
-        </div>
+        </div> 
         
         <div class="tabitemline"></div>
-        <div class="tabitem">
-            <div class="ico"><img src="/hcreator/static/img/color_swatch.png" align="absmiddle" /></div>
-            <div class="ctn"> Theme 
-              <select id="editor_theme" onchange="hdev_editor_theme(this)">
-                <option selected="">default</option>
-                <option>monokai</option>
-                <option>night</option>
-                <option>neat</option>
-                <option>elegant</option>
-                <option>cobalt</option>
-                <option>eclipse</option>
-                <option>rubyblue</option>
-              </select>              
-            </div>
-        </div>        
+        <div class="tabitem" onclick="hdev_page_open('app/editor-set', 'content', 'Editor Setting', 'cog')">
+            <div class="ico"><img src="/hcreator/static/img/page_white_gear.png" align="absmiddle" /></div>
+            <div class="ctn">Setting</div>
+        </div>      
       </div>
       
       <div id="hcr_editor_searchbar" class="hdev-ws displaynone">
@@ -125,9 +117,6 @@
   
 <script src="/codemirror2/lib/codemirror-mini.js"></script>
 <script src="/codemirror2/mode/all.js"></script>
-
-<script src="/codemirror2/lib/util/dialog.js"></script>
-<script src="/codemirror2/lib/util/search.js"></script>
 <script src="/codemirror2/lib/util/searchcursor.js"></script>
 <script src="/codemirror2/keymap/vim.js"></script>
 <script>
