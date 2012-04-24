@@ -13,7 +13,7 @@
 <table id="hdev_header">
   <tr>
     <td class="header_logo" width="240px">
-      <img src="/hcreator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
+      <imgs src="/hcreator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
       <span>Creator</span>
     </td>
     
@@ -128,7 +128,6 @@ $(window).resize(function() {
     hdev_layout_resize();
 });
 
-
 $(document).ready(function() {
     
     if (!isValidBrowser()) {
@@ -144,11 +143,12 @@ $(document).ready(function() {
         var info = '<div style="padding:50px">';
         info += '<div class="hdev-body-alert notice">';
         
-        info += '<div class="title">This Application are not fully supported in this browser</div>';
+        info += '<div class="title">This Application are not fully supported in this browser/version</div>';
         info += '<div class="summary">Please install the following browser, And upgrade to the latest version</div>';
         info += '<div class="summary"><table class="tbl">';
-        info += '<tr><td><img src="/hcreator/static/img/browser_chrome.png" /></td><td><strong>Google Chrome</strong></td><td><a href="http://www.google.com/chrome/" target="_blank">http://www.google.com/chrome/</a></td><td>Free</td></tr>';
+        info += '<tr><td><img src="/hcreator/static/img/browser_chrome.png" /></td><td><strong>Google Chrome</strong></td><td><a href="http://www.google.com/chrome/" target="_blank">http://www.google.com/chrome/</a></td><td>Free (Recommend)</td></tr>';
         info += '<tr><td><img src="/hcreator/static/img/browser_safari.png" /></td><td><strong>Apple Safari</strong></td><td><a href="http://www.apple.com/safari/" target="_blank">http://www.apple.com/safari/</a></td><td>Free</td></tr>';
+        info += '<tr><td><img src="/hcreator/static/img/browser_firefox.png" /></td><td><strong>Mozilla Firefox</strong></td><td><a href="http://www.mozilla.org/" target="_blank">http://www.mozilla.org/</a></td><td>Free</td></tr>';
         info += '</table></div>';
         info += '</div></div>';
         
@@ -158,8 +158,6 @@ $(document).ready(function() {
     }
     
     hdev_init_setting();
-    //$("#editor_autosave").prop("checked", true);
     hdev_project('<?=$this->req->proj?>');
-    
 });
 </script>

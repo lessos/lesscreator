@@ -33,7 +33,7 @@ var BrowserDetect = {
             subString: "Chrome",
             identity: "Chrome"
         },
-        {     string: navigator.userAgent,
+        {   string: navigator.userAgent,
             subString: "OmniWeb",
             versionSearch: "OmniWeb/",
             identity: "OmniWeb"
@@ -69,7 +69,7 @@ var BrowserDetect = {
             subString: "Camino",
             identity: "Camino"
         },
-        {        // for newer Netscapes (6+)
+        {   // for newer Netscapes (6+)
             string: navigator.userAgent,
             subString: "Netscape",
             identity: "Netscape"
@@ -86,7 +86,7 @@ var BrowserDetect = {
             identity: "Mozilla",
             versionSearch: "rv"
         },
-        {         // for older Netscapes (4-)
+        {   // for older Netscapes (4-)
             string: navigator.userAgent,
             subString: "Mozilla",
             identity: "Netscape",
@@ -127,9 +127,7 @@ function isValidBrowser()
     console.log(browser+','+version+','+OS);    
     return (
         (browser == 'Chrome' && version >= 6) ||
-        //(browser == 'Firefox' && version >= 3.6) ||
+        (browser == 'Firefox' && version >= 3.6) ||
         (browser == 'Safari' && version >= 5.0 && OS == 'Mac')
     );
 }
-
-

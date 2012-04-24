@@ -329,7 +329,7 @@ textarea {
     background-color: #f6f7f8; height: 24px;
 }
 .hdev-pgtabs .pgtabitem .ico img {
-    width: 13px; height: 13px;
+    width: 14px; height: 14px;
 }
 .hdev-pgtabs .pgtabitem .pgtabtitle a {
     overflow: hidden;
@@ -399,7 +399,6 @@ textarea {
     height: 23px;
     color: #000; padding-right: 4px;
 }
-
 .hdev-tabs .tabitem.cur {
     background-color: #f6f7f8; 
     height: 24px; border-right: 1px solid #c6c7c9;
@@ -411,11 +410,11 @@ textarea {
     display: inline-block; margin-left: 4px; width: 13px;
 }
 .hdev-tabs .tabitem .ico img {
-    width: 13px; height: 13px;
+    width: 12px; height: 12px;
 }
 .hdev-tabs .tabitem .ctn {
-    display: inline-block; margin-left: 4px; margin-right: 2px; 
-    font-size: 13px; line-height: 13px;
+    display: inline-block;
+    font-size: 13px;
 }
 .hdev-tabs .tabitem .ctn:hover {
     color: #db4a37; cursor: pointer;
