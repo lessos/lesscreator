@@ -1,14 +1,8 @@
 
 CURRENT
-        
-    editor tools
-        search
-        search & replace
-        undo, redo
-        go to line
+    mouse resize leftbar
 
 NEXT
-    mouse resize leftbar
     
     help
         About

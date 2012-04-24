@@ -31,9 +31,16 @@ $prt = $prt0 = '';
 
 foreach (glob($glob) as $f) {
 
-    //$fn = '';
     $fn = substr(strrchr($f, "/"), 1);
     $fm = mime_content_type($f);
+    if (is_file($f)) {
+        $fs = filesize($f);
+        if ($fm == 'application/octet-stream' && $fs < 1048576) { // < 1MB
+            $_s = file_get_contents($f);
+            if (is_string($_s))
+                $fm = 'text/plain';
+        }
+    }
     
     $fmi = 'page_white';
     $href = null;
@@ -47,17 +54,13 @@ foreach (glob($glob) as $f) {
         
         if ($fn == 'pagelet') {
             $fmi = 'layers';
-        } else if ($fn == 'action') {
-            $fmi = 'script_code_red';
         } else {
             $fmi = 'folder';
         }
         
         $href   = "javascript:_hdev_dir('{$proj}', '{$p}', 0)";
         
-    } else if (substr($fm,0,4) == 'text' 
-        || $fm == "application/x-empty" 
-        || substr($fm, -3) == "xml") {
+    } else if (substr($fm,0,4) == 'text' || $fm == "application/x-empty") {
         
         if (strlen($path) == 0 && $fn == 'hootoapp.yaml') {
             $fmi = 'app-t3-16';
@@ -77,8 +80,9 @@ foreach (glob($glob) as $f) {
             $fmi = 'application_osx_terminal';
         } else if (substr($f,-3) == '.rb') {
             $fmi = 'page_white_ruby';
+        } else if (substr($f,-3) == '.go') {
+            $fmi = 'ht-page_white_golang';
         } else if (substr($f,-3) == '.py' 
-            || substr($f,-3) == '.go'
             || substr($f,-4) == '.yml'
             || substr($f,-5) == '.yaml'
             ) {
