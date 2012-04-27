@@ -570,10 +570,10 @@ textarea {
     padding:10px 0; margin-right:50px;
 }
 .hdev-proj-olrcm span.close {
-    float:right; text-align:center;
+    float: right; text-align: center;
 }
 .hdev-proj-olrcm span.path {
-    font-size: bold;
+    font-weight: bold;
 }
 .hdev-proj-olrcm div.sep {
     clear: both; border-top: 1px ridge #aaa; margin:5px 0;
@@ -611,4 +611,8 @@ textarea {
 }
 .tab-config .l td {border-bottom: 1px solid #ccc;}
 
+.layout_vcol {
+    cursor: col-resize;
+    background: url(/hcreator/static/img/handle-v.png) 3px 50% no-repeat;
+}
 

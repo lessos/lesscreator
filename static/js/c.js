@@ -52,6 +52,10 @@ function hdev_init_setting()
     if (lineWrapping != null) {
         editorConfig.lineWrapping = lineWrapping;
     }
+    var tmp = getCookie('config_leftbar_width');
+    if (tmp == null) {
+        setCookie("config_leftbar_width", 240, 365);
+    }
 }
 
 function hdev_editor_set(key, val)
@@ -168,7 +172,18 @@ function hdev_layout_resize()
     
     lo_lw = $('#hdev_layout_leftbar').innerWidth();
     lo_mw = $('#hdev_layout_middle').innerWidth();
-    lo_mp = $('#hdev_layout_middle').position();
+    
+    // OFFSET
+    var offset = parseInt(getCookie('config_leftbar_width')) - lo_lw;
+    if (offset != 0) {
+        lo_lw += offset;
+        $('#hdev_layout_leftbar').width(lo_lw);
+        lo_mw -= offset;
+        $('#hdev_layout_middle').width(lo_mw);
+    }
+    
+    //// console.log("layout left: "+lo_lw);
+    //// console.log("layout middle: "+lo_mw);
 
     //
     lo_p = $('#hdev_layout').position();    
@@ -200,7 +215,7 @@ function hdev_layout_resize()
         }
     }
     
-    console.log("body resize: "+bh+"px, "+bw+"px; layout height: "+lo_h);
+    //// console.log("body resize: "+bh+"px, "+bw+"px; layout height: "+lo_h);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -353,7 +368,7 @@ function hdev_page_editor_open(path)
 }
 
 function hdev_page_editor_close(path)
-{    
+{
     var pgid = Crypto.MD5(path);
 
     console.log("editor remove: "+pgid+", editor_pgid: "+editor_pgid);
@@ -438,6 +453,9 @@ function hdev_editor(path)
             hdev_page_editor_save(pgid, 0);
         }
     });
+    if (getCookie('editor_keymap_vim') == "on") {
+        editor_page.setOption("keyMap", "vim");
+    }
     CodeMirror.commands.save = function() {
         hdev_page_editor_save(pageCurrent, 1);
     };
