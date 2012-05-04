@@ -174,8 +174,8 @@ function hdev_layout_resize()
         $('#hdev_layout_middle').width(lo_mw);
     }
     
-    //// console.log("layout left: "+lo_lw);
-    //// console.log("layout middle: "+lo_mw);
+    //console.log("layout left: "+lo_lw);
+    //console.log("layout middle: "+lo_mw);
 
     //
     lo_p = $('#hdev_layout').position();    
@@ -207,7 +207,7 @@ function hdev_layout_resize()
         }
     }
     
-    //// console.log("body resize: "+bh+"px, "+bw+"px; layout height: "+lo_h);
+    //console.log("body resize: "+bh+"px, "+bw+"px; layout height: "+lo_h);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -363,11 +363,11 @@ function hdev_page_editor_close(path)
 {
     var pgid = Crypto.MD5(path);
 
-    console.log("editor remove: "+pgid+", editor_pgid: "+editor_pgid);
+    //console.log("editor remove: "+pgid+", editor_pgid: "+editor_pgid);
 
     if (pgid == editor_pgid) {
         editor_page.toTextArea();
-        console.log("editor remove codemirror");
+        //console.log("editor remove codemirror");
     }
     
     hdev_page_editor_save(pgid, 1);
@@ -498,7 +498,7 @@ function hdev_pgtabs_switch(id)
     pg = $('.hcr-pgtabs-lm').innerWidth();
     
     tabp = $('#'+id).position();
-    console.log("tab pos left:"+ tabp.left);
+    //console.log("tab pos left:"+ tabp.left);
     
     mov = tabp.left + $('#'+id).outerWidth(true) - pg;
     if (mov < 0)

@@ -123,7 +123,7 @@
 <script src="/codemirror2/keymap/vim.js"></script>
 <script>
 window.onbeforeunload = function() {
-    //return "Leave the page and lose your changes?";
+    return "Leave the page and lose your changes?";
 }
 
 $(window).resize(function() {

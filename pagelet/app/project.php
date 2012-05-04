@@ -135,21 +135,9 @@ $ptpath = md5("");
 
 <script type="text/javascript">
 
-function _proj_set_nav2(q)
-{
-    e = window.event;
-    if (q == 'file') {
-        _file_std_show("file", "", e.pageY, e.pageX);
-    } else if (q == 'dir') {
-        _file_std_show("dir", "", e.pageY, e.pageX);
-    }
-}
-
 function _proj_set_refresh()
 {
     $("#hdev-proj-set").bind("click", function(e) {
-    
-        
     
         $(this).find(".hdev-rcmenu").css({
             top: e.pageY+'px',
@@ -383,8 +371,8 @@ function _refresh_tree()
         
         $(this).find(".hdev_rcobj_file").click(function() {
             p = $(this).position();
-            console.log("click left: "+p.left+", top: "+p.top);
-            console.log("click left: "+e.pageY+", top: "+e.pageX);
+            //console.log("click left: "+p.left+", top: "+p.top);
+            //console.log("click left: "+e.pageY+", top: "+e.pageX);
             path = $(this).attr('href').substr(1);
             _file_std_show("file", path, e.pageY, e.pageX);
         });

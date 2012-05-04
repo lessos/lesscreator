@@ -74,7 +74,6 @@ function _init()
     if (editorConfig.smartIndent)
         $("#smartIndent").prop("checked", true);
     
-    console.log(editorConfig.lineWrapping);
     if (editorConfig.lineWrapping)
         $("#lineWrapping").prop("checked", true);
 
