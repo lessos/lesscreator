@@ -244,7 +244,7 @@ $("#form_file_std_commit").submit(function(event) {
 function _file_std_show(type, path, t, l)
 {
     h = $("#hdev-proj-olrcm-std").height();
-    t = window.event.pageY;
+    t = posFetch().top;
     bh = $('body').height() - 50;        
     if ((t + h) > bh) {
         t = bh - h;
@@ -302,7 +302,7 @@ function _file_upload(path, t, l)
     }
     
     h = $("#hdev-proj-olrcm-upload").height();
-    t = window.event.pageY;
+    t = posFetch().top;
     bh = $('body').height() - 50;        
     if ((t + h) > bh) {
         t = bh - h;
@@ -323,7 +323,7 @@ function _file_rename(path, t, l)
     var parfold = path.substring(0, path.lastIndexOf('/'));
     
     h = $("#hdev-proj-olrcm-mv").height();
-    t = window.event.pageY;
+    t = posFetch().top;
     bh = $('body').height() - 50;        
     if ((t + h) > bh) {
         t = bh - h;

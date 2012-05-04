@@ -154,7 +154,20 @@ function hdev_header_alert(status, alert)
     $(".hdev-header-alert").text(alert);
     $(".hdev-header-alert").addClass(status);
 }
-
+////////////////////////////////////////////////////////////////////////////////
+var pos = null;
+function posFetch()
+{
+    if (window.event) {
+        pos = {"left": window.event.pageX, "top": window.event.pageY};
+    } else if (pos == null) {
+        $(document).mousemove(function(e) {
+            pos = {"left": e.pageX, "top": e.pageY};
+        });
+    }
+    
+    return pos;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 function hdev_layout_resize()
@@ -531,34 +544,34 @@ function hdev_pgtab_openfiles()
     }
     $('.pgtab-openfiles-ol').html(ol);
     
-    e = window.event;
+    e = posFetch();
     w = 100;
     h = 100;
-    //console.log("event top:"+e.pageY+", left:"+e.pageX);
+    //console.log("event top:"+e.top+", left:"+e.left);
     
     $('.pgtab-openfiles-ol').css({
         width: w+'px',
         height: 'auto',
-        top: (e.pageY + 10)+'px',
-        left: (e.pageX - w - 10)+'px'
+        top: (e.top + 10)+'px',
+        left: (e.left - w - 10)+'px'
     }).toggle();
     
     rw = $('.pgtab-openfiles-ol').outerWidth(true);   
     if (rw > 400) {
         $('.pgtab-openfiles-ol').css({
             width: '400px',
-            left: (e.pageX - 410)+'px'
+            left: (e.left - 410)+'px'
         });
     } else if (rw > w) {
         $('.pgtab-openfiles-ol').css({
             width: rw+'px',
-            left: (e.pageX - rw - 10)+'px'
+            left: (e.left - rw - 10)+'px'
         });
     }
     
     rh = $('.pgtab-openfiles-ol').height();
     bh = $('body').height();
-    hmax = bh - e.pageY - 30;
+    hmax = bh - e.top - 30;
     //console.log("hmax: "+hmax);
     if (rh > hmax) {
         $('.pgtab-openfiles-ol').css({height: hmax+"px"});
