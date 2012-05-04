@@ -13,7 +13,7 @@
 <table id="hdev_header">
   <tr>
     <td class="header_logo" width="240px">
-      <imgs src="/hcreator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
+      <img src="/hcreator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
       <span>Creator</span>
     </td>
     
