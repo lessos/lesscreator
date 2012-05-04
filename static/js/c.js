@@ -35,25 +35,17 @@ function hdev_init_setting()
     
     var tabSize = getCookie('editor_tabSize');
     if (tabSize != null) {
-        editorConfig.tabSize = tabSize;
+        editorConfig.tabSize = parseInt(tabSize);
     }
     
-    var tabs2spaces = getCookie('editor_tabs2spaces');
-    if (tabs2spaces != null) {
-        editorConfig.tabs2spaces = tabs2spaces;
-    }
+    editorConfig.tabs2spaces = (getCookie('editor_tabs2spaces') == 'false') ? false : true;
     
-    var smartIndent = getCookie('editor_smartIndent');
-    if (smartIndent != null) {
-        editorConfig.smartIndent = smartIndent;
-    }
+    editorConfig.smartIndent = (getCookie('editor_smartIndent') == 'false') ? false : true;
     
-    var lineWrapping = getCookie('editor_lineWrapping');
-    if (lineWrapping != null) {
-        editorConfig.lineWrapping = lineWrapping;
-    }
-    var tmp = getCookie('config_leftbar_width');
-    if (tmp == null) {
+    editorConfig.lineWrapping = (getCookie('editor_lineWrapping') == 'false') ? false : true;
+
+    var v = getCookie('config_leftbar_width');
+    if (v == null) {
         setCookie("config_leftbar_width", 240, 365);
     }
 }

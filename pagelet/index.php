@@ -130,29 +130,21 @@ $(window).resize(function() {
     hdev_layout_resize();
 });
 
-var clicking = false;
-
 $(".layout_vcol").bind('mousedown', function()
 {    
     $("#hdev_layout").mousemove(function(e) {
 
-        //e = window.event;
-        p = $('#hdev_layout_leftbar').position();
-        
+        p = $('#hdev_layout_leftbar').position();        
         wrs = e.pageX - p.left;
         if (wrs < 200 || wrs > 500) {
             return;
         }
         
-        offset = wrs - 5;
-        setCookie("config_leftbar_width", offset, 365);
+        setCookie("config_leftbar_width", (wrs - 5), 365);
         hdev_layout_resize();
     });
 });
-
 $(document).bind('selectstart',function(){return false;});
-
-
 $(document).bind('mouseup', function()
 {
     $("#hdev_layout").unbind('mousemove');
