@@ -123,19 +123,12 @@
 <script src="/codemirror2/keymap/vim.js"></script>
 <script>
 window.onbeforeunload = function() {
-    //return "Leave the page and lose your changes?";
+    return "Leave the page and lose your changes?";
 }
 
 $(window).resize(function() {
     hdev_layout_resize();
 });
-/*
-window.onload = function(e) {
-    //CODE
-    _eventButtonElement = window.event.srcElement || e.target;
-    
-    //CODE
-};*/
 
 $(".layout_vcol").bind('mousedown', function()
 {    
@@ -158,11 +151,6 @@ $(document).bind('mouseup', function()
 });
 
 $(document).ready(function() {
-    var browser = BrowserDetect.browser;
-
-    if (browser == 'Firefox') {
-        //alert(window);
-    }
         
     if (!isValidBrowser()) {
         
@@ -191,8 +179,6 @@ $(document).ready(function() {
         return;
     }
     
-    
-    posFetch();    
     hdev_init_setting();
     hdev_project('<?=$this->req->proj?>');
 });

@@ -48,6 +48,8 @@ function hdev_init_setting()
     if (v == null) {
         setCookie("config_leftbar_width", 240, 365);
     }
+    
+    posFetch();
 }
 
 function hdev_editor_set(key, val)
