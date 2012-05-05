@@ -371,8 +371,6 @@ function _refresh_tree()
         
         $(this).find(".hdev_rcobj_file").click(function() {
             p = $(this).position();
-            //console.log("click left: "+p.left+", top: "+p.top);
-            //console.log("click left: "+e.pageY+", top: "+e.pageX);
             path = $(this).attr('href').substr(1);
             _file_std_show("file", path, e.pageY, e.pageX);
         });
@@ -414,7 +412,6 @@ function _page_del(proj, path)
 }
 function _hdev_dir(proj, path, force)
 {
-    //console.log("path:"+path);
     p = Crypto.MD5(path);
 
     if (force != 1 && $("#pt"+p).html() && $("#pt"+p).html().length > 1) {

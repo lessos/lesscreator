@@ -48,33 +48,33 @@
 <script>
 function _save(title)
 {
-    editorConfig.tabSize = parseInt($("#tabSize").val());
-    if (editorConfig.tabSize > 12 || editorConfig.tabSize < 1)
-        editorConfig.tabSize = 4;
+    hceditor.tabSize = parseInt($("#tabSize").val());
+    if (hceditor.tabSize > 12 || hceditor.tabSize < 1)
+        hceditor.tabSize = 4;
 
-    editorConfig.tabs2spaces = $("#tabs2spaces").attr('checked') ? true : false;
-    setCookie('editor_tabs2spaces', editorConfig.tabs2spaces, 365);
+    hceditor.tabs2spaces = $("#tabs2spaces").attr('checked') ? true : false;
+    setCookie('editor_tabs2spaces', hceditor.tabs2spaces, 365);
     
-    editorConfig.smartIndent = $("#smartIndent").attr('checked') ? true : false;
-    setCookie('editor_smartIndent', editorConfig.smartIndent, 365);
+    hceditor.smartIndent = $("#smartIndent").attr('checked') ? true : false;
+    setCookie('editor_smartIndent', hceditor.smartIndent, 365);
     
-    editorConfig.lineWrapping = $("#lineWrapping").attr('checked') ? true : false;
-    setCookie('editor_lineWrapping', editorConfig.lineWrapping, 365);
+    hceditor.lineWrapping = $("#lineWrapping").attr('checked') ? true : false;
+    setCookie('editor_lineWrapping', hceditor.lineWrapping, 365);
     
     hdev_header_alert('success', 'Saved successfully "'+title+'"');
 }
 
 function _init()
 {
-    $("#tabSize").val(editorConfig.tabSize);
+    $("#tabSize").val(hceditor.tabSize);
     
-    if (editorConfig.tabs2spaces)
+    if (hceditor.tabs2spaces)
         $("#tabs2spaces").prop("checked", true);
 
-    if (editorConfig.smartIndent)
+    if (hceditor.smartIndent)
         $("#smartIndent").prop("checked", true);
     
-    if (editorConfig.lineWrapping)
+    if (hceditor.lineWrapping)
         $("#lineWrapping").prop("checked", true);
 
     var theme = getCookie('editor_theme');

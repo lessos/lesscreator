@@ -1,3 +1,18 @@
+////////////////////////////////////////////////////////////////////////////////
+var projCurrent = null;
+var pageArray   = {};
+var pageCurrent = 0;
+
+var hceditor = {
+    'theme'         : 'default',
+    'tabSize'       : 4,
+    'lineWrapping'  : true,
+    'smartIndent'   : true,
+    'tabs2spaces'   : true,
+    'instance'      : null,
+    'instancepgid'  : 0,
+};
+////////////////////////////////////////////////////////////////////////////////
 
 function hdev_init_setting()
 {
@@ -35,14 +50,14 @@ function hdev_init_setting()
     
     var tabSize = getCookie('editor_tabSize');
     if (tabSize != null) {
-        editorConfig.tabSize = parseInt(tabSize);
+        hceditor.tabSize = parseInt(tabSize);
     }
     
-    editorConfig.tabs2spaces = (getCookie('editor_tabs2spaces') == 'false') ? false : true;
+    hceditor.tabs2spaces = (getCookie('editor_tabs2spaces') == 'false') ? false : true;
     
-    editorConfig.smartIndent = (getCookie('editor_smartIndent') == 'false') ? false : true;
+    hceditor.smartIndent = (getCookie('editor_smartIndent') == 'false') ? false : true;
     
-    editorConfig.lineWrapping = (getCookie('editor_lineWrapping') == 'false') ? false : true;
+    hceditor.lineWrapping = (getCookie('editor_lineWrapping') == 'false') ? false : true;
 
     var v = getCookie('config_leftbar_width');
     if (v == null) {
@@ -67,10 +82,10 @@ function hdev_editor_set(key, val)
     if (key == "editor_keymap_vim") {
         if (getCookie('editor_keymap_vim') == "on") {
             setCookie("editor_keymap_vim", "off", 365);
-            editor_page.setOption("keyMap", null);
+            hceditor.instance.setOption("keyMap", null);
         } else {
             setCookie("editor_keymap_vim", "on", 365);
-            editor_page.setOption("keyMap", "vim");
+            hceditor.instance.setOption("keyMap", "vim");
         }
         msg = "Setting Editor::KeyMap to VIM "+getCookie('editor_keymap_vim');
         hdev_header_alert("success", msg);
@@ -89,17 +104,17 @@ function hdev_editor_set(key, val)
 }
 function hdev_editor_undo()
 {
-    if (editor_page) editor_page.undo();
+    if (hceditor.instance) hceditor.instance.undo();
 }
 function hdev_editor_redo()
 {
-    if (editor_page) editor_page.redo();
+    if (hceditor.instance) hceditor.instance.redo();
 }
 function hdev_editor_theme(node)
 {
-    if (editor_page) {
+    if (hceditor.instance) {
         var theme = node.options[node.selectedIndex].innerHTML;
-        editor_page.setOption("theme", theme);
+        hceditor.instance.setOption("theme", theme);
         setCookie("editor_theme", theme, 365);
         hdev_layout_resize();
         hdev_header_alert('success', 'Change Editor color theme to "'+theme+'"');
@@ -156,7 +171,7 @@ function hdev_header_alert(status, alert)
     $(".hdev-header-alert").text(alert);
     $(".hdev-header-alert").addClass(status);
 }
-////////////////////////////////////////////////////////////////////////////////
+
 var pos = null;
 function posFetch()
 {
@@ -171,7 +186,7 @@ function posFetch()
     return pos;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+
 function hdev_layout_resize()
 {
     bh = $('body').height();
@@ -188,9 +203,6 @@ function hdev_layout_resize()
         lo_mw -= offset;
         $('#hdev_layout_middle').width(lo_mw);
     }
-    
-    //console.log("layout left: "+lo_lw);
-    //console.log("layout middle: "+lo_mw);
 
     //
     lo_p = $('#hdev_layout').position();    
@@ -227,22 +239,6 @@ function hdev_layout_resize()
 
 ////////////////////////////////////////////////////////////////////////////////
 /** Editor **/
-var projCurrent = null;
-
-var pageArray   = {};
-var pageCurrent = 0;
-
-var editor_page = null;
-var editor_pgid = 0;
-
-var editorConfig = {
-    'theme'         : 'default',
-    'tabSize'       : 4,
-    'lineWrapping'  : true,
-    'smartIndent'   : true,
-    'tabs2spaces'   : true,
-};
-
 function hdev_page_open(path, type, title, img)
 {
     var pgid = Crypto.MD5(path);
@@ -251,18 +247,16 @@ function hdev_page_open(path, type, title, img)
     case 'editor'   :
     case 'content'  :
                 
-        if (pageCurrent == pgid) {
+        if (pageCurrent == pgid)
             return;
-        }
         
         $(".hdev-ws").hide();
         $("#hdev_ws_"+type).show();
 
         // tabs init
         if (!$("#pgtab"+pgid).length) {
-            if (!title) {
+            if (!title)
                 title = path.replace(/^.*[\\\/]/, '');
-            }
             
             entry  = '<table id="pgtab'+pgid+'" class="pgtab"><tr>';
             entry += "<td class='ico'><img src='/hcreator/static/img/"+img+".png' align='absmiddle' /></td>";
@@ -322,23 +316,20 @@ function hdev_page_close(path)
             $('#pgtab'+pgid).remove();
             delete pageArray[pgid];
     
-            if (pgid != pageCurrent) {
+            if (pgid != pageCurrent)
                 return;
-            }
             
             pageCurrent = 0;
             
-            if (j != 0) {
+            if (j != 0)
                 break;
-            }
             
         } else {
             
             j = i;
             
-            if (pageCurrent == 0) {
+            if (pageCurrent == 0)
                 break;
-            }
         }
     }
     
@@ -354,7 +345,7 @@ function hdev_page_editor_open(path)
 {
     var pgid = Crypto.MD5(path);
     
-    if (pgid == editor_pgid)
+    if (pgid == hceditor.instancepgid)
         return;
     
     // pull source code
@@ -378,19 +369,15 @@ function hdev_page_editor_close(path)
 {
     var pgid = Crypto.MD5(path);
 
-    //console.log("editor remove: "+pgid+", editor_pgid: "+editor_pgid);
-
-    if (pgid == editor_pgid) {
-        editor_page.toTextArea();
-        //console.log("editor remove codemirror");
-    }
+    if (pgid == hceditor.instancepgid)
+        hceditor.instance.toTextArea();
     
     hdev_page_editor_save(pgid, 1);
     
-    if (pgid == editor_pgid) {
+    if (pgid == hceditor.instancepgid) {
         $('#src'+pgid).remove();
-        editor_page = null;
-        editor_pgid = 0;
+        hceditor.instance = null;
+        hceditor.instancepgid = 0;
     }
     
     hdev_layout_resize();
@@ -400,8 +387,8 @@ function hdev_editor(path)
 {
     var pgid = Crypto.MD5(path);
 
-    if (editor_pgid && editor_pgid != pgid) {
-        editor_page.toTextArea();
+    if (hceditor.instancepgid && hceditor.instancepgid != pgid) {
+        hceditor.instance.toTextArea();
         // TODO hdev_page_editor_save(pgid, 0);
     }
 
@@ -441,19 +428,19 @@ function hdev_editor(path)
             mode = 'htmlmixed';
     }
 
-    editor_pgid = pgid;
-    editor_page = CodeMirror.fromTextArea(document.getElementById('src'+pgid), {
+    hceditor.instancepgid = pgid;
+    hceditor.instance = CodeMirror.fromTextArea(document.getElementById('src'+pgid), {
         lineNumbers: true,
         matchBrackets: true,
         undoDepth: 1000,
         mode: mode,
-        indentUnit: editorConfig.tabSize,
-        tabSize: editorConfig.tabSize,
+        indentUnit: hceditor.tabSize,
+        tabSize: hceditor.tabSize,
         theme: getCookie("editor_theme"),
-        smartIndent: editorConfig.smartIndent,
-        lineWrapping: editorConfig.lineWrapping,
+        smartIndent: hceditor.smartIndent,
+        lineWrapping: hceditor.lineWrapping,
         extraKeys: {Tab: function(cm) {
-            if (editorConfig.tabs2spaces)
+            if (hceditor.tabs2spaces)
                 cm.replaceSelection("    ", "end");
         }},
         onChange: function() {
@@ -461,7 +448,7 @@ function hdev_editor(path)
         }
     });
     if (getCookie('editor_keymap_vim') == "on") {
-        editor_page.setOption("keyMap", "vim");
+        hceditor.instance.setOption("keyMap", "vim");
     }
     CodeMirror.commands.save = function() {
         hdev_page_editor_save(pageCurrent, 1);
@@ -472,12 +459,11 @@ function hdev_editor(path)
 
 function hdev_page_editor_save(pgid, force)
 {
-    if (!pageArray[pgid].path) {
+    if (!pageArray[pgid].path)
         return;
-    }
-    if (pgid == editor_pgid && editor_page) {
-        editor_page.save();
-    }
+
+    if (pgid == hceditor.instancepgid && hceditor.instance)
+        hceditor.instance.save();
     
     var autosave = getCookie('editor_autosave');
     if (autosave == 'off' && force == 0) {
@@ -618,9 +604,9 @@ function hdev_editor_search_next(rev)
     if (search_state_query != query) {
         hdev_editor_search_clean();
         
-        for (var cursor = editor_page.getSearchCursor(query, null, matchcase); cursor.findNext();) {
+        for (var cursor = hceditor.instance.getSearchCursor(query, null, matchcase); cursor.findNext();) {
 
-            search_state_marked.push( editor_page.markText(cursor.from(), cursor.to(), "CodeMirror-searching") );
+            search_state_marked.push( hceditor.instance.markText(cursor.from(), cursor.to(), "CodeMirror-searching") );
             
             search_state_posFrom = cursor.from();
             search_state_posTo = cursor.to();
@@ -629,21 +615,21 @@ function hdev_editor_search_next(rev)
         search_state_query = query;
     }
     
-    var cursor = editor_page.getSearchCursor(
+    var cursor = hceditor.instance.getSearchCursor(
         search_state_query, 
         rev ? search_state_posFrom : search_state_posTo,
         matchcase);
     
     if (!cursor.find(rev)) {
-        cursor = editor_page.getSearchCursor(
+        cursor = hceditor.instance.getSearchCursor(
             search_state_query, 
-            rev ? {line: editor_page.lineCount() - 1} : {line: 0, ch: 0},
+            rev ? {line: hceditor.instance.lineCount() - 1} : {line: 0, ch: 0},
             matchcase);
         if (!cursor.find(rev))
             return;
     }
     
-    editor_page.setSelection(cursor.from(), cursor.to());
+    hceditor.instance.setSelection(cursor.from(), cursor.to());
     search_state_posFrom = cursor.from(); 
     search_state_posTo = cursor.to();
 }
@@ -661,24 +647,24 @@ function hdev_editor_search_replace(all)
     
     if (all) {
 
-        for (var cursor = editor_page.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
+        for (var cursor = hceditor.instance.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
             if (typeof search_state_query != "string") {
-                var match = editor_page.getRange(cursor.from(), cursor.to()).match(search_state_query);
+                var match = hceditor.instance.getRange(cursor.from(), cursor.to()).match(search_state_query);
                 cursor.replace(text.replace(/\$(\d)/, function(w, i) {return match[i];}));
             } else cursor.replace(text);
         }
 
    } else {
           
-        var cursor = editor_page.getSearchCursor(search_state_query, editor_page.getCursor(), matchcase);
+        var cursor = hceditor.instance.getSearchCursor(search_state_query, hceditor.instance.getCursor(), matchcase);
 
         var start = cursor.from(), match;
         if (!(match = cursor.findNext())) {
-            cursor = editor_page.getSearchCursor(search_state_query, null, matchcase);
+            cursor = hceditor.instance.getSearchCursor(search_state_query, null, matchcase);
             if (!(match = cursor.findNext()) ||
                 (cursor.from().line == start.line && cursor.from().ch == start.ch)) return;
         }
-        editor_page.setSelection(cursor.from(), cursor.to());
+        hceditor.instance.setSelection(cursor.from(), cursor.to());
         
         cursor.replace(typeof search_state_query == "string" ? text :
             text.replace(/\$(\d)/, function(w, i) {return match[i];}));        
