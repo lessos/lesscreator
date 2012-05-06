@@ -122,38 +122,9 @@
 <script src="/codemirror2/lib/util/searchcursor.js"></script>
 <script src="/codemirror2/keymap/vim.js"></script>
 <script>
-window.onbeforeunload = function() {
-    return "Leave the page and lose your changes?";
-}
-
-$(window).resize(function() {
-    hdev_layout_resize();
-});
-
-$(".layout_vcol").bind('mousedown', function()
-{    
-    $("#hdev_layout").mousemove(function(e) {
-
-        p = $('#hdev_layout_leftbar').position();        
-        wrs = e.pageX - p.left;
-        if (wrs < 200 || wrs > 500) {
-            return;
-        }
-        
-        setCookie("config_leftbar_width", (wrs - 5), 365);
-        hdev_layout_resize();
-    });
-});
-$(document).bind('selectstart',function(){return false;});
-$(document).bind('mouseup', function()
-{
-    $("#hdev_layout").unbind('mousemove');
-});
-
 $(document).ready(function() {
         
-    if (!isValidBrowser()) {
-        
+    if (!isValidBrowser()) {        
         $('body').css({
             width: '100%',
             height: '100%',
@@ -161,25 +132,38 @@ $(document).ready(function() {
             'min-width': '400px',
             'background': '#333'
         });
-
-        var info = '<div style="padding:50px">';
-        info += '<div class="hdev-body-alert notice">';
-        
-        info += '<div class="title">This Application are not fully supported in this browser/version</div>';
-        info += '<div class="summary">Please install the following browser, And upgrade to the latest version</div>';
-        info += '<div class="summary"><table class="tbl">';
-        info += '<tr><td><img src="/hcreator/static/img/browser_chrome.png" /></td><td><strong>Google Chrome</strong></td><td><a href="http://www.google.com/chrome/" target="_blank">http://www.google.com/chrome/</a></td><td>Free (Recommend)</td></tr>';
-        info += '<tr><td><img src="/hcreator/static/img/browser_safari.png" /></td><td><strong>Apple Safari</strong></td><td><a href="http://www.apple.com/safari/" target="_blank">http://www.apple.com/safari/</a></td><td>Free</td></tr>';
-        info += '<tr><td><img src="/hcreator/static/img/browser_firefox.png" /></td><td><strong>Mozilla Firefox</strong></td><td><a href="http://www.mozilla.org/" target="_blank">http://www.mozilla.org/</a></td><td>Free</td></tr>';
-        info += '</table></div>';
-        info += '</div></div>';
-        
-        $("body").empty().html(info);
-        
+        $('body').load('/hcreator/app/err-browser/');
         return;
     }
     
+    window.onbeforeunload = function() {
+        return "Leave the page and lose your changes?";
+    }
+
+    $(window).resize(function() {
+        hdev_layout_resize();
+    });
+    
+    $(".layout_vcol").bind('mousedown', function() {    
+        $("#hdev_layout").mousemove(function(e) {
+    
+            p = $('#hdev_layout_leftbar').position();        
+            wrs = e.pageX - p.left;
+            if (wrs < 200 || wrs > 500)
+                return;
+            
+            setCookie("config_leftbar_width", (wrs - 5), 365);
+            hdev_layout_resize();
+        });
+    });
+    $(document).bind('selectstart',function() {return false;});
+    $(document).bind('mouseup', function() {
+        $("#hdev_layout").unbind('mousemove');
+    });
+
     hdev_init_setting();
     hdev_project('<?=$this->req->proj?>');
+    
+    setTimeout(hdev_layout_resize, 3000);
 });
 </script>
