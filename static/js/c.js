@@ -128,7 +128,7 @@ function hdev_applist()
 
 function hdev_project_new()
 {
-    window.open("/hcreator/index#project-new", '_blank');
+    window.open("/h5creator/index#project-new", '_blank');
 }
 
 function hdev_project_setting(proj)
@@ -146,13 +146,13 @@ function hdev_project(proj)
     
     // Open Project in New Tab
     if (projCurrent && projCurrent != proj) {
-        window.open("/hcreator/index?proj="+proj, '_blank');
+        window.open("/h5creator/index?proj="+proj, '_blank');
         return;
     }
     
     // Open Current Project
     $.ajax({
-        url     : '/hcreator/app/project?proj='+proj,
+        url     : '/h5creator/app/project?proj='+proj,
         type    : "GET",
         timeout : 30000,
         success : function(data) {
@@ -259,7 +259,7 @@ function hdev_page_open(path, type, title, img)
                 title = path.replace(/^.*[\\\/]/, '');
             
             entry  = '<table id="pgtab'+pgid+'" class="pgtab"><tr>';
-            entry += "<td class='ico'><img src='/hcreator/static/img/"+img+".png' align='absmiddle' /></td>";
+            entry += "<td class='ico'><img src='/h5creator/static/img/"+img+".png' align='absmiddle' /></td>";
             entry += "<td class=\"pgtabtitle\"><a href=\"javascript:hdev_page_open('"+path+"','"+type+"','"+title+"','"+img+"')\">"+title+"</a></td>";
             entry += '<td class="chg">*</td>';
             entry += '<td class="close"><a href="javascript:hdev_page_close(\''+path+'\')">×</a></td>';
@@ -280,7 +280,7 @@ function hdev_page_open(path, type, title, img)
         $(".hcr-pgbar-"+type).show();
         break;
     case 'content':
-        $('#hdev_ws_content').load('/hcreator/'+path);
+        $('#hdev_ws_content').load('/h5creator/'+path);
         break;
     default :
         return;
@@ -356,7 +356,7 @@ function hdev_page_editor_open(path)
         page = '<textarea id="src'+pgid+'" class="displaynone"></textarea>';
         $("#hdev_ws_editor").prepend(page);
 
-        $.get('/hcreator/app/src?proj='+projCurrent+'&path='+path, function(data) {
+        $.get('/h5creator/app/src?proj='+projCurrent+'&path='+path, function(data) {
             $('#src'+pgid).text(data);
             hdev_editor(path);
         });
@@ -472,7 +472,7 @@ function hdev_page_editor_save(pgid, force)
     }
     
     $.ajax({
-        url     : "/hcreator/app/src?proj="+projCurrent+"&path="+pageArray[pgid].path,
+        url     : "/h5creator/app/src?proj="+projCurrent+"&path="+pageArray[pgid].path,
         type    : "POST",
         data    : $("#src"+pgid).val(),
         timeout : 30000,
@@ -526,7 +526,7 @@ function hdev_pgtab_openfiles()
         href = "javascript:hdev_page_open('"+pageArray[i]['path']+"','"+pageArray[i]['type']+"','"+pageArray[i].title+"','"+pageArray[i]['img']+"')";
 
         ol += '<div class="lcitem hdev_lcobj_file">';
-        ol += '<div class="lcico"><img src="/hcreator/static/img/'+pageArray[i]['img']+'.png" align="absmiddle" /></div>';
+        ol += '<div class="lcico"><img src="/h5creator/static/img/'+pageArray[i]['img']+'.png" align="absmiddle" /></div>';
         ol += '<div class="lcctn"><a href="'+href+'">'+pageArray[i].title+'</a></div>';
         ol += '</div>';
     }

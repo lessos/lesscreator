@@ -10,7 +10,7 @@ require_once 'LessPHP/Pagelet.php';
 
 $opt = array(
     'path' => HCR_DIR,
-    'uri_default' => 'hcreator/index',
+    'uri_default' => 'h5creator/index',
 );
 
 $pagelet = new LessPHP_Pagelet($opt);

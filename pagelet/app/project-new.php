@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 echo $msg;
 ?>
 
-<form id="hdev_appedit_form" action="/hcreator/app/project-new/" method="post" >
+<form id="hdev_appedit_form" action="/h5creator/app/project-new/" method="post" >
   <table class="box" width="100%" border="0" cellpadding="0" cellspacing="10" >
     <tr>
       <td width="140px" align="right" >AppID</td>
@@ -99,7 +99,7 @@ $("#hdev_appedit_form").submit(function(event) {
         data: $(this).serialize(),
         success: function(data) {
             alert('Successfully created');
-            window.location = "/hcreator/index?proj="+$("#proj").val();
+            window.location = "/h5creator/index?proj="+$("#proj").val();
         }
     });
 });

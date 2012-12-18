@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 echo $msg;
 ?>
 
-<form id="hdev_appedit_form" action="/hcreator/app/project-edit/" method="post" >
+<form id="hdev_appedit_form" action="/h5creator/app/project-edit/" method="post" >
   <input id="proj" name="proj" size="30" type="hidden" value="<?=$item['appid']?>" />
   <table class="box" width="100%" border="0" cellpadding="0" cellspacing="10" >
     <tr>

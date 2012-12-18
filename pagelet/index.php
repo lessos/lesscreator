@@ -5,15 +5,15 @@
   <title>Hooto Creator</title>
   <link rel="stylesheet" type="text/css" href="/codemirror2/lib/codemirror.css"   media="all" />
   <link rel="stylesheet" type="text/css" href="/codemirror2/theme/all.css"   media="all" />
-  <link rel="stylesheet" type="text/css" href="/hcreator/static/css/def.css" media="all" />
-  <link rel="shortcut icon" type="image/x-icon" href="/hcreator/static/img/hooto-xicon-mc.ico" /> 
+  <link rel="stylesheet" type="text/css" href="/h5creator/static/css/def.css" media="all" />
+  <link rel="shortcut icon" type="image/x-icon" href="/h5creator/static/img/hooto-xicon-mc.ico" /> 
 </head>
-<body style="background:#D8DCE0 url(/hcreator/static/img/body.png) repeat-x;">
+<body style="background:#D8DCE0 url(/h5creator/static/img/body.png) repeat-x;">
 
 <table id="hdev_header">
   <tr>
     <td class="header_logo" width="240px">
-      <img src="/hcreator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
+      <img src="/h5creator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
       <span>Creator</span>
     </td>
     
@@ -54,36 +54,36 @@
       <div class="hdev-ws hdev-tabs hcr-pgbar-editor">
         
         <div class="tabitem" onclick="hdev_editor_undo()">
-            <div class="ico"><img src="/hcreator/static/img/arrow_undo.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/h5creator/static/img/arrow_undo.png" align="absmiddle" /></div>
             <div class="ctn">Undo</div>
         </div>
         
         <div class="tabitem" onclick="hdev_editor_redo()">
-            <div class="ico"><img src="/hcreator/static/img/arrow_redo.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/h5creator/static/img/arrow_redo.png" align="absmiddle" /></div>
             <div class="ctn">Redo</div>
         </div>
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="hdev_editor_search()">
-            <div class="ico"><img src="/hcreator/static/img/magnifier.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/h5creator/static/img/magnifier.png" align="absmiddle" /></div>
             <div class="ctn">Search</div>
         </div>
         
         <div class="tabitemline"></div>
         <div class="tabitem">
-            <div class="ico"><img src="/hcreator/static/img/disk.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/h5creator/static/img/disk.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="hdev_editor_set('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div>
 
         <div class="tabitemline"></div>
         <div class="tabitem">
-            <div class="ico"><img src="/hcreator/static/img/w3_vim.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/h5creator/static/img/w3_vim.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="hdev_editor_set('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> Simple VIM</div>
         </div> 
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="hdev_page_open('app/editor-set', 'content', 'Editor Setting', 'cog')">
-            <div class="ico"><img src="/hcreator/static/img/page_white_gear.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/h5creator/static/img/page_white_gear.png" align="absmiddle" /></div>
             <div class="ctn">Setting</div>
         </div>      
       </div>
@@ -112,10 +112,10 @@
 </html>
 
 <script src="/jquery17/jquery-1.7.min.js"></script>
-<script src="/hcreator/static/js/c.js"></script>
-<script src="/hcreator/static/js/crypto-min.js"></script>
-<script src="/hcreator/static/js/md5-min.js"></script>
-<script src="/hcreator/static/js/BrowserDetect.js"></script>
+<script src="/h5creator/static/js/c.js"></script>
+<script src="/h5creator/static/js/crypto-min.js"></script>
+<script src="/h5creator/static/js/md5-min.js"></script>
+<script src="/h5creator/static/js/BrowserDetect.js"></script>
   
 <script src="/codemirror2/lib/codemirror-mini.js"></script>
 <script src="/codemirror2/mode/all.js"></script>
@@ -132,7 +132,7 @@ $(document).ready(function() {
             'min-width': '400px',
             'background': '#333'
         });
-        $('body').load('/hcreator/app/err-browser/');
+        $('body').load('/h5creator/app/err-browser/');
         return;
     }
     
