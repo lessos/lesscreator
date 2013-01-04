@@ -1,4 +1,56 @@
 
+# Project Manager
+    Template MVC/Workflow
+
+# Editor
+    Hook/Plugin
+
+# Service
+    List/API/Monitor
+
+================================================================================
+dialog [12.25]
+dialog-close [12.26]
+
+dislog-nav-slide [12.26]
+
+dialog-nav-array [12.27]
+
+database-type-select [12.29]
+database-setting [12.30]
+
+dialog-alert button []
+frame addin (fix pos), auto resizing
+database-setting, tabs auto addin
+
+
+database-list
+
+database-setting-struct 
+database-setting-init
+
+h5keeper-set()
+
+h5keeper-getDir()
+database-setting-commit
+
+================================================================================
+
+# Service 
+    Database
+    Create, List, Config
+    Config Pendding (PHP)
+    
+
+# Project 
+    Workflow
+    One - One
+
+
+# Project
+    js Vision
+
+================================================================================
 CURRENT
 
 NEXT

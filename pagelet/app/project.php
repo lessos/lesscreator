@@ -356,7 +356,7 @@ function _refresh_tree()
         bh = $('body').height() - 20;        
         if ((t + h) > bh) {
             t = bh - h;
-        }        
+        }
         
         $(this).find('.hdev-rcmenu').hide();
         

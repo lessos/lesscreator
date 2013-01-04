@@ -1,8 +1,11 @@
-<!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
   <title>Hooto Creator</title>
+  <script src="/jquery/jquery-1.8.min.js"></script>
+  <script src="/bootstrap2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/bootstrap2/css/bootstrap.min.css"   media="all" />
   <link rel="stylesheet" type="text/css" href="/codemirror2/lib/codemirror.css"   media="all" />
   <link rel="stylesheet" type="text/css" href="/codemirror2/theme/all.css"   media="all" />
   <link rel="stylesheet" type="text/css" href="/h5creator/static/css/def.css" media="all" />
@@ -10,10 +13,12 @@
 </head>
 <body style="background:#D8DCE0 url(/h5creator/static/img/body.png) repeat-x;">
 
-<table id="hdev_header">
+<table id="hdev_header" width="100%">
   <tr>
+    <td width="10px"></td>
+
     <td class="header_logo" width="240px">
-      <img src="/h5creator/static/img/hooto-logo-mc-h30.png" align="absbottom" />  
+      <img src="/h5creator/static/img/h5-logo-h30.png" align="absbottom" />  
       <span>Creator</span>
     </td>
     
@@ -21,24 +26,40 @@
         <div class="hdev-header-alert border_radius_5 hdev_alert"></div>
     </td>
     
-    <td align="right" class="menu_nav">
-        <span><a href="javascript:hdev_applist()">Open Project</a></span>
-        <span><a href="javascript:hdev_project_new()">New Project</a></span>
+    <td align="right">
+        <a href="javascript:h5cTabletOpenDebug()" class="btn">Debug</a>
+        <div class="btn-group">
+            <div class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
+                <i class="icon-folder-open"></i>
+                &nbsp;&nbsp;<strong>Project</strong>&nbsp;&nbsp;
+                <span class="caret" style="margin-top:8px;"></span>
+            </div>
+            <ul class="dropdown-menu pull-right">
+                <li><a href="javascript:hdev_applist()">Open Project</a></li>
+                <li><a href="javascript:hdev_project_new()">Create Project</a></li>
+                <li class="divider"></li>
+                <li><a href="javascript:hdev_project_new()">Open Data Instance</a></li>
+                <li><a href="javascript:h5c_data_new()">Create Data Instance</a></li>
+            </ul>
+        </div>
     </td>
+
+    <td width="10px"></td>
   </tr>
 </table>
 
 <table id="hdev_layout" border="0" cellpadding="0" cellspacing="0">
   <tr>
+
+    <!-- column blank 0 -->
     <td width="10px"></td>
 
     <td id="hdev_layout_leftbar">
         <div id="hdev_project" class="hdev-box-shadow"></div>
     </td>
 
-    <td width="10px" class="layout_vcol">
-
-    </td>
+    <!-- column blank 1 -->
+    <td width="10px" class="layout_vcol"></td>
 
     <td id="hdev_layout_middle" class="hdev-layout-container">
 
@@ -103,16 +124,71 @@
       
     </td>
   
+    <!-- column blank 2 -->
     <td width="10px"></td>
+    <!--
+    http://www.daqianduan.com/jquery-drag/
+    -->
+    <td id="hdev_layout_right" class="" width="700px">
+      <table width="100%" height="100%">
+        <tr>
+          <td id="h5c-tablet-framet0" class="h5c_gen_scroll hdev-layout-container" width="700px" height="400px" valign="top">
+            
+            <div id="h5c-tablet-tabs-frame-t0" class="h5c_tablet_tabs_frame pgtabs_frame">
+              <div class="h5c_tablet_tabs_lm">
+                <div id="h5c-tablet-tabs-t0" class="h5c_tablet_tabs"></div>
+              </div>
+              <div class="h5c_tablet_tabs_lr">
+                <div class="pgtab_more" onclick="hdev_pgtab_openfiles()">»</div>
+              </div>
+            </div>
 
+            <div id="h5c-tablet-body-t0"></div>
+
+          </td>
+        </tr>
+
+        <tr><td height="10px"></td></tr>
+        
+        <tr>
+          <td id="h5c-tablet-framet1" class="h5c_gen_scroll hdev-layout-container" >
+
+          </td>
+        </tr>
+      
+      </table>
+    </td>
+
+    <!-- column blank 0 -->
+    <td width="10px"></td>
   </tr>
 </table>
+
 <div class="pgtab-openfiles-ol hdev-lcmenu hdev-scrollbar border_radius_5"></div>
+
+<div id="h5c_dialog" class="border_radius_t5 displaynone">
+  <table class="h5c_dialog_title border_radius_t5" width="100%">
+    <tr>
+      <td class="h5c_dialog_titlel"></td>
+      <td class="h5c_dialog_titlec"></td>
+      <td class="h5c_dialog_titler">
+        <button class="close" style="margin: 4px 5px 0 0;" onclick="h5cDialogClose()">&times;</button>
+      </td>
+    </tr>
+  </table>
+    
+  <div class="h5c_dialog_body">
+    <div id="h5c_dialog_page"></div>
+  </div>
+</div>
+<div class="displaynone">
+
+</div>
 </body>
 </html>
 
-<script src="/jquery17/jquery-1.7.min.js"></script>
 <script src="/h5creator/static/js/c.js"></script>
+<script src="/h5creator/static/js/gen.js"></script>
 <script src="/h5creator/static/js/crypto-min.js"></script>
 <script src="/h5creator/static/js/md5-min.js"></script>
 <script src="/h5creator/static/js/BrowserDetect.js"></script>
@@ -137,7 +213,7 @@ $(document).ready(function() {
     }
     
     window.onbeforeunload = function() {
-        return "Leave the page and lose your changes?";
+        //return "Leave the page and lose your changes?";
     }
 
     $(window).resize(function() {
