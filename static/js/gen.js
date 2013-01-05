@@ -127,6 +127,7 @@ function h5cDialogClose()
 function h5cTabletOpenDebug()
 {
     h5cTabletOpen('/h5creator/data/list', 't0', 'html', 'Data Instances');
+    h5cTabletOpen('/h5creator/data/setting', 't0', 'html', 'Data Setting');
 }
 
 var h5cTabletFrame = {};
@@ -159,36 +160,48 @@ function h5cTabletOpen(url, target, type, title)
         timeout : 30000,
         success : function(rsp) {            
             
-            //urid = url.split("?", 1);
             urid = url.replace(/\//g, '');
+
+            h5cTabletFrame[target] = {
+                'urid': urid,
+                'status': ''
+            };
+            h5cTabletPool[urid] = {
+                'url': url,
+                'target': target,
+                'data': rsp,
+                'title': title,
+                'type': type
+            };
 
             //if (title.length) {
             //    $(".h5c_dialog_titlec").text(title);
             //}
 
+            //fw = $("#h5c-tablet-frame"+ target).width();
+            //fh = $("#h5c-tablet-frame"+ target).height();
+            
+            //console.log("Frame Size: W:"+ fw +", H:"+ fh);
+
+            //if (!$("#h5c-tablet-id"+ urid).length) {
+                //console.log(rsp);
+                //$("#h5c-tablet-frame"+ target).append('<div class="h5c_gen_scroll" id="h5c-tablet-id'+urid+'">'+rsp+'</div>');
+            //}
+
+            
+
             fw = $("#h5c-tablet-frame"+ target).width();
             fh = $("#h5c-tablet-frame"+ target).height();
-            console.log("Frame Size: W:"+ fw +", H:"+ fh);
-
-            if (!$("#h5c-tablet-id"+ urid).length) {
-                //console.log(rsp);
-                $("#h5c-tablet-frame"+ target).append('<div class="h5c_gen_scroll" id="h5c-tablet-id'+urid+'">'+rsp+'</div>');
-                h5cTabletFrame[target] = {
-                    'urid': urid,
-                    'status': ''
-                };
-                h5cTabletPool[urid] = {
-                    'url': url,
-                    'target': target,
-                    'data': rsp,
-                    'type': type
-                };
-            }
-            $("#h5c-tablet-id"+ urid).width(fw);
-            $("#h5c-tablet-id"+ urid).height(fh);
+            tfh = $("#h5c-tablet-tabs-frame-"+ target).height();
+    
+            $("#h5c-tablet-body-"+ target).width(fw);
+            $("#h5c-tablet-body-"+ target).height(fh - tfh);
 
 
+            h5cTabletSwitch(urid);
 
+            //$("#h5c-tablet-id"+ urid).width(fw);
+            //$("#h5c-tablet-id"+ urid).height(fh);
 
             //if (h5cTabletCurrent == "") {
                 //pll = ($('body').width() - h5cDialogW) / 2;
@@ -198,12 +211,7 @@ function h5cTabletOpen(url, target, type, title)
                 //    "top": plt +'px',
                 //    "left": pll +'px'
                 //});
-            //}
-
-            h5cTabletPool[urid] = {'title': title, 'url': url, 'target': target};
-
-
-            h5cTabletOpenTab(urid);
+            //}            
         },
         error: function(xhr, textStatus, error) {
             alert("ERROR:"+ xhr.responseText);
@@ -212,22 +220,25 @@ function h5cTabletOpen(url, target, type, title)
     });
 }
 
-function h5cTabletOpenTab(urid)
+function h5cTabletSwitch(urid)
 {
     item = h5cTabletPool[urid];
+    
     if (!item.target) {
         return;
     }
 
     if (!$("#pgtab"+urid).length) {
-        if (!item.title)
+        
+        if (!item.title) {
             item.title = item.url.replace(/^.*[\\\/]/, '');
+        }
 
         entry  = '<table id="pgtab'+urid+'" class="pgtab"><tr>';
         //entry += "<td class='ico'><img src='/h5creator/static/img/"+img+".png' align='absmiddle' /></td>";
-        entry += "<td class=\"pgtabtitle\"><a href=\"#\">"+item.title+"</a></td>";
+        entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabletSwitch('"+urid+"')\">"+item.title+"</a></td>";
         entry += '<td class="chg">*</td>';
-        entry += '<td class="close"><a href="#">×</a></td>';
+        //entry += '<td class="close"><a href="#">×</a></td>';
         entry += '</tr></table>';
         $("#h5c-tablet-tabs-"+ item.target).append(entry);            
     }
@@ -237,10 +248,10 @@ function h5cTabletOpenTab(urid)
     
    
     pg = $('#h5c-tablet-tabs-frame-'+ item.target +' .h5c_tablet_tabs_lm').innerWidth();
-    console.log("h5c-tablet-tabs t*"+ pg);
+    //console.log("h5c-tablet-tabs t*"+ pg);
     
     tabp = $('#pgtab'+ urid).position();
-    console.log("tab pos left:"+ tabp.left);
+    //console.log("tab pos left:"+ tabp.left);
     
     mov = tabp.left + $('#pgtab'+ urid).outerWidth(true) - pg;
     if (mov < 0)
@@ -254,6 +265,8 @@ function h5cTabletOpenTab(urid)
         $(".pgtab_more").hide();
 
     $('.h5c_tablet_tabs').animate({left: "-"+mov+"px"}); // COOL!
+
+    $("#h5c-tablet-body-"+ item.target).empty().html(item.data);
 }
 
 function h5cGenAlert(obj, type, msg)

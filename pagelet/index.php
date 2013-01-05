@@ -132,7 +132,7 @@
     <td id="hdev_layout_right" class="" width="700px">
       <table width="100%" height="100%">
         <tr>
-          <td id="h5c-tablet-framet0" class="h5c_gen_scroll hdev-layout-container" width="700px" height="400px" valign="top">
+          <td id="h5c-tablet-framet0" class="hdev-layout-container" width="700px" height="400px" valign="top">
             
             <div id="h5c-tablet-tabs-frame-t0" class="h5c_tablet_tabs_frame pgtabs_frame">
               <div class="h5c_tablet_tabs_lm">
@@ -143,7 +143,7 @@
               </div>
             </div>
 
-            <div id="h5c-tablet-body-t0"></div>
+            <div id="h5c-tablet-body-t0" class="h5c_tablet_body h5c_gen_scroll"></div>
 
           </td>
         </tr>
@@ -176,7 +176,7 @@
       </td>
     </tr>
   </table>
-    
+
   <div class="h5c_dialog_body">
     <div id="h5c_dialog_page"></div>
   </div>
@@ -242,4 +242,5 @@ $(document).ready(function() {
     
     setTimeout(hdev_layout_resize, 3000);
 });
+
 </script>

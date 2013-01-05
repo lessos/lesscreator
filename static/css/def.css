@@ -786,12 +786,15 @@ textarea {
 .h5c_tablet_tabs .pgtab .close a:hover {
     color: #db4a37; cursor: pointer;
 }
-.pgtab_more {
+.h5c_tablet_tabs .pgtab_more {
     float: left; font-size: 18px; font-weight: bold;
     width: 20px; text-align: center;
     cursor: pointer; z-index: 100;
     display: none;
 }
-.pgtab_more_ol {
+.h5c_tablet_tabs .pgtab_more_ol {
     position: absolute;
+}
+.h5c_tablet_body {
+    overflow: auto;
 }
