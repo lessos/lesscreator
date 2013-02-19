@@ -16,7 +16,7 @@ var h5cEditor = {
 function h5cTabletEditorOpen(urid)
 {
     var item = h5cTabletPool[urid];
-    //console.log(item);
+    // console.log(item);
 
     if (h5cTabletFrame[item.target].urid == urid) {
         return;
@@ -26,7 +26,8 @@ function h5cTabletEditorOpen(urid)
         return;
     }
 
-    if ($("#src"+urid).val()) {
+    //if ($("#src"+urid).val()) {
+    if (item.data) {
         h5cEditorLoad(urid);
     } else {
         
@@ -37,6 +38,7 @@ function h5cTabletEditorOpen(urid)
 
         $.get('/h5creator/app/src?proj='+projCurrent+'&path='+item.url, function(data) {
             $('#src'+urid).text(data);
+            h5cTabletPool[urid].data = data;
             h5cEditorLoad(urid);
         });
     }
@@ -113,6 +115,8 @@ function h5cEditorLoad(urid)
 
     h5cEditor.urid = urid;
     h5cEditor.instance = CodeMirror.fromTextArea(document.getElementById('src'+urid), {
+    //h5cEditor.instance = CodeMirror(document.getElementById('h5c-tablet-body-w0'), {
+    //    value: item.data,
         lineNumbers: true,
         matchBrackets: true,
         undoDepth: 1000,
@@ -126,17 +130,56 @@ function h5cEditorLoad(urid)
             if (h5cEditor.tabs2spaces) {
                 cm.replaceSelection("    ", "end");
             }
-        }},
-        onChange: function() {
-            ////////hdev_page_editor_save(urid, 0);
-        }
+        }}
+    });
+    h5cEditor.instance.on("change", function() {
+        h5cEditorSave(urid, 0);
+        console.log("onchanged");
     });
     if (getCookie('editor_keymap_vim') == "on") {
         h5cEditor.instance.setOption("keyMap", "vim");
     }
     CodeMirror.commands.save = function() {
-        //////hdev_page_editor_save(pageCurrent, 1);
+        h5cEditorSave(urid, 1);
     };
     
     h5cFrameReSize();
+}
+
+
+function h5cEditorSave(urid, force)
+{
+    if (!h5cTabletPool[urid]) {
+        return;
+    }
+    var item = h5cTabletPool[urid];
+
+    if (urid != h5cEditor.urid) {
+        return;
+    }
+
+    if (h5cEditor.instance) {
+        h5cEditor.instance.save();
+    }
+    
+    var autosave = getCookie('editor_autosave');
+    if (autosave == 'off' && force == 0) {
+        //$("#pgtab"+pgid+" .chg").show();
+        return;
+    }
+    
+    $.ajax({
+        url     : "/h5creator/app/src?proj="+projCurrent+"&path="+item.url,
+        type    : "POST",
+        data    : $("#src"+urid).val(),
+        timeout : 30000,
+        success : function(data) {
+            hdev_header_alert('success', data);
+            //$("#pgtab"+pgid+" .chg").hide();
+        },
+        error: function(xhr, textStatus, error) {
+            hdev_header_alert('error', xhr.responseText);
+            //$("#pgtab"+pgid+" .chg").show();
+        }
+    });
 }

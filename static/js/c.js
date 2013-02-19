@@ -230,7 +230,7 @@ function hdev_layout_resize()
         if ($('.hdev-proj-files').length) {
             pfp = $('.hdev-proj-files').position();
             $('.hdev-proj-files').height(lo_p.top + lo_h - pfp.top);
-            $('.hdev-proj-files').width(lo_lw);
+            //$('.hdev-proj-files').width(lo_lw);
         }
     }
     
@@ -242,7 +242,7 @@ function hdev_layout_resize()
 function hdev_page_open(path, type, title, img)
 {
     var pgid = Crypto.MD5(path);
-    
+
     switch (type) {
     case 'editor'   :
     case 'content'  :

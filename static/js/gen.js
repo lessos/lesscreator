@@ -146,6 +146,72 @@ var h5cTabletPool = {};
         'type': 'html/code',
     }
  */
+
+function h5cTabOpen(uri, target, type, opt)
+{
+    var urid = Crypto.MD5(uri);
+
+    if (!h5cTabletFrame[target]) {
+        h5cTabletFrame[target] = {
+            'urid': 0,
+            'status': ''
+        };
+    }
+
+    if (!h5cTabletPool[urid]) {
+        h5cTabletPool[urid] = {
+            'url': uri,
+            'target': target,
+            'data': '',
+            'type': type
+        };
+        for (i in opt) {
+            h5cTabletPool[urid][i] = opt[i];
+        }
+    }
+
+    h5cTabSwitch(urid);
+}
+
+function h5cTabSwitch(urid)
+{
+    var item = h5cTabletPool[urid];
+
+    switch (item.type) {
+    case 'html':
+        if (item.data.length < 1) {
+        $.ajax({
+            url     : item.url,
+            type    : "GET",
+            timeout : 30000,
+            success : function(rsp) {
+                h5cTabletPool[urid].data = rsp;
+                h5cTabletTitle(urid);
+                h5cTabletFrame[item.target].urid = urid;
+                $("#h5c-tablet-body-"+ item.target).empty().html(rsp);
+            },
+            error: function(xhr, textStatus, error) {
+                hdev_header_alert('error', xhr.responseText);
+            }
+        });
+        } else {
+            h5cTabletTitle(urid);
+            h5cTabletFrame[item.target].urid = urid;
+        }
+        break;
+    case 'editor':        
+        if (h5cTabletEditorOpen(urid)) {
+            h5cTabletTitle(urid);
+            h5cTabletFrame[item.target].urid = urid;
+        }
+        break;
+    default :
+        return;
+    }
+}
+
+//h5cTabOpen('/url/open', {'na':'899', 'nb':'aaaa'});
+
 function h5cTabletOpen(url, target, type, title)
 {
     /* TODO:V2 db = openDatabase("ToDo", "0.1", "A list of to do items.", 200000);
@@ -153,76 +219,62 @@ function h5cTabletOpen(url, target, type, title)
         alert("Failed to connect to database."); 
         return;
     } */
+    urid = Crypto.MD5(url);
+    h5cTabletFrame[target] = {
+        'urid': urid,
+        'status': ''
+    };
+    h5cTabletPool[urid] = {
+        'url': url,
+        'target': target,
+        'data': '',
+        'title': title,
+        'type': type
+    };
 
-    $.ajax({
-        url     : url,
-        type    : "GET",
-        timeout : 30000,
-        success : function(rsp) {            
-            
-            urid = url.replace(/\//g, '');
+    switch (type) {
+    case 'html':
+        $.ajax({
+            url     : url,
+            type    : "GET",
+            timeout : 30000,
+            success : function(rsp) {
 
-            h5cTabletFrame[target] = {
-                'urid': urid,
-                'status': ''
-            };
-            h5cTabletPool[urid] = {
-                'url': url,
-                'target': target,
-                'data': rsp,
-                'title': title,
-                'type': type
-            };
+                h5cTabletPool[urid].data = rsp;
 
-            //if (title.length) {
-            //    $(".h5c_dialog_titlec").text(title);
-            //}
-
-            //fw = $("#h5c-tablet-frame"+ target).width();
-            //fh = $("#h5c-tablet-frame"+ target).height();
-            
-            //console.log("Frame Size: W:"+ fw +", H:"+ fh);
-
-            //if (!$("#h5c-tablet-id"+ urid).length) {
-                //console.log(rsp);
-                //$("#h5c-tablet-frame"+ target).append('<div class="h5c_gen_scroll" id="h5c-tablet-id'+urid+'">'+rsp+'</div>');
-            //}
-
-            
-
-            fw = $("#h5c-tablet-frame"+ target).width();
-            fh = $("#h5c-tablet-frame"+ target).height();
-            tfh = $("#h5c-tablet-tabs-frame-"+ target).height();
+                /* TODO fw = $("#h5c-tablet-frame"+ target).width();
+                fh = $("#h5c-tablet-frame"+ target).height();
+                tfh = $("#h5c-tablet-tabs-frame"+ target).height();
     
-            $("#h5c-tablet-body-"+ target).width(fw);
-            $("#h5c-tablet-body-"+ target).height(fh - tfh);
+                $("#h5c-tablet-body-"+ target).width(fw);
+                $("#h5c-tablet-body-"+ target).height(fh - tfh);
+                */
+
+                h5cTabletTitle(urid);
+
+                $("#h5c-tablet-body-"+ target).empty().html(rsp);
+            },
+            error: function(xhr, textStatus, error) {
+                //alert("ERROR:"+ xhr.responseText);
+                hdev_header_alert('error', xhr.responseText);
+            }
+        });
+        break;
+    case 'editor':
+        console.log(h5cTabletPool[urid]);
 
 
-            h5cTabletSwitch(urid);
-
-            //$("#h5c-tablet-id"+ urid).width(fw);
-            //$("#h5c-tablet-id"+ urid).height(fh);
-
-            //if (h5cTabletCurrent == "") {
-                //pll = ($('body').width() - h5cDialogW) / 2;
-                //plt = ($('body').height() - h5cDialogH - 40) / 2;
-                //$("#h5c_dialog").css({
-                //    "z-index": 100,
-                //    "top": plt +'px',
-                //    "left": pll +'px'
-                //});
-            //}            
-        },
-        error: function(xhr, textStatus, error) {
-            alert("ERROR:"+ xhr.responseText);
-            hdev_header_alert('error', xhr.responseText);
-        }
-    });
+        break;
+    default :
+        return;
+    }
 }
 
-function h5cTabletSwitch(urid)
+
+
+function h5cTabletTitle(urid)
 {
-    item = h5cTabletPool[urid];
+    var item = h5cTabletPool[urid];
     
     if (!item.target) {
         return;
@@ -236,9 +288,9 @@ function h5cTabletSwitch(urid)
 
         entry  = '<table id="pgtab'+urid+'" class="pgtab"><tr>';
         //entry += "<td class='ico'><img src='/h5creator/static/img/"+img+".png' align='absmiddle' /></td>";
-        entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabletSwitch('"+urid+"')\">"+item.title+"</a></td>";
+        entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabSwitch('"+urid+"')\">"+item.title+"</a></td>";
         entry += '<td class="chg">*</td>';
-        //entry += '<td class="close"><a href="#">×</a></td>';
+        entry += '<td class="close"><a href="#">×</a></td>';
         entry += '</tr></table>';
         $("#h5c-tablet-tabs-"+ item.target).append(entry);            
     }
@@ -247,7 +299,7 @@ function h5cTabletSwitch(urid)
     $('#pgtab'+ urid).addClass("current");
     
    
-    pg = $('#h5c-tablet-tabs-frame-'+ item.target +' .h5c_tablet_tabs_lm').innerWidth();
+    pg = $('#h5c-tablet-tabs-frame'+ item.target +' .h5c_tablet_tabs_lm').innerWidth();
     //console.log("h5c-tablet-tabs t*"+ pg);
     
     tabp = $('#pgtab'+ urid).position();
@@ -265,8 +317,6 @@ function h5cTabletSwitch(urid)
         $(".pgtab_more").hide();
 
     $('.h5c_tablet_tabs').animate({left: "-"+mov+"px"}); // COOL!
-
-    $("#h5c-tablet-body-"+ item.target).empty().html(item.data);
 }
 
 function h5cGenAlert(obj, type, msg)
@@ -276,4 +326,26 @@ function h5cGenAlert(obj, type, msg)
     } else {
         $(obj).removeClass().addClass("alert "+ type).html(msg).show();
     }
+}
+
+
+function h5cProjectOpen(proj)
+{
+    // New Project
+    if (!proj) {
+        //hdev_page_open('app/project-new', 'content', 'New Project', 'app-t3-16');
+        return;
+    }
+    
+    // Open Project in New Tab
+    if (projCurrent && projCurrent != proj) {
+        window.open("/h5creator/index?proj="+proj, '_blank');
+        return;
+    }
+    
+    // Open Current Project
+    h5cTabletOpen('/h5creator/app/project?proj='+proj, 't0', 'html', 'Files');
+    projCurrent = proj;
+    
+    hdev_layout_resize();
 }
