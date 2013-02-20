@@ -287,7 +287,9 @@ function h5cTabletTitle(urid)
         }
 
         entry  = '<table id="pgtab'+urid+'" class="pgtab"><tr>';
-        //entry += "<td class='ico'><img src='/h5creator/static/img/"+img+".png' align='absmiddle' /></td>";
+        if (item.img) {
+            entry += "<td class='ico'><img src='/h5creator/static/img/"+item.img+".png' align='absmiddle' /></td>";
+        }
         entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabSwitch('"+urid+"')\">"+item.title+"</a></td>";
         entry += '<td class="chg">*</td>';
         entry += '<td class="close"><a href="#">×</a></td>';

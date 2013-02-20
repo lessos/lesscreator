@@ -56,29 +56,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 }
 
 echo $msg;
+
+return;
 ?>
 
 <form id="hdev_appedit_form" action="/h5creator/app/project-new/" method="post" >
   <table class="box" width="100%" border="0" cellpadding="0" cellspacing="10" >
     <tr>
-      <td width="140px" align="right" >AppID</td>
-      <td ><input id="proj" name="proj" size="30" type="text" value="<?=$item['appid']?>" /></td>
+      <td width="100px" align="right" >AppID</td>
+      <td ><input id="proj" name="proj" size="10" type="text" value="<?=$item['appid']?>" /></td>
     </tr>
     <tr>
       <td align="right" >Name</td>
-      <td ><input id="name" name="name" size="30" type="text" value="<?=$item['name']?>" /></td>
+      <td ><input id="name" name="name" size="10" type="text" value="<?=$item['name']?>" /></td>
     </tr>
     <tr>
       <td align="right" >Version</td>
-      <td ><input id="version" name="version" size="30" type="text" value="<?=$item['version']?>" /></td>
+      <td ><input id="version" name="version" size="10" type="text" value="<?=$item['version']?>" /></td>
     </tr>
     <tr>
       <td align="right" >Release</td>
-      <td ><input id="release" name="release" size="30" type="text" value="<?=$item['release']?>" /></td>
+      <td ><input id="release" name="release" size="10" type="text" value="<?=$item['release']?>" /></td>
     </tr>
     <tr>
       <td align="right" valign="top">Description</td>
-      <td ><textarea id="summary" name="summary" rows="6" style="width:500px;"><?=$item['summary']?></textarea></td>
+      <td ><textarea id="summary" name="summary" rows="6" style="width:200px;"><?=$item['summary']?></textarea></td>
     </tr>
     <tr>
       <td></td>

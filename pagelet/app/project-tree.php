@@ -89,7 +89,8 @@ foreach (glob($glob) as $f) {
             $fmi = 'page_white_code';
         }
         
-        $href = "javascript:hdev_page_open('{$p}','editor','','{$fmi}')";
+        //$href = "javascript:hdev_page_open('{$p}','editor','','{$fmi}')";
+        $href = "javascript:h5cTabOpen('{$p}','w0','editor',{'img':'{$fmi}'})";
         
     } else if (substr($fm, 0, 5) == 'image') {
         $fmi = 'page_white_picture';

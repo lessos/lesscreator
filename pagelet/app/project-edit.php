@@ -79,19 +79,19 @@ echo $msg;
     </tr>
     <tr>
       <td align="right" >Name</td>
-      <td ><input id="name" name="name" size="30" type="text" value="<?=$item['name']?>" /></td>
+      <td ><input name="name" size="30" type="text" value="<?=$item['name']?>" /></td>
     </tr>
     <tr>
       <td align="right" >Version</td>
-      <td ><input id="version" name="version" size="30" type="text" value="<?=$item['version']?>" /></td>
+      <td ><input name="version" size="30" type="text" value="<?=$item['version']?>" /></td>
     </tr>
     <tr>
       <td align="right" >Release</td>
-      <td ><input id="release" name="release" size="30" type="text" value="<?=$item['release']?>" /></td>
+      <td ><input name="release" size="30" type="text" value="<?=$item['release']?>" /></td>
     </tr>
     <tr>
       <td align="right" valign="top">Description</td>
-      <td ><textarea id="summary" name="summary" rows="6" style="width:500px;"><?=$item['summary']?></textarea></td>
+      <td ><textarea name="summary" rows="6" style="width:95%;"><?=$item['summary']?></textarea></td>
     </tr>
     <tr>
       <td></td>

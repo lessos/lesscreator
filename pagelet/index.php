@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>Hooto Creator</title>
-  <script src="/jquery/jquery-1.8.min.js"></script>
+  <script src="/jquery/jquery-1.9.min.js"></script>
   <script src="/bootstrap2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/bootstrap2/css/bootstrap.min.css"   media="all" />
-  <link rel="stylesheet" type="text/css" href="/codemirror2/lib/codemirror.css"   media="all" />
-  <link rel="stylesheet" type="text/css" href="/codemirror2/theme/all.css"   media="all" />
+  <link rel="stylesheet" type="text/css" href="/codemirror3/lib/codemirror.css"   media="all" />
+  <link rel="stylesheet" type="text/css" href="/codemirror3/theme/all.css"   media="all" />
   <link rel="stylesheet" type="text/css" href="/h5creator/static/css/def.css" media="all" />
   <link rel="shortcut icon" type="image/x-icon" href="/h5creator/static/img/hooto-xicon-mc.ico" /> 
 </head>
@@ -18,7 +18,7 @@
     <td width="10px"></td>
 
     <td class="header_logo" width="240px">
-      <img src="/h5creator/static/img/h5-logo-h30.png" align="absbottom" />  
+      <img src="/h5creator/static/img/h5-logo-h30s.png" align="absbottom" />  
       <span>Creator</span>
     </td>
     
@@ -124,17 +124,61 @@
       
     </td>
   
+
+    <td width="10px"></td>
+    
+    <td id="" class="" width="600px">
+      <table width="100%" height="100%">
+        <tr>
+          <td id="h5c-tablet-framew0" class="hdev-layout-container" height="400px" valign="top">
+            
+            <div id="h5c-tablet-tabs-framew0" class="h5c_tablet_tabs_frame pgtabs_frame">
+              <div class="h5c_tablet_tabs_lm">
+                <div id="h5c-tablet-tabs-w0" class="h5c_tablet_tabs"></div>
+              </div>
+              <div class="h5c_tablet_tabs_lr">
+                <div class="pgtab_more" onclick="hdev_pgtab_openfiles()">»</div>
+              </div>
+            </div>
+
+            <div id="h5c-tablet-body-w0" class="h5c_tablet_body"></div>
+
+          </td>
+        </tr>
+
+        <tr><td height="10px"></td></tr>
+        
+        <tr>
+          <td id="h5c-tablet-framet1" class="hdev-layout-container" valign="top">
+            
+            <div id="h5c-tablet-tabs-framet1" class="h5c_tablet_tabs_frame pgtabs_frame">
+              <div class="h5c_tablet_tabs_lm">
+                <div id="h5c-tablet-tabs-t1" class="h5c_tablet_tabs"></div>
+              </div>
+              <div class="h5c_tablet_tabs_lr">
+              </div>
+            </div>
+
+            <div id="h5c-tablet-body-t1" class="h5c_tablet_body h5c_gen_scroll"></div>
+
+          </td>
+        </tr>
+      
+      </table>
+    </td>
+
+
     <!-- column blank 2 -->
     <td width="10px"></td>
     <!--
     http://www.daqianduan.com/jquery-drag/
     -->
-    <td id="hdev_layout_right" class="" width="700px">
+    <td id="hdev_layout_right" class="" width="400px">
       <table width="100%" height="100%">
         <tr>
-          <td id="h5c-tablet-framet0" class="hdev-layout-container" width="700px" height="400px" valign="top">
+          <td id="h5c-tablet-framet0" class="hdev-layout-container" height="400px" valign="top">
             
-            <div id="h5c-tablet-tabs-frame-t0" class="h5c_tablet_tabs_frame pgtabs_frame">
+            <div id="h5c-tablet-tabs-framet0" class="h5c_tablet_tabs_frame pgtabs_frame">
               <div class="h5c_tablet_tabs_lm">
                 <div id="h5c-tablet-tabs-t0" class="h5c_tablet_tabs"></div>
               </div>
@@ -151,7 +195,17 @@
         <tr><td height="10px"></td></tr>
         
         <tr>
-          <td id="h5c-tablet-framet1" class="h5c_gen_scroll hdev-layout-container" >
+          <td id="h5c-tablet-framet1" class="hdev-layout-container" valign="top">
+            
+            <div id="h5c-tablet-tabs-framet1" class="h5c_tablet_tabs_frame pgtabs_frame">
+              <div class="h5c_tablet_tabs_lm">
+                <div id="h5c-tablet-tabs-t1" class="h5c_tablet_tabs"></div>
+              </div>
+              <div class="h5c_tablet_tabs_lr">
+              </div>
+            </div>
+
+            <div id="h5c-tablet-body-t1" class="h5c_tablet_body h5c_gen_scroll"></div>
 
           </td>
         </tr>
@@ -189,14 +243,18 @@
 
 <script src="/h5creator/static/js/c.js"></script>
 <script src="/h5creator/static/js/gen.js"></script>
+
 <script src="/h5creator/static/js/crypto-min.js"></script>
 <script src="/h5creator/static/js/md5-min.js"></script>
 <script src="/h5creator/static/js/BrowserDetect.js"></script>
-  
-<script src="/codemirror2/lib/codemirror-mini.js"></script>
-<script src="/codemirror2/mode/all.js"></script>
-<script src="/codemirror2/lib/util/searchcursor.js"></script>
-<script src="/codemirror2/keymap/vim.js"></script>
+
+<script src="/codemirror3/lib/codemirror.min.js"></script>
+<script src="/codemirror3/mode/all.min.js"></script>
+<script src="/codemirror3/addon/search/searchcursor.js"></script>
+<script src="/codemirror3/keymap/vim.js"></script>
+
+<script src="/h5creator/static/js/editor.js"></script>
+
 <script>
 $(document).ready(function() {
         
@@ -217,7 +275,7 @@ $(document).ready(function() {
     }
 
     $(window).resize(function() {
-        hdev_layout_resize();
+        // TODO @0219 hdev_layout_resize();
     });
     
     $(".layout_vcol").bind('mousedown', function() {    
@@ -229,7 +287,7 @@ $(document).ready(function() {
                 return;
             
             setCookie("config_leftbar_width", (wrs - 5), 365);
-            hdev_layout_resize();
+            // TODO @0219 hdev_layout_resize();
         });
     });
     $(document).bind('selectstart',function() {return false;});
@@ -238,9 +296,10 @@ $(document).ready(function() {
     });
 
     hdev_init_setting();
-    hdev_project('<?=$this->req->proj?>');
+    //hdev_project('<?=$this->req->proj?>');
+    h5cProjectOpen('<?=$this->req->proj?>');
     
-    setTimeout(hdev_layout_resize, 3000);
+    // TODO @0219 setTimeout(hdev_layout_resize, 3000);
 });
 
 </script>
