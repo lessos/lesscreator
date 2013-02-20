@@ -308,17 +308,88 @@ function h5cTabletTitle(urid)
     //console.log("tab pos left:"+ tabp.left);
     
     mov = tabp.left + $('#pgtab'+ urid).outerWidth(true) - pg;
-    if (mov < 0)
+    if (mov < 0) {
         mov = 0;
+    }
     
-    pgl = $('#h5c-tablet-tabs-'+ item.target +' .pgtab').last().position().left + $('#h5c-tablet-tabs-'+ item.target +' .pgtab').last().outerWidth(true);
+    pgl = $('#h5c-tablet-tabs-'+ item.target +' .pgtab').last().position().left 
+            + $('#h5c-tablet-tabs-'+ item.target +' .pgtab').last().outerWidth(true);
     
     if (pgl > pg)
-        $(".pgtab_more").show();
+        $('#h5c-tablet-frame'+ item.target +' .pgtab_more').show();
     else
-        $(".pgtab_more").hide();
+        $('#h5c-tablet-frame'+ item.target +' .pgtab_more').hide();
 
-    $('.h5c_tablet_tabs').animate({left: "-"+mov+"px"}); // COOL!
+    $('#h5c-tablet-frame'+ item.target +' .h5c_tablet_tabs').animate({left: "-"+mov+"px"}); // COOL!
+}
+
+function h5cTabletMore(tg)
+{
+    var ol = '';
+    for (i in h5cTabletPool) {
+
+        if (h5cTabletPool[i].target != tg) {
+            continue;
+        }
+        
+        href = "javascript:h5cTabSwitch('"+ i +"')";
+        ol += '<div class="lcitem hdev_lcobj_file">';
+        ol += '<div class="lcico"><img src="/h5creator/static/img/'+ h5cTabletPool[i].img +'.png" align="absmiddle" /></div>';
+        ol += '<div class="lcctn"><a href="'+ href +'">'+ h5cTabletPool[i].title +'</a></div>';
+        ol += '</div>';
+    }
+    $('.pgtab-openfiles-ol').html(ol);
+    
+    e = h5cGenPosFetch();
+    w = 100;
+    h = 100;
+    //console.log("event top:"+e.top+", left:"+e.left);
+    
+    $('.pgtab-openfiles-ol').css({
+        width: w+'px',
+        height: 'auto',
+        top: (e.top + 10)+'px',
+        left: (e.left - w - 10)+'px'
+    }).toggle();
+    
+    rw = $('.pgtab-openfiles-ol').outerWidth(true);   
+    if (rw > 400) {
+        $('.pgtab-openfiles-ol').css({
+            width: '400px',
+            left: (e.left - 410)+'px'
+        });
+    } else if (rw > w) {
+        $('.pgtab-openfiles-ol').css({
+            width: rw+'px',
+            left: (e.left - rw - 10)+'px'
+        });
+    }
+    
+    rh = $('.pgtab-openfiles-ol').height();
+    bh = $('body').height();
+    hmax = bh - e.top - 30;
+    //console.log("hmax: "+hmax);
+    if (rh > hmax) {
+        $('.pgtab-openfiles-ol').css({height: hmax+"px"});
+    }
+    
+    $(".pgtab-openfiles-ol").find(".hdev_lcobj_file").click(function() {
+        $('.pgtab-openfiles-ol').hide();
+    });
+}
+
+var h5cPos = null;
+function h5cGenPosFetch()
+{
+    if (window.event) {
+        h5cPos = {"left": window.event.pageX, "top": window.event.pageY};
+    } else if (h5cPos == null) {
+        $(document).mousemove(function(e) {
+            h5cPos = {"left": e.pageX, "top": e.pageY};
+        });
+    }
+    
+    return h5cPos;
 }
 
 function h5cGenAlert(obj, type, msg)

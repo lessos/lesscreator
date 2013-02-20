@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Hooto Creator</title>
+  <title>MQ DEMO</title>
   <script src="/jquery/jquery-1.9.min.js"></script>
   <script src="/bootstrap2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/bootstrap2/css/bootstrap.min.css"   media="all" />
@@ -19,7 +19,7 @@
 
     <td class="header_logo" width="240px">
       <img src="/h5creator/static/img/h5-logo-h30s.png" align="absbottom" />  
-      <span>Creator</span>
+      <span>DEMO</span>
     </td>
     
     <td align="center">
@@ -132,12 +132,12 @@
         <tr>
           <td id="h5c-tablet-framew0" class="hdev-layout-container" height="400px" valign="top">
             
-            <div id="h5c-tablet-tabs-framew0" class="h5c_tablet_tabs_frame pgtabs_frame">
+            <div id="h5c-tablet-tabs-framew0" class="h5c_tablet_tabs_frame">
               <div class="h5c_tablet_tabs_lm">
                 <div id="h5c-tablet-tabs-w0" class="h5c_tablet_tabs"></div>
               </div>
               <div class="h5c_tablet_tabs_lr">
-                <div class="pgtab_more" onclick="hdev_pgtab_openfiles()">»</div>
+                <div class="pgtab_more" onclick="h5cTabletMore('w0')">»</div>
               </div>
             </div>
 
@@ -178,7 +178,7 @@
         <tr>
           <td id="h5c-tablet-framet0" class="hdev-layout-container" height="400px" valign="top">
             
-            <div id="h5c-tablet-tabs-framet0" class="h5c_tablet_tabs_frame pgtabs_frame">
+            <div id="h5c-tablet-tabs-framet0" class="h5c_tablet_tabs_frame ">
               <div class="h5c_tablet_tabs_lm">
                 <div id="h5c-tablet-tabs-t0" class="h5c_tablet_tabs"></div>
               </div>
@@ -218,7 +218,7 @@
   </tr>
 </table>
 
-<div class="pgtab-openfiles-ol hdev-lcmenu hdev-scrollbar border_radius_5"></div>
+<div class="pgtab-openfiles-ol hdev-lcmenu h5c_gen_scroll"></div>
 
 <div id="h5c_dialog" class="border_radius_t5 displaynone">
   <table class="h5c_dialog_title border_radius_t5" width="100%">

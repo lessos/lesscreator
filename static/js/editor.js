@@ -64,7 +64,11 @@ function h5cFrameReSize()
 
     //w0w = $('.CodeMirror-scroll').innerWidth();
     //w0h = $('.CodeMirror-scroll').height();
-    //console.log(w0w +'/'+ w0h);
+    //console.log($('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
+    if ($('#h5c-tablet-framew0 .pgtab_more').is(':visible')) {
+    $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(
+        fw0w - $('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
+    }
 }
 
 function h5cEditorLoad(urid)

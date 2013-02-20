@@ -688,7 +688,9 @@ textarea {
     top: 50%;
     position: relative;
 }
-
+.h5c_gen_scroll {
+    overflow: auto;
+}
 .h5c_gen_scroll::-webkit-scrollbar {
     width: 8px; height: 8px; background-color: transparent;
     background-color: #ccc;
@@ -779,7 +781,7 @@ textarea {
 .h5c_tablet_tabs .pgtab .close a:hover {
     color: #db4a37; cursor: pointer;
 }
-.h5c_tablet_tabs .pgtab_more {
+.h5c_tablet_tabs_lr .pgtab_more {
     float: left; font-size: 18px; font-weight: bold;
     width: 20px; text-align: center;
     cursor: pointer; z-index: 100;
