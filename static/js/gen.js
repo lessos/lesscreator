@@ -270,8 +270,6 @@ function h5cTabletOpen(url, target, type, title)
     }
 }
 
-
-
 function h5cTabletTitle(urid)
 {
     var item = h5cTabletPool[urid];
@@ -378,6 +376,50 @@ function h5cTabletMore(tg)
     });
 }
 
+function h5cLayoutResize()
+{
+    bh = $('body').height();
+    bw = $('body').width();
+    
+    lo_ww = $('#h5c-tablet-vcol-w').innerWidth();
+    lo_tw = $('#h5c-tablet-vcol-t').innerWidth();
+    
+    // OFFSET
+    var offset = parseInt(getCookie('config_tablet_vcol_w_w')) - lo_ww;
+    if (offset != 0) {
+        lo_ww += offset;
+        $('#h5c-tablet-vcol-w').width(lo_ww);
+        lo_tw -= offset;
+        $('#h5c-tablet-vcol-t').width(lo_tw);
+    }
+
+    //
+    lo_p = $('#hdev_layout').position();
+    lo_h = bh - lo_p.top - 10;    
+    $('#hdev_layout').height(lo_h);
+
+    fw0h = $('#h5c-tablet-framew0').height();
+    tw0h = $('#h5c-tablet-tabs-framew0').height();
+    if ($('.CodeMirror').length) {
+        $('.CodeMirror').width(lo_ww);
+        $('.CodeMirror').height(fw0h - tw0h);
+    }
+
+    $('#h5c-tablet-tabs-framew0').width(lo_ww);
+    $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(lo_ww - $('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
+
+    ////////////////////////////////////////////////////
+
+    
+    //w0w = $('.CodeMirror-scroll').innerWidth();
+    //w0h = $('.CodeMirror-scroll').height();
+    //console.log($('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
+    //if ($('#h5c-tablet-framew0 .pgtab_more').is(':visible')) {
+    //    $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(
+    //        lo_ww - $('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
+    //}
+}
+
 var h5cPos = null;
 function h5cGenPosFetch()
 {
@@ -420,5 +462,5 @@ function h5cProjectOpen(proj)
     h5cTabletOpen('/h5creator/app/project?proj='+proj, 't0', 'html', 'Files');
     projCurrent = proj;
     
-    hdev_layout_resize();
+    h5cLayoutResize();
 }

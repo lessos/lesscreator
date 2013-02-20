@@ -59,9 +59,9 @@ function hdev_init_setting()
     
     hceditor.lineWrapping = (getCookie('editor_lineWrapping') == 'false') ? false : true;
 
-    var v = getCookie('config_leftbar_width');
+    var v = getCookie('config_tablet_vcol_w_w');
     if (v == null) {
-        setCookie("config_leftbar_width", 240, 365);
+        //setCookie("config_tablet_vcol_w_w", 800, 365);
     }
     
     posFetch();
@@ -196,7 +196,7 @@ function hdev_layout_resize()
     lo_mw = $('#hdev_layout_middle').innerWidth();
     
     // OFFSET
-    var offset = parseInt(getCookie('config_leftbar_width')) - lo_lw;
+    var offset = parseInt(getCookie('config_tablet_vcol_w_w')) - lo_lw;
     if (offset != 0) {
         lo_lw += offset;
         $('#hdev_layout_leftbar').width(lo_lw);

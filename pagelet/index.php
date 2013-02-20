@@ -51,15 +51,14 @@
 <table id="hdev_layout" border="0" cellpadding="0" cellspacing="0">
   <tr>
 
-    <!-- column blank 0 -->
+    <!--
     <td width="10px"></td>
 
     <td id="hdev_layout_leftbar">
         <div id="hdev_project" class="hdev-box-shadow"></div>
     </td>
 
-    <!-- column blank 1 -->
-    <td width="10px" class="layout_vcol"></td>
+    <td width="10px" class="></td>
 
     <td id="hdev_layout_middle" class="hdev-layout-container">
 
@@ -122,12 +121,12 @@
       <div id="hdev_ws_editor" class="hdev-ws"></div>
       <div id="hdev_ws_content" class="hdev-ws"></div>
       
-    </td>
-  
+    </td>  
+    -->
 
     <td width="10px"></td>
     
-    <td id="" class="" width="600px">
+    <td id="h5c-tablet-vcol-w">
       <table width="100%" height="100%">
         <tr>
           <td id="h5c-tablet-framew0" class="hdev-layout-container" height="400px" valign="top">
@@ -149,11 +148,11 @@
         <tr><td height="10px"></td></tr>
         
         <tr>
-          <td id="h5c-tablet-framet1" class="hdev-layout-container" valign="top">
+          <td id="h5c-tablet-framew1" class="hdev-layout-container" valign="top">
             
-            <div id="h5c-tablet-tabs-framet1" class="h5c_tablet_tabs_frame pgtabs_frame">
+            <div id="h5c-tablet-tabs-framew1" class="h5c_tablet_tabs_frame pgtabs_frame">
               <div class="h5c_tablet_tabs_lm">
-                <div id="h5c-tablet-tabs-t1" class="h5c_tablet_tabs"></div>
+                <div id="h5c-tablet-tabs-w1" class="h5c_tablet_tabs"></div>
               </div>
               <div class="h5c_tablet_tabs_lr">
               </div>
@@ -169,11 +168,11 @@
 
 
     <!-- column blank 2 -->
-    <td width="10px"></td>
+    <td width="10px" class="layout_vcol"></td>
     <!--
     http://www.daqianduan.com/jquery-drag/
     -->
-    <td id="hdev_layout_right" class="" width="400px">
+    <td id="h5c-tablet-vcol-t" class="" width="40%">
       <table width="100%" height="100%">
         <tr>
           <td id="h5c-tablet-framet0" class="hdev-layout-container" height="400px" valign="top">
@@ -275,19 +274,20 @@ $(document).ready(function() {
     }
 
     $(window).resize(function() {
-        // TODO @0219 hdev_layout_resize();
+        h5cLayoutResize();
     });
     
     $(".layout_vcol").bind('mousedown', function() {    
         $("#hdev_layout").mousemove(function(e) {
     
-            p = $('#hdev_layout_leftbar').position();        
+            p = $('#h5c-tablet-vcol-w').position();        
             wrs = e.pageX - p.left;
-            if (wrs < 200 || wrs > 500)
+            if (wrs < 500 || wrs > 1800) {
                 return;
+            }
             
-            setCookie("config_leftbar_width", (wrs - 5), 365);
-            // TODO @0219 hdev_layout_resize();
+            setCookie("config_tablet_vcol_w_w", (wrs - 5), 365);
+            h5cLayoutResize();
         });
     });
     $(document).bind('selectstart',function() {return false;});
@@ -296,10 +296,9 @@ $(document).ready(function() {
     });
 
     hdev_init_setting();
-    //hdev_project('<?=$this->req->proj?>');
     h5cProjectOpen('<?=$this->req->proj?>');
     
-    // TODO @0219 setTimeout(hdev_layout_resize, 3000);
+    setTimeout(h5cLayoutResize, 3000);
 });
 
 </script>
