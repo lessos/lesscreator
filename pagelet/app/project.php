@@ -74,7 +74,7 @@ $ptpath = md5("");
 </table>
 
 <!--ProjectFilesManager-->
-<div id="pt<?=$ptpath?>" class="hdev-proj-files hdev-scrollbar"></div>
+<div id="pt<?=$ptpath?>" class="hdev-proj-files hdev-scrollbar h5c_gen_scroll"></div>
 
 <div id="hdev-proj-olrcm-std" class="hdev-proj-olrcm border_radius_5">
     <div class="header">
@@ -425,6 +425,7 @@ function _hdev_dir(proj, path, force)
         data: 'proj='+proj+'&path='+path,
         success: function(data) {
             $("#pt"+p).html(data);
+            h5cLayoutResize();
         }
     });
 }

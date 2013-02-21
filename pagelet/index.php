@@ -175,7 +175,7 @@
     <td id="h5c-tablet-vcol-t" class="" width="40%">
       <table width="100%" height="100%">
         <tr>
-          <td id="h5c-tablet-framet0" class="hdev-layout-container" height="400px" valign="top">
+          <td id="h5c-tablet-framet0" class="hdev-layout-container" valign="top">
             
             <div id="h5c-tablet-tabs-framet0" class="h5c_tablet_tabs_frame ">
               <div class="h5c_tablet_tabs_lm">
@@ -242,6 +242,7 @@
 
 <script src="/h5creator/static/js/c.js"></script>
 <script src="/h5creator/static/js/gen.js"></script>
+<script src="/h5creator/static/js/editor.js"></script>
 
 <script src="/h5creator/static/js/crypto-min.js"></script>
 <script src="/h5creator/static/js/md5-min.js"></script>
@@ -252,7 +253,6 @@
 <script src="/codemirror3/addon/search/searchcursor.js"></script>
 <script src="/codemirror3/keymap/vim.js"></script>
 
-<script src="/h5creator/static/js/editor.js"></script>
 
 <script>
 $(document).ready(function() {

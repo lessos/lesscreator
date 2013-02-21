@@ -421,6 +421,10 @@ function h5cLayoutResize()
     $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(
         lo_ww - $('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
 
+    ft0h = $('#h5c-tablet-framet0').height();
+    tt0h = $('#h5c-tablet-tabs-framet0').height();
+    $('#h5c-tablet-body-t0').height(ft0h - tt0h);
+
     ////////////////////////////////////////////////////
 
     
@@ -431,6 +435,15 @@ function h5cLayoutResize()
     //    $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(
     //        lo_ww - $('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
     //}
+
+    /* if ($('#hdev_project').length) {
+        $('#hdev_project').height(lo_h);        
+        if ($('.hdev-proj-files').length) {
+            pfp = $('.hdev-proj-files').position();
+            $('.hdev-proj-files').height(lo_p.top + lo_h - pfp.top);
+            //$('.hdev-proj-files').width(lo_lw);
+        }
+    } */
 }
 
 var h5cPos = null;
