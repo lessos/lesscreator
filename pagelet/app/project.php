@@ -141,7 +141,7 @@ function _proj_set_refresh()
     
         $(this).find(".hdev-rcmenu").css({
             top: e.pageY+'px',
-            left: e.pageX+'px'
+            left: e.pageX
         }).toggle();
        
         $(this).find(".hdev_rcobj_file").click(function() {
@@ -358,11 +358,17 @@ function _refresh_tree()
             t = bh - h;
         }
         
+        bw = $('body').width() - 20;
+        l = e.pageX;
+        if (l > (bw - 200)) {
+            l = bw - 200;
+        }
+
         $(this).find('.hdev-rcmenu').hide();
         
         $(this).find(".hdev-rcmenu").css({
-            top: t+'px',
-            left: e.pageX+'px'
+            top: t +'px',
+            left: l +'px'
         }).show();
     
         $(this).find(".hdev-rcmenu").click(function() {

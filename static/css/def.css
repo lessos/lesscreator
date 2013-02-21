@@ -485,7 +485,7 @@ textarea {
     padding: 3px;
     background-color: #fff;
     border: 1px solid #aaa;
-    min-width: 220px;
+    min-width: 200px;
     z-index: 100;
 }
 .hdev-rcmenu .rcsepli {
