@@ -59,9 +59,20 @@ function hdev_init_setting()
     
     hceditor.lineWrapping = (getCookie('editor_lineWrapping') == 'false') ? false : true;
 
-    var v = getCookie('config_tablet_vcol_w_w');
+    var v = getCookie('config_tablet_colw');
     if (v == null) {
-        //setCookie("config_tablet_vcol_w_w", 800, 365);
+        v = $('#h5c-tablet-vcol-w').innerWidth(true);
+        setCookie("config_tablet_colw", v, 365);
+    }
+    v = getCookie('config_tablet_roww0');
+    if (v == null) {
+        v = $('#h5c-tablet-framew0').height();
+        setCookie("config_tablet_roww0", v, 365);
+    }
+    v = getCookie('config_tablet_rowt0');
+    if (v == null) {
+        v = $('#h5c-tablet-framet0').height();
+        setCookie("config_tablet_rowt0", v, 365);
     }
     
     posFetch();
@@ -196,7 +207,7 @@ function hdev_layout_resize()
     lo_mw = $('#hdev_layout_middle').innerWidth();
     
     // OFFSET
-    var offset = parseInt(getCookie('config_tablet_vcol_w_w')) - lo_lw;
+    var offset = parseInt(getCookie('config_tablet_colw')) - lo_lw;
     if (offset != 0) {
         lo_lw += offset;
         $('#hdev_layout_leftbar').width(lo_lw);

@@ -609,11 +609,14 @@ textarea {
 }
 .tab-config .l td {border-bottom: 1px solid #ccc;}
 
-.layout_vcol {
+.h5c_resize_row {
+    cursor: row-resize;
+    background: url(/h5creator/static/img/handle-h.png) center no-repeat;
+}
+.h5c_resize_col {
     cursor: col-resize;
     background: url(/h5creator/static/img/handle-v.png) 3px 50% no-repeat;
 }
-
 
 .h5c_dialog_bg {
     position: fixed; z-index: 10;

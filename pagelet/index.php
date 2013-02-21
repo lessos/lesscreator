@@ -145,7 +145,7 @@
           </td>
         </tr>
 
-        <tr><td height="10px"></td></tr>
+        <tr><td height="10px" id="h5c-resize-roww0" class="h5c_resize_row"></td></tr>
         
         <tr>
           <td id="h5c-tablet-framew1" class="hdev-layout-container" valign="top">
@@ -168,7 +168,7 @@
 
 
     <!-- column blank 2 -->
-    <td width="10px" class="layout_vcol"></td>
+    <td width="10px" id="h5c-resize-colw" class="h5c_resize_col"></td>
     <!--
     http://www.daqianduan.com/jquery-drag/
     -->
@@ -191,7 +191,7 @@
           </td>
         </tr>
 
-        <tr><td height="10px"></td></tr>
+        <tr><td height="10px" id="h5c-resize-rowt0" class="h5c_resize_row"></td></tr>
         
         <tr>
           <td id="h5c-tablet-framet1" class="hdev-layout-container" valign="top">
@@ -277,7 +277,7 @@ $(document).ready(function() {
         h5cLayoutResize();
     });
     
-    $(".layout_vcol").bind('mousedown', function() {    
+    $("#h5c-resize-colw").bind('mousedown', function() {    
         $("#hdev_layout").mousemove(function(e) {
     
             p = $('#h5c-tablet-vcol-w').position();        
@@ -286,7 +286,29 @@ $(document).ready(function() {
                 return;
             }
             
-            setCookie("config_tablet_vcol_w_w", (wrs - 5), 365);
+            setCookie("config_tablet_colw", (wrs - 5), 365);
+            h5cLayoutResize();
+        });
+    });
+    $("#h5c-resize-roww0").bind('mousedown', function() {    
+        $("#hdev_layout").mousemove(function(e) {    
+            p = $('#h5c-tablet-framew0').position();        
+            l = e.pageY - p.top;
+            if (l < 0) {
+                return;
+            }            
+            setCookie("config_tablet_roww0", (l - 5), 365);
+            h5cLayoutResize();
+        });
+    });
+    $("#h5c-resize-rowt0").bind('mousedown', function() {    
+        $("#hdev_layout").mousemove(function(e) {    
+            p = $('#h5c-tablet-framet0').position();        
+            l = e.pageY - p.top;
+            if (l < 0) {
+                return;
+            }            
+            setCookie("config_tablet_rowt0", (l - 5), 365);
             h5cLayoutResize();
         });
     });
