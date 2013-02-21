@@ -307,7 +307,7 @@ $(document).ready(function() {
             l = e.pageY - p.top;
             if (l < 0) {
                 return;
-            }            
+            }
             setCookie("config_tablet_rowt0", (l - 5), 365);
             h5cLayoutResize();
         });

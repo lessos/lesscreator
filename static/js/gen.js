@@ -410,20 +410,20 @@ function h5cLayoutResize()
     lo_h = bh - lo_p.top - 10;    
     $('#hdev_layout').height(lo_h);
 
-    fw0h = $('#h5c-tablet-framew0').height();
+    //fw0h = $('#h5c-tablet-framew0').height();
     tw0h = $('#h5c-tablet-tabs-framew0').height();
     if ($('.CodeMirror').length) {
         $('.CodeMirror').width(lo_ww);
-        $('.CodeMirror').height(fw0h - tw0h);
+        $('.CodeMirror').height(roww0 - tw0h);
     }
 
     $('#h5c-tablet-tabs-framew0').width(lo_ww);
     $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(
         lo_ww - $('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
 
-    ft0h = $('#h5c-tablet-framet0').height();
+    //ft0h = $('#h5c-tablet-framet0').height();
     tt0h = $('#h5c-tablet-tabs-framet0').height();
-    $('#h5c-tablet-body-t0').height(ft0h - tt0h);
+    $('#h5c-tablet-body-t0').height(rowt0 - tt0h);
 
     ////////////////////////////////////////////////////
 
