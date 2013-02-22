@@ -145,16 +145,16 @@ function _proj_set_refresh()
         }).toggle();
        
         $(this).find(".hdev_rcobj_file").click(function() {
-            _file_std_show("file", "", e.pageY, e.pageX);
+            _file_std_show("file", "");
         });
         $(this).find(".hdev_rcobj_dir").click(function() {
-            _file_std_show("dir", "", e.pageY, e.pageX);
+            _file_std_show("dir", "");
         });
         $(this).find(".hdev_rcobj_upload").click(function() {
-            _file_upload("", e.pageY, e.pageX);
+            _file_upload("");
         });
         $(this).find(".hdev_rcobj_rename").click(function() {
-            _file_rename("", e.pageY, e.pageX);
+            _file_rename("");
         });
         
         $(document).click(function() {
@@ -241,10 +241,19 @@ $("#form_file_std_commit").submit(function(event) {
 });
 
    
-function _file_std_show(type, path, t, l)
+function _file_std_show(type, path)
 {
+    var p = posFetch();
+
+    w = $("#hdev-proj-olrcm-mv").outerWidth(true);
+    bw = $('body').width() - 30;
+    l = p.left;
+    if (l > (bw - w)) {
+        l = bw - w;
+    }
+
     h = $("#hdev-proj-olrcm-std").height();
-    t = posFetch().top;
+    t = p.top;
     bh = $('body').height() - 50;        
     if ((t + h) > bh) {
         t = bh - h;
@@ -291,7 +300,7 @@ function _file_std_callback(path)
     _hdev_dir(projCurrent, path, 1);
 }
 
-function _file_upload(path, t, l)
+function _file_upload(path)
 {
     // Check for the various File API support.
     if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -301,12 +310,21 @@ function _file_upload(path, t, l)
         return;
     }
     
+    var p = posFetch();
+
+    w = $("#hdev-proj-olrcm-mv").outerWidth(true);
+    bw = $('body').width() - 30;
+    l = p.left;
+    if (l > (bw - w)) {
+        l = bw - w;
+    }
+
     h = $("#hdev-proj-olrcm-upload").height();
-    t = posFetch().top;
+    t = p.top;
     bh = $('body').height() - 50;        
     if ((t + h) > bh) {
         t = bh - h;
-    }
+    }    
     
     $("#hdev-proj-olrcm-upload .path").text(path);
     $("#hdev-proj-olrcm-upload .inputpath").val(path);
@@ -317,13 +335,22 @@ function _file_upload(path, t, l)
     }).show("fast");
 }
 
-function _file_rename(path, t, l)
+function _file_rename(path)
 {
     var curname = path.replace(/^.*[\\\/]/, '');
     var parfold = path.substring(0, path.lastIndexOf('/'));
     
+    var p = posFetch();
+
+    w = $("#hdev-proj-olrcm-mv").outerWidth(true);
+    bw = $('body').width() - 30;
+    l = p.left;
+    if (l > (bw - w)) {
+        l = bw - w;
+    }
+    
     h = $("#hdev-proj-olrcm-mv").height();
-    t = posFetch().top;
+    t = p.top;
     bh = $('body').height() - 50;        
     if ((t + h) > bh) {
         t = bh - h;
@@ -331,7 +358,7 @@ function _file_rename(path, t, l)
     
     $("#hdev-proj-olrcm-mv .parfold").text(parfold);
     $("#hdev-proj-olrcm-mv .inputname").val(curname);
-    $("#hdev-proj-olrcm-mv .inputpath").val(path);
+    $("#hdev-proj-olrcm-mv .inputpath").val(path);    
 
     $("#hdev-proj-olrcm-mv").css({
         top: t+'px',
@@ -378,19 +405,19 @@ function _refresh_tree()
         $(this).find(".hdev_rcobj_file").click(function() {
             p = $(this).position();
             path = $(this).attr('href').substr(1);
-            _file_std_show("file", path, e.pageY, e.pageX);
+            _file_std_show("file", path);
         });
         $(this).find(".hdev_rcobj_dir").click(function() {
             path = $(this).attr('href').substr(1);
-            _file_std_show("dir", path, e.pageY, e.pageX);
+            _file_std_show("dir", path);
         });
         $(this).find(".hdev_rcobj_upload").click(function() {
             path = $(this).attr('href').substr(1);
-            _file_upload(path, e.pageY, e.pageX);
+            _file_upload(path);
         });
         $(this).find(".hdev_rcobj_rename").click(function() {
             path = $(this).attr('href').substr(1);
-            _file_rename(path, e.pageY, e.pageX);
+            _file_rename(path);
         });
         
         $(document).click(function() {

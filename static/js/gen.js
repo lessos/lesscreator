@@ -290,7 +290,9 @@ function h5cTabletTitle(urid)
         }
         entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabSwitch('"+urid+"')\">"+item.title+"</a></td>";
         entry += '<td class="chg">*</td>';
-        entry += '<td class="close"><a href="#">×</a></td>';
+        if (item.close) {
+            entry += '<td class="close"><a href="#">×</a></td>';
+        }
         entry += '</tr></table>';
         $("#h5c-tablet-tabs-"+ item.target).append(entry);            
     }
