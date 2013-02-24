@@ -124,10 +124,11 @@ function h5cDialogClose()
     h5cDialogCurrent = "";
 }
 
-function h5cTabletOpenDebug()
+function h5cTabletDebug()
 {
-    h5cTabletOpen('/h5creator/data/list', 't0', 'html', 'Data Instances');
-    h5cTabletOpen('/h5creator/data/setting', 't0', 'html', 'Data Setting');
+    console.log(h5cTabletPool);
+    //h5cTabletOpen('/h5creator/data/list', 't0', 'html', 'Data Instances');
+    //h5cTabletOpen('/h5creator/data/setting', 't0', 'html', 'Data Setting');
 }
 
 var h5cTabletFrame = {};
@@ -175,8 +176,11 @@ function h5cTabOpen(uri, target, type, opt)
 
 function h5cTabSwitch(urid)
 {
-    var item = h5cTabletPool[urid];
+    console.log("h5cTabSwitch: "+ urid);
 
+    var item = h5cTabletPool[urid];
+    console.log("switch to: ");
+    console.log(item);
     switch (item.type) {
     case 'html':
         if (item.data.length < 1) {
@@ -291,7 +295,7 @@ function h5cTabletTitle(urid)
         entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabSwitch('"+urid+"')\">"+item.title+"</a></td>";
         entry += '<td class="chg">*</td>';
         if (item.close) {
-            entry += '<td class="close"><a href="#">×</a></td>';
+            entry += '<td class="close"><a href="javascript:h5cTabClose(\''+urid+'\')">×</a></td>';
         }
         entry += '</tr></table>';
         $("#h5c-tablet-tabs-"+ item.target).append(entry);            
@@ -376,6 +380,60 @@ function h5cTabletMore(tg)
     $(".pgtab-openfiles-ol").find(".hdev_lcobj_file").click(function() {
         $('.pgtab-openfiles-ol').hide();
     });
+}
+
+
+function h5cTabClose(urid)
+{
+    var item = h5cTabletPool[urid];
+    
+    switch (item.type) {
+    case 'html':
+        $("#h5c-tablet-body-"+ item.target).empty();
+        break;
+    case 'editor':        
+        h5cEditorClose(urid);
+        break;
+    default :
+        return;
+    }
+
+    var j = 0;
+    for (var i in h5cTabletPool) {
+
+        if (item.target != h5cTabletPool[i].target) {
+            continue;
+        }
+
+        if (!h5cTabletPool[i].target) {
+            delete h5cTabletPool[i];
+            continue;
+        }
+
+        if (i == urid) {
+            $('#pgtab'+urid).remove();
+            delete h5cTabletPool[urid];
+            if (urid != h5cTabletFrame[item.target].urid) {
+                return;
+            }            
+            h5cTabletFrame[item.target].urid = 0;
+            if (j != 0) {
+                break;
+            }            
+        } else {            
+            j = i;            
+            if (h5cTabletFrame[item.target].urid == 0) {
+                break;
+            }
+        }
+    }
+    
+    if (j != 0) {
+        h5cTabSwitch(j);
+        h5cTabletFrame[item.target].urid = j;
+    }
+
+    h5cLayoutResize();
 }
 
 function h5cLayoutResize()

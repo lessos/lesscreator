@@ -27,7 +27,7 @@
     </td>
     
     <td align="right">
-        <a href="javascript:h5cTabletOpenDebug()" class="btn">Debug</a>
+        <a href="javascript:h5cTabletDebug()" class="btn">Debug</a>
         <div class="btn-group">
             <div class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
                 <i class="icon-folder-open"></i>
@@ -126,7 +126,7 @@
 
     <td width="10px"></td>
     
-    <td id="h5c-tablet-vcol-w">
+    <td id="h5c-tablet-vcol-w" valign="top">
       <table width="100%" height="100%">
         <tr>
           <td id="h5c-tablet-framew0" class="hdev-layout-container" height="400px" valign="top">
@@ -172,7 +172,7 @@
     <!--
     http://www.daqianduan.com/jquery-drag/
     -->
-    <td id="h5c-tablet-vcol-t" class="" width="40%">
+    <td id="h5c-tablet-vcol-t" class="" width="40%" valign="top">
       <table width="100%" height="100%">
         <tr>
           <td id="h5c-tablet-framet0" class="hdev-layout-container" valign="top">

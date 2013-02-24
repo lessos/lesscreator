@@ -15,6 +15,7 @@ var h5cEditor = {
 
 function h5cTabletEditorOpen(urid)
 {
+    console.log("h5cTabletEditorOpen: "+ urid);
     var item = h5cTabletPool[urid];
     // console.log(item);
 
@@ -167,4 +168,23 @@ function h5cEditorSave(urid, force)
             //$("#pgtab"+pgid+" .chg").show();
         }
     });
+}
+
+function h5cEditorClose(urid)
+{
+    var item = h5cTabletPool[urid];
+
+    if (urid == h5cEditor.urid) {
+        h5cEditor.instance.toTextArea();
+    }
+
+    h5cEditorSave(urid, 1);
+    
+    if (urid == h5cEditor.urid) {
+        $('#src'+urid).remove();
+        h5cEditor.instance = null;
+        h5cEditor.urid = 0;
+    }
+    
+    h5cLayoutResize();
 }
