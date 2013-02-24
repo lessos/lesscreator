@@ -63,39 +63,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         header("HTTP/1.1 200"); die('OK');
     } else {
         header("HTTP/1.1 500"); die('ERROR');
-    }    
+    }
 }
 
 
 echo $msg;
 ?>
 
-<form id="hdev_appedit_form" action="/h5creator/app/project-edit/" method="post" >
-  <input id="proj" name="proj" size="30" type="hidden" value="<?=$item['appid']?>" />
-  <table class="box" width="100%" border="0" cellpadding="0" cellspacing="10" >
+<form id="hdev_appedit_form" action="/h5creator/app/project-edit/" method="post" style="padding:5px;">
+  <input name="proj" type="hidden" value="<?=$item['appid']?>" />
+  <table class="" width="100%" style="padding:5px;" >
     <tr>
-      <td width="140px" align="right" >AppID</td>
-      <td ><?=$item['appid']?></td>
+      <td width="100px"><strong>AppID</strong></td>
+      <td><?=$item['appid']?></td>
     </tr>
     <tr>
-      <td align="right" >Name</td>
-      <td ><input name="name" size="30" type="text" value="<?=$item['name']?>" /></td>
+      <td><strong>Name</strong></td>
+      <td><input name="name" class="input-medium" type="text" value="<?=$item['name']?>" /></td>
     </tr>
     <tr>
-      <td align="right" >Version</td>
-      <td ><input name="version" size="30" type="text" value="<?=$item['version']?>" /></td>
+      <td><strong>Version</strong></td>
+      <td><input name="version" class="input-medium" type="text" value="<?=$item['version']?>" /></td>
     </tr>
     <tr>
-      <td align="right" >Release</td>
-      <td ><input name="release" size="30" type="text" value="<?=$item['release']?>" /></td>
+      <td><strong>Release</strong></td>
+      <td><input name="release" class="input-medium" type="text" value="<?=$item['release']?>" /></td>
     </tr>
     <tr>
-      <td align="right" valign="top">Description</td>
-      <td ><textarea name="summary" rows="6" style="width:95%;"><?=$item['summary']?></textarea></td>
+      <td valign="top"><strong>Summary</strong></td>
+      <td><textarea name="summary" rows="3" style="width:90%;"><?=$item['summary']?></textarea></td>
     </tr>
     <tr>
       <td></td>
-      <td ><input type="submit" name="submit" value="Submit" class="input_button" /></td>
+      <td><input type="submit" name="submit" value="Save" class="but" /></td>
     </tr>
   </table>
 </form>

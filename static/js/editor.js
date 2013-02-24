@@ -15,7 +15,7 @@ var h5cEditor = {
 
 function h5cTabletEditorOpen(urid)
 {
-    console.log("h5cTabletEditorOpen: "+ urid);
+    //console.log("h5cTabletEditorOpen: "+ urid);
     var item = h5cTabletPool[urid];
     // console.log(item);
 
@@ -120,7 +120,7 @@ function h5cEditorLoad(urid)
     });
     h5cEditor.instance.on("change", function() {
         h5cEditorSave(urid, 0);
-        console.log("onchanged");
+        //console.log("onchanged");
     });
     if (getCookie('editor_keymap_vim') == "on") {
         h5cEditor.instance.setOption("keyMap", "vim");

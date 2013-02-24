@@ -126,7 +126,7 @@ function h5cDialogClose()
 
 function h5cTabletDebug()
 {
-    console.log(h5cTabletPool);
+    //console.log(h5cTabletPool);
     //h5cTabletOpen('/h5creator/data/list', 't0', 'html', 'Data Instances');
     //h5cTabletOpen('/h5creator/data/setting', 't0', 'html', 'Data Setting');
 }
@@ -176,11 +176,7 @@ function h5cTabOpen(uri, target, type, opt)
 
 function h5cTabSwitch(urid)
 {
-    console.log("h5cTabSwitch: "+ urid);
-
     var item = h5cTabletPool[urid];
-    console.log("switch to: ");
-    console.log(item);
     switch (item.type) {
     case 'html':
         if (item.data.length < 1) {
@@ -265,7 +261,7 @@ function h5cTabletOpen(url, target, type, title)
         });
         break;
     case 'editor':
-        console.log(h5cTabletPool[urid]);
+        //console.log(h5cTabletPool[urid]);
 
 
         break;
@@ -549,4 +545,10 @@ function h5cProjectOpen(proj)
     projCurrent = proj;
     
     h5cLayoutResize();
+}
+
+function h5cProjSet()
+{
+    h5cTabOpen('/h5creator/app/project-edit?proj='+projCurrent, 
+        't0', 'html', {'title': 'Project Setting', 'close':'1'});
 }
