@@ -1,20 +1,22 @@
 <?php
 
-$projbase = SYS_ROOT."/app";
+$projbase = H5C_DIR;//SYS_ROOT."/app";
 
 if ($this->req->proj == null) {
     die('ERROR');
 }
 $proj  = preg_replace("/\/+/", "/", trim($this->req->proj,'/'));
-$projpath = "{$projbase}/{$proj}";
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
 
 if (strlen($proj) < 1) {
     die("ERROR");
 }
 
 $path  = preg_replace("/\/+/", "/", $this->req->path);
-
-$paths = explode("/", trim($path, "/"));
 
 if (!file_exists($projpath.'/'.$path)) {
     die('ERROR');
@@ -25,8 +27,34 @@ $path_nav = '';
 if (!file_exists($projpath."/hootoapp.yaml")) {
     die('ERROR');
 }
+
 $info = hwl\Yaml\Yaml::decode(file_get_contents($projpath."/hootoapp.yaml"));
 
+if (isset($info['name'])) {
+    
+    $pjc = SYS_ROOT .'/conf/h5creator/projlist.json';
+    $pjs = "";
+    if (file_exists($pjc)) {
+        $pjs = file_get_contents($pjc);
+    }
+    $pjs = json_decode($pjs, true);
+    if (!is_array($pjs)) {
+        $pjs = array();
+    }
+    
+    if (!isset($pjs[$info['appid']])
+        || $pjs[$info['appid']]['name'] != $info['name']
+        || $pjs[$info['appid']]['path'] != $projpath) {
+
+        $pjs[$info['appid']]['name'] = $info['name'];
+        $pjs[$info['appid']]['path'] = $projpath;
+
+        $pjs = hwl_Json::prettyPrint($pjs);
+
+        hwl_util_dir::mkfiledir($pjc);
+        file_put_contents($pjc, $pjs);
+    }
+}
 
 $ptpath = md5("");
 ?>

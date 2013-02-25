@@ -547,6 +547,11 @@ function h5cProjectOpen(proj)
     h5cLayoutResize();
 }
 
+function h5cProjOpenDialog()
+{
+    h5cDialogOpen('/h5creator/proj/open', 600, 400, 'Open Project', null);
+}
+
 function h5cProjSet()
 {
     h5cTabOpen('/h5creator/app/project-edit?proj='+projCurrent, 
