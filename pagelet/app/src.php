@@ -2,7 +2,7 @@
 
 header('Content-type: text/plain');
 
-$projbase = SYS_ROOT."/app";
+$projbase = H5C_DIR;
 if ($this->req->proj == null) {
     header("HTTP/1.1 404 Not Found"); die('Page Not Found');
 }
@@ -10,7 +10,15 @@ if ($this->req->path == null) {
     header("HTTP/1.1 404 Not Found"); die('Page Not Found');
 }
 
-$f = "{$projbase}/{$this->req->proj}/{$this->req->path}";
+$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
+
+
+$f = "{$projpath}/{$this->req->path}";
 $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 
 if (!file_exists($f) || !is_file($f)) {
@@ -47,8 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
     header("HTTP/1.1 200"); die("Saved successfully at ".date("Y-m-d H:i:s"));
 }
 
-if ($ct === NULL)
+if ($ct === NULL) {
     $ct = file_get_contents($f);
-
+}
 echo $ct;
-?>

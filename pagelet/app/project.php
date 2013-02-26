@@ -1,23 +1,22 @@
 <?php
 
-$projbase = H5C_DIR;//SYS_ROOT."/app";
+$projbase = H5C_DIR;
 
 if ($this->req->proj == null) {
     die('ERROR');
 }
-$proj  = preg_replace("/\/+/", "/", trim($this->req->proj,'/'));
+$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 if (substr($proj, 0, 1) == '/') {
     $projpath = $proj;
 } else {
     $projpath = "{$projbase}/{$proj}";
 }
 
-if (strlen($proj) < 1) {
+if (strlen($projpath) < 1) {
     die("ERROR");
 }
 
 $path  = preg_replace("/\/+/", "/", $this->req->path);
-
 if (!file_exists($projpath.'/'.$path)) {
     die('ERROR');
 }

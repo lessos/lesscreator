@@ -1,11 +1,18 @@
 <?php
-$projbase = SYS_ROOT."/app";
-$proj = $this->req->proj;
+$projbase = H5C_DIR;
+
 $path = $this->req->path;
+
+$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $p = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projbase}/{$proj}/{$path}/");
+    $p = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projpath}/{$path}/");
     if (!is_writable($p)) {
         header("HTTP/1.1 500"); die("'$p' is not Writable");
     }
@@ -31,5 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
     header("HTTP/1.1 200"); die("Saved successfully");
 }
-header("HTTP/1.1 500"); die("Can not upload file");
-?>
+
+header("HTTP/1.1 500");
+die("Can not upload file");

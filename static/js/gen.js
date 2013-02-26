@@ -535,8 +535,10 @@ function h5cProjectOpen(proj)
     }
     
     // Open Project in New Tab
-    if (projCurrent && projCurrent != proj) {
-        window.open("/h5creator/index?proj="+proj, '_blank');
+    if (projCurrent) {
+        if (projCurrent.split("/").pop(-1) != proj.split("/").pop(-1)) {
+            window.open("/h5creator/index?proj="+proj, '_blank');
+        }
         return;
     }
     
@@ -557,3 +559,4 @@ function h5cProjSet()
     h5cTabOpen('/h5creator/app/project-edit?proj='+projCurrent, 
         't0', 'html', {'title': 'Project Setting', 'close':'1'});
 }
+

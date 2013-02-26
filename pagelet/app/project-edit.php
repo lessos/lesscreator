@@ -1,11 +1,8 @@
 <?php
 
+$projbase = H5C_DIR;
 
-
-if (!isset($this->req->projbase)
-    || strlen($this->req->projbase) < 1) {
-    $projbase = SYS_ROOT."/app";
-} else {
+if (isset($this->req->projbase) {
     $projbase = $this->req->projbase;
 }
 
@@ -13,7 +10,12 @@ if (!isset($this->req->proj)
     || strlen($this->req->proj) < 1) {
     header("HTTP/1.1 404 Not Found"); die('Page Not Found');
 }
-$proj  = preg_replace("/\/+/", "/", trim($this->req->proj,"/"));
+$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
 
 $status = 200;
 $msg    = '';
@@ -29,7 +31,7 @@ $item = array(
 
 $title = 'New Project';
 
-$f = "{$projbase}/{$proj}/hootoapp.yaml";
+$f = "{$projpath}/hootoapp.yaml";
 $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 
 if (!file_exists($f)) {
@@ -52,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         }
     }
     
-    $f = "{$projbase}/{$proj}/hootoapp.yaml";
+    $f = "{$projpath}/hootoapp.yaml";
     $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
     
     $str  = hwl\Yaml\Yaml::encode($item);    

@@ -68,7 +68,7 @@ foreach (glob($path."/*", GLOB_ONLYDIR) as $st) {
     <tr> 
         <td width="20px"></td>
         <td>
-            <button id="_proj_fs_open_btn" class="btn displaynone btn-inverse" onclick="_proj_fs_open_do()">Open Project</button>
+            <button id="_proj_fs_open_btn" class="btn displaynone btn-inverse" onclick="_proj_fs_open()">Open Project</button>
         </td>
         <td align="right">
             
@@ -97,7 +97,7 @@ $('._proj_fs_href').click(function() {
     $("#_proj_fs_open_btn").show();
 });
 
-function _proj_fs_open_do()
+function _proj_fs_open()
 {
     h5cProjectOpen(_path +'/'+ _path_click);
     h5cDialogClose();

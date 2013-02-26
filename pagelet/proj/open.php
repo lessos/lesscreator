@@ -30,7 +30,7 @@ foreach ($pjs as $appid => $val) {
   <td valign="middle" width="18">
     <img src="/h5creator/static/img/app-t3-16.png" align="absmiddle" />
   </td>
-  <td><strong><a href="javascript:h5cProjectOpen('<?=$val['path']?>')"><?=$val['name']?></a></strong> <font color="gray">( <?=$appid?> )</font></td>
+  <td><strong><a href="javascript:_proj_recent_open('<?=$val['path']?>')"><?=$val['name']?></a></strong> <font color="gray">( <?=$appid?> )</font></td>
 </tr>
 <?php
 }
@@ -70,5 +70,11 @@ function _proj_fs(path, force)
 
     $("#_nav_recent").removeClass("active");
     $("#_nav_fs").addClass("active");
+}
+
+function _proj_recent_open(path)
+{
+    h5cProjectOpen(path);
+    h5cDialogClose();
 }
 </script>

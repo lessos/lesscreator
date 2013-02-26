@@ -1,6 +1,5 @@
 <?php
-$projbase = SYS_ROOT."/app";
-$proj = $this->req->proj;
+$projbase = H5C_DIR;
 $path = $this->req->path;
 $name = $this->req->name;
 $type = $this->req->type;
@@ -8,13 +7,20 @@ $type = $this->req->type;
 $status = 200;
 $msg    = 'Saved successfully';//'Internal Server Error';
 
+$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
+
 try {
 
     if (!strlen($name)) {
         header("HTTP/1.1 500"); die('Invalid Params');
     }
 
-    $obj = $projbase."/".$proj."/".$path;
+    $obj = $projpath ."/". $path;
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
     if (!is_writable($obj)) {
         header("HTTP/1.1 500"); die("'$obj' is not Writable");
@@ -48,7 +54,7 @@ try {
             throw new Exception('File exists');
         }
     
-        if (!hwl_Fs_Dir::mkdir($obj, 0755)) {
+        if (!hwl_Fs_Dir::mkdir($obj, 0644)) {
             header("HTTP/1.1 500"); die("Can not create '$obj'");
         } else {
             $msg .= " at ".date("Y-m-d H:i:s");
@@ -61,4 +67,3 @@ try {
 
 header("HTTP/1.1 $status");
 echo $msg;
-?>

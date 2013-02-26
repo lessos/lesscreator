@@ -1,22 +1,24 @@
 <?php
 
-$projbase = SYS_ROOT."/app";
+$projbase = H5C_DIR;
 
 if ($this->req->proj == null) {
-    //die();
+    die('ERROR');
 }
-$proj  = preg_replace("/\/+/", "/", trim($this->req->proj,'/'));
+$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj,'/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
 
 if (strlen($proj) < 1) {
     die();
 }
 
 $path  = preg_replace("/\/+/", "/", $this->req->path);
-
-$paths = explode("/", trim($path, "/"));
-//die(200);
-if (!file_exists($projbase.'/'.$proj.'/'.$path)) {    
-    die();
+if (!file_exists($projpath.'/'.$path)) {
+    die('ERROR');
 }
 ?>
 
@@ -25,7 +27,7 @@ if (!file_exists($projbase.'/'.$proj.'/'.$path)) {
 
 $file   = '';
 
-$glob = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projbase}/{$proj}/{$path}/*");
+$glob = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projpath}/{$path}/*");
 
 $prt = $prt0 = '';
 

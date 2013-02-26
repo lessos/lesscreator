@@ -1,15 +1,20 @@
 <?php
 
-$projbase = SYS_ROOT."/app";
+$projbase = H5C_DIR;
 
 if (!isset($this->req->proj)
     || strlen($this->req->proj) < 1) {
-    $proj = hwl_string::rand(8,2);
+    $proj = hwl_string::rand(8, 2);
 } else {
     $proj = $this->req->proj;
 }
 
-$proj  = preg_replace("/\/+/", "/", trim($proj, '/'));
+$proj  = preg_replace("/\/+/", "/", rtrim($proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
 
 $msg = '';
 
@@ -24,7 +29,7 @@ $item = array(
 
 $title = 'New Project';
 
-$f = "{$projbase}/{$proj}/hootoapp.yaml";
+$f = "{$projpath}/hootoapp.yaml";
 $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 
 if (file_exists($f)) {
@@ -42,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         }
     }
     
-    $f = "{$projbase}/{$proj}/hootoapp.yaml";
+    $f = "{$projpath}/hootoapp.yaml";
     $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
     $str  = hwl\Yaml\Yaml::encode($item);     
     if (hwl_Fs_Dir::mkfiledir($f, 0755)) {

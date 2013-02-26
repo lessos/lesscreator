@@ -1,8 +1,14 @@
 <?php
-$projbase = SYS_ROOT."/app";
-$proj = $this->req->proj;
+$projbase = H5C_DIR;
 $path = $this->req->path;
 $name = $this->req->name;
+
+$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
 
 $status = 200;
 $msg    = 'Saved successfully';//'Internal Server Error';
@@ -26,13 +32,13 @@ try {
         header("HTTP/1.1 400"); die("The name '{$name}' is already used in this folder");
     }
     
-    $objo = $projbase."/".$proj."/".$path;    
+    $objo = $projpath."/".$path;    
     $objo = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $objo);
     if (!is_writable($objo)) {
         header("HTTP/1.1 500"); die("'$objo' is not Writable");
     }
     
-    $objn = $projbase."/".$proj."/".$parpath."/".$name;
+    $objn = $projpath."/".$parpath."/".$name;
     $objn = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $objn);
     
     if (!rename($objo, $objn)) {
@@ -45,4 +51,3 @@ try {
 
 header("HTTP/1.1 $status");
 echo $msg;
-?>
