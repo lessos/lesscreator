@@ -528,13 +528,11 @@ function h5cGenAlert(obj, type, msg)
 
 function h5cProjectOpen(proj)
 {
-    // New Project
     if (!proj) {
         //hdev_page_open('app/project-new', 'content', 'New Project', 'app-t3-16');
         return;
     }
     
-    // Open Project in New Tab
     if (projCurrent) {
         if (projCurrent.split("/").pop(-1) != proj.split("/").pop(-1)) {
             window.open("/h5creator/index?proj="+proj, '_blank');
@@ -542,7 +540,6 @@ function h5cProjectOpen(proj)
         return;
     }
     
-    // Open Current Project
     h5cTabletOpen('/h5creator/app/project?proj='+proj, 't0', 'html', 'Files');
     projCurrent = proj;
     
@@ -552,6 +549,11 @@ function h5cProjectOpen(proj)
 function h5cProjOpenDialog()
 {
     h5cDialogOpen('/h5creator/proj/open', 600, 400, 'Open Project', null);
+}
+
+function h5cProjNewDialog()
+{
+    h5cDialogOpen('/h5creator/proj/new', 700, 450, 'Create New Project', null);
 }
 
 function h5cProjSet()

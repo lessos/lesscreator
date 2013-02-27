@@ -38,7 +38,7 @@ foreach ($pjs as $appid => $val) {
 </table>
 </div>
 
-<div id="_proj_open_fs" class="h5c_gen_scrollbar displaynone" height="100px"></div>
+<div id="_proj_open_fs" class="displaynone" height="100px"></div>
 
 <script type="text/javascript">
 function _proj_recent()

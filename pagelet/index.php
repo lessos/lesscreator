@@ -38,7 +38,7 @@
                 <li><a href="javascript:h5cProjSet()">Setting Current Project</a></li>
                 <li class="divider"></li>
                 <li><a href="javascript:h5cProjOpenDialog()">Open Project</a></li>
-                <li><a href="javascript:hdev_project_new()">Create Project</a></li>
+                <li><a href="javascript:h5cProjNewDialog()">Create Project</a></li>
                 <li class="divider"></li>
                 <li><a href="javascript:hdev_project_new()">Open Data Instance</a></li>
                 <li><a href="javascript:h5c_data_new()">Create Data Instance</a></li>

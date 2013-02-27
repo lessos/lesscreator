@@ -28,8 +28,9 @@ a._proj_fs_href_click {
 </style>
 
 <div style="padding:0 10px;">
+    
 <ul class="breadcrumb" style="margin:5px 0;">
-    <li><a href="javascript:_proj_fs('/', 1)"><img src="/h5creator/static/img/drive.png" /></a> <span class="divider">/</span></li>
+    <li><a href="javascript:_proj_fs('/', 1)"><i class="icon-folder-open"></i></a> <span class="divider">/</span></li>
     <?php
     $sl = '';
     foreach ($paths as $v) {
