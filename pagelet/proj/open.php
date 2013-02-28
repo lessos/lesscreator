@@ -31,13 +31,13 @@ foreach ($pjs as $appid => $val) {
         $noinfo = '<font color="red">This project no longer exists!</font>';
     }
 ?>
-<tr>
+<tr id="_proj_<?php echo $appid?>">
   <td valign="middle" width="18">
     <img src="/h5creator/static/img/app-t3-16.png" align="absmiddle" />
   </td>
   <td><strong><a href="javascript:_proj_recent_open('<?=$val['path']?>')"><?=$val['name']?></a></strong> <font color="gray">( <?=$appid?> ) <?=$noinfo?></font></td>
   <td align="right">
-    <button type="button" class="close" title="Delete">&times;</button>
+    <button type="button" class="close" title="Clean out" onclick="_proj_recent_del('<?php echo $appid?>')">&times;</button>
   </td>
 </tr>
 <?php
@@ -88,6 +88,17 @@ function _proj_recent_open(path)
 
 function _proj_recent_del(appid)
 {
-    
+    $.ajax({
+        type: "POST",
+        url: '/h5creator/proj/open-recent',
+        data: {'func':'del', 'appid':appid},
+        success: function(data) {
+            if (data == "OK") {
+                $("#_proj_"+ appid).remove();
+            } else {
+                alert(data);
+            }
+        }
+    });
 }
 </script>
