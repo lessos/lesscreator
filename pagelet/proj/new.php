@@ -42,9 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
     );
     $str  = hwl\Yaml\Yaml::encode($set);
     if (hwl_Fs_Dir::mkfiledir($f, 0755)) {
-        if (!is_writable($f)) {
-            //die("Permission denied: failed to open $f");
-        }
         $fp = fopen($f, 'w');
         fwrite($fp, $str);
         fclose($fp);
@@ -57,9 +54,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 }
 ?>
 
+<div class="h5c_alert displaynone" style="padding:10px;">
+<div class="alert alert-success">
+  <p>
+    <strong>Success!</strong>
+  </p>
+  <p>
+    Well done! You successfully create new project.
+  </p>
+  <br />
+  <p>
+    <button class="btn btn-success" onclick="_proj_new_goto()">Open this Project ...</button>
+  </p>
+</div>
+</div>
+
 <form id="_proj_new_form" action="/h5creator/proj/new/" method="post" style="padding:10px;">
   
-  <input name="basedir" type="hidden" class="_proj_new_basedir" value="<?php echo $basedir?>" />
+  <input id="basedir" name="basedir" type="hidden" class="_proj_new_basedir" value="<?php echo $basedir?>" />
   
   <table width="100%">
     <tr>
@@ -94,15 +106,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         </td>
         <td align="right">
             
-            <button class="btn " onclick="h5cDialogClose()">Close</button>
+            <button class="btn" onclick="h5cDialogClose()">Close</button>
         </td>
         <td width="20px"></td>
     </tr>
 </table>
 
-
 <script>
 var _basedir = '<?php echo $basedir?>';
+var _appid = "";
+
 function _proj_new_dir(path)
 {
     if (path.length < 1) {
@@ -126,31 +139,31 @@ function _proj_new_dir(path)
 }
 
 function _proj_new_commit()
-{            
+{
     $.ajax({
         type: "POST",
         url: $("#_proj_new_form").attr('action'),
         data: $("#_proj_new_form").serialize(),
         success: function(data) {
             if (data == "OK") {
-                // alert('Successfully created');
-                window.open("http://www.w3schools.com");
-                return;
-            }
-            
-            alert(data);
-            
-                //
-//                window.open("/h5creator/index?proj="+ _basedir +"/"+ $("#appid").val(), '_blank');
-//                window.focus();
+                $("#_proj_new_open_btn").hide();
+                $("#_proj_new_form").hide();
+                $(".h5c_alert").show();
 
-                
-            
-            //window.location = "/h5creator/index?proj="+ _basedir +"/"+ $("#appid").val();
+                _basedir = $("#basedir").val();
+                _appid   = $("#appid").val();
+            } else {
+                alert(data);
+            }            
         }
     });
 
     return;
+}
+
+function _proj_new_goto()
+{
+    window.open("/h5creator/index?proj="+ _basedir +"/"+ _appid, "_blank");
 }
 
 </script>
