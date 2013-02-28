@@ -25,12 +25,20 @@ foreach ($pjs as $appid => $val) {
     if (in_array($appid, array('h5creator'))) {
         continue;
     }
+
+    $noinfo = "";
+    if (!file_exists($val['path']."/".$val['appid'])) {
+        $noinfo = '<font color="red">This project no longer exists!</font>';
+    }
 ?>
 <tr>
   <td valign="middle" width="18">
     <img src="/h5creator/static/img/app-t3-16.png" align="absmiddle" />
   </td>
-  <td><strong><a href="javascript:_proj_recent_open('<?=$val['path']?>')"><?=$val['name']?></a></strong> <font color="gray">( <?=$appid?> )</font></td>
+  <td><strong><a href="javascript:_proj_recent_open('<?=$val['path']?>')"><?=$val['name']?></a></strong> <font color="gray">( <?=$appid?> ) <?=$noinfo?></font></td>
+  <td align="right">
+    <button type="button" class="close" title="Delete">&times;</button>
+  </td>
 </tr>
 <?php
 }
@@ -76,5 +84,10 @@ function _proj_recent_open(path)
 {
     h5cProjectOpen(path);
     h5cDialogClose();
+}
+
+function _proj_recent_del(appid)
+{
+    
 }
 </script>
