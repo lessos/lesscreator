@@ -548,7 +548,7 @@ function h5cProjectOpen(proj)
 
 function h5cProjOpenDialog()
 {
-    h5cDialogOpen('/h5creator/proj/open', 600, 400, 'Open Project', null);
+    h5cDialogOpen('/h5creator/proj/open', 700, 450, 'Open Project', null);
 }
 
 function h5cProjNewDialog()

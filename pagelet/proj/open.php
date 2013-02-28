@@ -21,13 +21,15 @@ $pjs = json_decode($pjs, true);
 if (!is_array($pjs)) {
     $pjs = array();
 }
+
 foreach ($pjs as $appid => $val) {
     if (in_array($appid, array('h5creator'))) {
         continue;
     }
 
     $noinfo = "";
-    if (!file_exists($val['path']."/".$val['appid'])) {
+    //echo $val['path']."/hootoapp.yaml";
+    if (!file_exists($val['path']."/hootoapp.yaml")) {
         $noinfo = '<font color="red">This project no longer exists!</font>';
     }
 ?>
@@ -35,7 +37,7 @@ foreach ($pjs as $appid => $val) {
   <td valign="middle" width="18">
     <img src="/h5creator/static/img/app-t3-16.png" align="absmiddle" />
   </td>
-  <td><strong><a href="javascript:_proj_recent_open('<?=$val['path']?>')"><?=$val['name']?></a></strong> <font color="gray">( <?=$appid?> ) <?=$noinfo?></font></td>
+  <td><strong><a href="javascript:_proj_recent_open('<?=$val['path']?>')"><?=$val['name']?></a></strong> <font color="gray">( <?=$val['path']?> ) <?=$noinfo?></font></td>
   <td align="right">
     <button type="button" class="close" title="Clean out" onclick="_proj_recent_del('<?php echo $appid?>')">&times;</button>
   </td>

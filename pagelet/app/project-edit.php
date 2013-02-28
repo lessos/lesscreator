@@ -2,7 +2,7 @@
 
 $projbase = H5C_DIR;
 
-if (isset($this->req->projbase) {
+if (isset($this->req->projbase)) {
     $projbase = $this->req->projbase;
 }
 
