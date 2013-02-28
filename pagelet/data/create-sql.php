@@ -71,10 +71,6 @@ $(".h5c-data-set-form").click(function(event) {
 
     event.preventDefault();
         
-    //console.log($("#h5c-data-set-form").attr('action') + "?_=" + Math.random());
-    //console.log($("#h5c-data-set-form").serialize());
-
-    //return;
     $.ajax({ 
         type: "POST",
         url: $("#h5c-data-set-form").attr('action') + "?_=" + Math.random(),

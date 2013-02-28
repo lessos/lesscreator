@@ -180,23 +180,24 @@ function h5cTabSwitch(urid)
     switch (item.type) {
     case 'html':
         if (item.data.length < 1) {
-        $.ajax({
-            url     : item.url,
-            type    : "GET",
-            timeout : 30000,
-            success : function(rsp) {
-                h5cTabletPool[urid].data = rsp;
-                h5cTabletTitle(urid);
-                h5cTabletFrame[item.target].urid = urid;
-                $("#h5c-tablet-body-"+ item.target).empty().html(rsp);
-            },
-            error: function(xhr, textStatus, error) {
-                hdev_header_alert('error', xhr.responseText);
-            }
-        });
+            $.ajax({
+                url     : item.url,
+                type    : "GET",
+                timeout : 30000,
+                success : function(rsp) {
+                    h5cTabletPool[urid].data = rsp;
+                    h5cTabletTitle(urid);
+                    h5cTabletFrame[item.target].urid = urid;
+                    $("#h5c-tablet-body-"+ item.target).empty().html(rsp);
+                },
+                error: function(xhr, textStatus, error) {
+                    hdev_header_alert('error', xhr.responseText);
+                }
+            });
         } else {
             h5cTabletTitle(urid);
             h5cTabletFrame[item.target].urid = urid;
+            $("#h5c-tablet-body-"+ item.target).empty().html(item.data);
         }
         break;
     case 'editor':        
