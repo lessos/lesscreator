@@ -57,7 +57,7 @@ $('._proj_data_open_href').dblclick(function() {
         "close": 1
     }
 
-    h5cTabOpen("/h5creator/data/view?id="+ p, "t0", 'html', opt);
+    h5cTabOpen("/h5creator/data/view?id="+ p, "w0", 'html', opt);
     h5cDialogClose();
 });
 </script>
