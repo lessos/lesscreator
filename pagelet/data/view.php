@@ -38,15 +38,15 @@ function _struct_dismap($k)
 }
 ?>
 
-<div style="padding:10px;">
+<div style="padding:10px;content:'Ex';">
   <table width="100%" style="padding:5px;">
-    <tr>
-        <td width="120px">Instance ID</td>
-        <td><?php echo $this->req->id?></td>
-    </tr>
     <tr>
         <td>Name</td>
         <td><?php echo $info['title']?></td>
+    </tr>
+    <tr>
+        <td width="120px">Instance ID</td>
+        <td><?php echo $this->req->id?></td>
     </tr>
     <tr>
         <td valign="top">

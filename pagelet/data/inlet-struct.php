@@ -62,6 +62,11 @@ function _struct_dismap($k)
       </tr>
       <?php
   }
-  ?>            
+  ?>
+  <tr>
+    <td></td>
+    <td><button class="btn" onclick="_data_inlet_struct_edit()">Edit</button></td>
+    <td></td>
+  </tr>        
 </table>
 

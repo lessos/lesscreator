@@ -22,4 +22,8 @@ $struct = json_decode($struct, true);
         <td><strong>Instance ID</strong></td>
         <td><?php echo $this->req->id?></td>
     </tr>
+    <tr>
+        <td></td>
+        <td><button class="btn" onclick="_data_inlet_desc_edit()">Edit</button></td>
+    </tr>
 </table>

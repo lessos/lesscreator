@@ -57,5 +57,15 @@ function _data_inlet_open(url)
     });
 }
 
+function _data_inlet_desc_edit()
+{
+    _data_inlet_open("/h5creator/data/inlet-desc-set");
+}
+function _data_inlet_struct_edit()
+{
+    _data_inlet_open("/h5creator/data/inlet-struct-set");
+}
+
+
 _data_inlet_open("/h5creator/data/inlet-desc");
 </script>
