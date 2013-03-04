@@ -1,7 +1,13 @@
 
-function h5c_data_new()
+function h5cPluginDataOpen()
 {
-    h5cDialogOpen('/h5creator/data/create', 700, 400, 'Create Data Instance', null);
+    h5cDialogOpen('/h5creator/data/open', 700, 450, 
+        'Open Data Instance', null);
+}
+function h5cPluginDataNew()
+{
+    h5cDialogOpen('/h5creator/data/create', 700, 450, 
+        'Create Data Instance', null);
 }
 function h5cDialogPrev(url)
 {
@@ -118,7 +124,7 @@ function h5cDialogClose()
 {
     $(".h5c_dialog_bg").remove();
     $("#h5c_dialog_page").empty();
-    $("#h5c_dialog").hide();
+    $("#h5c_dialog").hide(300);
     h5cDialogW = 0;
     h5cDialogH = 0;
     h5cDialogCurrent = "";

@@ -621,7 +621,7 @@ textarea {
 .h5c_dialog_bg {
     position: fixed; z-index: 10;
     width: 100%; height: 100%; top: 0px; left: 0px;
-    background-color: rgba(0,0,0,0.2);    
+    background-color: rgba(0,0,0,0.5);    
 }
 
 #h5c_dialog {
@@ -796,4 +796,30 @@ textarea {
 }
 .h5c_tablet_body {
     overflow: auto;
+}
+
+.h5c_row_fluid {
+    list-style: none outside;
+    padding-bottom: 1em;
+    text-align: center;
+}
+.h5c_row_fluid a {
+    text-decoration: none;
+}
+.h5c_row_fluid .href:hover {
+    background-color: #f3f4f4;
+}
+.h5c_row_fluid .center {
+    text-align: center;
+}
+.h5c_row_fluid .span {
+    clear: all;
+    float: left; display: block;
+    margin: 0 10px 10px 0;
+    padding: 5px;
+}
+.h5c_row_fluid .title {
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    overflow: hidden;
 }
