@@ -12,20 +12,23 @@ $info = json_decode($info, true);
 
 ?>
 
-<div style="padding:10px;">
+<div style="padding:0px;">
 
-<div>
-    <span><img src="/h5creator/static/img/database.png" /> <strong>Data Instance</strong>: #<?php echo $this->req->id?></span>
+<div style="padding:10px; background-color:#f6f7f8;">
+    <span>
+        <img src="/h5creator/static/img/database.png" /> 
+        <strong>Data Instance</strong>: #<?php echo $this->req->id?>
+    </span>
 </div>
 
-<ul class="nav nav-tabs _data_inlet_nav">
+<ul class="h5c_navtabs _data_inlet_nav" style="background-color:#f6f7f8;">
   <li class="active">
     <a href="#data/inlet-desc" class="_data_inlet_nav_href">Description</a>
   </li>
   <li><a href="#data/inlet-struct" class="_data_inlet_nav_href">Structure</a></li>
 </ul>
 
-<div id="_data_inlet_body"></div>
+<div id="_data_inlet_body" style="padding-top:5px;"></div>
 
 </div>
 

@@ -823,3 +823,61 @@ textarea {
     white-space: nowrap; 
     overflow: hidden;
 }
+
+ul.h5c_navtabs {
+    list-style-type: none;
+    margin: 0; 
+}
+.h5c_navtabs {
+  *zoom: 1;
+  display: block;
+  padding-left: 10px;
+}
+.h5c_navtabs:before,
+.h5c_navtabs:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+.h5c_navtabs:after {
+  clear: both;
+}
+.h5c_navtabs > li {
+  float: left;
+  line-height: 14px;
+}
+.h5c_navtabs > li > a {
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-right: 2px;
+  text-decoration: none;
+  display: block;
+}
+.h5c_navtabs {
+  border-bottom: 1px solid #ddd;
+  font-size: 14px; font-weight: bold;
+}
+.h5c_navtabs > li {
+  margin-bottom: -1px;
+}
+.h5c_navtabs > li > a {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border: 1px solid transparent;
+  color: #3a87ad;
+}
+.h5c_navtabs > li > a:hover,
+.h5c_navtabs > li > a:focus {
+  border-color: #eeeeee #eeeeee #dddddd;
+  background-color: #eee;
+}
+.h5c_navtabs > .active > a,
+.h5c_navtabs > .active > a:hover,
+.h5c_navtabs > .active > a:focus {
+  color: #666;
+  cursor: default;
+  background-color: #fff;  
+  border: 1px solid #ddd;
+  border-top: 1px solid #3a87ad;
+  border-bottom-color: transparent;
+}
