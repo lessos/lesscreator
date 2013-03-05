@@ -20,9 +20,9 @@ $info = json_decode($info, true);
 
 <ul class="nav nav-tabs _data_inlet_nav">
   <li class="active">
-    <a href="#/h5creator/data/inlet-desc" class="_data_inlet_nav">Description</a>
+    <a href="#data/inlet-desc" class="_data_inlet_nav_href">Description</a>
   </li>
-  <li><a href="#/h5creator/data/inlet-struct" class="_data_inlet_nav">Structure</a></li>
+  <li><a href="#data/inlet-struct" class="_data_inlet_nav_href">Structure</a></li>
 </ul>
 
 <div id="_data_inlet_body"></div>
@@ -32,10 +32,10 @@ $info = json_decode($info, true);
 <script>
 var id = '<?php echo $this->req->id?>';
 
-$('._data_inlet_nav').click(function() {    
+$('._data_inlet_nav_href').click(function() {    
     
     url = $(this).attr('href').substr(1);
-    _data_inlet_open(url);
+    _data_inlet_open("/h5creator/"+url);
 
     $("._data_inlet_nav li.active").removeClass("active");
     $(this).parent().addClass("active");

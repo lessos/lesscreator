@@ -180,6 +180,7 @@ function hdev_project(proj)
 function hdev_header_alert(status, alert)
 {
     $(".hdev-header-alert").text(alert);
+    $(".hdev-header-alert").removeClass("alert-*");
     $(".hdev-header-alert").addClass(status);
 }
 

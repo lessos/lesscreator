@@ -39,17 +39,17 @@ function _struct_dismap($k)
   <tr>
       <td>Column</td>
       <td>Type</td>
-      <td></td>
+      <td>Index</td>
   </tr>
   <?php
   foreach ($struct as $k => $v) {
       $checked = '';
       if ($v['i'] == 1) {
-          $checked = '<i class="/h5creator/static/img/accept.png"></i>';
+          $checked = '<img src="/h5creator/static/img/accept.png" />';
       }
       ?>
       <tr>
-          <td><?=$v['n']?></td>
+          <td><strong><?=$v['n']?></strong></td>
           <td>
               <?php 
               echo _struct_dismap($v['t']);
