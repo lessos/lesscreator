@@ -28,7 +28,7 @@ $info = json_decode($info, true);
   <li><a href="#data/inlet-struct" class="_data_inlet_nav_href">Structure</a></li>
 </ul>
 
-<div id="_data_inlet_body" style="padding-top:5px;"></div>
+<div id="_data_inlet_body" style="padding:5px;"></div>
 
 </div>
 

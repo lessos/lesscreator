@@ -4,16 +4,18 @@ if ($this->app->method == 'POST') {
 
     $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
 
-    $set = array(
-        'title' => $this->req->data_instance_title,
-        'type' => '1',
-    );
-    $ret = $h5->Set("/h5db/info/{$this->req->data_instance_id}", json_encode($set));
+    $set = $h5->Get("/h5db/info/{$this->req->data_instance_id}");
+    $set = json_decode($set, true);
+
+    $set['title'] = $this->req->data_instance_title;
+    $set['type'] = '1';
+
+    $h5->Set("/h5db/info/{$this->req->data_instance_id}", json_encode($set));
 
     die("OK");
 }
 
-$instid = LessPHP_Util_String::rand(12, 1);
+$instid = LessPHP_Util_String::rand(8, 2);
 ?>
 <table class="h5c_dialog_header" width="100%">
     <tr>
@@ -37,12 +39,12 @@ $instid = LessPHP_Util_String::rand(12, 1);
 
 <div id="h5c_dialog_alert"></div>
 
-<form id="h5c-data-set-form" action="/h5creator/data/create-sql">
+<form id="h5c-data-set-form" action="/h5creator/data/create-ts">
 <table width="100%">
   <tr>
     <td width="180px"><strong>Instance ID</strong></td>
     <td>
-      <input type="text" name="data_instance_id" value="<?php echo $instid?>" readonly="readonly" />
+      <input type="text" id="data_instance_id" name="data_instance_id" value="<?php echo $instid?>" readonly="readonly" />
     </td>
   </tr>
   <tr>
@@ -80,7 +82,7 @@ $(".h5c-data-set-form").click(function(event) {
 
                 rsp = "<h4>Success</h4>";
                 rsp += '<p>Your Data Instance has been created successfully</p>';
-                rsp += '<p><a class="btn" href="#">Manage</a></p>';
+                rsp += '<p><a class="btn" href="#" onclick="_data_create_open()">Manage</a></p>';
 
                 h5cGenAlert("#h5c_dialog_alert", "alert-success", rsp);
                 
@@ -91,4 +93,17 @@ $(".h5c-data-set-form").click(function(event) {
     });
 });
 
+
+function _data_create_open()
+{
+    opt = {
+        "img": "database",
+        "title": $("#data_instance_title").val(),
+        "close": 1
+    }
+    id = $("#data_instance_id").val();
+
+    h5cTabOpen("/h5creator/data/inlet?id="+ id, "w0", 'html', opt);
+    h5cDialogClose();
+}
 </script>

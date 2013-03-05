@@ -855,7 +855,7 @@ ul.h5c_navtabs {
 }
 .h5c_navtabs {
   border-bottom: 1px solid #ddd;
-  font-size: 14px; font-weight: bold;
+  font-size: 14px;
 }
 .h5c_navtabs > li {
   margin-bottom: -1px;
@@ -874,7 +874,7 @@ ul.h5c_navtabs {
 .h5c_navtabs > .active > a,
 .h5c_navtabs > .active > a:hover,
 .h5c_navtabs > .active > a:focus {
-  color: #666;
+  color: #000;
   cursor: default;
   background-color: #fff;  
   border: 1px solid #ddd;

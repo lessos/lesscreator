@@ -124,10 +124,11 @@ function h5cDialogClose()
 {
     $(".h5c_dialog_bg").remove();
     $("#h5c_dialog_page").empty();
-    $("#h5c_dialog").hide(200);
+    $("#h5c_dialog").hide();
     h5cDialogW = 0;
     h5cDialogH = 0;
     h5cDialogCurrent = "";
+    h5cDialogPool = {};
 }
 
 function h5cTabletDebug()
