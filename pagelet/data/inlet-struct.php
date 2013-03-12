@@ -44,17 +44,17 @@ function _struct_dismap($k)
   <?php
   foreach ($struct as $k => $v) {
       $checked = '';
-      if ($v['i'] == 1) {
+      if ($v['Idx'] == 1) {
           $checked = '<img src="/h5creator/static/img/accept.png" />';
       }
       ?>
       <tr>
-          <td><strong><?=$v['n']?></strong></td>
+          <td><strong><?=$v['Name']?></strong></td>
           <td>
               <?php 
-              echo _struct_dismap($v['t']);
-              if (intval($v['l']) > 0) {
-                  echo " ({$v['l']})";
+              echo _struct_dismap($v['Type']);
+              if (intval($v['Len']) > 0) {
+                  echo " ({$v['Len']})";
               }
               ?>
           </td>

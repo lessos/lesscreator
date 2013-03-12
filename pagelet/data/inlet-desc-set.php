@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     $h5->Set("/h5db/info/{$this->req->id}", json_encode($info));   
-    // TODO ACTION
     
     die("OK");
 }

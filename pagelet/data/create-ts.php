@@ -12,6 +12,8 @@ if ($this->app->method == 'POST') {
 
     $h5->Set("/h5db/info/{$this->req->data_instance_id}", json_encode($set));
 
+    $h5->Set("/h5db/actor/setup/{$this->req->data_instance_id}", time());
+
     die("OK");
 }
 

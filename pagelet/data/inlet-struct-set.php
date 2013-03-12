@@ -17,11 +17,11 @@ if (!isset($this->req->fsname)) {
         $rs = json_decode($rs, true);
         if (is_array($rs)) {
             foreach ($rs as $v) {
-                $struct[$v['n']] = array(
-                    'n' => $v['n'],
-                    't' => $v['t'],
-                    'l' => $v['l'],
-                    'i' => $v['i'],
+                $struct[$v['Name']] = array(
+                    'Name' => $v['Name'],
+                    'Type' => $v['Type'],
+                    'Len' => $v['Len'],
+                    'Idx' => $v['Idx'],
                 );
             }
         }
@@ -53,16 +53,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         $struct[$v] = array(
-            'n' => $v,
-            't' => $this->req->fstype[$k],
-            'l' => $this->req->fslen[$k],
-            'i' => $this->req->fsidx[$k],
+            'Name' => "{$v}",
+            'Type' => "{$this->req->fstype[$k]}",
+            'Len' => "{$this->req->fslen[$k]}",
+            'Idx' => "{$this->req->fsidx[$k]}",
         );
     }
     //print_r($this->req);
     //print_r($struct);
     $h5->Set("/h5db/struct/{$this->req->id}", json_encode($struct));
-    
+
+    $h5->Set("/h5db/actor/setup/{$this->req->id}", time());
+        
     // TODO ACTION
     die("OK");
 }
@@ -92,26 +94,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </tr>
     <?php
     foreach ($struct as $k => $v) {
-        if ($v['n'] == 'id') {
+        if ($v['Name'] == 'id') {
             continue;
         }
         $checked = '';
-        if ($v['i'] == 1) {
+        if ($v['Idx'] == 1) {
             $checked = 'checked';
         }
         ?>
         <tr>
-            <td><input name="fsname[<?php echo $k?>]" type="text" value="<?= $v['n'] ?>" class="input-medium"/></td>
+            <td><input name="fsname[<?php echo $k?>]" type="text" value="<?= $v['Name'] ?>" class="input-medium"/></td>
             <td>
                 <select name="fstype[<?php echo $k?>]" class="input-medium">
-<option value="ft_varchar" <?php echo $v['t'] == 'ft_varchar' ? 'selected' : ''; ?>>字符串 (varchar)</option>
-<option value="ft_string" <?php echo $v['t'] == 'ft_string' ? 'selected' : ''; ?>>文本 (text)</option>
-<option value="ft_int" <?php echo $v['t'] == 'ft_int' ? 'selected' : ''; ?>>整数 (int)</option>
-<option value="ft_timestamp" <?php echo $v['t'] == 'ft_timestamp' ? 'selected' : ''; ?>>Unix 时间 (int)</option>
-<option value="ft_blob" <?php echo $v['t'] == 'ft_blob' ? 'selected' : ''; ?>>二进制</option>
+<option value="ft_varchar" <?php echo $v['Type'] == 'ft_varchar' ? 'selected' : ''; ?>>字符串 (varchar)</option>
+<option value="ft_string" <?php echo $v['Type'] == 'ft_string' ? 'selected' : ''; ?>>文本 (text)</option>
+<option value="ft_int" <?php echo $v['Type'] == 'ft_int' ? 'selected' : ''; ?>>整数 (int)</option>
+<option value="ft_timestamp" <?php echo $v['Type'] == 'ft_timestamp' ? 'selected' : ''; ?>>Unix 时间 (int)</option>
+<option value="ft_blob" <?php echo $v['Type'] == 'ft_blob' ? 'selected' : ''; ?>>二进制</option>
                 </select>
             </td>
-            <td><input name="fslen[<?php echo $k?>]" type="text" value="<?= $v['l'] ?>" class="input-mini"/></td>
+            <td><input name="fslen[<?php echo $k?>]" type="text" value="<?= $v['Len'] ?>" class="input-mini"/></td>
             <td><input name="fsidx[<?php echo $k?>]" type="checkbox" value="1" <?php echo $checked?> /> </td>
             <td><a href="javascript:void(0)" onclick="_field_del(this)">删除</a></td>
         </tr>
