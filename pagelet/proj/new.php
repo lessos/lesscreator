@@ -39,7 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         'version' => '0.0.1',
         'release' => '0',
         'depends' => '',
+        'props'   => '',
     );
+    if (isset($this->req->props)) {
+        $set['props'] = implode(",", $this->req->props);
+    }
+
     $str  = hwl\Yaml\Yaml::encode($set);
     if (hwl_Fs_Dir::mkfiledir($f, 0755)) {
         $fp = fopen($f, 'w');
@@ -89,6 +94,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
           <input id="appid" name="appid" type="text" class="span2" value="<?php echo $appid?>" />
         </div>
         <div id="_proj_new_dir" class="displaynone" style="margin:0 0 5px 0;"></div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><strong>Properties</strong></td>
+      <td>
+        <label class="checkbox">
+          <input type="checkbox" name="props[]" value="dataflow" /> Data Flow Engine
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" name="props[]" value="pagelet" /> Simple MVC
+        </label>
       </td>
     </tr>
     <tr>

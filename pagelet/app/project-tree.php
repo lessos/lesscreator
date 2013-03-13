@@ -56,6 +56,10 @@ foreach (glob($glob) as $f) {
         
         if ($fn == 'pagelet') {
             $fmi = 'layers';
+            $fn = 'Pagelet Engine';
+        } else if ($fn == 'dataflow') {
+            $fmi = 'database_refresh';
+            $fn = 'Data Flow Engine';
         } else {
             $fmi = 'folder';
         }

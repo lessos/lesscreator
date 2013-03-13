@@ -55,6 +55,26 @@ if (isset($info['name'])) {
     }
 }
 
+if (isset($info['props'])) {
+    $props = explode(",", $info['props']);
+    foreach ($props as $v) {
+        if ($v == 'dataflow' && !file_exists($projpath."/dataflow/project.json")) {
+            hwl_util_dir::mkfiledir($projpath."/dataflow/project.json");
+            $json = array(
+                'created' => time(),
+            );
+            file_put_contents($projpath."/dataflow/project.json", hwl_Json::prettyPrint($json));
+        } else if ($v == 'pagelet' && !file_exists($projpath."/pagelet/project.json")) {
+            hwl_util_dir::mkfiledir($projpath."/pagelet/project.json");
+            $json = array(
+                'created' => time(),
+            );
+            file_put_contents($projpath."/pagelet/project.json", hwl_Json::prettyPrint($json));
+        }
+    }
+}
+
+
 $ptpath = md5("");
 ?>
 
