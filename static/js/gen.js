@@ -548,7 +548,7 @@ function h5cProjectOpen(proj)
         return;
     }
     
-    h5cTabletOpen('/h5creator/app/project?proj='+proj, 't0', 'html', 'Files');
+    h5cTabletOpen('/h5creator/app/project?proj='+proj, 't0', 'html', 'Project');
     projCurrent = proj;
     
     h5cLayoutResize();
