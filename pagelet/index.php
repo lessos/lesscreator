@@ -35,8 +35,6 @@
                 <span class="caret" style="margin-top:8px;"></span>
             </div>
             <ul class="dropdown-menu pull-right">
-                <li><a href="javascript:h5cProjSet()">Setting Current Project</a></li>
-                <li class="divider"></li>
                 <li><a href="javascript:h5cProjOpenDialog()">Open Project</a></li>
                 <li><a href="javascript:h5cProjNewDialog()">Create Project</a></li>
                 <li class="divider"></li>

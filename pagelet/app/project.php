@@ -49,11 +49,15 @@ $props_def = array(
 );
 ?>
 
-  <div style="padding:5px 10px; background-color:#f6f7f8;">
+  <div style="padding:5px 10px 5px 10px; background-color:#f6f7f8;">
     <span>
       <img src="/h5creator/static/img/app-t3-16.png" /> 
       <strong><?php echo $info['name']?></strong> [#<?php echo $info['appid']?>]
     </span>
+    <a href="javascript:h5cProjSet()" class="h5c_block pull-right">
+      <img src="/h5creator/static/img/cog.png" class="h5c_icon" />
+      Setting 
+    </a>
   </div>
 
   <ul class="h5c_navtabs _proj_nav" style="background-color:#f6f7f8;">

@@ -54,7 +54,7 @@ try {
             throw new Exception('File exists');
         }
     
-        if (!hwl_Fs_Dir::mkdir($obj, 0644)) {
+        if (!hwl_Fs_Dir::mkdir($obj, 0774)) {
             header("HTTP/1.1 500"); die("Can not create '$obj'");
         } else {
             $msg .= " at ".date("Y-m-d H:i:s");

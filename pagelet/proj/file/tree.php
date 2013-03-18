@@ -5,18 +5,21 @@ $projbase = H5C_DIR;
 if ($this->req->proj == null) {
     die('ERROR');
 }
-$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj,'/'));
+$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj,'/'));
 if (substr($proj, 0, 1) == '/') {
     $projpath = $proj;
 } else {
     $projpath = "{$projbase}/{$proj}";
 }
-if (strlen($proj) < 1) {
-    die();
+if (strlen($projpath) < 1) {
+    die("ERROR");
 }
 
 $path = preg_replace("/\/+/", "/", $this->req->path);
-if (!file_exists($projpath.'/'.$path)) {
+if (!file_exists($projpath .'/'. $path)) {
+    die('ERROR');
+}
+if (!file_exists($projpath ."/hootoapp.yaml")) {
     die('ERROR');
 }
 ?>
@@ -28,9 +31,20 @@ $glob = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projpath}/{$pa
 
 $prt = $prt0 = '';
 
-foreach (glob($glob) as $f) {
+$props_def = array(
+    'pagelet'       => 'Pagelet',
+    'data'          => 'Database',
+    'dataflow'      => 'Dataflow',
+);
+
+foreach (glob($glob) as $f) {    
 
     $fn = substr(strrchr($f, "/"), 1);
+
+    if (strlen($path) < 1 && isset($props_def[$fn])) {
+        continue;
+    }
+
     $fm = mime_content_type($f);
     if (is_file($f)) {
         $fs = filesize($f);
@@ -151,5 +165,3 @@ echo $prt0 . $prt;
 <script>
 _refresh_tree();
 </script>
-
-

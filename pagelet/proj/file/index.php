@@ -5,7 +5,7 @@ $projbase = H5C_DIR;
 if ($this->req->proj == null) {
     die('ERROR');
 }
-$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 if (substr($proj, 0, 1) == '/') {
     $projpath = $proj;
 } else {
@@ -15,51 +15,26 @@ if (strlen($projpath) < 1) {
     die("ERROR");
 }
 
-$path  = preg_replace("/\/+/", "/", $this->req->path);
-if (!file_exists($projpath.'/'.$path)) {
-    die('ERROR');
-}
-if (!file_exists($projpath."/hootoapp.yaml")) {
-    die('ERROR');
-}
-
-$info = hwl\Yaml\Yaml::decode(file_get_contents($projpath."/hootoapp.yaml"));
-
 $ptpath = md5("");
 ?>
+<div class="h5c_tab_subnav" style="border-bottom: 1px solid #ddd;">
+    <a href="#proj/fs/file-new" class="_proj_fs_cli">
+        <img src="/h5creator/static/img/page_white_add.png" class="h5c_icon" />
+        New File
+    </a>
+    <a href="#proj/fs/dir-new" class="_proj_fs_cli">
+        <img src="/h5creator/static/img/folder_add.png" class="h5c_icon" />
+        New Folder
+    </a>
+    <a href="#proj/fs/file-upl" class="_proj_fs_cli">
+        <img src="/h5creator/static/img/page_white_get.png" class="h5c_icon" />
+        Upload
+    </a>
+</div>
 
-<table class="hdev-proj-section" width="100%">
-  <tr>
-    <td>
-      <div id="hdev-proj-set" class="tabitem hdev-btn-caret florig" >
-        <div class="ctn">More</div>
-        <span class="caret"></span>
-        <div class="hdev-rcmenu displaynone">
-            <div class="rcitem" onclick="javascript:hdev_project_setting('<?=$proj?>')">
-                <div class="rcico"><img src="/h5creator/static/img/app-t3-16.png" align="absmiddle" /></div>
-                <div class="rcctn">Application Setting</div>
-            </div>
-            <div class="rcsepli"></div>
-            <div class="rcitem hdev_rcobj_file">
-                <div class="rcico"><img src="/h5creator/static/img/page_white_add.png" align="absmiddle" /></div>
-                <div class="rcctn">New File</div>
-            </div>
-            <div class="rcitem hdev_rcobj_dir">
-                <div class="rcico"><img src="/h5creator/static/img/folder_add.png" align="absmiddle" /></div>
-                <div class="rcctn">New Folder</div>
-            </div>
-            <div class="rcitem hdev_rcobj_upload">
-                <div class="rcico"><img src="/h5creator/static/img/page_white_get.png" align="absmiddle" /></div>
-                <div class="rcctn">Upload</div>
-            </div>
-        </div>
-      </div>
-    </td>
-  </tr>      
-</table>
 
 <!--ProjectFilesManager-->
-<div id="pt<?=$ptpath?>" class="hdev-proj-files hdev-scrollbar h5c_gen_scroll"></div>
+<div id="pt<?=$ptpath?>" class="hdev-proj-files h5c_gen_scroll" style="padding-top:10px;"></div>
 
 <div id="hdev-proj-olrcm-std" class="hdev-proj-olrcm border_radius_5">
     <div class="header">
@@ -120,6 +95,23 @@ $ptpath = md5("");
 
 <script type="text/javascript">
 
+$("._proj_fs_cli").click(function() {
+    var uri = $(this).attr('href').substr(1);
+    console.log(uri);
+    switch (uri) {
+    case "proj/fs/file-new":
+        _file_std_show("file", "");
+        break;
+    case "proj/fs/file-upl":
+        _file_upload("");
+        break;
+    case "proj/fs/dir-new":
+        _file_std_show("dir", "");
+        break;
+    }
+   // console.log(uri);
+});
+
 function _proj_set_refresh()
 {
     $("#hdev-proj-set").bind("click", function(e) {
@@ -129,7 +121,7 @@ function _proj_set_refresh()
             left: e.pageX
         }).toggle();
        
-        $(this).find(".hdev_rcobj_file").click(function() {
+        /* $(this).find(".hdev_rcobj_file").click(function() {
             _file_std_show("file", "");
         });
         $(this).find(".hdev_rcobj_dir").click(function() {
@@ -137,7 +129,7 @@ function _proj_set_refresh()
         });
         $(this).find(".hdev_rcobj_upload").click(function() {
             _file_upload("");
-        });
+        }); */
         $(this).find(".hdev_rcobj_rename").click(function() {
             _file_rename("");
         });
@@ -225,7 +217,6 @@ $("#form_file_std_commit").submit(function(event) {
     });
 });
 
-   
 function _file_std_show(type, path)
 {
     var p = posFetch();
@@ -243,7 +234,7 @@ function _file_std_show(type, path)
     if ((t + h) > bh) {
         t = bh - h;
     }
-        
+
     $("#hdev-proj-olrcm-std .path").text(path);
     
     $("#hdev-proj-olrcm-std .inputtype").val(type);
@@ -353,6 +344,7 @@ function _file_rename(path)
     $("#hdev-proj-olrcm-mv .inputname").focus();
 }
 
+
 /**
     How to use jQuery contextmenu:
     
@@ -439,7 +431,7 @@ function _hdev_dir(proj, path, force)
     
     $.ajax({
         type: "GET",
-        url: '/h5creator/app/project-tree/',
+        url: '/h5creator/proj/file/tree',
         data: 'proj='+proj+'&path='+path,
         success: function(data) {
             $("#pt"+p).html(data);
@@ -451,11 +443,3 @@ function _hdev_dir(proj, path, force)
 _proj_set_refresh();
 _hdev_dir('<?=$proj?>', '', 1);
 </script>
-
-<?php
-if (!is_writable("{$projbase}/{$proj}")) {
-    echo '<script>
-        hdev_header_alert("error", "The Project is not Writable");
-    </script>';
-}
-?>
