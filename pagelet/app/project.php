@@ -61,7 +61,7 @@ $props_def = array(
   </div>
 
   <ul class="h5c_navtabs _proj_nav" style="background-color:#f6f7f8;">
-    <li class="active"><a href="#proj/file" class="_proj_tab_href">Files</a></li>
+    <li class="active"><a href="#proj/fs" class="_proj_tab_href">Files</a></li>
     <?php
     foreach ($props as $v) {
         if (!isset($props_def[$v])) {
@@ -105,7 +105,7 @@ function _proj_nav_open(url)
         }
     });
 }
-_proj_nav_open('file');
+_proj_nav_open('fs');
 
 $('._proj_tab_href').click(function() {
 

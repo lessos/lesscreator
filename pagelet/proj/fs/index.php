@@ -42,7 +42,7 @@ $ptpath = md5("");
         <span class="close"><a href="javascript:_file_close()">×</a></span>
     </div>
     <div class="sep clearhr"></div>
-    <form id="form_file_std_commit" action="/h5creator/app/file/" method="post">
+    <form id="form_file_std_commit" action="/h5creator/proj/fs/new" method="post">
     <div>
         <img src="/h5creator/static/img/folder.png" align="absmiddle" />
         <span class="path"></span> /
@@ -62,7 +62,7 @@ $ptpath = md5("");
         <span class="close"><a href="javascript:_file_close()">×</a></span>
     </div>
     <div class="sep clearhr"></div>
-    <form id="form_file_mv_commit" action="/h5creator/app/file-mv/" method="post">
+    <form id="form_file_mv_commit" action="/h5creator/proj/fs/rename/" method="post">
     <div>
         <img src="/h5creator/static/img/page_white_copy.png" align="absmiddle" />
         <span class="parfold"></span> /
@@ -82,7 +82,7 @@ $ptpath = md5("");
         <span class="close"><a href="javascript:_file_close()">×</a></span>
     </div>
     <div class="sep clearhr"></div>
-    <form id="form_file_upload_commit" enctype="multipart/form-data" action="/h5creator/app/file-upload" method="post">
+    <form id="form_file_upload_commit" enctype="multipart/form-data" action="/h5creator/proj/fs/file-upload" method="post">
     <img src="/h5creator/static/img/page_white_get.png" align="absmiddle" />
     <span class="path"></span> /
     <input id="attachment" name="attachment" size="40" type="file" />
@@ -412,7 +412,7 @@ function _page_del(proj, path)
     
     $.ajax({
         type: "GET",
-        url: '/h5creator/app/file-del/',
+        url: '/h5creator/proj/fs/rm/',
         data: 'proj='+proj+'&path='+path,
         success: function() {
             $("#ptp"+p).remove();
@@ -431,7 +431,7 @@ function _hdev_dir(proj, path, force)
     
     $.ajax({
         type: "GET",
-        url: '/h5creator/proj/file/tree',
+        url: '/h5creator/proj/fs/tree',
         data: 'proj='+proj+'&path='+path,
         success: function(data) {
             $("#pt"+p).html(data);
