@@ -31,17 +31,13 @@ $glob = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projpath}/{$pa
 
 $prt = $prt0 = '';
 
-$props_def = array(
-    'pagelet'       => 'Pagelet',
-    'data'          => 'Database',
-    'dataflow'      => 'Dataflow',
-);
+$srvall = h5creator_service::listAll();
 
 foreach (glob($glob) as $f) {
 
     $fn = substr(strrchr($f, "/"), 1);
 
-    if (strlen($path) < 1 && isset($props_def[$fn])) {
+    if (strlen($path) < 1 && isset($srvall[$fn])) {
         continue;
     }
 
@@ -50,8 +46,9 @@ foreach (glob($glob) as $f) {
         $fs = filesize($f);
         if ($fm == 'application/octet-stream' && $fs < 1048576) { // < 1MB
             $_s = file_get_contents($f);
-            if (is_string($_s))
+            if (is_string($_s)) {
                 $fm = 'text/plain';
+            }
         }
     }
     
@@ -77,7 +74,9 @@ foreach (glob($glob) as $f) {
         
         $href   = "javascript:_hdev_dir('{$proj}', '{$p}', 0)";
         
-    } else if (substr($fm,0,4) == 'text' || $fm == "application/x-empty") {
+    } else if (substr($fm,0,4) == 'text' 
+        || $fm == "application/x-empty"
+        || $fm == 'inode/x-empty') {
         
         if (strlen($path) == 0 && $fn == 'hootoapp.yaml') {
             $fmi = 'app-t3-16';

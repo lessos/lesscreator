@@ -43,8 +43,10 @@ try {
         if (($fp = fopen($obj, 'w')) === FALSE) {
             header("HTTP/1.1 500"); die("Can not create '$obj'");
         }
-        fputs($fp, "\xef\xbb\xbf");
+        //fputs($fp, "\xef\xbb\xbf");
+        fputs($fp, "\n\n");
         fclose($fp);
+        chmod($obj, 0775);
     }
 
     if ($type == "dir") {
