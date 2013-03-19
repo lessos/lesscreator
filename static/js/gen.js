@@ -26,6 +26,84 @@ function h5cDialogTitle(title)
     $(".h5c_dialog_titlec").text(title);
 }
 
+function h5cModalOpen(url, title, w, h)
+{
+    var urid = Crypto.MD5("modal"+url);
+
+    if (/\?/.test(url)) {
+        urls = url + "&_=";
+    } else {
+        urls = url + "?_=";
+    }
+    urls += Math.random();
+
+    var p = posFetch();
+    var bw = $('body').width() - 60;
+    var bh = $('body').height() - 50;
+    
+
+    /** if (!$("#"+urid).length) {
+    } */
+    $.ajax({
+        url     : urls,
+        type    : "GET",
+        timeout : 30000,
+        success : function(rsp) {
+            
+            $(".h5c_modal_frame").remove();
+            $("body").append('<div class="h5c_modal_frame h5c_gen_scroll" id="'+urid+'">'+rsp+'</div>');
+
+            $("#"+urid).css({
+                "z-index": "-100"
+            }).show();
+    
+            if (w < 1) {
+                w = $("#"+urid).outerWidth(true);
+            }
+            if (w < 200) {
+                w = 200;
+            }
+            if (h < 1) {
+                h = $("#"+urid).height();
+            }
+            if (h < 100) {
+                h = 100;
+            }
+
+            var t = p.top;
+            if ((t + h) > bh) {
+                t = bh - h;
+            }
+            var l = p.left;
+            if (l > (bw - w)) {
+                l = bw - w;
+            }
+
+            $("body").append('<div class="h5c_modal_bg">');
+            $("#"+urid).hide().css({
+                "z-index": 100,
+                "width": w+"px",
+                "height": h+"px",
+                "top": t+'px',
+                "left": l+'px'
+            }).slideDown(200);
+    
+            $("#"+urid+" .inputfocus").focus();
+        },
+        error: function(xhr, textStatus, error) {
+            hdev_header_alert('error', xhr.responseText);
+        }
+    });
+}
+
+function h5cModalClose()
+{    
+    $(".h5c_modal_frame").slideUp(200, function(){
+        $(this).remove();
+        $(".h5c_modal_bg").remove();
+    });
+}
+
 var h5cDialogPool = {};
 var h5cDialogCurrent = "";
 var h5cDialogW = 0;

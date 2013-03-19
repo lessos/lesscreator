@@ -687,6 +687,47 @@ textarea {
     display: none;
 }
 
+.h5c_modal_bg {
+    position: fixed; z-index: 10;
+    width: 100%; height: 100%; top: 0px; left: 0px;
+    background-color: rgba(0,0,0,0.3);    
+}
+.h5c_modal_frame {
+    z-index: 100;
+    position: absolute;
+    display: none;
+    padding: 10px;
+    background-color: #fff;
+    border: 3px solid #aaa;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.h5c_modal a {
+    text-decoration: none;
+} 
+.h5c_modal .header {
+    font-size: 16px; font-weight: bold; line-height:20px;
+}
+.h5c_modal .title {
+    padding:10px 0; margin-right:50px;
+}
+.h5c_modal .close {
+    float: right; text-align: center;
+}
+.h5c_modal .close a {
+    color: #000;
+}
+.h5c_modal .sep {
+    clear: both; border-top: 1px ridge #aaa; margin:5px 0;
+}
+.h5c_modal_body {
+
+}
+.h5c_modal input.inputname {width: 300px;}
+
+
+
 .h5c_gen_vcenter {
     top: 50%;
     position: relative;
