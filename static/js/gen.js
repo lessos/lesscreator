@@ -240,6 +240,7 @@ var h5cTabletPool = {};
         'target': 't0/t1',
         'data': 'string',
         'type': 'html/code',
+        'mime': '*',
     }
  */
 
@@ -259,7 +260,8 @@ function h5cTabOpen(uri, target, type, opt)
             'url': uri,
             'target': target,
             'data': '',
-            'type': type
+            'type': type,
+            'mime': '',
         };
         for (i in opt) {
             h5cTabletPool[urid][i] = opt[i];

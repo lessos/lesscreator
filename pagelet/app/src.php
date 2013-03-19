@@ -58,4 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 if ($ct === NULL) {
     $ct = file_get_contents($f);
 }
-echo $ct;
+$json = array(
+    'mime' => $fm,
+    'code' => $ct,
+);
+echo json_encode($json);

@@ -93,7 +93,7 @@ foreach (glob($glob) as $f) {
             $fmi = 'page_white_code';
         } else if (substr($f,-5) == '.html' || substr($f,-4) == '.htm' || substr($f,-6) == '.xhtml') {
             $fmi = 'page_white_world';
-        } else if (substr($f,-3) == '.sh') {
+        } else if (substr($f,-3) == '.sh' || $fm == 'text/x-shellscript') {
             $fmi = 'application_osx_terminal';
         } else if (substr($f,-3) == '.rb') {
             $fmi = 'page_white_ruby';

@@ -64,10 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (($fp = fopen($obj, 'w')) === FALSE) {
         die("Can not create '$obj'");
     }
-    fputs($fp, "\xef\xbb\xbf#!/bin/sh\n\n");
+    //fputs($fp, "\xef\xbb\xbf#!/bin/sh\n\n");
+    fputs($fp, "#!/bin/sh\n\n");
     fclose($fp);
 
-    chmod($obj, "775");
+    chmod($obj, 0775);
 
     die("OK");
 }

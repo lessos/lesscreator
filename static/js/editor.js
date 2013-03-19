@@ -38,13 +38,23 @@ function h5cTabletEditorOpen(urid)
         //var t = '<textarea id="src'+urid+'" class="displaynone"></textarea>';
         //$("#h5c-tablet-body-"+ item.target).prepend(t);
 
-        $.get('/h5creator/app/src?proj='+projCurrent+'&path='+item.url, function(data) {
-            $('#src'+urid).text(data);
-            h5cTabletPool[urid].data = data;
-            h5cEditorLoad(urid);
+        $.ajax({
+            url     : '/h5creator/app/src?proj='+projCurrent+'&path='+item.url,
+            type    : "GET",
+            timeout : 30000,
+            dataType: "json",
+            success : function(rsp) {
+                $('#src'+urid).text(rsp.code);
+                h5cTabletPool[urid].data = rsp.code;
+                h5cTabletPool[urid].mime = rsp.mime;
+                h5cEditorLoad(urid);
+            },
+            error: function(xhr, textStatus, error) {
+                hdev_header_alert('error', xhr.responseText);
+            }
         });
     }
-    
+
     return true;
 }
 
@@ -93,7 +103,16 @@ function h5cEditorLoad(urid)
         default:
             mode = 'htmlmixed';
     }
-
+    switch(item.mime)
+    {
+        case 'text/x-php':
+            mode = 'php';
+            break;
+        case 'text/x-shellscript':
+            mode = 'shell';
+            break;
+    }
+    
     h5cEditor.urid = urid;
     h5cEditor.instance = CodeMirror.fromTextArea(document.getElementById('src'+urid), {
     //h5cEditor.instance = CodeMirror(document.getElementById('h5c-tablet-body-w0'), {
