@@ -50,8 +50,18 @@ function h5cModalOpen(url, title, w, h)
         timeout : 30000,
         success : function(rsp) {
             
-            $(".h5c_modal_frame").remove();
-            $("body").append('<div class="h5c_modal_frame h5c_gen_scroll" id="'+urid+'">'+rsp+'</div>');
+            $(".h5c_modal").remove();
+            
+            var apd = '<div class="h5c_modal h5c_gen_scroll" id="'+urid+'">';
+            apd += '<div class="header">\
+                <span class="title">'+title+'</span>\
+                <a class="close" href="javascript:h5cModalClose()">×</a>\
+                </div>';
+            apd += '<div class="sep clearhr"></div>';
+            apd += rsp;
+            apd += '</div>'
+
+            $("body").append(apd);
 
             $("#"+urid).css({
                 "z-index": "-100"
@@ -98,7 +108,7 @@ function h5cModalOpen(url, title, w, h)
 
 function h5cModalClose()
 {    
-    $(".h5c_modal_frame").slideUp(200, function(){
+    $(".h5c_modal").slideUp(200, function(){
         $(this).remove();
         $(".h5c_modal_bg").remove();
     });

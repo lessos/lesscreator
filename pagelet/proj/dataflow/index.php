@@ -16,15 +16,49 @@ if (strlen($projpath) < 1) {
 }
 
 $ptpath = md5("");
+
+$grps = array();
+$glob = $projpath."/dataflow/*.grp.json";
+foreach (glob($glob) as $v) {
+    $json = file_get_contents($v);
+    $json = json_decode($json, true);
+    if (!isset($json['id'])) {
+        continue;
+    }
+
+    $grps[$json['id']] = $json;
+}
+if (count($grps) == 0) {
+    
+    $id = hwl_string::rand(8, 2);
+
+    $obj = $projpath ."/dataflow";
+    $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
+    if (!is_writable($obj)) {
+        die("'$obj' is not Writable");
+    }
+
+    $obj .= "/{$id}.grp.json";
+    $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
+
+    $set = array(
+        'id'    => $id,
+        'name'  => 'Main',
+    );
+    hwl_util_dir::mkfiledir($obj);
+    file_put_contents($obj, hwl_Json::prettyPrint($set));
+
+    $grps[$id] = $set;
+}
 ?>
 
 
 <div class="h5c_tab_subnav" style="border-bottom: 1px solid #ddd;">
     <a href="#proj/dataflow/grp-new" class="_proj_dataflow_cli">
-        <img src="/fam3/icons/bricks.png" class="h5c_icon" />
+        <img src="/fam3/icons/package_add.png" class="h5c_icon" />
         New Group
     </a>
-    <a href="#proj/dataflow/new" class="_proj_dataflow_cli">
+    <a href="#proj/dataflow/actor-new" class="_proj_dataflow_cli">
         <img src="/fam3/icons/brick_add.png" class="h5c_icon" />
         New Actor
     </a>
@@ -40,45 +74,77 @@ $ptpath = md5("");
     </div>
     <div class="sep clearhr"></div>
     <form id="_proj_dataflow_grpnew_form" action="/h5creator/proj/dataflow/grp-new" method="post">
+    <input type="hidden" name="proj" value="<?=$proj?>" />
     <div>
         <h5>Name your Group</h5>
         <input type="text" size="30" name="name" class="inputname" value="" />
-        <input type="hidden" name="proj" value="<?=$proj?>" />
     </div>
     <div class="clearhr"></div>
-    <div><input type="submit" name="submit" value="Save" class="input_button" /></div>
+    <div><input type="submit" value="Save" class="input_button" /></div>
+    </form>
+</div>
+
+<div id="_proj_dataflow_actornew_div" class="hdev-proj-olrcm border_radius_5 displaynone">
+    <div class="header">
+        <span class="title">New Actor</span>
+        <span class="close"><a href="javascript:_file_close()">×</a></span>
+    </div>
+    <div class="sep clearhr"></div>
+    <form id="_proj_dataflow_actornew_form" action="/h5creator/proj/dataflow/actor-new" method="post">
+    <input type="hidden" name="proj" value="<?=$proj?>" />
+    <div>
+        <h5>Select a Group</h5>
+        <select name='grpid'>
+        <?php
+        foreach ($grps as $k => $v) {
+            echo "<option value='{$k}'>{$v['name']}</option>";
+        }
+        ?>
+        </select>
+    </div>
+    <div>
+        <h5>Name your Actor</h5>
+        <input type="text" size="30" name="name" class="inputname" value="" />
+    </div>
+    <div class="clearhr"></div>
+    <div><input type="submit" value="Save" class="input_button" /></div>
     </form>
 </div>
 
 <script type="text/javascript">
 
+var _proj = '<?=$proj?>';
+
 $("._proj_dataflow_cli").click(function() {
+
     var uri = $(this).attr('href').substr(1);
-    //console.log(uri);
+
     switch (uri) {
     case "proj/dataflow/grp-new":
         _proj_dataflow_grpnew_show();
-        //h5cDialogOpen('/h5creator/proj/dataflow/grp', 700, 450, 
-        //'Dataflow: New Actor', null);
+        break;
+    case "proj/dataflow/actor-new":
+        _proj_dataflow_actornew_show();
+        //h5cDialogOpen('/h5creator/proj/dataflow/actor-new?proj='+ _proj, 700, 450, 
+        //    'Dataflow: New Actor', null);
         break;
     }
-   // console.log(uri);
 });
 
 function _proj_dataflow_grpnew_show()
 {
     var p = posFetch();
    
-    bw = $('body').width() - 30;
-    bh = $('body').height() - 50;
-    w = $("#_proj_dataflow_grpnew_div").outerWidth(true);
-    h = $("#_proj_dataflow_grpnew_div").height();
+    var bw = $('body').width() - 30;
+    var bh = $('body').height() - 50;
+    var w = $("#_proj_dataflow_grpnew_div").outerWidth(true);
+    var h = $("#_proj_dataflow_grpnew_div").height();
 
-    t = p.top;
+    var t = p.top;
     if ((t + h) > bh) {
         t = bh - h;
     }
-    l = p.left;
+    var l = p.left;
     if (l > (bw - w)) {
         l = bw - w;
     }
@@ -86,12 +152,38 @@ function _proj_dataflow_grpnew_show()
     $("#_proj_dataflow_grpnew_div").css({
         top: t+'px',
         left: l+'px'
-    }).show("fast");
+    }).show(100);
     
     $("#_proj_dataflow_grpnew_div .inputname").focus();
 }
 
-$("#_proj_dataflow_grpnew_form").submit(function(event) {
+function _proj_dataflow_actornew_show()
+{
+    var p = posFetch();
+   
+    var bw = $('body').width() - 30;
+    var bh = $('body').height() - 50;
+    var w = $("#_proj_dataflow_actornew_div").outerWidth(true);
+    var h = $("#_proj_dataflow_actornew_div").height();
+
+    var t = p.top;
+    if ((t + h) > bh) {
+        t = bh - h;
+    }
+    var l = p.left;
+    if (l > (bw - w)) {
+        l = bw - w;
+    }
+    
+    $("#_proj_dataflow_actornew_div").css({
+        top: t+'px',
+        left: l+'px'
+    }).show(100);
+    
+    $("#_proj_dataflow_actornew_div .inputname").focus();
+}
+
+$("#_proj_dataflow_actornew_form").submit(function(event) {
 
     event.preventDefault();
     
@@ -119,7 +211,7 @@ $("#_proj_dataflow_grpnew_form").submit(function(event) {
 
 function _proj_dataflow_tabopen(proj, path, force)
 {
-    p = Crypto.MD5(path);
+    var p = Crypto.MD5(path);
 
     if (force != 1 && $("#pt"+p).html() && $("#pt"+p).html().length > 1) {
         $("#pt"+p).empty();
@@ -128,7 +220,7 @@ function _proj_dataflow_tabopen(proj, path, force)
     
     $.ajax({
         type: "GET",
-        url: '/h5creator/proj/dataflow/tree',
+        url: '/h5creator/proj/dataflow/list',
         data: 'proj='+proj+'&path='+path,
         success: function(data) {
             $("#pt"+p).html(data);
@@ -139,8 +231,11 @@ function _proj_dataflow_tabopen(proj, path, force)
 
 function _file_close()
 {
-    $("#_proj_dataflow_grpnew_div .inputname").val('');    
-    $("#_proj_dataflow_grpnew_div").hide();        
+    $("#_proj_dataflow_grpnew_div .inputname").val('');
+    $("#_proj_dataflow_grpnew_div").hide(100);
+
+    $("#_proj_dataflow_actornew_div .inputname").val('');
+    $("#_proj_dataflow_actornew_div").hide(100);
 }
 
 
@@ -148,12 +243,3 @@ _proj_dataflow_tabopen('<?=$proj?>', '', 1);
 
 
 </script>
-
-<?php
-
-
-
-
-?>
-
-

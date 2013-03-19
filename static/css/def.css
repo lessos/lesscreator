@@ -692,7 +692,7 @@ textarea {
     width: 100%; height: 100%; top: 0px; left: 0px;
     background-color: rgba(0,0,0,0.3);    
 }
-.h5c_modal_frame {
+.h5c_modal {
     z-index: 100;
     position: absolute;
     display: none;
@@ -713,13 +713,12 @@ textarea {
     padding:10px 0; margin-right:50px;
 }
 .h5c_modal .close {
-    float: right; text-align: center;
-}
-.h5c_modal .close a {
-    color: #000;
+    float: right; text-align: center; color: #000;
 }
 .h5c_modal .sep {
-    clear: both; border-top: 1px ridge #aaa; margin:5px 0;
+    clear: both; 
+    border-top: 1px ridge #aaa; margin:5px 0;
+    height: 6px;
 }
 .h5c_modal_body {
 

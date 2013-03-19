@@ -32,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $set = array(
         'id'    => $id,
         'name'  => $name,
+        'created' => time(),
+        'updated' => time(),
     );
     hwl_util_dir::mkfiledir($obj);
     file_put_contents($obj, hwl_Json::prettyPrint($set));

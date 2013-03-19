@@ -37,7 +37,7 @@ $props_def = array(
     'dataflow'      => 'Dataflow',
 );
 
-foreach (glob($glob) as $f) {    
+foreach (glob($glob) as $f) {
 
     $fn = substr(strrchr($f, "/"), 1);
 
