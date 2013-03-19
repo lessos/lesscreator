@@ -276,6 +276,16 @@ function h5cTabSwitch(urid)
     var item = h5cTabletPool[urid];
     //console.log("h5cTabSwitch:");
     //console.log(item);
+    if (h5cTabletFrame[item.target].urid == urid) {
+        return;
+    }
+
+    if (h5cEditor.urid && h5cEditor.urid != urid) {
+        h5cEditor.instance.toTextArea();
+        h5cEditorSave(h5cEditor.urid, 1);
+        h5cEditor.urid = 0;
+    }
+
     switch (item.type) {
     case 'html':
         if (item.data.length < 1) {

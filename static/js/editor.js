@@ -43,6 +43,7 @@ function h5cTabletEditorOpen(urid)
             type    : "GET",
             timeout : 30000,
             dataType: "json",
+            async   : false,
             success : function(rsp) {
                 $('#src'+urid).text(rsp.code);
                 h5cTabletPool[urid].data = rsp.code;
