@@ -272,6 +272,8 @@ function h5cTabOpen(uri, target, type, opt)
 function h5cTabSwitch(urid)
 {
     var item = h5cTabletPool[urid];
+    //console.log("h5cTabSwitch:");
+    //console.log(item);
     switch (item.type) {
     case 'html':
         if (item.data.length < 1) {
@@ -295,7 +297,7 @@ function h5cTabSwitch(urid)
             $("#h5c-tablet-body-"+ item.target).empty().html(item.data);
         }
         break;
-    case 'editor':        
+    case 'editor':
         if (h5cTabletEditorOpen(urid)) {
             h5cTabletTitle(urid);
             h5cTabletFrame[item.target].urid = urid;
@@ -381,8 +383,15 @@ function h5cTabletTitle(urid)
         }
 
         entry  = '<table id="pgtab'+urid+'" class="pgtab"><tr>';
+
+        
+
         if (item.img) {
-            entry += "<td class='ico'><img src='/h5creator/static/img/"+item.img+".png' align='absmiddle' /></td>";
+            var imgsrc = "/h5creator/static/img/"+item.img+".png";
+            if (item.img.slice(0, 1) == '/') {
+                imgsrc = item.img;
+            }
+            entry += "<td class='ico'><img src='"+ imgsrc +"' align='absmiddle' /></td>";
         }
         entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabSwitch('"+urid+"')\">"+item.title+"</a></td>";
         entry += '<td class="chg">*</td>';

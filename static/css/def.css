@@ -365,9 +365,6 @@ textarea {
 
 .activeline {background: #f0fcff !important;}
 
-.hdev-proj-frame {
-    /*border: 1px solid transparent; */
-}
 .hdev-proj-section {
     background-color: #f6f7f8;
     font-size: 13px; line-height: 130%;
@@ -386,7 +383,6 @@ textarea {
 }
 .hdev-tabs-nav2 {
     background-color: #f6f7f8; height: 23px;
-    sborder-bottom: 1px solid #bbc1c5;
     z-index: -1;
 }
 .hdev-tabs * {

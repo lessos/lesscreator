@@ -38,21 +38,59 @@ foreach ($grps as $k => $v) {
         <td>
             {$v['name']}
         </td>
-        <td align='right'><a href='#{$k}' class='_proj_dataflow_grpedit'>Edit</a></td>
+        <td align='right'><a href='#{$k}' class='k810ll'>Edit</a></td>
         <td width='5px'></td>
     </tr>";
+
+    $glob = $projpath."/dataflow/{$k}/*.actor.json";
+    foreach (glob($glob) as $v2) {
+        
+        $json = file_get_contents($v2);
+        $json = json_decode($json, true);
+        
+        if (!isset($json['id'])) {
+            continue;
+        }
+
+        echo "<tr>
+        <td></td>
+        <td></td>
+        <td>
+            <img src='/fam3/icons/brick.png' class='h5c_icon' />
+            {$json['name']}
+        </td>
+        <td align='right'>
+            <a href='#{$k}/{$json['id']}' class='to8kit' title='{$json['name']}'>Edit</a>
+            <a href='#{$k}/{$json['id']}.actor' class='ejiqlh' title='{$json['name']}'>Script</a>
+        </td>
+        <td></td>
+        </tr>";
+    }
 }
 echo "</table>";
 ?>
 
 <script>
-var _path = <?php echo "'$path'";?>;
+var _proj = <?php echo "'$projpath'";?>;
+console.log(_proj);
 
-$('._proj_dataflow_grpedit').click(function() {
-
+$('.k810ll').click(function() {
     var uri = $(this).attr('href').substr(1);
-
     h5cModalOpen("/h5creator/proj/dataflow/grp-edit?proj="+_proj+"&grpid="+uri, 
         'Edit Group', 400, 0);
+});
+
+$('.to8kit').click(function() {
+    var uri = $(this).attr('href').substr(1);
+    var tit = $(this).attr('title');
+    var url = "/h5creator/proj/dataflow/actor-edit?proj="+_proj+"&uri="+uri;
+    h5cTabOpen(url, 'w0', 'html', {'title': tit, 'close':'1', 'img': '/fam3/icons/brick.png'});
+});
+
+$('.ejiqlh').click(function() {
+    var uri = $(this).attr('href').substr(1);
+    var tit = $(this).attr('title');
+    var url = "dataflow/"+ uri;
+    h5cTabOpen(url, 'w0', 'editor', {'title': tit, 'close':'1', 'img': '/fam3/icons/package.png'});
 });
 </script>

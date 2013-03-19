@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // actor
     $obj = $projpath ."/dataflow/{$grpid}/{$id}.actor";        
-    if (!hwl_Fs_Dir::mkfiledir($obj, 0755)) {
+    if (!hwl_Fs_Dir::mkfiledir($obj, 0775)) {
         die("Can not create '$obj'");
     }
 
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     fputs($fp, "\xef\xbb\xbf#!/bin/sh\n\n");
     fclose($fp);
 
-    chmod($obj, "755");
+    chmod($obj, "775");
 
     die("OK");
 }

@@ -54,16 +54,15 @@ if (count($grps) == 0) {
 
 
 <div class="h5c_tab_subnav" style="border-bottom: 1px solid #ddd;">
-    <a href="#proj/dataflow/grp-new" class="_proj_dataflow_cli">
+    <a href="#proj/dataflow/grp-new" class="b0hmqb">
         <img src="/fam3/icons/package_add.png" class="h5c_icon" />
         New Group
     </a>
-    <a href="#proj/dataflow/actor-new" class="_proj_dataflow_cli">
+    <a href="#proj/dataflow/actor-new" class="b0hmqb">
         <img src="/fam3/icons/brick_add.png" class="h5c_icon" />
         New Actor
     </a>
 </div>
-
 
 <div id="pt<?=$ptpath?>" class="h5c_gen_scroll" style="padding-top:10px;"></div>
 
@@ -115,7 +114,7 @@ if (count($grps) == 0) {
 
 var _proj = '<?=$proj?>';
 
-$("._proj_dataflow_cli").click(function() {
+$(".b0hmqb").click(function() {
 
     var uri = $(this).attr('href').substr(1);
 

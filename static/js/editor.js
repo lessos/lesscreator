@@ -20,22 +20,23 @@ function h5cTabletEditorOpen(urid)
     // console.log(item);
 
     if (h5cTabletFrame[item.target].urid == urid) {
-        return;
+        return true;
     }
 
-    if (urid == h5cEditor.urid) {
-        return;
-    }
+    $("#src"+urid).remove(); // Force remove
+    var t = '<textarea id="src'+urid+'" class="displaynone"></textarea>';
+    $("#h5c-tablet-body-"+ item.target).empty().prepend(t);
 
     //if ($("#src"+urid).val()) {
     if (item.data) {
+        $('#src'+urid).text(item.data);
         h5cEditorLoad(urid);
     } else {
         
-        $("#src"+urid).remove(); // Force remove
+        //$("#src"+urid).remove(); // Force remove
 
-        var t = '<textarea id="src'+urid+'" class="displaynone"></textarea>';
-        $("#h5c-tablet-body-"+ item.target).prepend(t);
+        //var t = '<textarea id="src'+urid+'" class="displaynone"></textarea>';
+        //$("#h5c-tablet-body-"+ item.target).prepend(t);
 
         $.get('/h5creator/app/src?proj='+projCurrent+'&path='+item.url, function(data) {
             $('#src'+urid).text(data);
@@ -43,13 +44,7 @@ function h5cTabletEditorOpen(urid)
             h5cEditorLoad(urid);
         });
     }
-
-    //$(".hcr-pgbar-"+type).show();
     
-    //pageArray[urid] = {'type': type, 'path': path, 'title': title, 'img': img};
-    //pageCurrent     = urid;    
-    //hdev_layout_resize();
-
     return true;
 }
 
