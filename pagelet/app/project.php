@@ -80,7 +80,7 @@ $props_def = array(
     ?>
   </ul>
 
-  <div id="_proj_inlet_body" style="padding:5px;"></div>
+  <div id="_proj_inlet_body"></div>
 
 <script>
 
@@ -105,7 +105,7 @@ function _proj_nav_open(url)
         }
     });
 }
-_proj_nav_open('fs');
+_proj_nav_open('dataflow');
 
 $('._proj_tab_href').click(function() {
 

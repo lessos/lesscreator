@@ -27,7 +27,6 @@
     </td>
     
     <td align="right">
-        <a href="javascript:h5cTabletDebug()" class="btn">Debug</a>
         <div class="btn-group">
             <div class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
                 <i class="icon-folder-open"></i>

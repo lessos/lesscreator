@@ -129,8 +129,8 @@ textarea {
 }
 
 #hdev_header {
-    padding: 5px 10px; width: 100%;
-    color: #333; height: 50px;
+    width: 100%; height: 45px;
+    color: #333;
 }
 #hdev_header .header_logo {
     font-size:18px; font-weight: bold; color: #555;
