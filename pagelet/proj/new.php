@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         $fp = fopen($f, 'w');
         fwrite($fp, $str);
         fclose($fp);
+        chmod($f, 0664);
         $msg = "OK";
     } else {
         $msg = "ERROR";
@@ -97,14 +98,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
       </td>
     </tr>
     <tr>
-      <td valign="top"><strong>Properties</strong></td>
+      <td valign="top"><strong>Services</strong></td>
       <td>
-        <label class="checkbox">
-          <input type="checkbox" name="props[]" value="dataflow" /> Data Flow Engine
-        </label>
-        <label class="checkbox">
-          <input type="checkbox" name="props[]" value="pagelet" /> Simple MVC
-        </label>
+        <?php
+        $srvs = h5creator_service::listAll();
+        foreach ($srvs as $k => $v) {
+            echo "<label class=\"checkbox\">
+                <input type=\"checkbox\" name=\"props[]\" value=\"{$k}\" /> {$v}
+                </label>";       
+        }
+        ?>
       </td>
     </tr>
     <tr>

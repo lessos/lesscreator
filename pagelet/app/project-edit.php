@@ -27,6 +27,7 @@ $item = array(
   'version' => '1.0.0',
   'release' => '1',
   'depends' => '',
+  'props' => '',
 );
 
 $title = 'New Project';
@@ -53,6 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
             $item[$k] = $_POST[$k];
         }
     }
+    if (isset($item['props']) && is_array($item['props'])) {
+        $item['props'] = implode(",", $item['props']);
+    }
     
     $f = "{$projpath}/hootoapp.yaml";
     $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
@@ -69,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 }
 
 
+$preSrvs = explode(",", $item['props']);
 echo $msg;
 ?>
 
@@ -82,6 +87,23 @@ echo $msg;
     <tr>
       <td><strong>Name</strong></td>
       <td><input name="name" class="input-medium" type="text" value="<?=$item['name']?>" /></td>
+    </tr>
+    <tr>
+      <td>Services</td>
+      <td>
+        <?php
+        $srvs = h5creator_service::listAll();
+        foreach ($srvs as $k => $v) {
+            $ck = '';
+            if (in_array($k, $preSrvs)) {
+                $ck = "checked";
+            }
+            echo "<label class=\"checkbox\">
+                <input type=\"checkbox\" name=\"props[]\" value=\"{$k}\" {$ck}/> {$v}
+                </label>";       
+        }
+        ?>
+      </td>
     </tr>
     <tr>
       <td><strong>Version</strong></td>

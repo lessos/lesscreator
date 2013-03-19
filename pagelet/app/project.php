@@ -42,11 +42,8 @@ if (isset($info['name'])) {
 }
 
 $props = isset($info['props']) ? explode(",", $info['props']) : array();
-$props_def = array(
-    'pagelet'       => 'Pagelet',
-    'data'          => 'Database',
-    'dataflow'      => 'Dataflow',
-);
+$props_def = h5creator_service::listAll();
+
 ?>
 
   <div style="padding:5px 10px 5px 10px; background-color:#f6f7f8;">
