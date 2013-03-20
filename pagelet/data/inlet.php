@@ -1,5 +1,5 @@
 <?php
-
+$projbase = H5C_DIR;
 
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("The instance does not exist");
@@ -10,6 +10,34 @@ $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1");
 $info = $h5->Get("/h5db/info/{$this->req->id}");
 $info = json_decode($info, true);
 
+
+$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
+$dataj = array();
+$fsd = $projpath."/data/{$this->req->id}.json";
+if (file_exists($fsd)) {
+    $dataj = file_get_contents($fsd);
+    $dataj = json_decode($dataj, true);
+}
+if (is_writable($projpath."/data")) {
+    
+    if (!isset($dataj['id'])) {
+        $dataj = array(
+            'id'        => $this->req->id,
+            'created'   => time(),
+            'name'      => null,
+        );
+    }
+    if ($dataj['name'] != $info['title']) {
+        $dataj['name']      = $info['title'];
+        $dataj['updated']   = time();
+        file_put_contents($fsd, hwl_Json::prettyPrint($dataj));
+    }
+}
 ?>
 
 <div style="padding:0px;">

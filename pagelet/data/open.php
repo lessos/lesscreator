@@ -51,13 +51,13 @@ $('._proj_data_open_href').dblclick(function() {
     p = $(this).attr('href').substr(1);
     t = $(this).find(".title").text();
 
-    opt = {
+    var opt = {
         "img": "database",
         "title": t,
         "close": 1
     }
 
-    h5cTabOpen("/h5creator/data/inlet?id="+ p, "w0", 'html', opt);
+    h5cTabOpen("/h5creator/data/inlet?proj="+projCurrent+"&id="+ p, "w0", 'html', opt);
     h5cDialogClose();
 });
 </script>

@@ -102,7 +102,7 @@ function _proj_nav_open(url)
         }
     });
 }
-_proj_nav_open('dataflow');
+_proj_nav_open('data');
 
 $('._proj_tab_href').click(function() {
 

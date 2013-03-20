@@ -41,7 +41,7 @@ $instid = LessPHP_Util_String::rand(8, 2);
 
 <div id="h5c_dialog_alert"></div>
 
-<form id="h5c-data-set-form" action="/h5creator/data/create-ts">
+<form id="c47vz9" action="/h5creator/data/create-ts">
 <table width="100%">
   <tr>
     <td width="180px"><strong>Instance ID</strong></td>
@@ -63,7 +63,7 @@ $instid = LessPHP_Util_String::rand(8, 2);
     <tr>        
         <td align="right">            
             <button class="btn" onclick="h5cDialogClose()">Close</button>
-            <button class="btn btn-primary h5c-data-set-form">Commit</button>
+            <button class="btn btn-primary t42qf1">Commit</button>
         </td>
         <td width="20px"></td>
     </tr>
@@ -71,14 +71,14 @@ $instid = LessPHP_Util_String::rand(8, 2);
 
 <script>
 
-$(".h5c-data-set-form").click(function(event) {
+$(".t42qf1").click(function(event) {
 
     event.preventDefault();
         
     $.ajax({ 
         type: "POST",
-        url: $("#h5c-data-set-form").attr('action') + "?_=" + Math.random(),
-        data: $("#h5c-data-set-form").serialize(),
+        url: $("#c47vz9").attr('action') + "?_=" + Math.random(),
+        data: $("#c47vz9").serialize(),
         success: function(rsp) {
             if (rsp == "OK") {
 
@@ -98,14 +98,14 @@ $(".h5c-data-set-form").click(function(event) {
 
 function _data_create_open()
 {
-    opt = {
+    var opt = {
         "img": "database",
         "title": $("#data_instance_title").val(),
         "close": 1
     }
-    id = $("#data_instance_id").val();
+    var id = $("#data_instance_id").val();
 
-    h5cTabOpen("/h5creator/data/inlet?id="+ id, "w0", 'html', opt);
+    h5cTabOpen("/h5creator/data/inlet?proj="+projCurrent+"&id="+ id, "w0", 'html', opt);
     h5cDialogClose();
 }
 </script>
