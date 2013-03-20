@@ -59,6 +59,10 @@ $("#_h5c_data_inlet_desc_form").submit(function(event) {
         success: function(rsp) {
             if (rsp == "OK") {
                 hdev_header_alert("alert-success", time +" 配置成功");
+                if (typeof _proj_data_tabopen == 'function') {
+                   console.log("CCCCC");
+                   _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
+                }
             } else {
                 hdev_header_alert("alert-error", time +" "+ rsp);
             }

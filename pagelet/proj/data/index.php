@@ -18,13 +18,13 @@ if (strlen($projpath) < 1) {
 ?>
 
 <div class="h5c_tab_subnav" style="border-bottom: 1px solid #ddd;">
-    <a href="javascript:h5cPluginDataNew()" class="b0hmqb">
-        <img src="/fam3/icons/database_add.png" class="h5c_icon" />
-        New Instance
-    </a>
     <a href="javascript:h5cPluginDataOpen()" class="b0hmqb">
         <img src="/fam3/icons/folder_database.png" class="h5c_icon" />
         Open 
+    </a>
+    <a href="javascript:h5cPluginDataNew()" class="b0hmqb">
+        <img src="/fam3/icons/database_add.png" class="h5c_icon" />
+        New Instance
     </a>
 </div>
 
@@ -32,10 +32,12 @@ if (strlen($projpath) < 1) {
 
 <script type="text/javascript">
 
-var _proj = '<?=$proj?>';
-
 function _proj_data_tabopen(uri, force)
 {
+    if (!$("#ig3w6o").length) {
+        return;
+    }
+
     if (force != 1 && $("#ig3w6o").html() && $("#ig3w6o").html().length > 1) {
         $("#ig3w6o").empty();
         return;
@@ -51,5 +53,5 @@ function _proj_data_tabopen(uri, force)
     });
 }
 
-_proj_data_tabopen('/h5creator/proj/data/list?proj='+ _proj, 1);
+_proj_data_tabopen('/h5creator/proj/data/list?proj='+ projCurrent, 1);
 </script>

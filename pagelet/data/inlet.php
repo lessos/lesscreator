@@ -79,7 +79,11 @@ function _data_inlet_open(url)
         type    : "GET",
         timeout : 30000,
         success : function(rsp) {            
-            $("#_data_inlet_body").empty().html(rsp);                      
+            $("#_data_inlet_body").empty().html(rsp);
+            if (typeof _proj_data_tabopen == 'function') {
+                console.log("CCCCC");
+                _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
+            }
         },
         error: function(xhr, textStatus, error) {
             alert("ERROR:"+ xhr.responseText);
