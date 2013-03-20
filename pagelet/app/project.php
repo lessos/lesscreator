@@ -81,7 +81,7 @@ $props_def = h5creator_service::listAll();
 
 <script>
 
-$("title").text('<?php echo $info['name']?> - Hooto Developer');
+$("title").text('<?php echo $info['name']?> - H5 Creator');
 
 <?php
 if (!is_writable("{$projpath}")) {
@@ -102,7 +102,7 @@ function _proj_nav_open(url)
         }
     });
 }
-_proj_nav_open('data');
+_proj_nav_open('fs');
 
 $('._proj_tab_href').click(function() {
 
