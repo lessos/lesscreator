@@ -1,8 +1,19 @@
 <?php
 
+$projbase = H5C_DIR;
+
+$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
+$projpath = preg_replace("/\/+/", "/", rtrim($projpath, '/'));
+
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("400");
 }
+$dbid = $this->req->id;
 
 $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
 
@@ -11,7 +22,7 @@ $struct = array();
 
 if (!isset($this->req->fsname)) {
 
-    $rs = $h5->Get("/h5db/struct/{$this->req->id}");
+    $rs = $h5->Get("/h5db/struct/{$dbid}");
 
     if (strlen($rs) > 0) {
         $rs = json_decode($rs, true);
@@ -45,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         if (in_array($this->req->fstype[$k], array('ft_int', 'ft_varchar'))
             && $this->req->fslen[$k] == 0) {
-            die("字段 ($v) 长度不能为空");
+            die("`$v` Can not be null");
         }
         
         if (!isset($this->req->fsidx[$k])) {
@@ -61,18 +72,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     //print_r($this->req);
     //print_r($struct);
-    $h5->Set("/h5db/struct/{$this->req->id}", json_encode($struct));
+    $h5->Set("/h5db/struct/{$dbid}", json_encode($struct));
 
-    $h5->Set("/h5db/actor/setup/{$this->req->id}", time());
-        
+    $h5->Set("/h5db/actor/setup/{$dbid}", time());
+
+
+    $dataj = array();
+    $fsd = $projpath."/data/{$dbid}.json";
+    if (file_exists($fsd)) {
+        $dataj = file_get_contents($fsd);
+        $dataj = json_decode($dataj, true);
+    }
+    if (is_writable($projpath."/data")) {
+    
+        if (!isset($dataj['id'])) {
+            $dataj = array(
+                'id'        => $dbid,
+                'created'   => time(),
+                'name'      => null,
+            );
+        }
+        $dataj['struct']    = $struct;
+        $dataj['updated']   = time();
+        file_put_contents($fsd, hwl_Json::prettyPrint($dataj));
+    }
+            
     // TODO ACTION
     die("OK");
 }
 ?>
 
-<form id="h5c_inlet_struct_set_form" action="/h5creator/data/inlet-struct-set">
+<form id="bhw2j1" action="/h5creator/data/inlet-struct-set">
     
-<input type="hidden" name="id" value="<?php echo $this->req->id?>" />
+<input type="hidden" name="id" value="<?php echo $dbid?>" />
 
 <table class="table" width="100%">
 <thead>
@@ -155,10 +187,9 @@ function _row_append() {
     $("#field_list").append(entry);
 }
 
-$("#h5c_inlet_struct_set_form").submit(function(event) {
+$("#bhw2j1").submit(function(event) {
 
-
-    console.log($(this).serialize());
+    //console.log($(this).serialize());
 
     event.preventDefault();
     
@@ -177,11 +208,11 @@ $("#h5c_inlet_struct_set_form").submit(function(event) {
     
     $.ajax({ 
         type: "POST",
-        url: $("#h5c_inlet_struct_set_form").attr('action') + "?_=" + Math.random(),
-        data: $(this).serialize(),
+        url: $("#bhw2j1").attr('action') + "?_=" + Math.random(),
+        data: $(this).serialize() +'&proj='+ projCurrent,
         success: function(rsp) {
             if (rsp == "OK") {
-                hdev_header_alert("alert-success", time +" 配置成功");
+                hdev_header_alert("alert-success", time +" OK");
             } else {
                 alert(rsp);
                 hdev_header_alert("alert-error", time +" "+ rsp);
