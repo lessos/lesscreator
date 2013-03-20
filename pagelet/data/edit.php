@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<form id="h5db-inst-edit-form" action="/h5dbueue/adm/instance-edit" class="form-horizontal">
+<form id="r2yp9c" action="/h5dbueue/adm/instance-edit">
   <table width="100%" cellpadding="3">
     <tr>
         <td width="120px"><strong>实例 ID</strong></td>
@@ -202,7 +202,7 @@ function _row_append() {
     $("#field_list").append(entry);
 }
 
-$("#h5db-inst-edit-form").submit(function(event) {
+$("#r2yp9c").submit(function(event) {
 
     event.preventDefault();
     
@@ -222,7 +222,7 @@ $("#h5db-inst-edit-form").submit(function(event) {
     $.ajax({ 
         type: "POST",
         cache: false,
-        url: $("#h5db-inst-edit-form").attr('action') + "?_=" + Math.random(),
+        url: $("#r2yp9c").attr('action') + "?_=" + Math.random(),
         data: $(this).serialize(),
         success: function(data) {
             if (data == "OK") {

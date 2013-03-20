@@ -26,7 +26,7 @@ foreach ($ls as $v) {
     $id = end(explode("/", $v['P']));
     $info = json_decode($v['C'], true);
     echo '
-        <a style="width:90px;" class="span href _proj_data_open_href" href="#'.$id.'">
+        <a style="width:90px;" class="span href aklw5v" href="#'.$id.'">
             <div class="center"><img src="/h5creator/static/img/data/rds.png" align="absmiddle" /></div>
             <div class="center title">'.$info['title'].'</div>
         </a>
@@ -46,7 +46,7 @@ echo "</div>";
 </table>
 <script type="text/javascript">
 
-$('._proj_data_open_href').dblclick(function() {
+$('.aklw5v').dblclick(function() {
     
     p = $(this).attr('href').substr(1);
     t = $(this).find(".title").text();

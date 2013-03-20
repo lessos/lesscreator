@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<form id="_h5c_data_inlet_desc_form" action="/h5creator/data/inlet-desc-set">
+<form id="sgpq5k" action="/h5creator/data/inlet-desc-set">
   <table width="100%">
     <tr>
         <td width="120px"><strong>Instance ID</strong></td>
@@ -47,20 +47,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </form>
 
 <script>
-$("#_h5c_data_inlet_desc_form").submit(function(event) {
+$("#sgpq5k").submit(function(event) {
 
     event.preventDefault();
     
     var time = new Date().format("yyyy-MM-dd HH:mm:ss");
     $.ajax({ 
         type: "POST",
-        url: $("#_h5c_data_inlet_desc_form").attr('action') +"?_="+ Math.random(),
+        url: $("#sgpq5k").attr('action') +"?_="+ Math.random(),
         data: $(this).serialize(),
         success: function(rsp) {
             if (rsp == "OK") {
                 hdev_header_alert("alert-success", time +" 配置成功");
                 if (typeof _proj_data_tabopen == 'function') {
-                   console.log("CCCCC");
                    _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
                 }
             } else {

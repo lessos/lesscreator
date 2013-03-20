@@ -49,26 +49,26 @@ if (is_writable($projpath."/data")) {
     </span>
 </div>
 
-<ul class="h5c_navtabs _data_inlet_nav" style="background-color:#f6f7f8;">
+<ul class="h5c_navtabs fc4exa" style="background-color:#f6f7f8;">
   <li class="active">
-    <a href="#data/inlet-desc" class="_data_inlet_nav_href">Description</a>
+    <a href="#data/inlet-desc" class="sk79ve">Overview</a>
   </li>
-  <li><a href="#data/inlet-struct" class="_data_inlet_nav_href">Structure</a></li>
+  <li><a href="#data/inlet-struct" class="sk79ve">Structure</a></li>
 </ul>
 
-<div id="_data_inlet_body" style="padding:5px;"></div>
+<div id="vey476" style="padding:5px;"></div>
 
 </div>
 
 <script>
 var id = '<?php echo $this->req->id?>';
 
-$('._data_inlet_nav_href').click(function() {    
+$('.sk79ve').click(function() {    
     
     url = $(this).attr('href').substr(1);
     _data_inlet_open("/h5creator/"+url);
 
-    $("._data_inlet_nav li.active").removeClass("active");
+    $(".fc4exa li.active").removeClass("active");
     $(this).parent().addClass("active");
 });
 
@@ -79,7 +79,7 @@ function _data_inlet_open(url)
         type    : "GET",
         timeout : 30000,
         success : function(rsp) {            
-            $("#_data_inlet_body").empty().html(rsp);
+            $("#vey476").empty().html(rsp);
             if (typeof _proj_data_tabopen == 'function') {
                 _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
             }
