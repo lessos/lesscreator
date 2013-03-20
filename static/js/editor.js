@@ -115,6 +115,7 @@ function h5cEditorLoad(urid)
     }
     
     h5cEditor.urid = urid;
+    
     h5cEditor.instance = CodeMirror.fromTextArea(document.getElementById('src'+urid), {
     //h5cEditor.instance = CodeMirror(document.getElementById('h5c-tablet-body-w0'), {
     //    value: item.data,
@@ -133,13 +134,17 @@ function h5cEditorLoad(urid)
             }
         }}
     });
-    h5cEditor.instance.on("change", function() {
-        h5cEditorSave(urid, 0);
-        //console.log("onchanged");
-    });
+    
+    CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
+    CodeMirror.autoLoadMode(h5cEditor.instance, mode);    
+
     if (getCookie('editor_keymap_vim') == "on") {
         h5cEditor.instance.setOption("keyMap", "vim");
     }
+    
+    h5cEditor.instance.on("change", function() {
+        h5cEditorSave(urid, 0);
+    });
     CodeMirror.commands.save = function() {
         h5cEditorSave(urid, 1);
     };

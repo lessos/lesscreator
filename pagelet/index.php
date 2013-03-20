@@ -248,7 +248,7 @@
 <script src="/h5creator/static/js/BrowserDetect.js"></script>
 
 <script src="/codemirror3/lib/codemirror.min.js"></script>
-<script src="/codemirror3/mode/all.min.js"></script>
+<script src="/codemirror3/addon/mode/loadmode.js"></script>
 <script src="/codemirror3/addon/search/searchcursor.js"></script>
 <script src="/codemirror3/keymap/vim.js"></script>
 
