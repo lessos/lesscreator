@@ -7,7 +7,6 @@
   <script src="/bootstrap2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/bootstrap2/css/bootstrap.min.css"   media="all" />
   <link rel="stylesheet" type="text/css" href="/codemirror3/lib/codemirror.css"   media="all" />
-  <link rel="stylesheet" type="text/css" href="/codemirror3/theme/all.css"   media="all" />
   <link rel="stylesheet" type="text/css" href="/h5creator/static/css/def.css" media="all" />
   <link rel="shortcut icon" type="image/x-icon" href="/h5creator/static/img/hooto-xicon-mc.ico" /> 
 </head>

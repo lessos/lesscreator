@@ -241,6 +241,7 @@ var h5cTabletPool = {};
         'data': 'string',
         'type': 'html/code',
         'mime': '*',
+        'hash': '*',
     }
  */
 

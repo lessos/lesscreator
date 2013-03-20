@@ -48,6 +48,7 @@ function h5cTabletEditorOpen(urid)
                 $('#src'+urid).text(rsp.code);
                 h5cTabletPool[urid].data = rsp.code;
                 h5cTabletPool[urid].mime = rsp.mime;
+                h5cTabletPool[urid].hash = Crypto.MD5(rsp.code);
                 h5cEditorLoad(urid);
             },
             error: function(xhr, textStatus, error) {
@@ -173,7 +174,13 @@ function h5cEditorSave(urid, force)
         //$("#pgtab"+pgid+" .chg").show();
         return;
     }
-    
+
+    var hash = Crypto.MD5($("#src"+urid).val());
+    if (hash == item.hash) {
+        console.log("Nothing change, skip ~");
+        return;
+    }
+
     $.ajax({
         url     : "/h5creator/app/src?proj="+projCurrent+"&path="+item.url,
         type    : "POST",
@@ -181,6 +188,7 @@ function h5cEditorSave(urid, force)
         timeout : 30000,
         success : function(data) {
             hdev_header_alert('success', data);
+            h5cTabletPool[urid].hash = hash;
             //$("#pgtab"+pgid+" .chg").hide();
         },
         error: function(xhr, textStatus, error) {

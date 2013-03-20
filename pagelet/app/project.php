@@ -89,20 +89,18 @@ if (!is_writable("{$projpath}")) {
 }
 ?>
 
-var _proj = '<?php echo $proj?>';
-
 function _proj_nav_open(url)
 {
     $.ajax({
         type: "GET",
-        url: '/h5creator/proj/'+ url +'/index?proj='+ _proj,
+        url: '/h5creator/proj/'+ url +'/index?proj='+ projCurrent,
         success: function(rsp) {
             $("#_proj_inlet_body").html(rsp);
             h5cLayoutResize();
         }
     });
 }
-_proj_nav_open('fs');
+_proj_nav_open('dataflow');
 
 $('._proj_tab_href').click(function() {
 
