@@ -70,27 +70,26 @@ foreach ($grps as $k => $v) {
 echo "</table>";
 ?>
 
-<script>
-var _proj = <?php echo "'$projpath'";?>;
-console.log(_proj);
-
+<script type="text/javascript">
 $('.k810ll').click(function() {
     var uri = $(this).attr('href').substr(1);
-    h5cModalOpen("/h5creator/proj/dataflow/grp-edit?proj="+_proj+"&grpid="+uri, 
-        'Edit Group', 400, 0);
+    var url = "/h5creator/proj/dataflow/grp-edit?proj="+projCurrent+"&grpid="+uri;
+    h5cModalOpen(url, 'Edit Group', 400, 0);
 });
 
 $('.to8kit').click(function() {
     var uri = $(this).attr('href').substr(1);
     var tit = $(this).attr('title');
-    var url = "/h5creator/proj/dataflow/actor-edit?proj="+_proj+"&uri="+uri;
-    h5cTabOpen(url, 'w0', 'html', {'title': tit, 'close':'1', 'img': '/fam3/icons/brick.png'});
+    var url = "/h5creator/proj/dataflow/actor-edit?proj="+projCurrent+"&uri="+uri;
+    h5cTabOpen(url, 'w0', 'html', 
+        {'title': tit, 'close':'1', 'img': '/fam3/icons/brick.png'});
 });
 
 $('.ejiqlh').click(function() {
     var uri = $(this).attr('href').substr(1);
     var tit = $(this).attr('title');
     var url = "dataflow/"+ uri;
-    h5cTabOpen(url, 'w0', 'editor', {'title': tit, 'close':'1', 'img': '/fam3/icons/package.png'});
+    h5cTabOpen(url, 'w0', 'editor', 
+        {'title': tit, 'close':'1', 'img': '/fam3/icons/package.png'});
 });
 </script>

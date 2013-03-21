@@ -35,9 +35,11 @@
             <ul class="dropdown-menu pull-right">
                 <li><a href="javascript:h5cProjOpenDialog()">Open Project</a></li>
                 <li><a href="javascript:h5cProjNewDialog()">Create Project</a></li>
+                <!--
                 <li class="divider"></li>
                 <li><a href="javascript:h5cPluginDataOpen()">Open Data Instance</a></li>
                 <li><a href="javascript:h5cPluginDataNew()">Create Data Instance</a></li>
+                -->
             </ul>
         </div>
     </td>
@@ -325,6 +327,7 @@ $(document).ready(function() {
     hdev_init_setting();
     h5cProjectOpen('<?=$this->req->proj?>');
     
+    h5cLayoutResize();
     setTimeout(h5cLayoutResize, 3000);
 });
 
