@@ -1,14 +1,33 @@
 <?php
+$projbase = H5C_DIR;
+
+$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
 
 if ($this->app->method == 'POST') {
+
+    $fsp = $projpath."/hootoapp.yaml";
+    $projInfo = null;
+    if (file_exists($fsp)) {
+        $projInfo = file_get_contents($fsp);
+        $projInfo = hwl\Yaml\Yaml::decode($projInfo);
+    }
+    if (!isset($projInfo['appid'])) {
+        die("Bad Request");
+    }
 
     $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
 
     $set = $h5->Get("/h5db/info/{$this->req->data_instance_id}");
     $set = json_decode($set, true);
 
-    $set['title'] = $this->req->data_instance_title;
-    $set['type'] = '1';
+    $set['title']   = $this->req->data_instance_title;
+    $set['type']    = '1';
+    $set['projid']  = $projInfo['appid'];
 
     $h5->Set("/h5db/info/{$this->req->data_instance_id}", json_encode($set));
 
@@ -78,7 +97,7 @@ $(".t42qf1").click(function(event) {
     $.ajax({ 
         type: "POST",
         url: $("#c47vz9").attr('action') + "?_=" + Math.random(),
-        data: $("#c47vz9").serialize(),
+        data: $("#c47vz9").serialize() +"&proj="+projCurrent,
         success: function(rsp) {
             if (rsp == "OK") {
 

@@ -1,4 +1,20 @@
 <?php
+$projbase = H5C_DIR;
+
+$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
+$projpath = preg_replace("/\/+/", "/", rtrim($projpath, '/'));
+
+$projInfo = array('projid' => null);
+$fsp = $projpath."/hootoapp.yaml";
+if (file_exists($fsp)) {
+    $projInfo = file_get_contents($fsp);
+    $projInfo = hwl\Yaml\Yaml::decode($projInfo);
+}
 
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("The instance does not exist");
@@ -60,13 +76,15 @@ function _struct_dismap($k)
           </td>
           <td><?php echo $checked?></td>
       </tr>
-      <?php
+  <?php
   }
+  if ($projInfo['appid'] == $info['projid']) {
   ?>
   <tr>
     <td></td>
     <td><button class="btn" onclick="_data_inlet_struct_edit()">Edit</button></td>
     <td></td>
-  </tr>        
+  </tr>
+  <?php } ?> 
 </table>
 

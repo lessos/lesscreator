@@ -1,6 +1,14 @@
 <?php
 $projbase = H5C_DIR;
 
+$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
+if (substr($proj, 0, 1) == '/') {
+    $projpath = $proj;
+} else {
+    $projpath = "{$projbase}/{$proj}";
+}
+
+
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("The instance does not exist");
 }
@@ -11,31 +19,40 @@ $info = $h5->Get("/h5db/info/{$this->req->id}");
 $info = json_decode($info, true);
 
 
-$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
-$dataj = array();
-$fsd = $projpath."/data/{$this->req->id}.json";
-if (file_exists($fsd)) {
-    $dataj = file_get_contents($fsd);
-    $dataj = json_decode($dataj, true);
-}
-if (is_writable($projpath."/data")) {
-    
-    if (!isset($dataj['id'])) {
-        $dataj = array(
-            'id'        => $this->req->id,
-            'created'   => time(),
-            'name'      => null,
-        );
+
+$fsp = $projpath."/hootoapp.yaml";
+if (file_exists($fsp)) {
+
+    $projInfo = file_get_contents($fsp);
+    $projInfo = hwl\Yaml\Yaml::decode($projInfo);
+
+    $dataInfo = array();
+    $fsd = $projpath."/data/{$this->req->id}.json";
+    if (file_exists($fsd)) {
+        $dataInfo = file_get_contents($fsd);
+        $dataInfo = json_decode($dataInfo, true);
     }
-    if ($dataj['name'] != $info['title']) {
-        $dataj['name']      = $info['title'];
-        $dataj['updated']   = time();
-        file_put_contents($fsd, hwl_Json::prettyPrint($dataj));
+
+    if (!isset($info['projid'])) {
+        $info['projid'] = $projInfo['appid'];
+        $h5->Set("/h5db/info/{$this->req->id}", json_encode($info));
+    }
+
+    if (is_writable($projpath."/data")) {
+    
+        if (!isset($dataInfo['id'])) {
+            $dataInfo = array(
+                'id'        => $this->req->id,
+                'created'   => time(),
+                'name'      => null,
+            );
+        }
+        if ($dataInfo['name'] != $info['title']) {
+            $dataInfo['name']      = $info['title'];
+            $dataInfo['updated']   = time();
+            $dataInfo['projid']    = $info['projid'];
+            file_put_contents($fsd, hwl_Json::prettyPrint($dataInfo));
+        }
     }
 }
 ?>
@@ -75,7 +92,7 @@ $('.sk79ve').click(function() {
 function _data_inlet_open(url)
 {
     $.ajax({
-        url     : url +"?id="+ id,
+        url     : url +"?proj="+ projCurrent +"&id="+ id,
         type    : "GET",
         timeout : 30000,
         success : function(rsp) {            

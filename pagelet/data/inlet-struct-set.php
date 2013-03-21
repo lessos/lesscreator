@@ -11,11 +11,29 @@ if (substr($proj, 0, 1) == '/') {
 $projpath = preg_replace("/\/+/", "/", rtrim($projpath, '/'));
 
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
-    die("400");
+    die("Bad Request");
 }
 $dbid = $this->req->id;
 
 $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
+
+
+$info = $h5->Get("/h5db/info/{$this->req->id}");
+$info = json_decode($info, true);
+if (!isset($info['title'])) {
+    die("Bad Request");
+}
+
+
+$fsp = $projpath."/hootoapp.yaml";
+if (file_exists($fsp)) {
+    $projInfo = file_get_contents($fsp);
+    $projInfo = hwl\Yaml\Yaml::decode($projInfo);
+    if ($projInfo['appid'] != $info['projid']) {
+        die("Permission denied");
+    }
+}
+
 
 $set = array();
 $struct = array();
@@ -77,26 +95,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $h5->Set("/h5db/actor/setup/{$dbid}", time());
 
 
-    $dataj = array();
+    $dataInfo = array();
     $fsd = $projpath."/data/{$dbid}.json";
     if (file_exists($fsd)) {
-        $dataj = file_get_contents($fsd);
-        $dataj = json_decode($dataj, true);
+        $dataInfo = file_get_contents($fsd);
+        $dataInfo = json_decode($dataInfo, true);
     }
     if (is_writable($projpath."/data")) {
     
-        if (!isset($dataj['id'])) {
-            $dataj = array(
+        if (!isset($dataInfo['id'])) {
+            $dataInfo = array(
                 'id'        => $dbid,
                 'created'   => time(),
                 'name'      => null,
             );
         }
-        $dataj['struct']    = $struct;
-        $dataj['updated']   = time();
-        file_put_contents($fsd, hwl_Json::prettyPrint($dataj));
+        $dataInfo['struct']    = $struct;
+        $dataInfo['updated']   = time();
+        $dataInfo['projid']    = $info['projid'];
+        file_put_contents($fsd, hwl_Json::prettyPrint($dataInfo));
     }
-            
+
     // TODO ACTION
     die("OK");
 }
@@ -203,14 +222,12 @@ $("#bhw2j1").submit(function(event) {
         }
     });
 
-    //$(".alert").hide();
-    var time = new Date().format("yyyy-MM-dd HH:mm:ss"); 
-    
+    var time = new Date().format("yyyy-MM-dd HH:mm:ss");   
     $.ajax({ 
-        type: "POST",
-        url: $("#bhw2j1").attr('action') + "?_=" + Math.random(),
-        data: $(this).serialize() +'&proj='+ projCurrent,
-        success: function(rsp) {
+        type    : "POST",
+        url     : $(this).attr('action') +"?_="+ Math.random(),
+        data    : $(this).serialize() +'&proj='+ projCurrent,
+        success : function(rsp) {
             if (rsp == "OK") {
                 hdev_header_alert("alert-success", time +" OK");
             } else {
