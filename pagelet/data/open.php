@@ -25,6 +25,9 @@ echo "<div class='h5c_row_fluid'>";
 foreach ($ls as $v) {
     $id = end(explode("/", $v['P']));
     $info = json_decode($v['C'], true);
+    if (!isset($info['name'])) {
+        $info['name'] = $id;
+    }
     echo '
         <a style="width:90px;" class="span href aklw5v" href="#'.$id.'">
             <div class="center"><img src="/h5creator/static/img/data/rds.png" align="absmiddle" /></div>

@@ -61,6 +61,9 @@ foreach ($dataList as $k => $v) {
     </tr>";
 
     foreach ($v as $k2 => $v2) {
+        if (!isset($v2['name'])) {
+            $v2['name'] = $k2;
+        }
         echo "<tr>
         <td></td>
         <td></td>

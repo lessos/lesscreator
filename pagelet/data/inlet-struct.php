@@ -59,13 +59,16 @@ if (file_exists($fsd)) {
 ?>
 
 <table class="table table-hover" width="100%">
-  <tr>
-      <td>Column</td>
-      <td>Type</td>
-      <td>Index</td>
-  </tr>
-  <?php
-  foreach ($struct as $k => $v) {
+    <tr>
+        <td>Column</td>
+        <td>Type</td>
+        <td>Index</td>
+    </tr>
+    <?php
+    if (!is_array($struct)) {
+        $struct = array();
+    }
+    foreach ($struct as $k => $v) {
       $checked = '';
       if ($v['Idx'] == 1) {
           $checked = '<img src="/h5creator/static/img/accept.png" />';
@@ -83,15 +86,15 @@ if (file_exists($fsd)) {
           </td>
           <td><?php echo $checked?></td>
       </tr>
-  <?php
-  }
-  if ($projInfo['appid'] == $dataInfo['projid']) {
-  ?>
-  <tr>
-    <td></td>
-    <td><button class="btn" onclick="_data_inlet_struct_edit()">Edit</button></td>
-    <td></td>
-  </tr>
-  <?php } ?> 
+    <?php
+    }
+    if ($projInfo['appid'] == $dataInfo['projid']) {
+    ?>
+    <tr>
+        <td></td>
+        <td><button class="btn" onclick="_data_inlet_struct_edit()">Edit</button></td>
+        <td></td>
+    </tr>
+    <?php } ?> 
 </table>
 

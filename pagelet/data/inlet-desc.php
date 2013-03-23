@@ -24,6 +24,9 @@ $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1");
 
 $info = $h5->Get("/h5db/info/{$this->req->id}");
 $info = json_decode($info, true);
+if (!isset($info['name'])) {
+    $info['name'] = $this->req->id;
+}
 ?>
 
 <table width="100%" style="padding:10px;">

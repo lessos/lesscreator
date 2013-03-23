@@ -17,6 +17,9 @@ $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1");
 
 $info = $h5->Get("/h5db/info/{$dbid}");
 $info = json_decode($info, true);
+if (!isset($info['name'])) {
+    $info['name'] = $dbid;
+}
 
 $fsp = $projpath."/hootoapp.yaml";
 if (file_exists($fsp)) {
