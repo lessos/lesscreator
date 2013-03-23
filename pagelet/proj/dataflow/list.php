@@ -57,7 +57,7 @@ foreach ($grps as $k => $v) {
         <td></td>
         <td>
             <img src='/fam3/icons/brick.png' class='h5c_icon' />
-            {$json['name']}
+            <a href='#{$k}/{$json['id']}' class='to8kit' title='{$json['name']}'>{$json['name']}</a>
         </td>
         <td align='right'>
             <a href='#{$k}/{$json['id']}' class='to8kit' title='{$json['name']}'>Edit</a>

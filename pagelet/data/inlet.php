@@ -47,6 +47,7 @@ if (file_exists($fsp)) {
                 'name'      => null,
             );
         }
+        //print_r($info);
         if ($dataInfo['name'] != $info['title']) {
             $dataInfo['name']      = $info['title'];
             $dataInfo['updated']   = time();

@@ -38,11 +38,11 @@ if (!isset($actor['id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $name = $this->req->name;
+    $name = trim($this->req->name);
     if (!strlen($name)) {
-        die('Invalid Params');
+        die('`name` can not be null');
     }
-
+    $actor['exec_mode'] = intval($this->req->exec_mode);
     $actor['name']      = $name;
     $actor['updated']   = time();
     file_put_contents($fsj, hwl_Json::prettyPrint($actor));
@@ -54,16 +54,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <form id="sy9p3x" action="/h5creator/proj/dataflow/actor-edit" style="padding:5px;">
   <input type="hidden" name="proj" value="<?php echo $this->req->proj?>" />
   <input type="hidden" name="uri" value="<?php echo $this->req->uri?>" />
-  <table width="100%" cellpadding="3">
+  <table width="100%" cellpadding="20px" style="border-spacing:20px;">
     <tr>
-      <td width="160"><strong>Group</strong></td>
+      <td width="160px">Group</td>
       <td>
         <?php echo $grp['name']?>
       </td>
     </tr>
     <tr>
-      <td><strong>Name your Actor</strong></td>
+      <td>Name your Actor</td>
       <td><input type="text" name="name" value="<?php echo $actor['name']?>" /></td>
+    </tr>
+    <tr>
+      <td>Execution Mode</td>
+      <td>
+        <select name="exec_mode" onchange="_exec_mode(this.value)">
+        <?php
+        $vs = h5creator_service::listExecMode();
+        foreach ($vs as $k => $v) {
+          $select = '';
+          if ($k == $actor['exec_mode']) {
+            $select = 'selected';
+          }
+          echo "<option value='{$k}' {$select}>{$v}</option>";
+        }
+        ?>
+        </select>
+      </td>
     </tr>
     <tr>
       <td></td>

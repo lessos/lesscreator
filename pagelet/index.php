@@ -17,8 +17,8 @@
     <td width="10px"></td>
 
     <td class="header_logo" width="240px">
-      <img src="/h5creator/static/img/h5-logo-h30s.png" align="absbottom" />  
-      <span>DEMO</span>
+      <img src="/h5creator/static/img/hooto-logo-mc-h30.png" />
+      <span class="title">Creator</span>
     </td>
     
     <td align="center">

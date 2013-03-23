@@ -55,7 +55,7 @@ function h5cModalOpen(url, title, w, h)
             var apd = '<div class="h5c_modal h5c_gen_scroll" id="'+urid+'">';
             apd += '<div class="header">\
                 <span class="title">'+title+'</span>\
-                <a class="close" href="javascript:h5cModalClose()">×</a>\
+                <button class="close" onclick="h5cModalClose()">×</button>\
                 </div>';
             apd += '<div class="sep clearhr"></div>';
             apd += rsp;
@@ -91,11 +91,11 @@ function h5cModalOpen(url, title, w, h)
 
             $("body").append('<div class="h5c_modal_bg">');
             $("#"+urid).hide().css({
-                "z-index": 100,
-                "width": w+"px",
-                "height": h+"px",
-                "top": t+'px',
-                "left": l+'px'
+                "z-index"   : 100,
+                "width"     : w +"px",
+                "height"    : h +"px",
+                "top"       : t +'px',
+                "left"      : l +'px'
             }).slideDown(200);
     
             $("#"+urid+" .inputfocus").focus();
