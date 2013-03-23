@@ -839,7 +839,9 @@ textarea {
 .h5c_row_fluid {
     list-style: none outside;
     padding-bottom: 1em;
-    text-align: center;
+    text-align: left;
+    display: inline-block;
+    *display: inline;
 }
 .h5c_row_fluid a {
     text-decoration: none;
@@ -855,12 +857,19 @@ textarea {
     float: left; display: block;
     margin: 0 10px 10px 0;
     padding: 5px;
+    display: inline-block;
+    *display: inline;
+}
+.h5c_row_fluid input {
+    display: inline-block;
+    *display: inline;
 }
 .h5c_row_fluid .title {
     text-overflow: ellipsis;
     white-space: nowrap; 
     overflow: hidden;
 }
+
 
 ul.h5c_navtabs {
     list-style-type: none;

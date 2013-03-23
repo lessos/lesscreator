@@ -46,12 +46,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!strlen($name)) {
         die('`name` can not be null');
     }
+    
     $actor['exec_mode']     = intval($this->req->exec_mode);
     $actor['exec_timeout']  = intval($this->req->exec_timeout);
     $actor['exec_interval'] = intval($this->req->exec_interval);
     $actor['exec_cron']     = implode(",", $this->req->exec_cron);
+    
+    $actor['para_mode']     = intval($this->req->para_mode);
+    $actor['para_data']     = $this->req->para_data;
+    
     $actor['name']          = $name;
     $actor['updated']       = time();
+    
     file_put_contents($fsj, hwl_Json::prettyPrint($actor));
 
     die("OK");
@@ -65,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     width: 30px;
 }
 </style>
-<form id="sy9p3x" action="/h5creator/proj/dataflow/actor-edit" style="padding:5px;">
+<form id="sy9p3x" action="/h5creator/proj/dataflow/actor-edit" style="padding:10px;">
   <input type="hidden" name="proj" value="<?php echo $this->req->proj?>" />
   <input type="hidden" name="uri" value="<?php echo $this->req->uri?>" />
   <table width="100%" cellpadding="20px" style="border-spacing:20px;">
@@ -85,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <tr>
       <td>Execution Mode</td>
       <td>
-        <select name="exec_mode" onchange="_exec_mode(this.value)" style="width:400px">
+        <select name="exec_mode" onchange="_exec_mode(this.value)" style="width:500px">
         <?php
         $vs = h5creator_service::listExecMode();
         foreach ($vs as $k => $v) {
@@ -153,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <tr>
       <td>Parallel Mode</td>
       <td>
-        <select name="para_mode" onchange="_para_mode(this.value)">
+        <select name="para_mode" onchange="_para_mode(this.value)" style="width:500px;">
         <?php
         $vs = h5creator_service::listParaMode();
         foreach ($vs as $k => $v) {
@@ -170,7 +176,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <tr>
       <td></td>
-      <td><input type="submit" class="btn btn-primary" value="Save" /></td>
+      <td>
+        <?php
+        $para_data_display = '';
+        if (isset($actor['para_data']) && strlen($actor['para_data']) > 0) {
+
+            $fsd = $projpath."/data/{$actor['para_data']}.json";
+            $json = file_get_contents($fsd);
+            $json = json_decode($json, true);
+            if (isset($json['name'])) {
+                $para_data_display = $json['name'];
+            }
+        }
+        ?>
+        <div class="smxw88 para_data input-append hide">
+          <input name="para_data_display" type="text" value="<?php echo $para_data_display?>" class="span2"/>
+          <input name="para_data" type="hidden" value="<?php echo $actor['para_data']?>" class="para_data"/>
+          <button type="button" class="btn" onclick="_dataflow_edit_paraselect()">
+            <i class="icon-share-alt"></i>
+            <span class="_proj_new_basedir_dp">Select a Database</span>
+          </button>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td><input type="submit" class="btn btn-primary" value="Save" style="margin: 10px 0;" /></td>
     </tr>
   </table>
   
@@ -196,6 +228,23 @@ function _exec_mode(val)
     }
 }
 _exec_mode(<?php echo $actor['exec_mode']?>);
+
+
+function _dataflow_edit_paraselect()
+{
+    var url = "/h5creator/proj/dataflow/actor-edit-para-data?proj="+projCurrent+"&func=select";
+    h5cModalOpen(url, 'Select a Database', 400, 300);
+}
+
+function _para_mode(val)
+{
+    $(".smxw88").hide();
+
+    if (val == 3 || val == 4 || val == 5) {
+        $(".para_data").show();
+    }
+}
+_para_mode(<?php echo $actor['para_mode']?>);
 
 $("#sy9p3x").submit(function(event) {
 
