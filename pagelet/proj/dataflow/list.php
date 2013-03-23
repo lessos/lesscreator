@@ -38,6 +38,7 @@ foreach ($grps as $k => $v) {
         <td>
             {$v['name']}
         </td>
+        <td align='right'></td>
         <td align='right'><a href='#{$k}' class='k810ll'>Edit</a></td>
         <td width='5px'></td>
     </tr>";
@@ -58,6 +59,9 @@ foreach ($grps as $k => $v) {
         <td>
             <img src='/fam3/icons/brick.png' class='h5c_icon' />
             <a href='#{$k}/{$json['id']}' class='to8kit' title='{$json['name']}'>{$json['name']}</a>
+        </td>
+        <td align='right'>
+            <a href='#{$k}/{$json['id']}' class='j4sa3r'>Run</a>
         </td>
         <td align='right'>
             <a href='#{$k}/{$json['id']}' class='to8kit' title='{$json['name']}'>Edit</a>

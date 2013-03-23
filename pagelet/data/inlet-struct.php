@@ -49,6 +49,13 @@ function _struct_dismap($k)
     }
     return $v;
 }
+
+$dataInfo = array();
+$fsd = $projpath."/data/{$this->req->id}.db.json";
+if (file_exists($fsd)) {
+    $dataInfo = file_get_contents($fsd);
+    $dataInfo = json_decode($dataInfo, true);
+}
 ?>
 
 <table class="table table-hover" width="100%">
@@ -78,7 +85,7 @@ function _struct_dismap($k)
       </tr>
   <?php
   }
-  if ($projInfo['appid'] == $info['projid']) {
+  if ($projInfo['appid'] == $dataInfo['projid']) {
   ?>
   <tr>
     <td></td>

@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <label>Timeout <font color="red">*</font></label>
           <div class="input-append">
             <input class="input-small" type="text" name="exec_timeout" value="<?php echo $actor['exec_timeout']?>" />
-            <span class="add-on">Second</span>
+            <span class="add-on">Seconds</span>
           </div>
         </div>
         
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <label>Time interval <font color="red">*</font></label>
           <div class="input-append">
             <input class="input-small" type="text" name="exec_interval" value="<?php echo $actor['exec_interval']?>" />
-            <span class="add-on">Second</span>
+            <span class="add-on">Seconds</span>
           </div>
         </div>
         

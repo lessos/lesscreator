@@ -8,17 +8,15 @@ if (substr($proj, 0, 1) == '/') {
     $projpath = "{$projbase}/{$proj}";
 }
 
-
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("The instance does not exist");
 }
+$dbid = $this->req->id;
 
 $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1");
 
-$info = $h5->Get("/h5db/info/{$this->req->id}");
+$info = $h5->Get("/h5db/info/{$dbid}");
 $info = json_decode($info, true);
-
-
 
 $fsp = $projpath."/hootoapp.yaml";
 if (file_exists($fsp)) {
@@ -27,33 +25,37 @@ if (file_exists($fsp)) {
     $projInfo = hwl\Yaml\Yaml::decode($projInfo);
 
     $dataInfo = array();
-    $fsd = $projpath."/data/{$this->req->id}.json";
+    $fsd = $projpath."/data/{$this->req->id}.db.json";
     if (file_exists($fsd)) {
         $dataInfo = file_get_contents($fsd);
         $dataInfo = json_decode($dataInfo, true);
     }
-
-    if (!isset($info['projid'])) {
-        $info['projid'] = $projInfo['appid'];
-        $h5->Set("/h5db/info/{$this->req->id}", json_encode($info));
+    if (!isset($dataInfo['struct'])) {
+        $dataInfo['struct'] = array();
     }
 
-    if (is_writable($projpath."/data")) {
-    
-        if (!isset($dataInfo['id'])) {
-            $dataInfo = array(
-                'id'        => $this->req->id,
-                'created'   => time(),
-                'name'      => null,
-            );
-        }
-        //print_r($info);
-        if ($dataInfo['name'] != $info['title']) {
-            $dataInfo['name']      = $info['title'];
-            $dataInfo['updated']   = time();
-            $dataInfo['projid']    = $info['projid'];
-            file_put_contents($fsd, hwl_Json::prettyPrint($dataInfo));
-        }
+    if (!isset($info['projid']) || $info['projid'] == $projInfo['appid']) {
+        $info['id']     = $dbid;
+        $info['projid'] = $projInfo['appid'];
+        $info['name']   = $dataInfo['name'];
+        $info['type']   = "1";
+        $h5->Set("/h5db/info/{$dbid}", json_encode($info));
+        $h5->Set("/h5db/struct/{$dbid}", json_encode($dataInfo['struct']));
+    }
+
+    if (isset($info['projid']) && $info['projid'] != $projInfo['appid']
+        && is_writable($projpath."/data")) {
+        $struct = $h5->Get("/h5db/struct/{$this->req->id}");
+        $struct = json_decode($struct, true);
+        $dataInfo = array(
+            'id'        => $dbid,
+            'created'   => time(),
+            'name'      => $info['name'],
+            'updated'   => time(),
+            'projid'    => $info['projid'],
+            'struct'    => $struct,
+        );
+        file_put_contents($fsd, hwl_Json::prettyPrint($dataInfo));
     }
 }
 ?>
@@ -63,7 +65,7 @@ if (file_exists($fsp)) {
 <div style="padding:10px; background-color:#f6f7f8;">
     <span>
         <img src="/h5creator/static/img/database.png" /> 
-        <strong>Data Instance</strong>: #<?php echo $this->req->id?>
+        <strong>Data Instance</strong>: #<?php echo $dbid?>
     </span>
 </div>
 
@@ -79,7 +81,7 @@ if (file_exists($fsp)) {
 </div>
 
 <script>
-var id = '<?php echo $this->req->id?>';
+var id = '<?php echo $dbid?>';
 
 $('.sk79ve').click(function() {    
     

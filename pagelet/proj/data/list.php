@@ -24,7 +24,7 @@ $projInfo = file_get_contents($fsp);
 $projInfo = hwl\Yaml\Yaml::decode($projInfo);
 
 $dataList  = array('local' => array(), 'exter' => array());
-$glob = $projpath."/data/*.json";
+$glob = $projpath."/data/*.db.json";
 foreach (glob($glob) as $v) {
     $json = file_get_contents($v);
     $json = json_decode($json, true);

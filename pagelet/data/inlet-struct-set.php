@@ -20,7 +20,7 @@ $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
 
 $info = $h5->Get("/h5db/info/{$this->req->id}");
 $info = json_decode($info, true);
-if (!isset($info['title'])) {
+if (!isset($info['name'])) {
     die("Bad Request");
 }
 
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     $dataInfo = array();
-    $fsd = $projpath."/data/{$dbid}.json";
+    $fsd = $projpath."/data/{$dbid}.db.json";
     if (file_exists($fsd)) {
         $dataInfo = file_get_contents($fsd);
         $dataInfo = json_decode($dataInfo, true);

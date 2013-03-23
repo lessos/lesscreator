@@ -9,17 +9,18 @@ if (substr($proj, 0, 1) == '/') {
 }
 
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
-    die("Bad Request");
+    die("Bad Request 1");
 }
 
 $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
 
 $info = $h5->Get("/h5db/info/{$this->req->id}");
 $info = json_decode($info, true);
-if (!isset($info['title'])) {
-    die("Bad Request");
+if (!isset($info['id'])) {
+    die("Bad Request 2");
 }
 
+$projInfo = array();
 $fsp = $projpath."/hootoapp.yaml";
 if (file_exists($fsp)) {
     $projInfo = file_get_contents($fsp);
@@ -34,8 +35,8 @@ $info['id'] = $this->req->id;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    if (isset($this->req->title)) {
-        $info['title'] = $this->req->title;
+    if (isset($this->req->name)) {
+        $info['name'] = $this->req->name;
     }
 
     $h5->Set("/h5db/info/{$this->req->id}", json_encode($info));    
@@ -45,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     $dataInfo = array();
-    $fsd = $projpath."/data/{$this->req->id}.json";
+    $fsd = $projpath."/data/{$this->req->id}.db.json";
     if (file_exists($fsd)) {
         $dataInfo = file_get_contents($fsd);
         $dataInfo = json_decode($dataInfo, true);
@@ -61,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             );
         }
 
-        $dataInfo['name']      = $info['title'];
+        $dataInfo['name']      = $info['name'];
         $dataInfo['updated']   = time();
         $dataInfo['projid']    = $info['projid'];
         file_put_contents($fsd, hwl_Json::prettyPrint($dataInfo));
@@ -79,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </tr>
     <tr>
         <td><strong>Name</strong></td>
-        <td><input type="text" name="title" value="<?php echo $info['title']?>" /></td>
+        <td><input type="text" name="name" value="<?php echo $info['name']?>" /></td>
     </tr>
     <tr>
         <td></td>

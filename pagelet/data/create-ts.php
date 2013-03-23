@@ -25,7 +25,7 @@ if ($this->app->method == 'POST') {
     $set = $h5->Get("/h5db/info/{$this->req->data_instance_id}");
     $set = json_decode($set, true);
 
-    $set['title']   = $this->req->data_instance_title;
+    $set['name']    = $this->req->data_instance_name;
     $set['type']    = '1';
     $set['projid']  = $projInfo['appid'];
 
@@ -71,7 +71,7 @@ $instid = LessPHP_Util_String::rand(8, 2);
   <tr>
     <td><strong>Name your Instance</strong></td>
     <td>
-      <input type="text" name="data_instance_title" value="" />
+      <input type="text" name="data_instance_name" value="" />
     </td>
   </tr>
 </table>
@@ -119,7 +119,7 @@ function _data_create_open()
 {
     var opt = {
         "img": "database",
-        "title": $("#data_instance_title").val(),
+        "title": $("#data_instance_name").val(),
         "close": 1
     }
     var id = $("#data_instance_id").val();

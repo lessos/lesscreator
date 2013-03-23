@@ -28,7 +28,7 @@ foreach ($ls as $v) {
     echo '
         <a style="width:90px;" class="span href aklw5v" href="#'.$id.'">
             <div class="center"><img src="/h5creator/static/img/data/rds.png" align="absmiddle" /></div>
-            <div class="center title">'.$info['title'].'</div>
+            <div class="center title">'.$info['name'].'</div>
         </a>
     ';
 }

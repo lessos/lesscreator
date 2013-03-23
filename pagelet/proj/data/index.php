@@ -19,7 +19,7 @@ if (strlen($projpath) < 1) {
 
 <div class="h5c_tab_subnav" style="border-bottom: 1px solid #ddd;">
     <a href="javascript:h5cPluginDataOpen()" class="b0hmqb">
-        <img src="/fam3/icons/folder_database.png" class="h5c_icon" />
+        <img src="/fam3/icons/folder.png" class="h5c_icon" />
         Open 
     </a>
     <a href="javascript:h5cPluginDataNew()" class="b0hmqb">
