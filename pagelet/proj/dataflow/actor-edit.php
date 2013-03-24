@@ -30,15 +30,27 @@ $fsj = $obj."/{$grpid}/{$actorid}.actor.json";
 if (!file_exists($fsj)) {
     die("Bad Request");
 }
+
+$actorDefault = array(
+    'name'          => $actorid,
+
+    'exec_mode'     => '0',
+    'exec_timeout'  => 3600,
+    'exec_interval' => 86400,
+    'exec_cron'     => "*,*,*,*,*",
+
+    'para_mode'     => '0',
+    'para_data'     => '',
+);
+
 $actor = file_get_contents($fsj);
 $actor = json_decode($actor, true);
 if (!isset($actor['id'])) {
     die("Internal Server Error");
 }
-$exec_cron = array("*","*","*","*","*");
-if (isset($actor['exec_cron'])) {
-    $exec_cron = explode(",", $actor['exec_cron']);
-}
+$actor      = array_merge($actor, $actorDefault);
+
+$exec_cron  = explode(",", $actor['exec_cron']);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -46,6 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!strlen($name)) {
         die('`name` can not be null');
     }
+    $actor['name']          = $name;
+    $actor['updated']       = time();
     
     $actor['exec_mode']     = intval($this->req->exec_mode);
     $actor['exec_timeout']  = intval($this->req->exec_timeout);
@@ -53,15 +67,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $actor['exec_cron']     = implode(",", $this->req->exec_cron);
     
     $actor['para_mode']     = intval($this->req->para_mode);
-    $actor['para_data']     = $this->req->para_data;
-    
-    $actor['name']          = $name;
-    $actor['updated']       = time();
+    $actor['para_data']     = $this->req->para_data;    
     
     file_put_contents($fsj, hwl_Json::prettyPrint($actor));
 
     die("OK");
 }
+
 ?>
 <style>
 .exec_regular td {
@@ -255,8 +267,7 @@ $("#sy9p3x").submit(function(event) {
         url     : $(this).attr('action'),
         data    : $(this).serialize(),
         timeout : 3000,
-        success : function(rsp) {
-            
+        success : function(rsp) {            
             if (rsp == "OK") {
                 hdev_header_alert('success', rsp);
             } else {
