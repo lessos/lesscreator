@@ -96,4 +96,19 @@ $('.ejiqlh').click(function() {
     h5cTabOpen(url, 'w0', 'editor', 
         {'title': tit, 'close':'1', 'img': '/fam3/icons/package.png'});
 });
+
+$('.j4sa3r').click(function() {
+    var uri = $(this).attr('href').substr(1);
+    $.ajax({
+        url     : '/h5creator/proj/dataflow/actor-ctrl?proj='+projCurrent+'&uri='+uri,
+        type    : "POST",
+        timeout : 30000,
+        success : function(rsp) {
+            alert(rsp);
+        },
+        error: function(xhr, textStatus, error) {
+            hdev_header_alert('error', xhr.responseText);
+        }
+    });
+});
 </script>
