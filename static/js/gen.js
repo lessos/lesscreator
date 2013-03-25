@@ -396,17 +396,15 @@ function h5cTabletTitle(urid)
         }
 
         entry  = '<table id="pgtab'+urid+'" class="pgtab"><tr>';
-
-        
-
         if (item.img) {
             var imgsrc = "/h5creator/static/img/"+item.img+".png";
             if (item.img.slice(0, 1) == '/') {
                 imgsrc = item.img;
             }
-            entry += "<td class='ico'><img src='"+ imgsrc +"' align='absmiddle' /></td>";
+            entry += "<td class='ico' onclick=\"h5cTabSwitch('"+urid+"')\">\
+                <img src='"+ imgsrc +"' align='absmiddle' /></td>";
         }
-        entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabSwitch('"+urid+"')\">"+item.title+"</a></td>";
+        entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabSwitch('"+urid+"')\">"+item.title+"</td>";
         entry += '<td class="chg">*</td>';
         if (item.close) {
             entry += '<td class="close"><a href="javascript:h5cTabClose(\''+urid+'\')">×</a></td>';
@@ -637,7 +635,11 @@ function h5cProjectOpen(proj)
         return;
     }
     
-    h5cTabletOpen('/h5creator/app/project?proj='+proj, 't0', 'html', 'Project');
+    var opt = {
+        'img': '/h5creator/static/img/app-t3-16.png',
+        'title': 'Project',
+    };
+    h5cTabOpen('/h5creator/app/project?proj='+proj, 't0', 'html', opt);
     projCurrent = proj;
     
     h5cLayoutResize();
