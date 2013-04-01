@@ -29,6 +29,11 @@ if (!file_exists($fsa)) {
     die('Bad Request');
 }
 
+$fss = $projpath."/dataflow/{$grpid}/{$actorid}.actor";
+if (!file_exists($fss)) {
+    die('Bad Request');
+}
+
 $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
 
 
@@ -40,7 +45,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'ActorId'   => $actorid,
         'Func'      => '10',
     );
-    $h5->Set("/h5flow/ctrl/{$actorid}", json_encode($set));
+    $h5->Set("/h5flow/ctrlq/{$actorid}", json_encode($set));
+
+    $actorJson = file_get_contents($fsa);
+    $h5->Set("/h5flow/info/{$actorid}", $actorJson);
+
+    $actorScript = file_get_contents($fss);
+    $h5->Set("/h5flow/actor/{$actorid}", $actorScript);
 
     die("OK");
 }

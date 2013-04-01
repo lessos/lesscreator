@@ -15,6 +15,8 @@ $projpath = preg_replace("/\/+/", "/", rtrim($projpath, '/'));
 if (strlen($projpath) < 1) {
     die("ERROR");
 }
+$projInfo = hwl\Yaml\Yaml::decode(file_get_contents($projpath."/hootoapp.yaml"));
+
 
 $grps = array();
 $glob = $projpath."/dataflow/*.grp.json";
@@ -38,6 +40,7 @@ foreach ($grps as $k => $v) {
         <td>
             {$v['name']}
         </td>
+        <td>Status</td>
         <td align='right'></td>
         <td align='right'><a href='#{$k}' class='k810ll'>Edit</a></td>
         <td width='5px'></td>
@@ -60,6 +63,7 @@ foreach ($grps as $k => $v) {
             <img src='/fam3/icons/brick.png' class='h5c_icon' />
             <a href='#{$k}/{$json['id']}' class='to8kit' title='{$json['name']}'>{$json['name']}</a>
         </td>
+        <td id='qstatus{$json['id']}'></td>
         <td align='right'>
             <a href='#{$k}/{$json['id']}' class='j4sa3r'>Run</a>
         </td>
@@ -72,9 +76,77 @@ foreach ($grps as $k => $v) {
     }
 }
 echo "</table>";
+echo "<div id='vtknd6' class='hide'>{$projInfo['appid']}</div>";
 ?>
 
 <script type="text/javascript">
+
+var sock = null;
+var wsuri = "ws://127.0.0.1:9600/h5data/api/qstatus";
+
+function _qstatus_open()
+{
+    if (!("WebSocket" in window)) {
+        return
+    }
+    if (sock != null) {
+        return
+    }
+
+    try{
+        sock = new WebSocket(wsuri);
+
+        sock.onopen = function() {
+            //console.log("connected to " + wsuri);
+            _qstatus_send();
+        }
+
+        sock.onclose = function(e) {
+            //console.log("connection closed (" + e.code + ")");
+        }
+
+        sock.onmessage = function(e) {
+            //console.log("message received: " + e.data);
+        
+            var obj = JSON.parse(e.data);
+        
+            for (var i in obj) {
+                status = "Running";
+                switch (obj[i].Status) {
+                case 1:
+                    status = "Pending";
+                    break;
+                case 3:
+                    status = "Done";
+                    break;
+                case 4:
+                    status = "Error";
+                    break;
+                case 9:
+                    status = "Timeout";
+                    break
+                }
+
+                $("#qstatus"+ obj[i].WorkerId).text(status);
+            }
+
+            _qstatus_send();
+            if ($("#vtknd6").length == 0) {
+                sock.close();
+            }
+        }
+        
+    } catch(e) {
+        //message('<p>Error'+ e);
+    }
+}
+
+function _qstatus_send()
+{
+    var msg = $("#vtknd6").text(); 
+    sock.send(msg);
+}
+
 $('.k810ll').click(function() {
     var uri = $(this).attr('href').substr(1);
     var url = "/h5creator/proj/dataflow/grp-edit?proj="+projCurrent+"&grpid="+uri;
@@ -105,10 +177,13 @@ $('.j4sa3r').click(function() {
         timeout : 30000,
         success : function(rsp) {
             alert(rsp);
+            _qstatus_open();
         },
         error: function(xhr, textStatus, error) {
             hdev_header_alert('error', xhr.responseText);
         }
     });
 });
+
+
 </script>
