@@ -26,7 +26,52 @@ function h5cDialogTitle(title)
     $(".h5c_dialog_titlec").text(title);
 }
 
-function h5cModalOpen(url, title, w, h)
+
+var h5cModalData    = {};
+var h5cModalCurrent = null;
+var h5cModalBodyWidth   = null;
+var h5cModalBodyHeight  = null;
+function h5cModalNext(url, title, opt)
+{
+    h5cModalOpen(url, null, null, null, title, opt)
+}
+function h5cModalPrev()
+{
+    var prev = null;
+    for (var i in h5cModalData) {
+        if (h5cModalData[i].urid == h5cModalCurrent && prev != null) {
+            console.log("GOT prev", h5cModalData[prev].url);
+            h5cModalSwitch(prev);
+            break;
+        }
+        prev = i;
+    }
+}
+function h5cModalSwitch(urid)
+{
+    if (!h5cModalData[urid].title) {
+        return;
+    }
+    pp = $('#'+ urid).position();
+    mov = pp.left;
+    if (mov < 0) {
+        mov = 0;
+    }
+    $('.h5c-modal-body-page').animate({top: 0, left: "-"+ mov +"px"}, 300, function() {
+        
+        $('.h5c-modal-header .title').text(h5cModalData[urid].title);
+    
+        $('.h5c-modal-footer').empty();
+        for (var i in h5cModalData[urid].btns) {
+            h5cModalButtonAdd(h5cModalData[urid].btns[i].id, 
+                h5cModalData[urid].btns[i].title,
+                h5cModalData[urid].btns[i].func,
+                h5cModalData[urid].btns[i].style);
+        }
+        h5cModalCurrent = urid;
+    });
+}
+function h5cModalOpen(url, pos, w, h, title, opt)
 {
     var urid = Crypto.MD5("modal"+url);
 
@@ -37,66 +82,141 @@ function h5cModalOpen(url, title, w, h)
     }
     urls += Math.random();
 
-    var p = posFetch();
+    var p  = posFetch();
     var bw = $('body').width() - 60;
     var bh = $('body').height() - 50;
     
-
-    /** if (!$("#"+urid).length) {
-    } */
     $.ajax({
         url     : urls,
         type    : "GET",
         timeout : 30000,
         success : function(rsp) {
+
+            var firstload = false;
+            if (h5cModalCurrent == null) {
+                //console.log("firstload setting");
+                $(".h5c-modal").remove();
+                firstload = true;
+            }
+            h5cModalCurrent = urid;
+            h5cModalData[urid] = {
+                "urid":     urid,
+                "url":      url,
+                "title":    title,
+                "btns":     {},
+            }
+            $(".h5c-modal-footer").empty();            
+
+            var pl = '<div class="h5c-modal-body-pagelet h5c_gen_scroll" id="'+urid+'">'+rsp+'</div>';
             
-            $(".h5c_modal").remove();
-            
-            var apd = '<div class="h5c_modal h5c_gen_scroll" id="'+urid+'">';
-            apd += '<div class="header">\
+            if (firstload) {
+                console.log("add .h5c-modal");
+                var apd = '<div class="h5c-modal">';
+                
+                apd += '<div class="h5c-modal-header">\
                 <span class="title">'+title+'</span>\
                 <button class="close" onclick="h5cModalClose()">×</button>\
                 </div>';
-            apd += '<div class="sep clearhr"></div>';
-            apd += rsp;
-            apd += '</div>'
+                
+                apd += '<div class="h5c-modal-body">';
+                apd += '<div class="h5c-modal-body-page">'+pl+'</div>';
+                apd += '</div>';
+                
+                apd += '<div class="h5c-modal-footer"><div>';
+                apd += '</div>'
 
-            $("body").append(apd);
+                $("body").append(apd);
+            } else {
+                $(".h5c-modal-body-page").append(pl);
+                $(".h5c-modal-header .title").text(title);
+            }
 
             $("#"+urid).css({
                 "z-index": "-100"
             }).show();
-    
-            if (w < 1) {
-                w = $("#"+urid).outerWidth(true);
-            }
-            if (w < 200) {
-                w = 200;
-            }
-            if (h < 1) {
-                h = $("#"+urid).height();
-            }
-            if (h < 100) {
-                h = 100;
-            }
 
-            var t = p.top;
-            if ((t + h) > bh) {
-                t = bh - h;
+            if (!$('.h5c-modal').is(':visible')) {
+                console.log("hide .h5c-modal and show()");
+                $(".h5c-modal").css({
+                    "z-index": "-100"
+                }).show();
             }
-            var l = p.left;
-            if (l > (bw - w)) {
-                l = bw - w;
-            }
+                
+            if (firstload) {
 
-            $("body").append('<div class="h5c_modal_bg">');
-            $("#"+urid).hide().css({
-                "z-index"   : 100,
-                "width"     : w +"px",
-                "height"    : h +"px",
-                "top"       : t +'px',
-                "left"      : l +'px'
-            }).slideDown(200);
+                console.log("fixed init sizing");
+                var hh = $('.h5c-modal-header').outerHeight(true);
+                var fh = $('.h5c-modal-footer').outerHeight(true);
+                
+                if (w < 1) {
+                    w = $("#"+urid).outerWidth(true);
+                }
+                if (w < 200) {
+                    w = 200;
+                }
+                if (h < 1) {
+                    h = $("#"+urid).outerHeight(true) + hh + fh + 10;
+                }
+                if (h < 100) {
+                    h = 100;
+                }
+
+                var t = 0, l = 0;
+                if (pos == 1) {
+                    l = bw / 2 - w / 2;
+                    t = bh / 2 - h / 2;
+                } else {
+                    l = p.left;
+                    t = p.top;
+                }
+                if (l > (bw - w)) {
+                    l = bw - w;
+                }
+                if ((t + h) > bh) {
+                    t = bh - h;
+                }
+                if (t < 10) {
+                    t = 10;
+                }
+
+                $(".h5c-modal").css({
+                    "height": h +'px',
+                    "width": w +'px',
+                });
+                
+                h5cModalBodyHeight = h - hh - fh - 10;
+                h5cModalBodyWidth  = $('.h5c-modal-body').width();
+                $(".h5c-modal-body").height(h5cModalBodyHeight);
+            }
+            console.log("size"+ h5cModalBodyWidth +"/"+ h5cModalBodyHeight);
+            
+            $("#"+urid).css({
+                "z-index"   : "1",
+                "width"     : h5cModalBodyWidth +"px",
+                "height"    : h5cModalBodyHeight +"px",
+            });
+            
+            pp = $('#'+ urid).position();
+            mov = pp.left;
+            if (mov < 0) {
+                mov = 0;
+            }
+            
+            if (!$('.h5c-modal-bg').is(':visible')) {
+                $(".h5c-modal-bg").remove();
+                $("body").append('<div class="h5c-modal-bg">');
+            }
+            
+            if (firstload) {
+                $(".h5c-modal").css({
+                    "z-index": 100,
+                    "top": t +'px',
+                    "left": l +'px',
+                }).hide().slideDown(200, function() {
+                    h5cModalResize();
+                });
+            }
+            $('.h5c-modal-body-page').animate({top: 0, left: "-"+ mov +"px"}, 300);
     
             $("#"+urid+" .inputfocus").focus();
         },
@@ -105,12 +225,38 @@ function h5cModalOpen(url, title, w, h)
         }
     });
 }
+function h5cModalResize()
+{
+    var h  = $('.h5c-modal').height();
+    var hh = $('.h5c-modal-header').outerHeight(true);
+    var fh = $('.h5c-modal-footer').outerHeight(true);
+    h5cModalBodyHeight = h - hh - fh - 10;
+    $('.h5c-modal-body').height(h5cModalBodyHeight);
+    $('.h5c-modal-body-pagelet').height(h5cModalBodyHeight);
+}
+function h5cModalButtonAdd(id, title, func, style)
+{
+    $(".h5c-modal-footer")
+        .append("<button class='btn btn-small "+style+"' onclick='"+func+"'>"+ title +"</button>")
+        .show(0, function() {
+            h5cModalResize();
+            h5cModalData[h5cModalCurrent].btns[id] = {
+                "title":    title,
+                "func":     func,
+                "style":    style,
+            }
+        });
+}
 
 function h5cModalClose()
 {    
-    $(".h5c_modal").slideUp(200, function(){
+    $(".h5c-modal").slideUp(200, function(){
         $(this).remove();
-        $(".h5c_modal_bg").remove();
+        $(".h5c-modal-bg").remove();
+        h5cModalData = {};
+        h5cModalCurrent = null;
+        h5cModalBodyWidth = null;
+        h5cModalBodyHeight = null;
     });
 }
 
