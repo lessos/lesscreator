@@ -17,7 +17,6 @@ if (strlen($projpath) < 1) {
 }
 $projInfo = hwl\Yaml\Yaml::decode(file_get_contents($projpath."/hootoapp.yaml"));
 
-
 $grps = array();
 $glob = $projpath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
@@ -26,7 +25,6 @@ foreach (glob($glob) as $v) {
     if (!isset($json['id'])) {
         continue;
     }
-
     $grps[$json['id']] = $json;
 }
 
@@ -40,7 +38,7 @@ foreach ($grps as $k => $v) {
         <td>
             <a href='#{$k}' class='k810ll'>{$v['name']}</a>
         </td>
-        <td>Status</td>
+        <td></td>
         <td align='right'></td>
         <td align='right'></td>
         <td width='5px'></td>
@@ -61,14 +59,14 @@ foreach ($grps as $k => $v) {
         <td></td>
         <td>
             <img src='/fam3/icons/brick.png' class='h5c_icon' />
-            <a href='#{$k}/{$json['id']}' class='to8kit' title='{$json['name']}'>{$json['name']}</a>
+            <a href='#{$k}/{$json['id']}' class='to8kit'>{$json['name']}</a>
         </td>
         <td id='qstatus{$json['id']}'></td>
         <td align='right'>
             <a href='#{$k}/{$json['id']}' class='j4sa3r'>Run</a>
         </td>
         <td align='right'>
-            <a href='#{$k}/{$json['id']}.actor' class='ejiqlh' title='{$json['name']}'>Script</a>
+            <a href='#{$k}/{$json['id']}.actor' class='ejiqlh'>Script</a>
         </td>
         <td></td>
         </tr>";
@@ -79,7 +77,6 @@ echo "<div id='vtknd6' class='hide'>{$projInfo['appid']}</div>";
 ?>
 
 <script type="text/javascript">
-
 var sock = null;
 var wsuri = "ws://127.0.0.1:9600/h5data/api/qstatus";
 
@@ -149,7 +146,7 @@ function _qstatus_send()
 $('.k810ll').click(function() {
     var uri = $(this).attr('href').substr(1);
     var url = "/h5creator/proj/dataflow/grp-edit?proj="+projCurrent+"&grpid="+uri;
-    h5cModalOpen(url, 'Edit Group', 400, 0);
+    h5cModalOpen(url, 0, 400, 0, 'Edit Group', null);
 });
 
 $('.to8kit').click(function() {
@@ -170,6 +167,11 @@ $('.ejiqlh').click(function() {
 
 $('.j4sa3r').click(function() {
     var uri = $(this).attr('href').substr(1);
+    var url = "/h5creator/instance/launch?proj="+ projCurrent;
+    url += "&grpid="+ uri.split('/')[0];
+    url += "&actorid="+ uri.split('/')[1];
+    h5cModalOpen(url, 1, 650, 400, "Launch Instance", null);
+    return;
     $.ajax({
         url     : '/h5creator/proj/dataflow/actor-ctrl?proj='+projCurrent+'&uri='+uri,
         type    : "POST",
@@ -183,6 +185,4 @@ $('.j4sa3r').click(function() {
         }
     });
 });
-
-
 </script>

@@ -40,7 +40,6 @@ function h5cModalPrev()
     var prev = null;
     for (var i in h5cModalData) {
         if (h5cModalData[i].urid == h5cModalCurrent && prev != null) {
-            console.log("GOT prev", h5cModalData[prev].url);
             h5cModalSwitch(prev);
             break;
         }
@@ -94,7 +93,6 @@ function h5cModalOpen(url, pos, w, h, title, opt)
 
             var firstload = false;
             if (h5cModalCurrent == null) {
-                //console.log("firstload setting");
                 $(".h5c-modal").remove();
                 firstload = true;
             }
@@ -110,7 +108,6 @@ function h5cModalOpen(url, pos, w, h, title, opt)
             var pl = '<div class="h5c-modal-body-pagelet h5c_gen_scroll" id="'+urid+'">'+rsp+'</div>';
             
             if (firstload) {
-                console.log("add .h5c-modal");
                 var apd = '<div class="h5c-modal">';
                 
                 apd += '<div class="h5c-modal-header">\
@@ -136,7 +133,6 @@ function h5cModalOpen(url, pos, w, h, title, opt)
             }).show();
 
             if (!$('.h5c-modal').is(':visible')) {
-                console.log("hide .h5c-modal and show()");
                 $(".h5c-modal").css({
                     "z-index": "-100"
                 }).show();
@@ -144,7 +140,6 @@ function h5cModalOpen(url, pos, w, h, title, opt)
                 
             if (firstload) {
 
-                console.log("fixed init sizing");
                 var hh = $('.h5c-modal-header').outerHeight(true);
                 var fh = $('.h5c-modal-footer').outerHeight(true);
                 
@@ -188,7 +183,6 @@ function h5cModalOpen(url, pos, w, h, title, opt)
                 h5cModalBodyWidth  = $('.h5c-modal-body').width();
                 $(".h5c-modal-body").height(h5cModalBodyHeight);
             }
-            console.log("size"+ h5cModalBodyWidth +"/"+ h5cModalBodyHeight);
             
             $("#"+urid).css({
                 "z-index"   : "1",
@@ -212,7 +206,8 @@ function h5cModalOpen(url, pos, w, h, title, opt)
                     "z-index": 100,
                     "top": t +'px',
                     "left": l +'px',
-                }).hide().slideDown(200, function() {
+                //}).hide().slideDown(200, function() {
+                }).hide().show(300, function() {
                     h5cModalResize();
                 });
             }
@@ -250,7 +245,8 @@ function h5cModalButtonAdd(id, title, func, style)
 
 function h5cModalClose()
 {    
-    $(".h5c-modal").slideUp(200, function(){
+    //$(".h5c-modal").slideUp(200, function(){
+    $(".h5c-modal").hide(300, function(){
         $(this).remove();
         $(".h5c-modal-bg").remove();
         h5cModalData = {};
@@ -365,13 +361,6 @@ function h5cDialogClose()
     h5cDialogPool = {};
 }
 
-function h5cTabletDebug()
-{
-    //console.log(h5cTabletPool);
-    //h5cTabletOpen('/h5creator/data/list', 't0', 'html', 'Data Instances');
-    //h5cTabletOpen('/h5creator/data/setting', 't0', 'html', 'Data Setting');
-}
-
 var h5cTabletFrame = {};
 /**
     h5cTabletFrame[frame] = {
@@ -466,8 +455,6 @@ function h5cTabSwitch(urid)
         return;
     }
 }
-
-//h5cTabOpen('/url/open', {'na':'899', 'nb':'aaaa'});
 
 function h5cTabletOpen(url, target, type, title)
 {
