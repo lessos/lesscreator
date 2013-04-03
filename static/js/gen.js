@@ -125,7 +125,7 @@ function h5cModalOpen(url, pos, w, h, title, opt)
                 $("body").append(apd);
             } else {
                 $(".h5c-modal-body-page").append(pl);
-                $(".h5c-modal-header .title").text(title);
+                
             }
 
             $("#"+urid).css({
@@ -211,9 +211,10 @@ function h5cModalOpen(url, pos, w, h, title, opt)
                     h5cModalResize();
                 });
             }
-            $('.h5c-modal-body-page').animate({top: 0, left: "-"+ mov +"px"}, 300);
-    
-            $("#"+urid+" .inputfocus").focus();
+            $('.h5c-modal-body-page').animate({top: 0, left: "-"+ mov +"px"}, 300, function() {
+                $(".h5c-modal-header .title").text(title);
+                $("#"+urid+" .inputfocus").focus();
+            });
         },
         error: function(xhr, textStatus, error) {
             hdev_header_alert('error', xhr.responseText);
@@ -774,6 +775,7 @@ function h5cProjectOpen(proj)
     };
     h5cTabOpen('/h5creator/app/project?proj='+proj, 't0', 'html', opt);
     projCurrent = proj;
+    sessionStorage.ProjPath = proj;
     
     h5cLayoutResize();
 }
@@ -792,6 +794,21 @@ function h5cProjSet()
 {
     h5cTabOpen('/h5creator/app/project-edit?proj='+projCurrent, 
         't0', 'html', {'title': 'Project Setting', 'close':'1'});
+}
+
+var h5cSession = {};
+h5cSession.delPrefix = function(prefix)
+{
+    var prelen = prefix.length;
+    var qs = {};
+    for (var i = 0, len = sessionStorage.length; i < len; i++) {
+        if (sessionStorage.key(i).slice(0, prelen) == prefix) {
+            qs[i] = sessionStorage.key(i);
+        }
+    }
+    for (var i in qs) {
+        sessionStorage.removeItem(qs[i]);
+    }
 }
 
 //author: meizz   

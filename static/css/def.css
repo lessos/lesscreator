@@ -1010,3 +1010,9 @@ a.h5c_block:focus {
     display: inline-block;    
     vertical-align: text-top;
 }
+
+.h5c-hrline {
+    height: 2px;
+    margin: 2px 0;
+    border-top: 1px solid #ccc;
+}
