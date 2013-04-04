@@ -20,7 +20,7 @@ if ($this->app->method == 'POST') {
         die("Bad Request");
     }
 
-    $h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
+    $h5 = new LessPHP_Service_H5keeper("127.0.0.1:9530");
 
     $set = $h5->Get("/h5db/info/{$this->req->data_instance_id}");
     $set = json_decode($set, true);
@@ -31,7 +31,7 @@ if ($this->app->method == 'POST') {
 
     $h5->Set("/h5db/info/{$this->req->data_instance_id}", json_encode($set));
 
-    $h5->Set("/h5db/actor/setup/{$this->req->data_instance_id}", time());
+    ////$h5->Set("/h5db/actor/setup/{$this->req->data_instance_id}", time());
 
     die("OK");
 }

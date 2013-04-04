@@ -1,4 +1,3 @@
-
 <?php
 $projbase = H5C_DIR;
 
@@ -23,22 +22,22 @@ if (!isset($projInfo['appid'])) {
     die(json_encode(array('Status' => 'Bad Request')));
 }
 
-$kpr = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
+$kpr = new LessPHP_Service_H5keeper("127.0.0.1:9530");
 
 
 if ($this->req->func == 'new') {
 
-    if (!strlen($this->req->instance_name)) {
+    if (!strlen($this->req->instancename)) {
         die(json_encode(array('Status' => 'Bad Request 1')));
     }
 
-    $instid = hwl_string::rand(12, 2);
+    $insid = hwl_string::rand(12, 2);
     $set = array(
         'ProjId'       => $projInfo['appid'],
-        'InstanceId'   => $instid,
-        'InstanceName' => $this->req->instance_name,
+        'InstanceId'   => $insid,
+        'InstanceName' => $this->req->instancename,
     );
-    $h5->Set("/hae/guest/{$projInfo['appid']}/$instid", json_encode($set));
+    $kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/info", json_encode($set));
     
     $set['Status'] = "OK";
     die(json_encode($set));
@@ -48,26 +47,35 @@ if ($this->req->func == 'new') {
 $rs = $kpr->getChildren("/hae/guest/{$projInfo['appid']}");
 
 if (count($rs) > 0) {
-    echo "<h4>Launch a Exist Instance and append new changes</h4>";
+    echo "<h4>Launch updates to a Exist Instance</h4>";
+    echo '<form id="wilvhq" action="/h5creator/instance/launch?func=new">';
+    echo '<table>';
+    foreach ($rs as $v) {
+        $v2 = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$v['P']}/info");
+        $v2 = json_decode($v2, true);
+
+        echo '
+<tr>
+    <td width="30px">
+        <input type="radio" name="instanceid" value="'.$v2['InstanceId'].'" /> 
+    </td>
+    <td>'.$v2['InstanceName'].'</td>
+</tr>';
+    }
+    echo '</table>';
 }
 ?>
-
+<div class="h5c-hrline"></div>
+<h4>Launch a New Instance</h4>
 <form id="wilvhq" action="/h5creator/instance/launch?func=new">
 <table>
 <tr>
-    <td width="30px">
-        <input type="radio" class="rg3ws0" name="instance_id" value="123456" /> 
-        <input type="radio" class="rg3ws0" name="instance_id" value="new" checked="checked" /> 
-        <input type="radio" class="rg3ws0" name="instance_id" value="456789" /> 
+    <td width="30px" valign="top">
+        <input type="radio" class="irvj4f" name="instanceid" value="new"/> 
     </td>
-    <td>Launch a New Instance</td>
-</tr>
-<tr>
-    <td></td>
     <td>
-Name Your Instance<br />
-<input type="text" name="instance_name" value="My First Instance" />
-
+        Name Your Instance <br />
+        <input type="text" name="instancename" value="My First Instance" /> 
     </td>
 </tr>
 </table>
@@ -75,48 +83,64 @@ Name Your Instance<br />
 
 <script type="text/javascript">
 
-var projid = '<?php echo $projInfo["appid"]?>';
-var instance_id = 'new';
-var dataflow_grpid = '<?php echo $this->req->grpid?>';
-var dataflow_actorid = '<?php echo $this->req->actorid?>';
+var instanceid  = null;
+var flowgrpid   = '<?php echo $this->req->flowgrpid?>';
+var flowactorid = '<?php echo $this->req->flowactorid?>';
 
-$('.rg3ws0').click(function() {
-    instance_id = $(this).val();
+h5cSession.delPrefix("Launch");
+
+sessionStorage.LaunchInstanceId  = instanceid;
+sessionStorage.LaunchFlowGrpId   = flowgrpid;
+sessionStorage.LaunchFlowActorId = flowactorid;
+
+$('input:radio[name="instanceid"]').click(function() {
+    instanceid = $(this).val();
+    sessionStorage.LaunchInstanceId  = instanceid
 });
-
+// $("input[@type=radio]").attr("checked",'2');
 function _launch_next()
 {
-    //instance_id = $("input[name='instance_id'][@checked]").val();
-    //console.log(instance_id);
-    if (instance_id == "new") {
-        var dat = "&proj="+ projCurrent;
-        //url += "&grpid="+ dataflow_grpid;
-        //dat += "&actorid="+ dataflow_actorid;
-        //var url += "&instance_name="+ $("input[name='instance_name']").val();
+    if (instanceid == null) {
+        alert('Select an instance');
+        return
+    }
+
+    if (instanceid == "new") {
         $.ajax({
             url     : $("#wilvhq").attr('action'),
             type    : "POST",
-            data    : $("#wilvhq").serialize() + dat,
+            data    : $("#wilvhq").serialize() + "&proj="+ projCurrent,
             timeout : 30000,
             async   : false,
             success : function(rsp) {
                 var obj = JSON.parse(rsp);
-                if (obj.Status == "OK") {
-                    hdev_header_alert('success', rsp.Status);
+                if (obj.Status != "OK") {
+                    hdev_header_alert('error', obj.Status);
+                    return;
                 }
-                alert(obj.Status);
-                //$("#pgtab"+pgid+" .chg").hide();
+                instanceid = obj.InstanceId;
+                sessionStorage.LaunchInstanceId = instanceid;
+                $(".irvj4f").val(instanceid);
             },
             error: function(xhr, textStatus, error) {
                 hdev_header_alert('error', xhr.responseText);
-                //$("#pgtab"+pgid+" .chg").show();
+                return
             }
         });
     }
 
-    var url = "/h5creator/instance/launch-database?";
-    url += "proj="+ projCurrent +"&dataflow=";
-    //h5cModalNext(url, "Binding Database", null);
+    var url = "/h5creator/instance/launch-data?";
+    url += "&proj="+ projCurrent;
+    url += "&instanceid="+ instanceid;
+    url += "&flowgrpid="+ flowgrpid;
+    url += "&flowactorid="+ flowactorid;
+    
+    // TODO
+    var urid = Crypto.MD5("modal"+url);
+    delete h5cModalData[urid];
+    $("#"+urid).remove();
+
+    h5cModalNext(url, "Database Deployment Setup", null);
 }
 h5cModalButtonAdd("lkakhn", "Next", "_launch_next()", "btn-inverse");
 

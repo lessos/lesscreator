@@ -166,12 +166,15 @@ $('.ejiqlh').click(function() {
 });
 
 $('.j4sa3r').click(function() {
+    
     var uri = $(this).attr('href').substr(1);
     var url = "/h5creator/instance/launch?proj="+ projCurrent;
-    url += "&grpid="+ uri.split('/')[0];
-    url += "&actorid="+ uri.split('/')[1];
-    h5cModalOpen(url, 1, 650, 400, "Launch Instance", null);
+    url += "&flowgrpid="+ uri.split('/')[0];
+    url += "&flowactorid="+ uri.split('/')[1];
+    h5cModalOpen(url, 1, 700, 500, "Launch Instance", null);
     return;
+
+
     $.ajax({
         url     : '/h5creator/proj/dataflow/actor-ctrl?proj='+projCurrent+'&uri='+uri,
         type    : "POST",

@@ -12,7 +12,7 @@ if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("Bad Request 1");
 }
 
-$h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
+$h5 = new LessPHP_Service_H5keeper("127.0.0.1:9530");
 
 $info = $h5->Get("/h5db/info/{$this->req->id}");
 $info = json_decode($info, true);

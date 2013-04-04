@@ -15,7 +15,7 @@ if (!isset($this->req->id) || strlen($this->req->id) == 0) {
 }
 $dbid = $this->req->id;
 
-$h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
+$h5 = new LessPHP_Service_H5keeper("127.0.0.1:9530");
 
 
 $info = $h5->Get("/h5db/info/{$this->req->id}");
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //print_r($struct);
     $h5->Set("/h5db/struct/{$dbid}", json_encode($struct));
 
-    $h5->Set("/h5db/actor/setup/{$dbid}", time());
+    ////$h5->Set("/h5db/actor/setup/{$dbid}", time());
 
 
     $dataInfo = array();

@@ -15,9 +15,9 @@ if (strlen($projpath) < 1) {
     die("ERROR");
 }
 
-$info = hwl\Yaml\Yaml::decode(file_get_contents($projpath."/hootoapp.yaml"));
+$projInfo = hwl\Yaml\Yaml::decode(file_get_contents($projpath."/hootoapp.yaml"));
 
-if (isset($info['name'])) {
+if (isset($projInfo['name'])) {
     
     $pjc = SYS_ROOT .'/conf/h5creator/projlist.json';
     $pjs = "";
@@ -29,26 +29,26 @@ if (isset($info['name'])) {
         $pjs = array();
     }
     
-    if (!isset($pjs[$info['appid']])
-        || $pjs[$info['appid']]['name'] != $info['name']
-        || $pjs[$info['appid']]['path'] != $projpath) {
+    if (!isset($pjs[$projInfo['appid']])
+        || $pjs[$projInfo['appid']]['name'] != $projInfo['name']
+        || $pjs[$projInfo['appid']]['path'] != $projpath) {
 
-        $pjs[$info['appid']]['name'] = $info['name'];
-        $pjs[$info['appid']]['path'] = $projpath;
+        $pjs[$projInfo['appid']]['name'] = $projInfo['name'];
+        $pjs[$projInfo['appid']]['path'] = $projpath;
 
         hwl_util_dir::mkfiledir($pjc);
         file_put_contents($pjc, hwl_Json::prettyPrint($pjs));
     }
 }
 
-$props = isset($info['props']) ? explode(",", $info['props']) : array();
+$props = isset($projInfo['props']) ? explode(",", $projInfo['props']) : array();
 $props_def = h5creator_service::listAll();
 
 ?>
 
   <div style="padding:5px 10px 5px 10px; background-color:#f6f7f8;">
     <span>
-      <strong><?php echo $info['name']?></strong> [#<?php echo $info['appid']?>]
+      <strong><?php echo $projInfo['name']?></strong> [#<?php echo $projInfo['appid']?>]
     </span>
     <a href="javascript:h5cProjSet()" class="h5c_block pull-right">
       <img src="/h5creator/static/img/cog.png" class="h5c_icon" />
@@ -80,12 +80,14 @@ $props_def = h5creator_service::listAll();
 
 <script>
 
-// TODO $("title").text('<?php echo $info['name']?> - H5 Creator');
+// TODO $("title").text('<?php echo $projInfo['name']?> - H5 Creator');
 
 <?php
 if (!is_writable("{$projpath}")) {
     echo 'hdev_header_alert("error", "The Project is not Writable");';
 }
+
+echo "sessionStorage.ProjId = '{$projInfo['appid']}';";
 ?>
 
 function _proj_nav_open(url)

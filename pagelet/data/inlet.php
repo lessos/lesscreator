@@ -13,7 +13,7 @@ if (!isset($this->req->id) || strlen($this->req->id) == 0) {
 }
 $dbid = $this->req->id;
 
-$h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1");
+$h5 = new LessPHP_Service_H5keeper("127.0.0.1");
 
 $info = $h5->Get("/h5db/info/{$dbid}");
 $info = json_decode($info, true);

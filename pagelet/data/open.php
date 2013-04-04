@@ -8,7 +8,7 @@
 <div style="padding:10px;">
 <?php
 
-$h5 = new LessPHP_Service_H5keeper("h5keeper://127.0.0.1:9530");
+$h5 = new LessPHP_Service_H5keeper("127.0.0.1:9530");
 
 $ls = $h5->getChildren("/h5db/info");
 

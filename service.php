@@ -3,6 +3,13 @@
 
 class h5creator_service
 {
+    public static function debugPrint($d)
+    {
+        echo "<pre>";
+        print_r($d);
+        echo "</pre>";
+    }
+    
     public static function listAll()
     {
         return array(
