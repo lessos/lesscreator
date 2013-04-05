@@ -29,6 +29,7 @@ function h5cDialogTitle(title)
 
 var h5cModalData    = {};
 var h5cModalCurrent = null;
+var h5cModalNextHistory = null;
 var h5cModalBodyWidth   = null;
 var h5cModalBodyHeight  = null;
 function h5cModalNext(url, title, opt)
@@ -40,7 +41,8 @@ function h5cModalPrev()
     var prev = null;
     for (var i in h5cModalData) {
         if (h5cModalData[i].urid == h5cModalCurrent && prev != null) {
-            h5cModalSwitch(prev);
+            h5cModalNextHistory = h5cModalCurrent;
+            h5cModalSwitch(prev);            
             break;
         }
         prev = i;
@@ -68,6 +70,12 @@ function h5cModalSwitch(urid)
                 h5cModalData[urid].btns[i].style);
         }
         h5cModalCurrent = urid;
+
+        if (h5cModalNextHistory != null) {
+            delete h5cModalData[h5cModalNextHistory];
+            $("#"+ h5cModalNextHistory).remove();
+            h5cModalNextHistory = null;
+        }
     });
 }
 function h5cModalOpen(url, pos, w, h, title, opt)
@@ -214,6 +222,12 @@ function h5cModalOpen(url, pos, w, h, title, opt)
             $('.h5c-modal-body-page').animate({top: 0, left: "-"+ mov +"px"}, 300, function() {
                 $(".h5c-modal-header .title").text(title);
                 $("#"+urid+" .inputfocus").focus();
+
+                if (h5cModalNextHistory != null) {
+                    delete h5cModalData[h5cModalNextHistory];
+                    $("#"+ h5cModalNextHistory).remove();
+                    h5cModalNextHistory = null;
+                }
             });
         },
         error: function(xhr, textStatus, error) {
