@@ -270,6 +270,7 @@ $("#sy9p3x").submit(function(event) {
         success : function(rsp) {            
             if (rsp == "OK") {
                 hdev_header_alert('success', rsp);
+                _proj_dataflow_tabopen(projCurrent, '', 1);
             } else {
                 hdev_header_alert("error", rsp);
             }
