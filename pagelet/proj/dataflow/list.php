@@ -63,10 +63,10 @@ foreach ($grps as $k => $v) {
         </td>
         <td id='qstatus{$json['id']}'></td>
         <td align='right'>
-            <a href='#{$k}/{$json['id']}' class='j4sa3r'>Run</a>
+            <a href='#{$k}/{$json['id']}.actor' class='ejiqlh'>Script</a>
         </td>
         <td align='right'>
-            <a href='#{$k}/{$json['id']}.actor' class='ejiqlh'>Script</a>
+            <a href='#{$k}/{$json['id']}' class='j4sa3r'>Run</a>
         </td>
         <td></td>
         </tr>";
@@ -172,20 +172,9 @@ $('.j4sa3r').click(function() {
     url += "&flowgrpid="+ uri.split('/')[0];
     url += "&flowactorid="+ uri.split('/')[1];
     h5cModalOpen(url, 1, 700, 450, "Launch Instance", null);
-
-    /**
-    $.ajax({
-        url     : '/h5creator/proj/dataflow/actor-ctrl?proj='+projCurrent+'&uri='+uri,
-        type    : "POST",
-        timeout : 30000,
-        success : function(rsp) {
-            alert(rsp);
-            _qstatus_open();
-        },
-        error: function(xhr, textStatus, error) {
-            hdev_header_alert('error', xhr.responseText);
-        }
-    });
-    */
 });
+
+if (sessionStorage.InsActive) {
+    
+}
 </script>

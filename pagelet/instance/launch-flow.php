@@ -160,6 +160,7 @@ $(".bbwv0a").click(function() {
 
 function _launch_flow_next()
 {
+    sessionStorage.InsActive = sessionStorage.LaunchInstanceId;
     var url = "/h5creator/instance/launch-done?";
     h5cModalNext(url, "Well Done", null);
 }

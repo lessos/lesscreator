@@ -140,4 +140,7 @@ function _launch_next()
 }
 h5cModalButtonAdd("lkakhn", "Next", "_launch_next()", "btn-inverse");
 
+if (instanceid == null && sessionStorage.InsActive) {
+    $("input[value="+sessionStorage.InsActive+"]").prop("checked", true);
+}
 </script>
