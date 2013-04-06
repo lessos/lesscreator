@@ -73,7 +73,7 @@ foreach ($grps as $k => $v) {
     }
 }
 echo "</table>";
-echo "<div id='vtknd6' class='hide'>{$projInfo['appid']}</div>";
+echo "<div id='vtknd6' class='hide'></div>";
 ?>
 
 <script type="text/javascript">
@@ -133,7 +133,7 @@ function _qstatus_open()
         }
         
     } catch(e) {
-        //message('<p>Error'+ e);
+        console.log("message open failed: "+ e);
     }
 }
 
@@ -167,14 +167,16 @@ $('.ejiqlh').click(function() {
 
 $('.j4sa3r').click(function() {
     
+    if (sessionStorage.InsActive) {
+        $("#vtknd6").text(sessionStorage.InsActive);
+        _qstatus_open();
+    }
+
     var uri = $(this).attr('href').substr(1);
     var url = "/h5creator/instance/launch?proj="+ projCurrent;
     url += "&flowgrpid="+ uri.split('/')[0];
     url += "&flowactorid="+ uri.split('/')[1];
-    h5cModalOpen(url, 1, 700, 450, "Launch Instance", null);
+    h5cModalOpen(url, 1, 700, 450, "Launch Instance", null);    
 });
 
-if (sessionStorage.InsActive) {
-    
-}
 </script>

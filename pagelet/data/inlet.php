@@ -42,8 +42,8 @@ if (file_exists($fsp)) {
         $info['projid'] = $projInfo['appid'];
         $info['name']   = $dataInfo['name'];
         $info['type']   = "1";
-        $h5->Set("/h5db/info/{$dbid}", json_encode($info));
-        $h5->Set("/h5db/struct/{$dbid}", json_encode($dataInfo['struct']));
+        // TODODB $h5->Set("/h5db/info/{$dbid}", json_encode($info));
+        // TODODB $h5->Set("/h5db/struct/{$dbid}", json_encode($dataInfo['struct']));
     }
 
     if (isset($info['projid']) && $info['projid'] != $projInfo['appid']

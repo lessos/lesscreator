@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $info['name'] = $this->req->name;
     }
 
-    $h5->Set("/h5db/info/{$this->req->id}", json_encode($info));    
+    // TODODB $h5->Set("/h5db/info/{$this->req->id}", json_encode($info));    
 
     if (!file_exists($fsp)) {
         die("OK");

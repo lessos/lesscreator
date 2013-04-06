@@ -45,7 +45,7 @@ $actorIns = array(
     'ParaHost'  => $this->req->hosts,
 );
 
-$set = array(
+$insInfo = array(
     'ProjId'    => $projInfo['appid'],
     'GrpId'     => $grpid,
     'ActorId'   => $actorid,
@@ -61,9 +61,8 @@ $set = array(
 
 $kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}", json_encode($actorIns));
 
-$kpr->Set("/h5flow/ins/{$insid}.info", json_encode($set));
 $kpr->Set("/h5flow/ins/{$insid}.actor", file_get_contents($fss));
-$kpr->Set("/h5flow/insq/{$insid}", $insid);
+$kpr->Set("/h5flow/ctrlq/{$insid}", json_encode($insInfo));
 
 $ret['Status'] = 'OK';
 

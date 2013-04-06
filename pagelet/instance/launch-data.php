@@ -78,7 +78,10 @@ foreach ($dataList as $k => $v) {
             $hrefslc = "<a href='#{$k2}' class='btn btn-mini p30as5'><i class='icon-share'></i> Use existing Instance</a>";
         } else {
             $status = "<img src='/fam3/icons/accept.png' class='h5c_icon' /> {$v2['_ins_id']}";
-            $href = "";
+            $href = "<label class='checkbox'>
+                <input type='checkbox' name='dbnew{$k2}' value='new' /> 
+                Update Instance
+                </label>";
             $hrefslc = "<a href='#{$k2}' class='btn btn-mini p30as5'><i class='icon-share'></i> Use existing Instance</a>";
         }
         $hrefslc = ""; // TODO

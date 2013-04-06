@@ -74,9 +74,8 @@ foreach (glob($glob) as $v) {
             
             $kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorInfo['id']}", json_encode($actorIns));
             
-            $kpr->Set("/h5flow/ins/{$insid}.info", json_encode($insInfo));
             $kpr->Set("/h5flow/ins/{$insid}.actor", file_get_contents($fss));
-            $kpr->Set("/h5flow/insq/{$insid}", $insid);
+            $kpr->Set("/h5flow/ctrlq/{$insid}", json_encode($insInfo));
 
             $actorInfo['_ins_setlock'] = true;
             $actorInfo['_ins_seted'] = true;

@@ -1,9 +1,11 @@
 <?php
 
+$ret = array('Status' => "Error");
+
 if (strlen($this->req->proj) < 1
     || strlen($this->req->instanceid) < 1
     || strlen($this->req->dataid) < 1) {
-    die("Bad Request");
+    die(json_encode($ret));
 }
 $insid = $this->req->instanceid;
 
@@ -17,38 +19,42 @@ $ret = array('Status' => "Error");
 if (!isset($ins['ProjId'])) {
     die(json_encode($ret));
 }
-/** TODO
+
 $fsd = $projPath."/data/{$this->req->dataid}.db.json";
 if (!file_exists($fsd)) {
     die(json_encode($ret));
 }
 $dataInfo = file_get_contents($fsd);
-$rs = $kpr->Set("/h5data/struct/{$this->req->dataid}");
-if (!$rs) {
-    die(json_encode($ret));
-}
-*/
+//$rs = $kpr->Set("/h5data/struct/{$this->req->dataid}", $dataInfo);
+//if (!$rs) {
+//    die(json_encode($ret));
+//}
+$dataInfo = json_decode($dataInfo, true);
 
 $rs = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$this->req->dataid}");
 $rs = json_decode($rs, true);
-if ($rs && isset($rs['InsId'])) {
+/* if ($rs && isset($rs['InsId'])) {
     $ret['Status'] = "OK";
     $ret['InsId'] = $rs['InsId'];
     die(json_encode($ret));
-}
-//$ins = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/info");
+} */
 
-$dbinsid = hwl_string::rand(8, 2);
+if (!isset($rs['InstId'])) {
+    $rs['InstId'] = hwl_string::rand(8, 2);
+}
+
+//$dbinsid = hwl_string::rand(8, 2);
 $dataInst = array(
     'ProjId'    => $projInfo['appid'],
     'DataId'    => $this->req->dataid,
-    'InsId'     => $dbinsid,
+    'InsId'     => $rs['InstId'],
     'Created'   => time(),
     'Updated'   => time(),
+    'DataInfo'  => $dataInfo,
 );
 $kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$this->req->dataid}", json_encode($dataInst));
-$kpr->Set("/h5db/actor/setup/{$dbinsid}:{$this->req->dataid}", "1");
+$kpr->Set("/h5db/actor/setup/{$rs['InstId']}.{$this->req->dataid}", json_encode($dataInst));
 
 $ret['Status'] = "OK";
-$ret['InsId'] = $dbinsid;
+$ret['InsId'] = $rs['InstId'];
 die(json_encode($ret));

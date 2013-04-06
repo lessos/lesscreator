@@ -53,6 +53,9 @@ if (count($rs) > 0) {
     foreach ($rs as $v) {
         $v2 = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$v['P']}/info");
         $v2 = json_decode($v2, true);
+        if (!isset($v2['ProjId'])) {
+            continue;
+        }
 
         echo '
 <tr>
@@ -142,5 +145,7 @@ h5cModalButtonAdd("lkakhn", "Next", "_launch_next()", "btn-inverse");
 
 if (instanceid == null && sessionStorage.InsActive) {
     $("input[value="+sessionStorage.InsActive+"]").prop("checked", true);
+    instanceid = sessionStorage.InsActive;
+    sessionStorage.LaunchInstanceId = sessionStorage.InsActive
 }
 </script>

@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     //print_r($this->req);
     //print_r($struct);
-    $h5->Set("/h5db/struct/{$dbid}", json_encode($struct));
+    // TODODB $h5->Set("/h5db/struct/{$dbid}", json_encode($struct));
 
     ////$h5->Set("/h5db/actor/setup/{$dbid}", time());
 
