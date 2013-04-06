@@ -59,7 +59,7 @@ if (count($rs) > 0) {
     <td width="30px">
         <input type="radio" name="instanceid" value="'.$v2['InstanceId'].'" /> 
     </td>
-    <td>'.$v2['InstanceName'].'</td>
+    <td class="insn'.$v2['InstanceId'].'">'.$v2['InstanceName'].'</td>
 </tr>';
     }
     echo '</table>';
@@ -95,7 +95,8 @@ sessionStorage.LaunchFlowActorId = flowactorid;
 
 $('input:radio[name="instanceid"]').click(function() {
     instanceid = $(this).val();
-    sessionStorage.LaunchInstanceId  = instanceid
+    sessionStorage.LaunchInstanceId   = instanceid
+    //sessionStorage.LaunchInstanceName = 
 });
 // $("input[@type=radio]").attr("checked",'2');
 function _launch_next()
@@ -134,11 +135,6 @@ function _launch_next()
     url += "&instanceid="+ instanceid;
     url += "&flowgrpid="+ flowgrpid;
     url += "&flowactorid="+ flowactorid;
-    
-    // TODO
-    var urid = Crypto.MD5("modal"+url);
-    delete h5cModalData[urid];
-    $("#"+urid).remove();
 
     h5cModalNext(url, "Database Deployment Setup", null);
 }

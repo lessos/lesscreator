@@ -171,10 +171,9 @@ $('.j4sa3r').click(function() {
     var url = "/h5creator/instance/launch?proj="+ projCurrent;
     url += "&flowgrpid="+ uri.split('/')[0];
     url += "&flowactorid="+ uri.split('/')[1];
-    h5cModalOpen(url, 1, 700, 500, "Launch Instance", null);
-    return;
+    h5cModalOpen(url, 1, 700, 450, "Launch Instance", null);
 
-
+    /**
     $.ajax({
         url     : '/h5creator/proj/dataflow/actor-ctrl?proj='+projCurrent+'&uri='+uri,
         type    : "POST",
@@ -187,5 +186,6 @@ $('.j4sa3r').click(function() {
             hdev_header_alert('error', xhr.responseText);
         }
     });
+    */
 });
 </script>

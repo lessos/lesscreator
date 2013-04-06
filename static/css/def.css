@@ -28,12 +28,12 @@ body {
 
 /** common */
 a {text-decoration: none;}
-a:link {color: #08C;}
+/* a:link {color: #08C;}
 a:visited {color: #08C;}
 a:hover {color: #d54e21;}
 a:active {color: #004a9c; text-decoration: none;}
 a.anoline {text-decoration: none;};
-
+*/
 .alignleft {text-align: left;}
 .aligncenter {text-align: center;}
 
@@ -73,6 +73,10 @@ textarea {
     cursor: pointer;
 }
 .input_button:hover {border: 2px solid #333;}
+
+.h5c-font-mono {
+    font-family: monospace !important;
+}
 
 .hdev_alert {
     margin: 5px 0px; padding: 5px; border: 1px;
@@ -139,6 +143,7 @@ textarea {
 #hdev_header .header_logo .title {
     font-size: 20px; color: #555;
     vertical-align: middle;
+    font-family: sans-serif !important;
 }
 
 .hdev-header-alert {

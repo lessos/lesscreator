@@ -29,26 +29,26 @@ if (!$rs) {
 }
 */
 
-$rs = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data.{$this->req->dataid}");
+$rs = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$this->req->dataid}");
 $rs = json_decode($rs, true);
-if ($rs && isset($rs['InstId'])) {
+if ($rs && isset($rs['InsId'])) {
     $ret['Status'] = "OK";
-    $ret['InstId'] = $rs['InstId'];
+    $ret['InsId'] = $rs['InsId'];
     die(json_encode($ret));
 }
 //$ins = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/info");
 
-$dbinsid = hwl_string::rand(12, 2);
+$dbinsid = hwl_string::rand(8, 2);
 $dataInst = array(
     'ProjId'    => $projInfo['appid'],
     'DataId'    => $this->req->dataid,
-    'InstId'    => $dbinsid,
+    'InsId'     => $dbinsid,
     'Created'   => time(),
     'Updated'   => time(),
 );
-$kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/data.{$this->req->dataid}", json_encode($dataInst));
+$kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$this->req->dataid}", json_encode($dataInst));
 $kpr->Set("/h5db/actor/setup/{$dbinsid}:{$this->req->dataid}", "1");
 
 $ret['Status'] = "OK";
-$ret['InstId'] = $dbinsid;
+$ret['InsId'] = $dbinsid;
 die(json_encode($ret));
