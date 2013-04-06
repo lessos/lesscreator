@@ -48,7 +48,7 @@ $actor = json_decode($actor, true);
 if (!isset($actor['id'])) {
     die("Internal Server Error");
 }
-$actor      = array_merge($actor, $actorDefault);
+$actor      = array_merge($actorDefault, $actor);
 
 $exec_cron  = explode(",", $actor['exec_cron']);
 
@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $para_data_display = '';
         if (isset($actor['para_data']) && strlen($actor['para_data']) > 0) {
 
-            $fsd = $projpath."/data/{$actor['para_data']}.json";
+            $fsd = $projpath."/data/{$actor['para_data']}.db.json";
             $json = file_get_contents($fsd);
             $json = json_decode($json, true);
             if (isset($json['name'])) {

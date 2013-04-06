@@ -40,14 +40,47 @@ foreach (glob($glob) as $v) {
         $actorIns = json_decode($actorIns, true);
 
         $actorInfo['_ins_seted'] = false;
-        if ($actorInfo['para_mode'] == h5creator_service::ParaModeServer
-            && strlen($actorIns['ParaHost']) > 7) {
+        $actorInfo['_ins_setlock'] = false;
+
+        switch ($actorInfo['para_mode']) {
+        
+        case h5creator_service::ParaModeServer:
+            if (strlen($actorIns['ParaHost']) > 7) {
+                $actorInfo['_ins_seted'] = true;
+            }
+            break;
+
+        case h5creator_service::ParaModeDataSingle:
+        case h5creator_service::ParaModeDataServer: 
+        case h5creator_service::ParaModeDataShard:
+    
+            $dataIns = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$actorInfo['para_data']}");
+            $dataIns = json_decode($dataIns, true);
+            //h5creator_service::debugPrint($dataIns);
+            $actorIns = array(
+                'ActorId'     => $actorInfo['id'],
+                'ParaDataIns' => $dataIns['InsId'],
+            );            
+            $insInfo = array(
+                'ProjId'    => $projInfo['appid'],
+                'GrpId'     => $grpInfo['id'],
+                'ActorId'   => $actorInfo['id'],
+                'InsId'     => $insid,
+                'Func'      => '10',
+                'ParaDataIns'=> $dataIns['InsId'],
+                'Info'      => $actorInfo,
+            );
+            $fss = $projPath."/dataflow/{$grpInfo['id']}/{$actorInfo['id']}.actor";
+            
+            $kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorInfo['id']}", json_encode($actorIns));
+            
+            $kpr->Set("/h5flow/ins/{$insid}.info", json_encode($insInfo));
+            $kpr->Set("/h5flow/ins/{$insid}.actor", file_get_contents($fss));
+            $kpr->Set("/h5flow/insq/{$insid}", $insid);
+
+            $actorInfo['_ins_setlock'] = true;
             $actorInfo['_ins_seted'] = true;
-        } else if (($actorInfo['para_mode'] == h5creator_service::ParaModeDataSingle
-            || $actorInfo['para_mode'] == h5creator_service::ParaModeDataServer
-            || $actorInfo['para_mode'] == h5creator_service::ParaModeDataShard)
-            && strlen($actorIns['ParaData']) > 7) {
-            $actorInfo['_ins_seted'] = true;
+            break;
         }
         
         $grps[$grpInfo['id']]['actor'][$actorInfo['id']] = $actorInfo;
@@ -84,6 +117,11 @@ foreach ($grps as $k => $v) {
         } else {
             $status = "<img src='/fam3/icons/exclamation.png' class='h5c_icon' /> Not configured";
         }
+        
+        $sethref = '';
+        if (!$v2['_ins_setlock']) {
+            $sethref = "<a href='#{$k}/{$v2['id']}' class='bbwv0a btn btn-mini'><i class='icon-cog'></i> Configure</a>";
+        }
 
         echo "<tr>
         <td></td>
@@ -93,7 +131,7 @@ foreach ($grps as $k => $v) {
         </td>
         <td id='status{$v2['id']}'>{$status}</td>
         <td>
-            <a href='#{$k}/{$v2['id']}' class='bbwv0a btn btn-mini'><i class='icon-cog'></i> Configure</a>
+            {$sethref}
         </td>
         </tr>";
     }

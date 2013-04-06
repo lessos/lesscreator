@@ -28,6 +28,10 @@ $fsa = $projPath."/dataflow/{$grpid}/{$actorid}.actor.json";
 if (!file_exists($fsa)) {
     die(json_encode($ret));
 }
+$actorInfo = json_decode(file_get_contents($fsa), true);
+if ($actorInfo['para_mode'] != h5creator_service::ParaModeServer) {
+    die(json_encode($ret));
+}
 
 $fss = $projPath."/dataflow/{$grpid}/{$actorid}.actor";
 if (!file_exists($fss)) {
@@ -36,12 +40,10 @@ if (!file_exists($fss)) {
 
 $kpr = new LessPHP_Service_H5keeper("127.0.0.1:9530");
 
-$insActor = array(
+$actorIns = array(
     'ActorId'   => $actorid,
     'ParaHost'  => $this->req->hosts,
-    'ParaData'  => $this->req->datainsid,
 );
-$kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}", json_encode($insActor));
 
 $set = array(
     'ProjId'    => $projInfo['appid'],
@@ -50,9 +52,15 @@ $set = array(
     'InsId'     => $insid,
     'Func'      => '10',
     'ParaHost'  => $this->req->hosts,
-    'ParaData'  => $this->req->datainsid,
-    'Info'      => json_decode(file_get_contents($fsa), true),
+    'Info'      => $actorInfo,
 );
+/* if (isset($this->req->hosts) && strlen($this->req->hosts) > 7) {
+    $actorIns['ParaHost'] = $this->req->hosts;
+    $set['ParaHost'] = $this->req->hosts;
+} */
+
+$kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}", json_encode($actorIns));
+
 $kpr->Set("/h5flow/ins/{$insid}.info", json_encode($set));
 $kpr->Set("/h5flow/ins/{$insid}.actor", file_get_contents($fss));
 $kpr->Set("/h5flow/insq/{$insid}", $insid);
