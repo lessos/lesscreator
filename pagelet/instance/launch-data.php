@@ -23,12 +23,12 @@ foreach (glob($glob) as $v) {
     }
 
     // Compare with instances settings, if deployed
-    $insdb = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$dataInfo['id']}");
-    $insdb = json_decode($insdb, true);
-    if (!isset($insdb['InsId'])) {
+    $dataInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$dataInfo['id']}");
+    $dataInst = json_decode($dataInst, true);
+    if (!isset($dataInst['InsId'])) {
         $dataInfo['_ins_id'] = "0";
     } else {
-        $dataInfo['_ins_id'] = $insdb['InsId'];
+        $dataInfo['_ins_id'] = $dataInst['InsId'];
     }
 
     if ($projInfo['appid'] == $dataInfo['projid']) {
@@ -134,7 +134,7 @@ function _launch_data_next()
                         hdev_header_alert('error', obj.Status);
                         return;
                     }
-                    $("#st"+ dataid).html("<img src='/fam3/icons/accept.png' class='h5c_icon' /> "+ obj.InsId);
+                    $("#st"+ dataid).html("<img src='/fam3/icons/accept.png' class='h5c_icon' /> "+ obj.InstId);
                     $("input[name=dbnew"+ dataid +"]").parent().remove();
                     //$(".irvj4f").val(instanceid);
                 },

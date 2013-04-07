@@ -79,7 +79,7 @@ foreach (glob($glob) as $v) {
 
             $actorInfo['_ins_setlock'] = true;
             $actorInfo['_ins_seted'] = true;
-            echo "CtrlQ";
+            //echo "CtrlQ";
             break;
         }
         
