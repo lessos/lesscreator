@@ -18,5 +18,5 @@ function _data_create_open(url)
     });
 }
 
-_data_create_open("/h5creator/data/create-select-type");
+_data_create_open("/h5creator/data/create-select-type?proj="+ projCurrent);
 </script>

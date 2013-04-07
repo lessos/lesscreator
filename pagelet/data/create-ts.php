@@ -1,48 +1,41 @@
 <?php
-$projbase = H5C_DIR;
-
-$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
+$projPath = h5creator_proj::path($this->req->proj);
+$projInfo = h5creator_proj::info($this->req->proj);
+if (!isset($projInfo['appid'])) {
+    die("Bad Request");
 }
 
 if ($this->app->method == 'POST') {
 
-    $fsp = $projpath."/hootoapp.yaml";
-    $projInfo = null;
-    if (file_exists($fsp)) {
-        $projInfo = file_get_contents($fsp);
-        $projInfo = hwl\Yaml\Yaml::decode($projInfo);
+    $dataid = $this->req->dataid;
+    $fsd = $projPath."/data/{$dataid}.db.json";
+    if (file_exists($fsd)) {
+        die("Bad Request, Data already exists");
     }
-    if (!isset($projInfo['appid'])) {
-        die("Bad Request");
+    if (!is_writable($projPath ."/data")) {
+        die("Permission denied, Can not write to ". $fsd);
     }
 
-    $h5 = new LessPHP_Service_H5keeper("127.0.0.1:9530");
-
-    $set = $h5->Get("/h5db/info/{$this->req->data_instance_id}");
-    $set = json_decode($set, true);
-
-    $set['name']    = $this->req->data_instance_name;
-    $set['type']    = '1';
-    $set['projid']  = $projInfo['appid'];
-
-    // TODODB $h5->Set("/h5db/info/{$this->req->data_instance_id}", json_encode($set));
-
-    ////$h5->Set("/h5db/actor/setup/{$this->req->data_instance_id}", time());
-
+    $set = array(
+        'id'      => $dataid,
+        'name'    => $this->req->dataname,
+        'type'    => '1',
+        'projid'  => $projInfo['appid'],
+        'struct'  => array(),
+        'created' => time(),
+        'updated' => time(),
+    );
+    file_put_contents($fsd, hwl_Json::prettyPrint($set));
+    
     die("OK");
 }
 
-$instid = LessPHP_Util_String::rand(8, 2);
+$dataid = LessPHP_Util_String::rand(8, 2);
 ?>
 <table class="h5c_dialog_header" width="100%">
     <tr>
         <td width="20px"></td>
         <?php
-        //print_r($this);
         if (strlen($this->req->dialogprev)) {        
         ?>
         <td width="100px">
@@ -63,15 +56,15 @@ $instid = LessPHP_Util_String::rand(8, 2);
 <form id="c47vz9" action="/h5creator/data/create-ts">
 <table width="100%">
   <tr>
-    <td width="180px"><strong>Instance ID</strong></td>
+    <td width="180px"><strong>Data ID</strong></td>
     <td>
-      <input type="text" id="data_instance_id" name="data_instance_id" value="<?php echo $instid?>" readonly="readonly" />
+      <input type="text" id="dataid" name="dataid" value="<?php echo $dataid?>" readonly="readonly" />
     </td>
   </tr>
   <tr>
-    <td><strong>Name your Instance</strong></td>
+    <td><strong>Name your Table</strong></td>
     <td>
-      <input type="text" name="data_instance_name" value="" />
+      <input type="text" id="dataname" name="dataname" value="" />
     </td>
   </tr>
 </table>
@@ -95,10 +88,10 @@ $(".t42qf1").click(function(event) {
     event.preventDefault();
         
     $.ajax({ 
-        type: "POST",
-        url: $("#c47vz9").attr('action') + "?_=" + Math.random(),
-        data: $("#c47vz9").serialize() +"&proj="+projCurrent,
-        success: function(rsp) {
+        type    : "POST",
+        url     : $("#c47vz9").attr('action') +"?_="+ Math.random(),
+        data    : $("#c47vz9").serialize() +"&proj="+projCurrent,
+        success : function(rsp) {
             if (rsp == "OK") {
 
                 rsp = "<h4>Success</h4>";
@@ -119,10 +112,10 @@ function _data_create_open()
 {
     var opt = {
         "img": "database",
-        "title": $("#data_instance_name").val(),
+        "title": $("#dataname").val(),
         "close": 1
     }
-    var id = $("#data_instance_id").val();
+    var id = $("#dataid").val();
 
     h5cTabOpen("/h5creator/data/inlet?proj="+projCurrent+"&id="+ id, "w0", 'html', opt);
     h5cDialogClose();

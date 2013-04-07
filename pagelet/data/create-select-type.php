@@ -84,7 +84,7 @@ $(".h5c-data-create").click(function(){
         return;
     }
 
-    h5cDialogNext('/h5creator/'+ url +'?dialogprev=/h5creator/data/create', title);
+    h5cDialogNext('/h5creator/'+ url +'?dialogprev=/h5creator/data/create&proj='+projCurrent, title);
 });
 
 function _data_create_resize()

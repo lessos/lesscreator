@@ -1,72 +1,37 @@
 <?php
-$projbase = H5C_DIR;
-
-$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
+$projPath = h5creator_proj::path($this->req->proj);
+$projInfo = h5creator_proj::info($this->req->proj);
+if (!isset($projInfo['appid'])) {
+    die("Bad Request");
 }
 
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("Bad Request 1");
 }
-
-$h5 = new LessPHP_Service_H5keeper("127.0.0.1:9530");
-
-$info = $h5->Get("/h5db/info/{$this->req->id}");
-$info = json_decode($info, true);
-if (!isset($info['id'])) {
-    die("Bad Request 2");
+$dataid = $this->req->id;
+$fsd = $projPath."/data/{$dataid}.db.json";
+if (!file_exists($fsd)) {
+    die("Bad Request");
 }
+$dataInfo = file_get_contents($fsd);
+$dataInfo = json_decode($dataInfo, true);
 
-$projInfo = array();
-$fsp = $projpath."/hootoapp.yaml";
-if (file_exists($fsp)) {
-    $projInfo = file_get_contents($fsp);
-    $projInfo = hwl\Yaml\Yaml::decode($projInfo);
-    if ($projInfo['appid'] != $info['projid']) {
-        die("Permission denied");
-    }
+if ($projInfo['appid'] != $dataInfo['projid']) {
+    die("Permission denied");
 }
-
-$info['id'] = $this->req->id;
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($this->req->name)) {
-        $info['name'] = $this->req->name;
+        $dataInfo['name'] = $this->req->name;
     }
 
-    // TODODB $h5->Set("/h5db/info/{$this->req->id}", json_encode($info));    
-
-    if (!file_exists($fsp)) {
-        die("OK");
+    if (!is_writable($fsd)) {
+        die("Permission denied, Can not write to ". $fsd);
     }
-
-    $dataInfo = array();
-    $fsd = $projpath."/data/{$this->req->id}.db.json";
-    if (file_exists($fsd)) {
-        $dataInfo = file_get_contents($fsd);
-        $dataInfo = json_decode($dataInfo, true);
-    }
-
-    if (is_writable($projpath."/data")) {
     
-        if (!isset($dataInfo['id'])) {
-            $dataInfo = array(
-                'id'        => $this->req->id,
-                'created'   => time(),
-                'struct'    => array(),
-            );
-        }
-
-        $dataInfo['name']      = $info['name'];
-        $dataInfo['updated']   = time();
-        $dataInfo['projid']    = $info['projid'];
-        file_put_contents($fsd, hwl_Json::prettyPrint($dataInfo));
-    }
+    $dataInfo['updated'] = time();
+    file_put_contents($fsd, hwl_Json::prettyPrint($dataInfo));
 
     die("OK");
 }
@@ -76,11 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <table width="100%">
     <tr>
         <td width="120px"><strong>Instance ID</strong></td>
-        <td><input type="text" name="id" value="<?php echo $info['id']?>" <?php if ($mt=='edit') echo 'readonly="readonly"'?>/> 字母、数字混合</td>
+        <td><input type="text" name="id" value="<?php echo $dataInfo['id']?>" readonly="readonly" /> 字母、数字混合</td>
     </tr>
     <tr>
         <td><strong>Name</strong></td>
-        <td><input type="text" name="name" value="<?php echo $info['name']?>" /></td>
+        <td><input type="text" name="name" value="<?php echo $dataInfo['name']?>" /></td>
     </tr>
     <tr>
         <td></td>

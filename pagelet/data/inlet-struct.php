@@ -1,29 +1,23 @@
 <?php
-$projbase = H5C_DIR;
-
-$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
-$projpath = preg_replace("/\/+/", "/", rtrim($projpath, '/'));
-
-$projInfo = array('projid' => null);
-$fsp = $projpath."/hootoapp.yaml";
-if (file_exists($fsp)) {
-    $projInfo = file_get_contents($fsp);
-    $projInfo = hwl\Yaml\Yaml::decode($projInfo);
+$projPath = h5creator_proj::path($this->req->proj);
+$projInfo = h5creator_proj::info($this->req->proj);
+if (!isset($projInfo['appid'])) {
+    die("Bad Request");
 }
 
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("The instance does not exist");
 }
+$dataid = $this->req->id;
+$fsd = $projPath."/data/{$dataid}.db.json";
+if (!file_exists($fsd)) {
+    die("Bad Request");
+}
+$dataInfo = file_get_contents($fsd);
+$dataInfo = json_decode($dataInfo, true);
 
-$h5 = new LessPHP_Service_H5keeper("127.0.0.1");
+$struct = $dataInfo['struct'];
 
-$struct = $h5->Get("/h5db/struct/{$this->req->id}");
-$struct = json_decode($struct, true);
 function _struct_dismap($k)
 {
     $v = 'Unknow';
@@ -50,12 +44,6 @@ function _struct_dismap($k)
     return $v;
 }
 
-$dataInfo = array();
-$fsd = $projpath."/data/{$this->req->id}.db.json";
-if (file_exists($fsd)) {
-    $dataInfo = file_get_contents($fsd);
-    $dataInfo = json_decode($dataInfo, true);
-}
 ?>
 
 <table class="table table-hover" width="100%">

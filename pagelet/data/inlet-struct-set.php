@@ -1,61 +1,29 @@
 <?php
 
-$projbase = H5C_DIR;
-
-$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
+$projPath = h5creator_proj::path($this->req->proj);
+$projInfo = h5creator_proj::info($this->req->proj);
+if (!isset($projInfo['appid'])) {
+    die("Bad Request");
 }
-$projpath = preg_replace("/\/+/", "/", rtrim($projpath, '/'));
 
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
+    die("The instance does not exist");
+}
+$dataid = $this->req->id;
+$fsd = $projPath."/data/{$dataid}.db.json";
+if (!file_exists($fsd)) {
     die("Bad Request");
 }
-$dbid = $this->req->id;
+$dataInfo = file_get_contents($fsd);
+$dataInfo = json_decode($dataInfo, true);
 
-$h5 = new LessPHP_Service_H5keeper("127.0.0.1:9530");
-
-
-$info = $h5->Get("/h5db/info/{$this->req->id}");
-$info = json_decode($info, true);
-if (!isset($info['name'])) {
-    die("Bad Request");
-}
-
-
-$fsp = $projpath."/hootoapp.yaml";
-if (file_exists($fsp)) {
-    $projInfo = file_get_contents($fsp);
-    $projInfo = hwl\Yaml\Yaml::decode($projInfo);
-    if ($projInfo['appid'] != $info['projid']) {
-        die("Permission denied");
-    }
+if ($projInfo['appid'] != $dataInfo['projid']) {
+    die("Permission denied");
 }
 
 
 $set = array();
-$struct = array();
-
-if (!isset($this->req->fsname)) {
-
-    $rs = $h5->Get("/h5db/struct/{$dbid}");
-
-    if (strlen($rs) > 0) {
-        $rs = json_decode($rs, true);
-        if (is_array($rs)) {
-            foreach ($rs as $v) {
-                $struct[$v['Name']] = array(
-                    'Name' => $v['Name'],
-                    'Type' => $v['Type'],
-                    'Len' => $v['Len'],
-                    'Idx' => $v['Idx'],
-                );
-            }
-        }
-    }
-}
+$struct = $dataInfo['struct'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
@@ -88,42 +56,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'Idx' => "{$this->req->fsidx[$k]}",
         );
     }
-    //print_r($this->req);
-    //print_r($struct);
-    // TODODB $h5->Set("/h5db/struct/{$dbid}", json_encode($struct));
 
-    ////$h5->Set("/h5db/actor/setup/{$dbid}", time());
-
-
-    $dataInfo = array();
-    $fsd = $projpath."/data/{$dbid}.db.json";
-    if (file_exists($fsd)) {
-        $dataInfo = file_get_contents($fsd);
-        $dataInfo = json_decode($dataInfo, true);
+    if (!is_writable($fsd)) {
+        die("Permission denied, Can not write to ". $fsd);
     }
-    if (is_writable($projpath."/data")) {
     
-        if (!isset($dataInfo['id'])) {
-            $dataInfo = array(
-                'id'        => $dbid,
-                'created'   => time(),
-                'name'      => null,
-            );
-        }
-        $dataInfo['struct']    = $struct;
-        $dataInfo['updated']   = time();
-        $dataInfo['projid']    = $info['projid'];
-        file_put_contents($fsd, hwl_Json::prettyPrint($dataInfo));
-    }
-
-    // TODO ACTION
+    $dataInfo['struct']    = $struct;
+    $dataInfo['updated']   = time();
+    file_put_contents($fsd, hwl_Json::prettyPrint($dataInfo));
+    
     die("OK");
 }
 ?>
 
 <form id="bhw2j1" action="/h5creator/data/inlet-struct-set">
     
-<input type="hidden" name="id" value="<?php echo $dbid?>" />
+<input type="hidden" name="id" value="<?php echo $dataid?>" />
 
 <table class="table" width="100%">
 <thead>
@@ -207,8 +155,6 @@ function _row_append() {
 }
 
 $("#bhw2j1").submit(function(event) {
-
-    //console.log($(this).serialize());
 
     event.preventDefault();
     
