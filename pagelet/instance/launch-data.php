@@ -25,10 +25,10 @@ foreach (glob($glob) as $v) {
     // Compare with instances settings, if deployed
     $dataInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$dataInfo['id']}");
     $dataInst = json_decode($dataInst, true);
-    if (!isset($dataInst['InsId'])) {
+    if (!isset($dataInst['InstId'])) {
         $dataInfo['_ins_id'] = "0";
     } else {
-        $dataInfo['_ins_id'] = $dataInst['InsId'];
+        $dataInfo['_ins_id'] = $dataInst['InstId'];
     }
 
     if ($projInfo['appid'] == $dataInfo['projid']) {
@@ -37,7 +37,6 @@ foreach (glob($glob) as $v) {
         $dataList['exter'][$dataInfo['id']] = $dataInfo;
     }
 }
-
 
 echo "<table width=\"100%\" class='table table-hover table-condenseds'>";
 echo "<thead><tr>

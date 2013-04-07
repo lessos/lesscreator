@@ -59,15 +59,15 @@ foreach (glob($glob) as $v) {
             //h5creator_service::debugPrint($dataIns);
             $actorIns = array(
                 'ActorId'     => $actorInfo['id'],
-                'ParaDataIns' => $dataIns['InsId'],
+                'ParaDataIns' => $dataIns['InstId'],
             );            
             $insInfo = array(
                 'ProjId'    => $projInfo['appid'],
                 'GrpId'     => $grpInfo['id'],
                 'ActorId'   => $actorInfo['id'],
-                'InsId'     => $insid,
+                'InstId'    => $insid,
                 'Func'      => '10',
-                'ParaDataIns'=> $dataIns['InsId'],
+                'ParaDataIns'=> $dataIns['InstId'],
                 'Info'      => $actorInfo,
             );
             $fss = $projPath."/dataflow/{$grpInfo['id']}/{$actorInfo['id']}.actor";
