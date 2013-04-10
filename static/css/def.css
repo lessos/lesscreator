@@ -848,7 +848,7 @@ textarea {
     width: 13px; height: 13px; margin-right: 3px;
 }
 .h5c_tablet_tabs .pgtab .pgtabtitle {
-    padding-right: 5px;
+    padding-right: 8px;
 }
 .h5c_tablet_tabs .pgtab .pgtabtitle a {
     overflow: hidden;
@@ -864,7 +864,7 @@ textarea {
     color: #db4a37;
 }
 .h5c_tablet_tabs .pgtab .close {
-    float: right;  width: 10px; display: inline-block;
+    float: right;  width: 14px; display: inline-block; text-align: center;
 }
 .h5c_tablet_tabs .pgtab .close a {
     text-decoration: none;
