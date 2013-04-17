@@ -40,16 +40,18 @@ if (!file_exists($fss)) {
 
 $kpr = new LessPHP_Service_H5keeper("127.0.0.1:9530");
 
-$actorIns = array(
-    'ActorId'   => $actorid,
-    'ParaHost'  => $this->req->hosts,
-);
+$actorInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}");
+$actorInst = json_decode($actorInst, true);
+$actorInst['ActorId']    = $actorid;
+$actorInst['ParaHost']   = $this->req->hosts;
+$actorInst['ProjInst']   = $insid;
+$actorInst['User']       = 'guest';
 
-$insInfo = array(
+$instInfo = array(
     'ProjId'    => $projInfo['appid'],
+    'ProjInst'  => $insid,
     'GrpId'     => $grpid,
     'ActorId'   => $actorid,
-    'InstId'    => $insid,
     'Func'      => '10',
     'ParaHost'  => $this->req->hosts,
     'Info'      => $actorInfo,
@@ -59,10 +61,10 @@ $insInfo = array(
     $set['ParaHost'] = $this->req->hosts;
 } */
 
-$kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}", json_encode($actorIns));
+$kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}", json_encode($actorInst));
 
-$kpr->Set("/h5flow/ins/{$insid}.actor", file_get_contents($fss));
-$kpr->Set("/h5flow/ctrlq/{$insid}.{$actorid}", json_encode($insInfo));
+$kpr->Set("/h5flow/script/{$insid}/{$actorid}", file_get_contents($fss));
+$kpr->Set("/h5flow/ctrlq/{$insid}.{$actorid}", json_encode($instInfo));
 
 $ret['Status'] = 'OK';
 

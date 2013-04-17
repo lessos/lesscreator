@@ -82,6 +82,7 @@ var wsuri = "ws://127.0.0.1:9600/h5data/api/qstatus";
 
 function _qstatus_open()
 {
+    //console.log("_qstatus_open");
     if (!("WebSocket" in window)) {
         return
     }
@@ -103,29 +104,10 @@ function _qstatus_open()
 
         sock.onmessage = function(e) {
             //console.log("message received: " + e.data);
-        
-            var obj = JSON.parse(e.data);
-        
-            for (var i in obj) {
-                status = "Running";
-                switch (obj[i].Status) {
-                case 1:
-                    status = "Pending";
-                    break;
-                case 3:
-                    status = "Done";
-                    break;
-                case 4:
-                    status = "Error";
-                    break;
-                case 9:
-                    status = "Timeout";
-                    break
-                }
-
-                $("#qstatus"+ obj[i].WorkerId).text(status);
+            var obj = JSON.parse(e.data);        
+            for (var i in obj.Item) {
+                $("#qstatus"+ obj.Item[i].ActorId).text(obj.Item[i].StatusName);
             }
-
             _qstatus_send();
             if ($("#vtknd6").length == 0) {
                 sock.close();
@@ -169,14 +151,17 @@ $('.j4sa3r').click(function() {
     
     if (sessionStorage.InsActive) {
         $("#vtknd6").text(sessionStorage.InsActive);
-        _qstatus_open();
+        _qstatus_open(sessionStorage.InsActive);
     }
 
     var uri = $(this).attr('href').substr(1);
     var url = "/h5creator/instance/launch?proj="+ projCurrent;
     url += "&flowgrpid="+ uri.split('/')[0];
     url += "&flowactorid="+ uri.split('/')[1];
-    h5cModalOpen(url, 1, 700, 450, "Launch Instance", null);    
+    h5cModalOpen(url, 1, 700, 400, "Launch Instance", null);    
 });
-
+if (sessionStorage.InsActive) {
+        $("#vtknd6").text(sessionStorage.InsActive);
+        _qstatus_open(sessionStorage.InsActive);
+    }
 </script>

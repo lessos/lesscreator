@@ -34,7 +34,6 @@ $pms = h5creator_service::listParaMode();
     <td width="120px" valign="top">Parallel Mode</td>
     <td>
 <?php
-
 $hosts = array();
 if ($actorInfo['para_mode'] == h5creator_service::ParaModeServer) {
     $hostBinded = array();
@@ -65,9 +64,7 @@ if ($actorInfo['para_mode'] == h5creator_service::ParaModeServer) {
     }
     echo "</div>";
 }
-
 //h5creator_service::debugPrint($hosts);
-
 ?>
     </td>
 </tr>
