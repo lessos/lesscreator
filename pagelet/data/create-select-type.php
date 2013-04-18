@@ -1,49 +1,42 @@
 
-<table class="h5c_dialog_header" width="100%">
-    <tr>
-        <td width="20px"></td>
-        <td style="font-size:14px;font-weight:bold;">Select the type of Data Instance</td>
-    </tr>
-</table>
+<div class="alert alert-info">Select the type of DataSet</div>
 
-<div id="_data_create_body" class="h5c_gen_scroll">
-
-<a class="h5c-data-create" href="#data/create-ts">
+<a class="j4soeo" href="#data/create-ts">
 <table width="100%" class="h5c_dialog_listview">
     <tr class="line">
-        <td width="20px"></td>
+        <td width="10px"></td>
         <td width="60px"><img src="/h5creator/static/img/proj-example.png" /></td>
         <td >
-            Open Table Service
+            BigTable Service
         </td>
         <td align="right">
             <i class="icon-chevron-right"></i>
         </td>
-        <td width="20px"></td>
+        <td width="10px"></td>
     </tr>
 </table>
 </a>
 
-<a class="h5c-data-create" href="#data/create-sql">
+<a class="j4soeo" href="#data/create-rds">
 <table width="100%" class="h5c_dialog_listview">
     <tr class="line">
-        <td width="20px"></td>
+        <td width="10px"></td>
         <td width="60px"><img src="/h5creator/static/img/proj-example.png" /></td>
         <td >
-            Relational Database Service (TODO)
+            Relational Database Service
         </td>
         <td align="right">
             <i class="icon-chevron-right"></i>
         </td>
-        <td width="20px"></td>
+        <td width="10px"></td>
     </tr>
 </table>
 </a>
 
-<a class="h5c-data-create" href="#data/create-kv">
+<a class="j4soeo" href="#data/create-kv">
 <table width="100%" class="h5c_dialog_listview">
-    <tr class="line">
-        <td width="20px"></td>
+    <tr class="">
+        <td width="10px"></td>
         <td width="60px"><img src="/h5creator/static/img/proj-example.png" /></td>
         <td >
             Key-Value Database Service (TODO)
@@ -51,40 +44,37 @@
         <td align="right">
             <i class="icon-chevron-right"></i>
         </td>
-        <td width="20px"></td>
+        <td width="10px"></td>
     </tr>
 </table>
 </a>
 
-</div>
-
-<table id="_data_create_foo" class="h5c_dialog_footer" width="100%">
-    <tr>        
-        <td align="right">
-            <button class="btn pull-right" onclick="h5cDialogClose()">Close</button>
-        </td>
-        <td width="20px"></td>
-    </tr>
-</table>
-
 <script>
-$(".h5c-data-create").click(function(){
-        
-    var href = $(this).attr('href');
-    href = href.replace("#", "");
 
-    var url = "";
+h5cModalButtonAdd("doo8l6", "Close", "h5cModalClose()", "");
+
+
+$(".j4soeo").click(function(){
+        
+    var href = $(this).attr('href').substr(1);
+
+    var url = '/h5creator/';
     var title = "";
     switch (href) {
     case "data/create-ts":
-        url = href;
-        title = 'Instance Setting';
+        url += href;
+        title = 'New DataSet - BigTable';
+        break;
+    case "data/create-rds":
+        url += href;
+        title = 'New DataSet - Relational Database';
         break;
     default:
         return;
     }
+    url += '?proj='+ projCurrent;
 
-    h5cDialogNext('/h5creator/'+ url +'?dialogprev=/h5creator/data/create&proj='+projCurrent, title);
+    h5cModalNext(url, title, null);
 });
 
 function _data_create_resize()
@@ -93,5 +83,7 @@ function _data_create_resize()
     fp = $("#_data_create_foo").position();
     $("#_data_create_body").height(fp.top - bp.top);
 }
-_data_create_resize();
+//_data_create_resize();
+
+
 </script>

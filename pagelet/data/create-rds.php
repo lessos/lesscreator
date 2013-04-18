@@ -10,7 +10,7 @@ if ($this->app->method == 'POST') {
     $datasetid = $this->req->datasetid;
     $fsd = $projPath."/data/{$datasetid}.ds.json";
     if (file_exists($fsd)) {
-        die("Bad Request, Data already exists");
+        die("Bad Request, DataSet already exists");
     }
     if (!is_writable($projPath ."/data")) {
         die("Permission denied, Can not write to ". $fsd);
@@ -19,7 +19,7 @@ if ($this->app->method == 'POST') {
     $set = array(
         'id'      => $datasetid,
         'name'    => $this->req->datasetname,
-        'type'    => '1',
+        'type'    => '2',
         'projid'  => $projInfo['appid'],
         'created' => time(),
         'updated' => time(),
@@ -34,7 +34,7 @@ $datasetid = LessPHP_Util_String::rand(8, 2);
 
 <div id="h5c_dialog_alert"></div>
 
-<form id="c47vz9" action="/h5creator/data/create-ts">
+<form id="o1pj61" action="/h5creator/data/create-rds">
 <table width="100%">
   <tr>
     <td width="180px"><strong>DataSet ID</strong></td>
@@ -52,18 +52,18 @@ $datasetid = LessPHP_Util_String::rand(8, 2);
 </form>
 
 <script>
-h5cModalButtonAdd("qdpvv3", "Close", "h5cModalClose()", "");
-h5cModalButtonAdd("t42qf1", "Confirm and Commit", "_data_new_ts()", "btn-inverse");
-h5cModalButtonAdd("yc82zu", "Back", "h5cModalPrev()", "pull-left h5c-marginl0");
+h5cModalButtonAdd("hril76", "Close", "h5cModalClose()", "");
+h5cModalButtonAdd("edmfpf", "Confirm and Commit", "_data_new_rds()", "btn-inverse");
+h5cModalButtonAdd("d2jns6", "Back", "h5cModalPrev()", "pull-left h5c-marginl0");
 
-function _data_new_ts()
+function _data_new_rds()
 {
     event.preventDefault();
         
     $.ajax({ 
         type    : "POST",
-        url     : $("#c47vz9").attr('action') +"?_="+ Math.random(),
-        data    : $("#c47vz9").serialize() +"&proj="+projCurrent,
+        url     : $("#o1pj61").attr('action') +"?_="+ Math.random(),
+        data    : $("#o1pj61").serialize() +"&proj="+projCurrent,
         success : function(rsp) {
             if (rsp == "OK") {
 
