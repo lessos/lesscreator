@@ -57,6 +57,5 @@ function _proj_data_tabopen(uri, force)
         }
     });
 }
-
 _proj_data_tabopen('/h5creator/proj/data/list?proj='+ projCurrent, 1);
 </script>

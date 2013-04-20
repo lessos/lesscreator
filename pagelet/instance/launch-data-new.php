@@ -48,6 +48,7 @@ if (!isset($dataInst['Created'])) {
 
 $dataInst['ProjId']    = $projInfo['appid'];
 $dataInst['DataSetId'] = $datasetid;
+$dataInst['DataType']  = $dataInfo['type'];
 $dataInst['TableId']   = $tableid;
 $dataInst['Updated']   = time();
 $dataInst['TableInfo'] = $tableInfo;

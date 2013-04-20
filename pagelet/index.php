@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>MQ DEMO</title>
-  <script src="/jquery/jquery-1.9.min.js"></script>
+  <script src="/jquery/jquery-2.0.min.js"></script>
   <script src="/bootstrap2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/bootstrap2/css/bootstrap.min.css"   media="all" />
   <link rel="stylesheet" type="text/css" href="/codemirror3/lib/codemirror.css"   media="all" />
@@ -17,8 +17,8 @@
     <td width="10px"></td>
 
     <td class="header_logo" width="240px">
-      <img src="/h5creator/static/img/hooto-logo-mc-h30s.png" />
-      <span class="title">DEMO</span>
+      <img src="/h5creator/static/img/hooto-logo-mc-h30.png" />
+      <span class="title">Creator</span>
     </td>
     
     <td align="center">

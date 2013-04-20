@@ -89,7 +89,9 @@ function _data_create_open()
     }
     var id = $("input [name=datasetid]").val();
 
-    h5cTabOpen("/h5creator/data/inlet?proj="+projCurrent+"&id="+ id, "w0", 'html', opt);
+    if (typeof _proj_data_tabopen == 'function') {
+        _proj_data_tabopen('/h5creator/proj/data/list?proj='+ projCurrent, 1);
+    }
     h5cModalClose();
 }
 </script>
