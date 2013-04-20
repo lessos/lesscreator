@@ -8,8 +8,8 @@ if (!isset($projInfo['appid'])) {
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("Bad Request 1");
 }
-$dataid = $this->req->id;
-$fsd = $projPath."/data/{$dataid}.db.json";
+$datasetid = $this->req->id;
+$fsd = $projPath."/data/{$datasetid}.ds.json";
 if (!file_exists($fsd)) {
     die("Bad Request");
 }
@@ -36,46 +36,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     die("OK");
 }
 ?>
-
-<form id="sgpq5k" action="/h5creator/data/inlet-desc-set">
-  <table width="100%">
+<div class="bmejc8 alert hide"></div>
+<form id="b2qcyo" action="/h5creator/data/dataset-set">
+<input type="hidden" name="id" value="<?php echo $dataInfo['id']?>" />
+<table width="100%">
     <tr>
-        <td width="120px"><strong>Instance ID</strong></td>
-        <td><input type="text" name="id" value="<?php echo $dataInfo['id']?>" readonly="readonly" /> 字母、数字混合</td>
+        <td width="120px"><strong>DataSet ID</strong></td>
+        <td><?php echo $dataInfo['id']?></td>
     </tr>
     <tr>
         <td><strong>Name</strong></td>
         <td><input type="text" name="name" value="<?php echo $dataInfo['name']?>" /></td>
     </tr>
-    <tr>
-        <td></td>
-        <td><input type="submit" class="btn" value="Save" /></td>
-    </tr>
-  </table>
-  
+</table>  
 </form>
 
-<script>
-$("#sgpq5k").submit(function(event) {
+<script type="text/javascript">
 
+h5cModalButtonAdd("o4wn8e", "Close", "h5cModalClose()", "");
+
+h5cModalButtonAdd("qe7kft", "Confirm and Save", "_data_dataset_set()", "btn-inverse");
+
+$("#b2qcyo").submit(function(event) {
     event.preventDefault();
-    
+    _data_dataset_set();
+});
+function _data_dataset_set()
+{
     var time = new Date().format("yyyy-MM-dd HH:mm:ss");
     $.ajax({ 
         type    : "POST",
-        url     : $(this).attr('action') +"?_="+ Math.random(),
-        data    : $(this).serialize() +"&proj="+ projCurrent,
+        url     : $("#b2qcyo").attr('action') +"?_="+ Math.random(),
+        data    : $("#b2qcyo").serialize() +"&proj="+ projCurrent,
         success : function(rsp) {
             if (rsp == "OK") {
-                hdev_header_alert("alert-success", time +" OK");
+                h5cGenAlert(".bmejc8", "alert-success", "OK "+ time);
                 if (typeof _proj_data_tabopen == 'function') {
-                   _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
+                    _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
                 }
             } else {
-                hdev_header_alert("alert-error", time +" "+ rsp);
+                h5cGenAlert(".bmejc8", "alert-error", rsp +" "+ time);
             }
         }
     });
-});
+}
 
 </script>
