@@ -103,8 +103,9 @@ function _qstatus_open()
         }
 
         sock.onmessage = function(e) {
-            //console.log("message received: " + e.data);
-            var obj = JSON.parse(e.data);        
+            
+            var obj = JSON.parse(e.data);
+            console.log("message received: " + obj.Status);    
             for (var i in obj.Item) {
                 $("#qstatus"+ obj.Item[i].ActorId).text(obj.Item[i].StatusName);
             }

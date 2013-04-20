@@ -21,7 +21,7 @@ $fsdt = $projPath."/data/{$datasetid}/{$tableid}.tbl.json";
 if (!file_exists($fsdt)) {
     die("Bad Request");
 }
-$tableInfo = file_get_contents($fsd);
+$tableInfo = file_get_contents($fsdt);
 $tableInfo = json_decode($tableInfo, true);
 
 ?>
@@ -30,7 +30,7 @@ $tableInfo = json_decode($tableInfo, true);
 
 <div style="padding:10px; background-color:#f6f7f8;">
     <span>
-        <strong>Table</strong>: <?php echo $tableInfo['tablename']?>
+        <strong>Table Setting</strong>: <?php echo $tableInfo['tablename']?>
     </span>
 </div>
 

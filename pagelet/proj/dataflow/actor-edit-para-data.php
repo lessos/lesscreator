@@ -1,74 +1,78 @@
 <?php
-$projbase = H5C_DIR;
 
 if ($this->req->proj == null) {
     die('ERROR');
 }
-
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
-$projpath = preg_replace("/\/+/", "/", rtrim($projpath, '/'));
-if (strlen($projpath) < 1) {
-    die("ERROR");
-}
 
-$fsp = $projpath."/hootoapp.yaml";
-if (!file_exists($fsp)) {
-    die("Bad Request");
-}
-$projInfo = file_get_contents($fsp);
-$projInfo = hwl\Yaml\Yaml::decode($projInfo);
+$projPath = h5creator_proj::path($this->req->proj);
+$projInfo = h5creator_proj::info($this->req->proj);
 
-$dataList  = array('local' => array(), 'exter' => array());
-$glob = $projpath."/data/*.json";
+$datasets = array();
+
+$glob = $projPath."/data/*.ds.json";
+
 foreach (glob($glob) as $v) {
+    
     $json = file_get_contents($v);
     $json = json_decode($json, true);
+    
     if (!isset($json['id'])) {
         continue;
     }
 
-    if ($projInfo['appid'] == $json['projid']) {
-        $dataList['local'][$json['id']] = $json;
-    } else {
-        $dataList['exter'][$json['id']] = $json;
+    if ($projInfo['appid'] != $json['projid']) {
+        continue;
+    }
+
+    $datasets[$json['id']] = $json;
+    $datasets[$json['id']]['_tables'] = array();
+
+    $globsub = $projPath."/data/{$json['id']}/*.tbl.json";
+    
+    foreach (glob($globsub) as $v2) {
+        
+        $json2 = file_get_contents($v2);
+        $json2 = json_decode($json2, true);
+    
+        if (!isset($json2['tableid'])) {
+            continue;
+        }
+
+        $datasets[$json['id']]['_tables'][] = $json2;
     }
 }
 
 echo "<table width=\"100%\" class='table-hover'>";
-foreach ($dataList as $k => $v) {
+foreach ($datasets as $k => $v) {
     
-    if ($k == 'local') {
-        $tit = 'Local Databases';
-    } else {
-        $tit = 'External Databases';
+    if ($v['type'] == 1) {
+        $typename = 'BigTable';
+    } else if ($v['type'] == 2) {
+        $typename = 'Relational Database';
     }
 
     echo "<tr>
         <td width='5px'></td>
         <td width='20px'>
-            <img src='/fam3/icons/folder_database.png' class='h5c_icon' /> 
+            <img src='/fam3/icons/database.png' class='h5c_icon' /> 
         </td>
         <td>
-            {$tit}
+            {$v['name']} <em>{$typename}</em>
         </td>
         <td></td>
         <td width='5px'></td>
     </tr>";
 
-    foreach ($v as $k2 => $v2) {
+    foreach ($v['_tables'] as $v2) {
         echo "<tr>
         <td></td>
         <td></td>
         <td>
-            <img src='/fam3/icons/database.png' class='h5c_icon' /> 
-            {$v2['name']}
+            <img src='/fam3/icons/database_table.png' class='h5c_icon' /> 
+            {$v2['tablename']} <em>({$v2['tableid']})</em>
         </td>
-        <td align='right'><a href='#{$k2}' class='a5ypb6' title='{$v2['name']}'>Select</a></td>
+        <td align='right'><a href='#{$v2['tableid']}' class='a5ypb6' title='{$v2['tablename']}'>Select</a></td>
         <td></td>
         </tr>";
     }

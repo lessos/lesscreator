@@ -18,19 +18,24 @@ if (strlen($projpath) < 1) {
 ?>
 
 <div class="h5c_tab_subnav" style="border-bottom: 1px solid #ddd;">
-    <a href="javascript:h5cPluginDataOpen()" class="b0hmqb">
+    <!-- <a href="javascript:h5cPluginDataOpen()" class="b0hmqb">
         <img src="/fam3/icons/folder.png" class="h5c_icon" />
         Open 
-    </a>
-    <a href="javascript:h5cPluginDataNew()" class="b0hmqb">
+    </a> -->
+    <a href="#data/new" class="h6tnb9">
         <img src="/fam3/icons/database_add.png" class="h5c_icon" />
-        New Instance
+        New DataSet
     </a>
 </div>
 
 <div id="ig3w6o" class="h5c_gen_scroll" style="padding-top:10px;"></div>
 
 <script type="text/javascript">
+
+$(".h6tnb9").click(function(){
+    var url = "/h5creator/data/create-select-type?proj="+ projCurrent;
+    h5cModalOpen(url, 0, 700, 450, 'New DataSet', null);
+});
 
 function _proj_data_tabopen(uri, force)
 {

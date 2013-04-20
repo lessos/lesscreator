@@ -12,85 +12,98 @@ $kpr = new LessPHP_Service_H5keeper("127.0.0.1:9530");
 //$ins = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/info");
 //h5creator_service::debugPrint($ins);
 
+$datasets = array();
 
-$dataList  = array('local' => array(), 'exter' => array());
-$glob = $projPath."/data/*.db.json";
+$glob = $projPath."/data/*.ds.json";
+
 foreach (glob($glob) as $v) {
+
     $dataInfo = file_get_contents($v);
     $dataInfo = json_decode($dataInfo, true);
     if (!isset($dataInfo['id'])) {
         continue;
     }
 
-    // Compare with instances settings, if deployed
-    $dataInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$dataInfo['id']}");
-    $dataInst = json_decode($dataInst, true);
-    if (!isset($dataInst['InstId'])) {
-        $dataInfo['_ins_id'] = "0";
-    } else {
-        $dataInfo['_ins_id'] = $dataInst['InstId'];
-    }
+    $datasets[$dataInfo['id']] = $dataInfo;
+    $datasets[$dataInfo['id']]['_tables'] = array();
 
-    if ($projInfo['appid'] == $dataInfo['projid']) {
-        $dataList['local'][$dataInfo['id']] = $dataInfo;
-    } else {
-        $dataList['exter'][$dataInfo['id']] = $dataInfo;
+    $globsub = $projPath."/data/{$dataInfo['id']}/*.tbl.json";
+    
+    foreach (glob($globsub) as $v2) {
+        
+        $tableInfo = file_get_contents($v2);
+        $tableInfo = json_decode($tableInfo, true);
+    
+        if (!isset($tableInfo['tableid'])) {
+            continue;
+        }
+    
+        // Compare with instances settings, if deployed
+        $dataInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$tableInfo['tableid']}");
+        $dataInst = json_decode($dataInst, true);
+        if (!isset($dataInst['InstId'])) {
+            $tableInfo['_ins_id'] = "0";
+        } else {
+            $tableInfo['_ins_id'] = $dataInst['InstId'];
+        }
+
+        $datasets[$dataInfo['id']]['_tables'][] = $tableInfo;
     }
 }
+//h5creator_service::debugPrint($datasets);
 
 echo "<table width=\"100%\" class='table table-hover table-condenseds'>";
 echo "<thead><tr>
-        <th width='20px'></th>
+        <th width='15px'></th>
         <th></th>
         <th>Instance Status</th>
         <th colspan='2' align='center'>Deployment Options</th>
     </tr></thead>";
-foreach ($dataList as $k => $v) {
-    
-    if ($k == 'local') {
-        $tit = 'Database';
-    } else {
-        $tit = 'External Database';
-    }
+foreach ($datasets as $k => $v) {
 
     echo "<tr>
         <td>
-            <img src='/fam3/icons/folder_database.png' class='h5c_icon' /> 
+            <img src='/fam3/icons/database.png' class='h5c_icon' /> 
         </td>
-        <td><strong>{$tit}</strong></td>
+        <td><strong>{$v['name']}</strong></td>
         <td></td>
         <td></td>
         <td></td>
     </tr>";
 
-    foreach ($v as $k2 => $v2) {
-        if (!isset($v2['name'])) {
-            $v2['name'] = $k2;
-        }
+    foreach ($v['_tables'] as $v2) {
+        
+        $data = "{$v['id']}_{$v2['tableid']}";
 
         if ($v2['_ins_id'] == "0") {
+            
             $status = "<img src='/fam3/icons/exclamation.png' class='h5c_icon' /> Not deployed";
+            
             $href = "<label class='checkbox'>
-                <input type='checkbox' name='dbnew{$k2}' value='new' checked /> 
-                Create New Instance
+                <input type='checkbox' name='dbnew{$data}' value='new' checked /> 
+                Create New Table Instance
                 </label>";
-            $hrefslc = "<a href='#{$k2}' class='btn btn-mini p30as5'><i class='icon-share'></i> Use existing Instance</a>";
+            
+            $hrefslc = "<a href='#{$data}' class='btn btn-mini p30as5'><i class='icon-share'></i> Use existing Instance</a>";
         } else {
+
             $status = "<img src='/fam3/icons/accept.png' class='h5c_icon' /> {$v2['_ins_id']}";
+            
             $href = "<label class='checkbox'>
-                <input type='checkbox' name='dbnew{$k2}' value='new' /> 
+                <input type='checkbox' name='dbnew{$data}' value='new' /> 
                 Update Instance
                 </label>";
-            $hrefslc = "<a href='#{$k2}' class='btn btn-mini p30as5'><i class='icon-share'></i> Use existing Instance</a>";
+            
+            $hrefslc = "<a href='#{$data}' class='btn btn-mini p30as5'><i class='icon-share'></i> Use existing Instance</a>";
         }
         $hrefslc = ""; // TODO
 
         echo "<tr>
         <td></td>
         <td>
-            <img src='/fam3/icons/database.png' class='h5c_icon' /> {$v2['name']}
+            <img src='/fam3/icons/database_table.png' class='h5c_icon' /> {$v2['tablename']}
         </td>
-        <td class='h5c-font-mono' id='st{$k2}'>{$status}</td>
+        <td class='h5c-font-mono' id='st{$data}'>{$status}</td>
         <td>
             {$href}
         </td>
@@ -117,9 +130,9 @@ function _launch_data_next()
 
         if ($(this).val() == "new") {
        
-            var dataid = $(this).attr("name").substr(5);
-            var req = uri +"&dataid="+ dataid;
-
+            var data = $(this).attr("name").substr(5);
+            var req = uri +"&data="+ data;
+            //console.log(req);
             $.ajax({
                 url     : "/h5creator/instance/launch-data-new?_="+ Math.random(),
                 type    : "POST",
@@ -133,8 +146,8 @@ function _launch_data_next()
                         hdev_header_alert('error', obj.Status);
                         return;
                     }
-                    $("#st"+ dataid).html("<img src='/fam3/icons/accept.png' class='h5c_icon' /> "+ obj.InstId);
-                    $("input[name=dbnew"+ dataid +"]").parent().remove();
+                    $("#st"+ data).html("<img src='/fam3/icons/accept.png' class='h5c_icon' /> "+ obj.InstId);
+                    $("input[name=dbnew"+ data +"]").parent().remove();
                     //$(".irvj4f").val(instanceid);
                 },
                 error: function(xhr, textStatus, error) {
