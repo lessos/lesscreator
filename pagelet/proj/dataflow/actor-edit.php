@@ -49,7 +49,7 @@ if (!isset($actor['id'])) {
     die("Internal Server Error");
 }
 $actor      = array_merge($actorDefault, $actor);
-
+//h5creator_service::debugPrint($actor);
 $exec_cron  = explode(",", $actor['exec_cron']);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $actor['exec_cron']     = implode(",", $this->req->exec_cron);
     
     $actor['para_mode']     = intval($this->req->para_mode);
-    $actor['para_data']     = $this->req->para_data;    
+    $actor['para_data']     = $this->req->para_data;
     
     file_put_contents($fsj, hwl_Json::prettyPrint($actor));
 
@@ -193,11 +193,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $para_data_display = '';
         if (isset($actor['para_data']) && strlen($actor['para_data']) > 0) {
 
-            $fsd = $projpath."/data/{$actor['para_data']}.db.json";
+            $fsd = $projpath."/data/{$actor['para_data']}.ds.json";
             $json = file_get_contents($fsd);
             $json = json_decode($json, true);
-            if (isset($json['name'])) {
-                $para_data_display = $json['name'];
+            //h5creator_service::debugPrint($json);
+            if (isset($json['tablename'])) {
+                $para_data_display = $json['tablename'];
             }
         }
         ?>

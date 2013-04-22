@@ -2,12 +2,12 @@
 function h5cPluginDataOpen()
 {
     h5cDialogOpen('/h5creator/data/open', 700, 450, 
-        'Open Data Instance', null);
+        'Open Database', null);
 }
 function h5cPluginDataNew()
 {
     h5cDialogOpen('/h5creator/data/create', 700, 450, 
-        'Create Data Instance', null);
+        'Create Database', null);
 }
 function h5cDialogPrev(url)
 {
@@ -215,11 +215,11 @@ function h5cModalOpen(url, pos, w, h, title, opt)
                     "top": t +'px',
                     "left": l +'px',
                 //}).hide().slideDown(200, function() {
-                }).hide().show(300, function() {
+                }).hide().show(150, function() {
                     h5cModalResize();
                 });
             }
-            $('.h5c-modal-body-page').animate({top: 0, left: "-"+ mov +"px"}, 300, function() {
+            $('.h5c-modal-body-page').animate({top: 0, left: "-"+ mov +"px"}, 200, function() {
                 $(".h5c-modal-header .title").text(title);
                 $("#"+urid+" .inputfocus").focus();
 
@@ -260,8 +260,8 @@ function h5cModalButtonAdd(id, title, func, style)
 
 function h5cModalClose()
 {    
-    //$(".h5c-modal").slideUp(200, function(){
-    $(".h5c-modal").hide(300, function(){
+    //$(".h5c-modal").slideUp(150, function(){
+    $(".h5c-modal").hide(150, function(){
         $(this).remove();
         $(".h5c-modal-bg").remove();
         h5cModalData = {};

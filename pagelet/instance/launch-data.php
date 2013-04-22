@@ -41,10 +41,10 @@ foreach (glob($glob) as $v) {
         // Compare with instances settings, if deployed
         $dataInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$tableInfo['tableid']}");
         $dataInst = json_decode($dataInst, true);
-        if (!isset($dataInst['InstId'])) {
+        if (!isset($dataInst['DataInst'])) {
             $tableInfo['_ins_id'] = "0";
         } else {
-            $tableInfo['_ins_id'] = $dataInst['InstId'];
+            $tableInfo['_ins_id'] = $dataInst['DataInst'];
         }
 
         $datasets[$dataInfo['id']]['_tables'][] = $tableInfo;
@@ -146,7 +146,7 @@ function _launch_data_next()
                         hdev_header_alert('error', obj.Status);
                         return;
                     }
-                    $("#st"+ data).html("<img src='/fam3/icons/accept.png' class='h5c_icon' /> "+ obj.InstId);
+                    $("#st"+ data).html("<img src='/fam3/icons/accept.png' class='h5c_icon' /> "+ obj.DataInst);
                     $("input[name=dbnew"+ data +"]").parent().remove();
                     //$(".irvj4f").val(instanceid);
                 },
