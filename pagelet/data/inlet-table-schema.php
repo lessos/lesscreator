@@ -17,7 +17,7 @@ if (!file_exists($fsd)) {
 $dataInfo = file_get_contents($fsd);
 $dataInfo = json_decode($dataInfo, true);
 
-$fst = $projPath."/data/{$datasetid}/{$tableid}.tbl.json";
+$fst = $projPath."/data/{$datasetid}_{$tableid}.tbl.json";
 if (!file_exists($fst)) {
     die("Bad Request");
 }

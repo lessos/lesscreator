@@ -193,17 +193,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $para_data_display = '';
         if (isset($actor['para_data']) && strlen($actor['para_data']) > 0) {
 
-            $fsd = $projpath."/data/{$actor['para_data']}.ds.json";
+            $para_datas = explode("_", $actor['para_data']);
+
+            $fsd  = $projpath."/data/{$para_datas[0]}.ds.json";
             $json = file_get_contents($fsd);
             $json = json_decode($json, true);
-            //h5creator_service::debugPrint($json);
+            if (isset($json['name'])) {
+                $para_data_display = $json['name'];
+            }
+            
+            $fst  = $projpath."/data/{$para_datas[0]}_{$para_datas[1]}.tbl.json";
+            $json = file_get_contents($fst);
+            $json = json_decode($json, true);
             if (isset($json['tablename'])) {
-                $para_data_display = $json['tablename'];
+                $para_data_display .= " - ". $json['tablename'];
             }
         }
         ?>
-        <div class="smxw88 para_data input-append hide">
-          <input name="para_data_display" type="text" value="<?php echo $para_data_display?>" class="span2"/>
+        <div class="smxw88 para_data input-append hide" style="width:500px;">
+          <input name="para_data_display" type="text" value="<?php echo $para_data_display?>" class="span4"/>
           <input name="para_data" type="hidden" value="<?php echo $actor['para_data']?>" class="para_data"/>
           <button type="button" class="btn" onclick="_dataflow_edit_paraselect()">
             <i class="icon-share-alt"></i>

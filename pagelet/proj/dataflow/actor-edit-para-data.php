@@ -28,7 +28,7 @@ foreach (glob($glob) as $v) {
     $datasets[$json['id']] = $json;
     $datasets[$json['id']]['_tables'] = array();
 
-    $globsub = $projPath."/data/{$json['id']}/*.tbl.json";
+    $globsub = $projPath."/data/{$json['id']}_*.tbl.json";
     
     foreach (glob($globsub) as $v2) {
         
@@ -72,7 +72,7 @@ foreach ($datasets as $k => $v) {
             <img src='/fam3/icons/database_table.png' class='h5c_icon' /> 
             {$v2['tablename']} <em>({$v2['tableid']})</em>
         </td>
-        <td align='right'><a href='#{$v2['tableid']}' class='a5ypb6' title='{$v2['tablename']}'>Select</a></td>
+        <td align='right'><a href='#{$v2['datasetid']}_{$v2['tableid']}' class='a5ypb6' title='{$v2['tablename']}'>Select</a></td>
         <td></td>
         </tr>";
     }

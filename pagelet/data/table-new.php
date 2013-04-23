@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $tableid = $this->req->tableid;
 
-    $fstbl = $projPath."/data/{$datasetid}/{$tableid}.tbl.json";
+    $fstbl = $projPath."/data/{$datasetid}_{$tableid}.tbl.json";
     if (file_exists($fstbl)) {
         die("The current table already exists");
     }
@@ -50,8 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Permission denied, Can not write to ". $fstbl);
     }
 
-    hwl_Fs_Dir::mkfiledir($fstbl);
-    
     file_put_contents($fstbl, hwl_Json::prettyPrint($tableInfo));
 
     die("OK");

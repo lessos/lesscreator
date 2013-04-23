@@ -21,7 +21,7 @@ if ($projInfo['appid'] != $dataInfo['projid']) {
 }
 
 
-$fst = $projPath."/data/{$datasetid}/{$tableid}.tbl.json";
+$fst = $projPath."/data/{$datasetid}_{$tableid}.tbl.json";
 if (!file_exists($fst)) {
     die("Bad Request");
 }

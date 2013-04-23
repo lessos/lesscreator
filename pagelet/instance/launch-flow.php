@@ -3,13 +3,13 @@
 if (strlen($this->req->instanceid) < 1) {
     die("Bad Request");
 }
-$insid = $this->req->instanceid;
+$projInstId = $this->req->instanceid;
 
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
 
 $kpr = new LessPHP_Service_H5keeper("127.0.0.1:9530");
-//$ins = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/info");
+//$ins = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$projInstId}/info");
 //h5creator_service::debugPrint($ins);
 
 $grps = array();
@@ -36,7 +36,7 @@ foreach (glob($glob) as $v) {
         }
 
         // Compare with instances settings, if deployed
-        $actorInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorInfo['id']}");
+        $actorInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$projInstId}/flow/{$actorInfo['id']}");
         $actorInst = json_decode($actorInst, true);
 
         $actorInfo['_ins_seted'] = false;
@@ -53,31 +53,32 @@ foreach (glob($glob) as $v) {
         case h5creator_service::ParaModeDataSingle:
         case h5creator_service::ParaModeDataServer: 
         case h5creator_service::ParaModeDataShard:
-    
-            $dataIns = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$actorInfo['para_data']}");
-            $dataIns = json_decode($dataIns, true);
-            //h5creator_service::debugPrint($dataIns);
+
+            $para_datas = explode("_", $actorInfo['para_data']);
+            $dataInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$projInstId}/data/{$para_datas[1]}");
+            $dataInst = json_decode($dataInst, true);
+            //h5creator_service::debugPrint($dataInst);
             
             $actorInst['ActorId']     = $actorInfo['id'];
-            $actorInst['ParaData']    = $dataIns['InstId'];
-            $actorInst['ProjInst']    = $insid;
+            $actorInst['ParaData']    = $dataInst['InstId'];
+            $actorInst['ProjInst']    = $projInstId;
             $actorInst['User']        = 'guest';
             
             $instInfo = array(
                 'ProjId'    => $projInfo['appid'],
                 'GrpId'     => $grpInfo['id'],
                 'ActorId'   => $actorInfo['id'],
-                'ProjInst'  => $insid,
+                'ProjInst'  => $projInstId,
                 'Func'      => '10',
-                'ParaData'  => $dataIns['InstId'],
+                'ParaData'  => $dataInst['InstId'],
                 'Info'      => $actorInfo,
             );
             $fss = $projPath."/dataflow/{$grpInfo['id']}/{$actorInfo['id']}.actor";
             
-            $kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorInfo['id']}", json_encode($actorInst));
+            $kpr->Set("/hae/guest/{$projInfo['appid']}/{$projInstId}/flow/{$actorInfo['id']}", json_encode($actorInst));
             
-            $kpr->Set("/h5flow/script/{$insid}/{$actorInfo['id']}", file_get_contents($fss));
-            $kpr->Set("/h5flow/ctrlq/{$insid}.{$actorInfo['id']}", json_encode($instInfo));
+            $kpr->Set("/h5flow/script/{$projInstId}/{$actorInfo['id']}", file_get_contents($fss));
+            $kpr->Set("/h5flow/ctrlq/{$projInstId}.{$actorInfo['id']}", json_encode($instInfo));
 
             $actorInfo['_ins_setlock'] = true;
             $actorInfo['_ins_seted'] = true;
