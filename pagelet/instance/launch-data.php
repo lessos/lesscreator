@@ -3,13 +3,13 @@
 if (strlen($this->req->instanceid) < 1) {
     die("Bad Request");
 }
-$insid = $this->req->instanceid;
+$projInstId = $this->req->instanceid;
 
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
 
 $kpr = new LessPHP_Service_H5keeper("127.0.0.1:9530");
-//$ins = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/info");
+//$ins = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$projInstId}/info");
 //h5creator_service::debugPrint($ins);
 
 $datasets = array();
@@ -39,7 +39,7 @@ foreach (glob($glob) as $v) {
         }
     
         // Compare with instances settings, if deployed
-        $dataInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/data/{$tableInfo['tableid']}");
+        $dataInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$projInstId}/data/{$tableInfo['tableid']}");
         $dataInst = json_decode($dataInst, true);
         if (!isset($dataInst['DataInst'])) {
             $tableInfo['_ins_id'] = "0";
