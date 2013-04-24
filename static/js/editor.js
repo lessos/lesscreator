@@ -32,7 +32,7 @@ function h5cTabletEditorOpen(urid)
         $('#src'+urid).text(item.data);
         h5cEditorLoad(urid);
     } else {
-        
+
         //$("#src"+urid).remove(); // Force remove
 
         //var t = '<textarea id="src'+urid+'" class="displaynone"></textarea>';
@@ -114,9 +114,9 @@ function h5cEditorLoad(urid)
             mode = 'shell';
             break;
     }
-    
+
     h5cEditor.urid = urid;
-    
+
     h5cEditor.instance = CodeMirror.fromTextArea(document.getElementById('src'+urid), {
     //h5cEditor.instance = CodeMirror(document.getElementById('h5c-tablet-body-w0'), {
     //    value: item.data,
@@ -135,24 +135,26 @@ function h5cEditorLoad(urid)
             }
         }}
     });
-    
+
     CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
-    CodeMirror.autoLoadMode(h5cEditor.instance, mode);    
+    CodeMirror.autoLoadMode(h5cEditor.instance, mode);
 
     if (getCookie('editor_keymap_vim') == "on") {
         h5cEditor.instance.setOption("keyMap", "vim");
     }
-    
+
     h5cEditor.instance.on("change", function() {
         h5cEditorSave(urid, 0);
     });
     CodeMirror.commands.save = function() {
         h5cEditorSave(urid, 1);
     };
-    
+
     h5cLayoutResize();
 }
 
+var h5cEditorSaveAPI  = "ws://127.0.0.1:9528/h5creator/api/editor-save";
+var h5cEditorSaveSock = null;
 
 function h5cEditorSave(urid, force)
 {
@@ -160,7 +162,7 @@ function h5cEditorSave(urid, force)
         return;
     }
     var item = h5cTabletPool[urid];
-
+    //console.log(item);
     if (urid != h5cEditor.urid) {
         return;
     }
@@ -168,7 +170,7 @@ function h5cEditorSave(urid, force)
     if (h5cEditor.instance) {
         h5cEditor.instance.save();
     }
-    
+
     var autosave = getCookie('editor_autosave');
     if (autosave == 'off' && force == 0) {
         //$("#pgtab"+pgid+" .chg").show();
@@ -181,7 +183,7 @@ function h5cEditorSave(urid, force)
         return;
     }
 
-    $.ajax({
+    /* $.ajax({
         url     : "/h5creator/app/src?proj="+projCurrent+"&path="+item.url,
         type    : "POST",
         data    : $("#src"+urid).val(),
@@ -195,7 +197,57 @@ function h5cEditorSave(urid, force)
             hdev_header_alert('error', xhr.responseText);
             //$("#pgtab"+pgid+" .chg").show();
         }
-    });
+    });*/
+
+    if (h5cEditorSaveSock == null) {
+
+        if (!("WebSocket" in window)) {
+            hdev_header_alert('error', 'WebSocket Open Failed');
+            return;
+        }
+
+        try {
+            h5cEditorSaveSock = new WebSocket(h5cEditorSaveAPI);
+
+            h5cEditorSaveSock.onopen = function() {
+                //console.log("connected to " + wsuri);
+            }
+
+            h5cEditorSaveSock.onclose = function(e) {
+                //console.log("connection closed (" + e.code + ")");
+                h5cEditorSaveSock = null;
+            }
+
+            h5cEditorSaveSock.onmessage = function(e) {
+
+                var obj = JSON.parse(e.data);
+                //console.log("message received: " + obj.Status);
+
+                if (obj.Status == 200) {
+                    hdev_header_alert('success', "OK");
+                    h5cTabletPool[urid].hash = obj.SumCheck;
+                } else {
+                    hdev_header_alert('error', obj.Msg);
+                }
+
+                //if ($("#vtknd6").length == 0) {
+                //    h5cEditorSaveSock.close();
+                //}
+            }
+
+        } catch(e) {
+            console.log("message open failed: "+ e);
+            return;
+        }
+    }
+
+    var req = {
+        path : sessionStorage.ProjPath +"/"+ item.url,
+        content: $("#src"+urid).val(),
+        sumcheck: hash,
+    }
+    //console.log(JSON.stringify(req));
+    h5cEditorSaveSock.send(JSON.stringify(req));
 }
 
 function h5cEditorClose(urid)
@@ -207,12 +259,12 @@ function h5cEditorClose(urid)
     }
 
     h5cEditorSave(urid, 1);
-    
+
     if (urid == h5cEditor.urid) {
         $('#src'+urid).remove();
         h5cEditor.instance = null;
         h5cEditor.urid = 0;
     }
-    
+
     h5cLayoutResize();
 }

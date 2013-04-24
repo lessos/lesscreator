@@ -86,7 +86,7 @@ $props_def = h5creator_service::listAll();
 if (!is_writable("{$projpath}")) {
     echo 'hdev_header_alert("error", "The Project is not Writable");';
 }
-
+echo "sessionStorage.ProjPath = '{$projpath}';";
 echo "sessionStorage.ProjId = '{$projInfo['appid']}';";
 ?>
 
