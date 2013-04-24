@@ -153,7 +153,7 @@ function h5cEditorLoad(urid)
     h5cLayoutResize();
 }
 
-var h5cEditorSaveAPI  = "ws://127.0.0.1:9528/h5creator/api/editor-save";
+var h5cEditorSaveAPI  = "ws://127.0.0.1:9528/h5creator/api/fs-save-ws";
 var h5cEditorSaveSock = null;
 
 function h5cEditorSave(urid, force)
@@ -199,6 +199,12 @@ function h5cEditorSave(urid, force)
         }
     });*/
 
+    var req = {
+        path : sessionStorage.ProjPath +"/"+ item.url,
+        content: $("#src"+urid).val(),
+        sumcheck: hash,
+    }
+
     if (h5cEditorSaveSock == null) {
 
         if (!("WebSocket" in window)) {
@@ -211,6 +217,7 @@ function h5cEditorSave(urid, force)
 
             h5cEditorSaveSock.onopen = function() {
                 //console.log("connected to " + wsuri);
+                h5cEditorSaveSock.send(JSON.stringify(req));
             }
 
             h5cEditorSaveSock.onclose = function(e) {
@@ -239,15 +246,10 @@ function h5cEditorSave(urid, force)
             console.log("message open failed: "+ e);
             return;
         }
+    } else {
+        //console.log(JSON.stringify(req));
+        h5cEditorSaveSock.send(JSON.stringify(req));
     }
-
-    var req = {
-        path : sessionStorage.ProjPath +"/"+ item.url,
-        content: $("#src"+urid).val(),
-        sumcheck: hash,
-    }
-    //console.log(JSON.stringify(req));
-    h5cEditorSaveSock.send(JSON.stringify(req));
 }
 
 function h5cEditorClose(urid)
