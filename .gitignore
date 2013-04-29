@@ -2,4 +2,5 @@
 test
 server/deps/*
 server/src/h5creator-server
+*~
 

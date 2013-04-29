@@ -22,7 +22,7 @@ $ptpath = md5("");
         <img src="/h5creator/static/img/page_white_add.png" class="h5c_icon" />
         New File
     </a>
-    <a href="#proj/fs/dir-new" class="_proj_fs_cli">
+    <a href="#proj/fs/file-new-dir" class="_proj_fs_cli">
         <img src="/h5creator/static/img/folder_add.png" class="h5c_icon" />
         New Folder
     </a>
@@ -35,26 +35,6 @@ $ptpath = md5("");
 
 <!--ProjectFilesManager-->
 <div id="pt<?=$ptpath?>" class="hdev-proj-files h5c_gen_scroll" style="padding-top:10px;"></div>
-
-<div id="hdev-proj-olrcm-std" class="hdev-proj-olrcm border_radius_5">
-    <div class="header">
-        <span class="title">New Folder</span>
-        <span class="close"><a href="javascript:_file_close()">×</a></span>
-    </div>
-    <div class="sep clearhr"></div>
-    <form id="form_file_std_commit" action="/h5creator/proj/fs/new" method="post">
-    <div>
-        <img src="/h5creator/static/img/folder.png" align="absmiddle" />
-        <span class="path"></span> /
-        <input type="text" size="30" name="name" class="inputname" value="" />
-        <input type="hidden" name="proj" value="<?=$proj?>" />
-        <input type="hidden" name="path" class="inputpath" value="" />
-        <input type="hidden" name="type" class="inputtype" value="file" />
-    </div>
-    <div class="clearhr"></div>
-    <div><input type="submit" name="submit" value="Save" class="input_button" /></div>
-    </form>
-</div>
 
 <div id="hdev-proj-olrcm-mv" class="hdev-proj-olrcm border_radius_5">
     <div class="header">
@@ -97,16 +77,16 @@ $ptpath = md5("");
 
 $("._proj_fs_cli").click(function() {
     var uri = $(this).attr('href').substr(1);
-    console.log(uri);
+    //console.log(uri);
     switch (uri) {
     case "proj/fs/file-new":
-        _file_std_show("file", "");
+        _fs_file_new_modal("file", "");
         break;
     case "proj/fs/file-upl":
         _file_upload("");
         break;
-    case "proj/fs/dir-new":
-        _file_std_show("dir", "");
+    case "proj/fs/file-new-dir":
+        _fs_file_new_modal("dir", "");
         break;
     }
    // console.log(uri);
@@ -121,15 +101,6 @@ function _proj_set_refresh()
             left: e.pageX
         }).toggle();
        
-        /* $(this).find(".hdev_rcobj_file").click(function() {
-            _file_std_show("file", "");
-        });
-        $(this).find(".hdev_rcobj_dir").click(function() {
-            _file_std_show("dir", "");
-        });
-        $(this).find(".hdev_rcobj_upload").click(function() {
-            _file_upload("");
-        }); */
         $(this).find(".hdev_rcobj_rename").click(function() {
             _file_rename("");
         });
@@ -166,7 +137,7 @@ $("#form_file_upload_commit").submit(function(event) {
     xhr.onload = function(e) {
         if (this.status == 200) {
             hdev_header_alert('success', this.responseText);
-            _file_std_callback($("#hdev-proj-olrcm-upload").find(".inputpath").val());
+            _fs_file_new_callback($("#hdev-proj-olrcm-upload").find(".inputpath").val());
             _file_close();
         } else {
             hdev_header_alert('error', this.responseText);
@@ -187,7 +158,7 @@ $("#form_file_mv_commit").submit(function(event) {
         timeout: 3000,
         success: function(data) {
             hdev_header_alert('success', data);
-            _file_std_callback($("#hdev-proj-olrcm-mv .parfold").text());
+            _fs_file_new_callback($("#hdev-proj-olrcm-mv .parfold").text());
             _file_close();
         },
         error: function(xhr, textStatus, error) {
@@ -196,72 +167,19 @@ $("#form_file_mv_commit").submit(function(event) {
     });
 });
 
-
-$("#form_file_std_commit").submit(function(event) {
-
-    event.preventDefault();
-    
-    $.ajax({
-        type: "POST",
-        url: $(this).attr('action'),
-        data: $(this).serialize(),
-        timeout: 3000,
-        success: function(data) {
-            hdev_header_alert('success', data);
-            _file_std_callback($("#hdev-proj-olrcm-std").find(".inputpath").val());
-            _file_close();
-        },
-        error: function(xhr, textStatus, error) {
-            hdev_header_alert('error', textStatus+' '+xhr.responseText);
-        }
-    });
-});
-
-function _file_std_show(type, path)
+function _fs_file_new_modal(type, path)
 {
-    var p = posFetch();
-
-    w = $("#hdev-proj-olrcm-mv").outerWidth(true);
-    bw = $('body').width() - 30;
-    l = p.left;
-    if (l > (bw - w)) {
-        l = bw - w;
+    var tit = "New File";
+    if (type == 'dir') {
+        tit = 'New Folder';
     }
 
-    h = $("#hdev-proj-olrcm-std").height();
-    t = p.top;
-    bh = $('body').height() - 50;        
-    if ((t + h) > bh) {
-        t = bh - h;
-    }
-
-    $("#hdev-proj-olrcm-std .path").text(path);
-    
-    $("#hdev-proj-olrcm-std .inputtype").val(type);
-    $("#hdev-proj-olrcm-std .inputpath").val(path);
-    
-    if (type == 'file') {
-        $("#hdev-proj-olrcm-std .title").text('New File');
-    } else if (type == 'dir') {
-        $("#hdev-proj-olrcm-std .title").text('New Folder');
-    }
-    
-    //console.log("hdev-proj-olrcm-std height: "+$("#hdev-proj-olrcm-std").height());
-    //bh = $('body').height();
-    
-    $("#hdev-proj-olrcm-std").css({
-        top: t+'px',
-        left: l+'px'
-    }).show("fast");
-    
-    $("#hdev-proj-olrcm-std .inputname").focus();
+    var url = "/h5creator/proj/fs/file-new?path="+ path +"&type="+ type;
+    h5cModalOpen(url, 0, 550, 160, tit, null);
 }
 
 function _file_close()
-{
-    $("#hdev-proj-olrcm-std .inputname").val('');    
-    $("#hdev-proj-olrcm-std").hide();
-    
+{   
     $("#hdev-proj-olrcm-upload #attachment").val('');   
     $("#hdev-proj-olrcm-upload").hide();
     
@@ -270,10 +188,9 @@ function _file_close()
     $("#hdev-proj-set-ol").hide();
 }
 
-function _file_std_callback(path)
+function _fs_file_new_callback(path)
 {
-    //console.log(projCurrent+'/'+path);
-    _hdev_dir(projCurrent, path, 1);
+    _hdev_dir(path, 1);
 }
 
 function _file_upload(path)
@@ -382,11 +299,11 @@ function _refresh_tree()
         $(this).find(".hdev_rcobj_file").click(function() {
             p = $(this).position();
             path = $(this).attr('href').substr(1);
-            _file_std_show("file", path);
+            _fs_file_new_modal("file", path);
         });
         $(this).find(".hdev_rcobj_dir").click(function() {
             path = $(this).attr('href').substr(1);
-            _file_std_show("dir", path);
+            _fs_file_new_modal("dir", path);
         });
         $(this).find(".hdev_rcobj_upload").click(function() {
             path = $(this).attr('href').substr(1);
@@ -408,6 +325,7 @@ function _refresh_tree()
 
 function _page_del(proj, path)
 {
+    path = path.replace(/(^\/*)|(\/*$)/g, "");
     p = Crypto.MD5(path);
     
     $.ajax({
@@ -420,8 +338,9 @@ function _page_del(proj, path)
         }
     });
 }
-function _hdev_dir(proj, path, force)
+function _hdev_dir(path, force)
 {
+    path = path.replace(/(^\/*)|(\/*$)/g, "");
     p = Crypto.MD5(path);
 
     if (force != 1 && $("#pt"+p).html() && $("#pt"+p).html().length > 1) {
@@ -432,7 +351,7 @@ function _hdev_dir(proj, path, force)
     $.ajax({
         type: "GET",
         url: '/h5creator/proj/fs/tree',
-        data: 'proj='+proj+'&path='+path,
+        data: 'proj='+projCurrent+'&path='+path,
         success: function(data) {
             $("#pt"+p).html(data);
             h5cLayoutResize();
@@ -441,5 +360,5 @@ function _hdev_dir(proj, path, force)
 }
 
 _proj_set_refresh();
-_hdev_dir('<?=$proj?>', '', 1);
+_hdev_dir('', 1);
 </script>

@@ -97,8 +97,10 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    fmt.Println(req)
+
     reg, _ := regexp.Compile("/+")
-    path := strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Name, "/"), "/")
+    path := strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Path +"/"+ req.Name, "/"), "/")
 
     var pd string
     if req.Type == "file"  {

@@ -72,7 +72,7 @@ foreach (glob($glob) as $f) {
             $fmi = 'folder';
         }
         
-        $href   = "javascript:_hdev_dir('{$proj}', '{$p}', 0)";
+        $href   = "javascript:_hdev_dir('{$p}', 0)";
         
     } else if (substr($fm,0,4) == 'text' 
         || $fm == "application/x-empty"

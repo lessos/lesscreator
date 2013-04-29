@@ -153,7 +153,7 @@ function h5cEditorLoad(urid)
     h5cLayoutResize();
 }
 
-var h5cEditorSaveAPI  = "ws://127.0.0.1:9528/h5creator/api/fs-save-ws";
+var h5cEditorSaveAPI  = "ws://"+h5cServerAPI+"/fs-save-ws";
 var h5cEditorSaveSock = null;
 
 function h5cEditorSave(urid, force)
