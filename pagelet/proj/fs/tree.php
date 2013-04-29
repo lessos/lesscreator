@@ -141,7 +141,7 @@ foreach (glob($glob) as $f) {
         }
         $lip .= "<div class='rcitem'>
             <div class='rcico'><img src='/h5creator/static/img/delete.png' align='absmiddle' /></div>
-            <a href=\"javascript:_page_del('{$proj}','{$p}');\" onclick=\"return confirm('Are you sure you want to delete?')\" class='rcctn'>Delete</a></div>";
+            <a href=\"javascript:_page_del('{$p}');\" onclick=\"return confirm('Are you sure you want to delete?')\" class='rcctn'>Delete</a></div>";
     }
     
     if (strlen($lip)) {

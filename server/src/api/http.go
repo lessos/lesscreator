@@ -24,6 +24,7 @@ func (this *Api) Serve(port string) {
         http.HandleFunc("/h5creator/api/user-login", UserLogin)      
 
         http.HandleFunc("/h5creator/api/fs-file-new", FsFileNew)
+        http.HandleFunc("/h5creator/api/fs-file-del", FsFileDel)
         http.Handle("/h5creator/api/fs-save-ws", websocket.Handler(FsSaveWS))
 
         s := &http.Server {

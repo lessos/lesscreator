@@ -323,21 +323,39 @@ function _refresh_tree()
 }
 
 
-function _page_del(proj, path)
+function _page_del(path)
 {
     path = path.replace(/(^\/*)|(\/*$)/g, "");
     p = Crypto.MD5(path);
     
+    var req = {
+        proj : sessionStorage.ProjPath,
+        path : path,
+    }
+
     $.ajax({
-        type: "GET",
-        url: '/h5creator/proj/fs/rm/',
-        data: 'proj='+proj+'&path='+path,
-        success: function() {
-            $("#ptp"+p).remove();
-            $("#pt"+p).remove();
+        type    : "POST",
+        url     : "/h5creator/api?func=fs-file-del",
+        //dataType: 'json',
+        data    : JSON.stringify(req),
+        timeout : 3000,
+        success : function(rsp) {
+
+            var obj = JSON.parse(rsp);
+            if (obj.Status == 200) {
+                hdev_header_alert('success', "OK");
+                $("#ptp"+p).remove();
+                $("#pt"+p).remove();
+            } else {
+                hdev_header_alert('error', obj.Msg);
+            }
+        },
+        error   : function(xhr, textStatus, error) {
+            hdev_header_alert('error', textStatus+' '+xhr.responseText);
         }
     });
 }
+
 function _hdev_dir(path, force)
 {
     path = path.replace(/(^\/*)|(\/*$)/g, "");

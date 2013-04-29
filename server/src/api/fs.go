@@ -135,3 +135,47 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
     rsp.Status = 200
     rsp.Msg = "Saved successfully"
 }
+
+
+func FsFileDel(w http.ResponseWriter, r *http.Request) {
+
+    rsp := struct {
+        Status int
+        Msg    string
+    } {
+        500,
+        "Bad Request",
+    }
+
+    defer func() {
+        if rspj, err := utils.JsonEncode(rsp); err == nil {
+            io.WriteString(w, rspj)
+        }
+        r.Body.Close()
+    }()
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        return
+    }
+
+    var req struct {
+        Proj string
+        Path string
+    }
+    err = utils.JsonDecode(string(body), &req)
+    if err != nil {
+        return
+    }
+
+    reg, _ := regexp.Compile("/+")
+    path := strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Path, "/"), "/")
+
+    if err := os.Remove("/"+ path); err != nil {
+        rsp.Msg = err.Error()
+        return
+    }
+
+    rsp.Status = 200
+    rsp.Msg = "OK"
+}
