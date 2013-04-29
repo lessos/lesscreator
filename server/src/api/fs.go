@@ -3,6 +3,7 @@ package api
 import (
     "fmt"
     "net/http"
+    "io"
     "io/ioutil"
     //"time"
     "../utils"
@@ -65,7 +66,18 @@ func FsSaveWS(ws *websocket.Conn) {
 
 func FsFileNew(w http.ResponseWriter, r *http.Request) {
     
+    rsp := struct {
+        Status int
+        Msg    string
+    } {
+        500,
+        "Bad Request",
+    }
+
     defer func() {
+        if rspj, err := utils.JsonEncode(rsp); err == nil {
+            io.WriteString(w, rspj)
+        }
         r.Body.Close()
     }()
 
@@ -101,18 +113,23 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
     if _, err := os.Stat(pd); os.IsNotExist(err) {
             
         if err = os.MkdirAll(pd, 0755); err != nil {
+            rsp.Msg = "Can Not Create Folder /"+ pd
             return
         }
     }
 
     fp, err := os.OpenFile("/"+ path, os.O_RDWR|os.O_CREATE, 0754)
     if err != nil {
+        rsp.Msg = "Can Not Open /"+ path
         return
     }
     defer fp.Close()
     
     if _, err = fp.Write([]byte("\n\n")); err != nil {
+        rsp.Msg = "File is not Writable"
         return
     }
-}
 
+    rsp.Status = 200
+    rsp.Msg = "Saved successfully"
+}
