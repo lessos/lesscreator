@@ -57,7 +57,7 @@ $props_def = h5creator_service::listAll();
   </div>
 
   <ul class="h5c_navtabs _proj_nav" style="background-color:#f6f7f8;">
-    <li class="active"><a href="#proj/fs" class="_proj_tab_href">Files</a></li>
+    <li class="active ueg14o_fs"><a href="#proj/fs" class="_proj_tab_href">Files</a></li>
     <?php
     foreach ($props as $v) {
         if (!isset($props_def[$v])) {
@@ -71,7 +71,7 @@ $props_def = h5creator_service::listAll();
             hwl_util_dir::mkfiledir($jsfi);
             file_put_contents($jsfi, hwl_Json::prettyPrint($json));
         }
-        echo "<li><a href=\"#proj/{$v}\" class=\"_proj_tab_href\">{$props_def[$v]}</a></li>";
+        echo "<li class='ueg14o_{$v}'><a href=\"#proj/{$v}\" class=\"_proj_tab_href\">{$props_def[$v]}</a></li>";
     }
     ?>
   </ul>
@@ -90,26 +90,37 @@ echo "sessionStorage.ProjPath = '{$projpath}';";
 echo "sessionStorage.ProjId = '{$projInfo['appid']}';";
 ?>
 
-function _proj_nav_open(url)
+function _proj_nav_open(plg)
 {
     $.ajax({
-        type: "GET",
-        url: '/h5creator/proj/'+ url +'/index?proj='+ projCurrent,
-        success: function(rsp) {
+        type    : "GET",
+        url     : '/h5creator/proj/'+ plg +'/index?proj='+ projCurrent,
+        success : function(rsp) {
+            
             $("#_proj_inlet_body").html(rsp);
+            
+            if (sessionStorage.ProjNavLast != plg) {
+                sessionStorage.ProjNavLast = plg;
+            }
+            
+            $("._proj_nav li.active").removeClass("active");
+            $(".ueg14o_"+plg).addClass("active");
+            
             h5cLayoutResize();
         }
     });
 }
-_proj_nav_open('dataflow');
+
+if (!sessionStorage.ProjNavLast) {
+    sessionStorage.ProjNavLast = 'fs';
+}
+
+_proj_nav_open(sessionStorage.ProjNavLast);
+
 
 $('._proj_tab_href').click(function() {
-
     url = $(this).attr('href').substr(6);
     _proj_nav_open(url);
-
-    $("._proj_nav li.active").removeClass("active");
-    $(this).parent().addClass("active");
 });
 
 </script>

@@ -213,6 +213,7 @@ function h5cEditorSave(urid, force)
         }
 
         try {
+            
             h5cEditorSaveSock = new WebSocket(h5cEditorSaveAPI);
 
             h5cEditorSaveSock.onopen = function() {
@@ -246,6 +247,7 @@ function h5cEditorSave(urid, force)
             console.log("message open failed: "+ e);
             return;
         }
+
     } else {
         //console.log(JSON.stringify(req));
         h5cEditorSaveSock.send(JSON.stringify(req));
