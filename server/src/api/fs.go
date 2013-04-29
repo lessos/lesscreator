@@ -2,12 +2,14 @@ package api
 
 import (
     "fmt"
-    //"net/http"
+    "net/http"
+    "io/ioutil"
     //"time"
-    //"strings"
     "../utils"
     "os"
     "../../deps/go.net/websocket"
+    "regexp"
+    "strings"
 )
 
 func FsSaveWS(ws *websocket.Conn) {
@@ -36,7 +38,6 @@ func FsSaveWS(ws *websocket.Conn) {
         fp, err := os.OpenFile(req.Path, os.O_RDWR|os.O_CREATE, 0754)
         if err != nil {
             return
-            //os.Remove(req.Path)
         } else {
             if _, err = fp.Write([]byte(req.Content)); err != nil {
                 fmt.Println(err)
@@ -61,3 +62,57 @@ func FsSaveWS(ws *websocket.Conn) {
         }
     }
 }
+
+func FsFileNew(w http.ResponseWriter, r *http.Request) {
+    
+    defer func() {
+        r.Body.Close()
+    }()
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        return
+    }
+
+    var req struct {
+        Proj string
+        Path string
+        Name string
+        Type string
+    }
+    err = utils.JsonDecode(string(body), &req)
+    if err != nil {
+        return
+    }
+
+    reg, _ := regexp.Compile("/+")
+    path := strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Name, "/"), "/")
+
+    var pd string
+    if req.Type == "file"  {
+        ps := strings.Split(path, "/")
+        pd = "/"+ strings.Join(ps[0:len(ps)-1], "/")
+    } else if req.Type == "dir" {
+        pd = "/"+ path
+    } else {
+        return
+    }
+        
+    if _, err := os.Stat(pd); os.IsNotExist(err) {
+            
+        if err = os.MkdirAll(pd, 0755); err != nil {
+            return
+        }
+    }
+
+    fp, err := os.OpenFile("/"+ path, os.O_RDWR|os.O_CREATE, 0754)
+    if err != nil {
+        return
+    }
+    defer fp.Close()
+    
+    if _, err = fp.Write([]byte("\n\n")); err != nil {
+        return
+    }
+}
+

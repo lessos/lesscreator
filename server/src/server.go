@@ -1,7 +1,6 @@
 package main
 
 import (
-    //"fmt"
     "os/user"
     "log"
     "time"
@@ -11,7 +10,7 @@ import (
 var apiserv api.Api
 
 func main() {
-    
+
     u, err := user.Current()
     if err != nil {
         log.Fatal(err)
