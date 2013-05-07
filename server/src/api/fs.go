@@ -11,6 +11,7 @@ import (
     "../../deps/go.net/websocket"
     "regexp"
     "strings"
+    "encoding/base64"
 )
 
 func FsSaveWS(ws *websocket.Conn) {
@@ -226,6 +227,80 @@ func FsFileMov(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    rsp.Status = 200
+    rsp.Msg = "OK"
+}
+
+
+
+func FsFileUpl(w http.ResponseWriter, r *http.Request) {
+
+    rsp := struct {
+        Status int
+        Msg    string
+    } {
+        500,
+        "Bad Request",
+    }
+
+    defer func() {
+        if rspj, err := utils.JsonEncode(rsp); err == nil {
+            io.WriteString(w, rspj)
+        }
+        r.Body.Close()
+    }()
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        return
+    }
+
+    var req struct {
+        Proj string
+        Name string
+        Path string
+        Size int
+        Data string
+        Data64 string
+    }   
+    err = utils.JsonDecode(string(body), &req)
+    if err != nil {
+        return
+    }
+
+    dataurl := strings.SplitAfter(req.Data, ";base64,")
+    if len(dataurl) != 2 {
+        return
+    }
+
+    data, err := base64.StdEncoding.DecodeString(dataurl[1])
+    if err != nil {
+        fmt.Println("error:", err)
+        return
+    }
+
+    reg, _ := regexp.Compile("/+")
+    path := "/"+ strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Path +"/"+ req.Name, "/"), "/")
+    
+    if _, err := os.Stat(path); os.IsExist(err) {            
+        rsp.Msg = "File is Exists"
+        fmt.Println("isok")
+        return
+    }
+    
+    fp, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0755)
+    if err != nil {
+        rsp.Msg = "Can Not Open "+ path
+        fmt.Println(err)
+        return
+    }
+    defer fp.Close()
+    
+    if _, err = fp.Write(data); err != nil {
+        rsp.Msg = "File is not Writable"
+        return
+    }
+    
     rsp.Status = 200
     rsp.Msg = "OK"
 }

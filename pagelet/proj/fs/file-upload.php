@@ -1,43 +1,88 @@
 <?php
-$projbase = H5C_DIR;
 
 $path = $this->req->path;
+?>
 
-$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
+<form id="ok8lnk" enctype="multipart/form-data" action="/h5creator/proj/fs/file-upload" method="post">
+    <img src="/h5creator/static/img/page_white_get.png" align="absmiddle" />
+    <span class="path"><?php echo $path?></span> /
+    <input id="attachment" name="attachment" size="40" type="file" />
+</form>
+
+<script type="text/javascript">
+
+h5cModalButtonAdd("zrkyom", "Upload", "_fs_file_upl()", "btn-inverse pull-left");
+h5cModalButtonAdd("mqaayo", "Cancel", "h5cModalClose()", "pull-left");
+
+
+var path = '<?php echo $path?>';
+
+
+$("#ok8lnk").submit(function(event) {
+
+    event.preventDefault(); 
+
+    _fs_file_upl();
+});
+
+function _fs_file_upl()
+{
+    var files = document.getElementById('attachment').files;
+    if (!files.length) {
+        alert('Please select a file!');
+        return;
+    }
+
+    for (var i = 0, file; file = files[i]; ++i) {
+        
+        if (file.size > 2 * 1024 * 1024) {
+            hdev_header_alert('error', 'The file is too large to upload');
+            return;
+        }
+                
+        var reader = new FileReader();
+        reader.onload = (function(file) {  
+            return function(e) {
+                if (e.target.readyState != FileReader.DONE) {
+                    return;
+                }
+
+                var req = {
+                    proj : sessionStorage.ProjPath,
+                    path : path,
+                    size : file.size,
+                    name : file.name,
+                    data : e.target.result,
+                }
+
+                $.ajax({
+                    type    : "POST",
+                    url     : "/h5creator/api?func=fs-file-upl",
+                    data    : JSON.stringify(req),
+                    timeout : 3000,
+                    success : function(rsp) {
+
+                        var obj = JSON.parse(rsp);
+                        if (obj.Status == 200) {
+                            hdev_header_alert('success', "OK");
+                        } else {
+                            hdev_header_alert('error', obj.Msg);
+                        }
+
+                        _fs_file_new_callback(req.path);
+                        
+                        h5cModalClose();
+                    },
+                    error   : function(xhr, textStatus, error) {
+                        hdev_header_alert('error', textStatus+' '+xhr.responseText);
+                    }
+                });    
+
+            };  
+        })(file); 
+        
+        reader.readAsDataURL(file);
+    }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    $p = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projpath}/{$path}/");
-    if (!is_writable($p)) {
-        header("HTTP/1.1 500"); die("'$p' is not Writable");
-    }
-    if (!isset($_FILES["attachment"])) {
-        header("HTTP/1.1 500"); die("Please select a file");
-    }
-    
-    if ($_FILES["attachment"]["error"] != UPLOAD_ERR_OK) {
-        header("HTTP/1.1 500"); die("Can not upload file");
-    }
-        
-    $t  = $_FILES["attachment"]["tmp_name"];
-    $p .= '/'.$_FILES["attachment"]["name"];
-    $p  = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $p);
-        
-    if (file_exists($p)) {
-        header("HTTP/1.1 500"); die("File Exists");
-    }
-        
-    if (!move_uploaded_file($t, $p)) {
-        header("HTTP/1.1 500"); die("Can not upload file");
-    }
-        
-    header("HTTP/1.1 200"); die("Saved successfully");
-}
-
-header("HTTP/1.1 500");
-die("Can not upload file");
+</script>

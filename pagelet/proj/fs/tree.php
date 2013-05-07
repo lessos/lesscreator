@@ -72,7 +72,7 @@ foreach (glob($glob) as $f) {
             $fmi = 'folder';
         }
         
-        $href   = "javascript:_hdev_dir('{$p}', 0)";
+        $href   = "javascript:_fs_tree_dir('{$p}', 0)";
         
     } else if (substr($fm,0,4) == 'text' 
         || $fm == "application/x-empty"
@@ -141,7 +141,7 @@ foreach (glob($glob) as $f) {
         }
         $lip .= "<div class='rcitem'>
             <div class='rcico'><img src='/h5creator/static/img/delete.png' align='absmiddle' /></div>
-            <a href=\"javascript:_page_del('{$p}');\" onclick=\"return confirm('Are you sure you want to delete?')\" class='rcctn'>Delete</a></div>";
+            <a href=\"javascript:_fs_file_del('{$p}');\" onclick=\"return confirm('Are you sure you want to delete?')\" class='rcctn'>Delete</a></div>";
     }
     
     if (strlen($lip)) {
@@ -162,5 +162,5 @@ echo $prt0 . $prt;
 ?>
 </div>
 <script>
-_refresh_tree();
+_fs_tree_refresh();
 </script>

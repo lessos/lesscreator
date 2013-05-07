@@ -69,7 +69,7 @@ if (count($grps) == 0) {
 <div id="_proj_dataflow_grpnew_div" class="hdev-proj-olrcm border_radius_5 displaynone">
     <div class="header">
         <span class="title">New Group</span>
-        <span class="close"><a href="javascript:_file_close()">×</a></span>
+        <span class="close"><a href="javascript:_dataflow_close()">×</a></span>
     </div>
     <div class="sep clearhr"></div>
     <form id="_proj_dataflow_grpnew_form" action="/h5creator/proj/dataflow/grp-new" method="post">
@@ -86,7 +86,7 @@ if (count($grps) == 0) {
 <div id="_proj_dataflow_actornew_div" class="hdev-proj-olrcm border_radius_5 displaynone">
     <div class="header">
         <span class="title">New Actor</span>
-        <span class="close"><a href="javascript:_file_close()">×</a></span>
+        <span class="close"><a href="javascript:_dataflow_close()">×</a></span>
     </div>
     <div class="sep clearhr"></div>
     <form id="_proj_dataflow_actornew_form" action="/h5creator/proj/dataflow/actor-new" method="post">
@@ -196,7 +196,7 @@ $("#_proj_dataflow_actornew_form").submit(function(event) {
             if (data == "OK") {
                 hdev_header_alert('success', data);
                 _proj_dataflow_tabopen('<?=$proj?>', '', 1);
-                _file_close();
+                _dataflow_close();
             } else {
                 hdev_header_alert('error', data);
             }
@@ -228,7 +228,7 @@ function _proj_dataflow_tabopen(proj, path, force)
     });
 }
 
-function _file_close()
+function _dataflow_close()
 {
     $("#_proj_dataflow_grpnew_div .inputname").val('');
     $("#_proj_dataflow_grpnew_div").hide(100);
