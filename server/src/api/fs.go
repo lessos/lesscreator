@@ -116,8 +116,10 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
             
         if err = os.MkdirAll(pd, 0755); err != nil {
             rsp.Msg = "Can Not Create Folder /"+ pd
-            return
+        } else {
+            rsp.Msg = "Successfully created directory"
         }
+        return
     }
 
     fp, err := os.OpenFile("/"+ path, os.O_RDWR|os.O_CREATE, 0754)
@@ -172,6 +174,54 @@ func FsFileDel(w http.ResponseWriter, r *http.Request) {
     path := strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Path, "/"), "/")
 
     if err := os.Remove("/"+ path); err != nil {
+        rsp.Msg = err.Error()
+        return
+    }
+
+    rsp.Status = 200
+    rsp.Msg = "OK"
+}
+
+
+func FsFileMov(w http.ResponseWriter, r *http.Request) {
+
+    rsp := struct {
+        Status int
+        Msg    string
+    } {
+        500,
+        "Bad Request",
+    }
+
+    defer func() {
+        if rspj, err := utils.JsonEncode(rsp); err == nil {
+            io.WriteString(w, rspj)
+        }
+        r.Body.Close()
+    }()
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        return
+    }
+
+    var req struct {
+        Proj string
+        Name string
+        PathPre string
+        PathOld string
+    }
+    err = utils.JsonDecode(string(body), &req)
+    if err != nil {
+        return
+    }
+
+    reg, _ := regexp.Compile("/+")
+    pathold := "/"+ strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.PathOld, "/"), "/")
+    
+    pathnew := "/"+ strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.PathPre +"/"+ req.Name, "/"), "/")
+
+    if err := os.Rename(pathold, pathnew); err != nil {
         rsp.Msg = err.Error()
         return
     }

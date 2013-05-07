@@ -230,35 +230,9 @@ function _file_upload(path)
 
 function _file_rename(path)
 {
-    var curname = path.replace(/^.*[\\\/]/, '');
-    var parfold = path.substring(0, path.lastIndexOf('/'));
-    
-    var p = posFetch();
-
-    w = $("#hdev-proj-olrcm-mv").outerWidth(true);
-    bw = $('body').width() - 30;
-    l = p.left;
-    if (l > (bw - w)) {
-        l = bw - w;
-    }
-    
-    h = $("#hdev-proj-olrcm-mv").height();
-    t = p.top;
-    bh = $('body').height() - 50;        
-    if ((t + h) > bh) {
-        t = bh - h;
-    }
-    
-    $("#hdev-proj-olrcm-mv .parfold").text(parfold);
-    $("#hdev-proj-olrcm-mv .inputname").val(curname);
-    $("#hdev-proj-olrcm-mv .inputpath").val(path);    
-
-    $("#hdev-proj-olrcm-mv").css({
-        top: t+'px',
-        left: l+'px'
-    }).show("fast");
-    
-    $("#hdev-proj-olrcm-mv .inputname").focus();
+    var tit = "Rename File/Folder";
+    var url = "/h5creator/proj/fs/file-mov?path="+ path;
+    h5cModalOpen(url, 0, 550, 160, tit, null);
 }
 
 
