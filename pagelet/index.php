@@ -17,7 +17,7 @@
     <td width="10px"></td>
 
     <td class="header_logo" width="240px">
-      <img src="/h5creator/static/img/hooto-logo-mc-h30.png" />
+      <img src="/h5creator/static/img/hooto-logo-mc-h30s.png" />
       <span class="title">Creator</span>
     </td>
     
@@ -48,8 +48,15 @@
   </tr>
 </table>
 
-<table id="hdev_layout" border="0" cellpadding="0" cellspacing="0">
+<div id="h5c_ly_content" class="hide">
+<fieldset class="col col_left">AAA</fieldset>
+<div id="h5c_ly_col_resize" class="h5c_resize_col"></div>
+<fieldset class="col col_right">BBB</fieldset>
+</div>
+
+<table id="hdev_layout" border="0" cellpadding="0" cellspacing="0" class="">
   <tr>
+    <td width="10px"></td>
 
     <!--
     <td width="10px"></td>
@@ -124,9 +131,8 @@
     </td>  
     -->
 
-    <td width="10px"></td>
-    
-    <td id="h5c-tablet-vcol-w" valign="top">
+   
+    <td id="h5c-lyo-col-w" valign="top">
       <table width="100%" height="100%">
         <tr>
           <td id="h5c-tablet-framew0" class="hdev-layout-container" height="400px" valign="top">
@@ -168,11 +174,11 @@
 
 
     <!-- column blank 2 -->
-    <td width="10px" id="h5c-resize-colw" class="h5c_resize_col"></td>
+    <td width="10px" id="h5c-lyo-col-w-ctrl" class="h5c_resize_col"></td>
     <!--
     http://www.daqianduan.com/jquery-drag/
     -->
-    <td id="h5c-tablet-vcol-t" class="" width="40%" valign="top">
+    <td id="h5c-lyo-col-t" valign="top">
       <table width="100%" height="100%">
         <tr>
           <td id="h5c-tablet-framet0" class="hdev-layout-container" valign="top">
@@ -212,8 +218,8 @@
       </table>
     </td>
 
-    <!-- column blank 0 -->
     <td width="10px"></td>
+
   </tr>
 </table>
 
@@ -277,18 +283,26 @@ $(document).ready(function() {
         h5cLayoutResize();
     });
     
-    $("#h5c-resize-colw").bind('mousedown', function() {    
+    var spacecol = 10;
+
+    $("#h5c-lyo-col-w-ctrl").bind('mousedown', function() {    
         $("#hdev_layout").mousemove(function(e) {
-            bw = $('body').width();
-            p = $('#h5c-tablet-vcol-w').position();        
-            wrs = e.pageX - p.left;
-            if (wrs < 500 || bw - wrs < 300) {
-                return;
-            }            
-            setCookie("config_tablet_colw", (wrs - 5), 365);
+            
+            var w = $('body').width() - (3 * spacecol);
+            var p = $('#h5c-lyo-col-w').position();
+            var wrs = e.pageX - p.left - 5;
+
+            setCookie("cfg_lyo_col_w", wrs / w, 365);
             h5cLayoutResize();
         });
     });
+    $("#h5c_ly_col_resize").bind('mousedown', function() {    
+        $("#h5c_ly_content").mousemove(function(e) {
+            setCookie("cfg_ly_col", e.pageX, 365);
+            h5cLayoutResize();
+        });
+    });
+    
     $("#h5c-resize-roww0").bind('mousedown', function() {    
         $("#hdev_layout").mousemove(function(e) {
             bh = $('body').height();
@@ -322,6 +336,7 @@ $(document).ready(function() {
     $(document).bind('selectstart',function() {return false;});
     $(document).bind('mouseup', function() {
         $("#hdev_layout").unbind('mousemove');
+        $("#h5c_ly_content").unbind('mousemove');
     });
 
     hdev_init_setting();

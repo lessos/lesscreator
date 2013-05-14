@@ -698,20 +698,41 @@ function h5cTabClose(urid)
 
 function h5cLayoutResize()
 {
-    var spacecol = 30;
+    var spacecol = 10;
 
     var bh = $('body').height();
     var bw = $('body').width();
     
-    //console.log("body w:"+ bw +", ww:"+lo_ww+", tw:"+lo_tw+", mount:"+(lo_ww +lo_tw));
+    //console.log("body w:"+ bw +", body h:"+ bh);   
+
+    //var lyo_wp = $('#h5c_ly_content .col_left').position();
+    //var lyo_tp = $('#h5c_ly_content .col_right').position();
+
+    //var lo_ww = $('#h5c-lyo-col-w').innerWidth();
+    //var toset = getCookie('cfg_ly_col');
+
+    //$('#h5c_ly_content .col_left').width(100 * (toset - 0) / bw + "%");
+    //$('#h5c_ly_content .col_right').width(100 * (bw - toset + 0) / bw + "%");
+    //$('#h5c_ly_col_resize').css({"left": ($('#h5c_ly_content .col_left').width() - 5)});
+
+    //return;
+
+    $("#hdev_layout").width(bw);
     
-    var lo_ww = $('#h5c-tablet-vcol-w').innerWidth();
-    var toset = parseInt(getCookie('config_tablet_colw'));
-    if (toset != lo_ww) {
-        lo_ww = toset;
-        $('#h5c-tablet-vcol-w').width(lo_ww);
-        $('#h5c-tablet-vcol-t').width(bh - toset - spacecol);
+    var lyo_wp = $('#h5c-lyo-col-w').position();
+    var lyo_tp = $('#h5c-lyo-col-t').position();
+
+    //var lo_ww = $('#h5c-lyo-col-w').innerWidth();
+    var toset = getCookie('cfg_lyo_col_w');
+
+    var colw = (bw - (3 * spacecol)) * toset;
+    if (colw < 300) {
+        colw = 300;
+    } else if ((colw - 300) > bw) {
+        colw = bw - 300;
     }
+    $('#h5c-lyo-col-w').width(colw);
+    $('#h5c-lyo-col-t').width((bw - (3 * spacecol)) - colw);
 
     var roww0 = $('#h5c-tablet-framew0').height();
     toset = parseInt(getCookie('config_tablet_roww0'));
@@ -737,9 +758,9 @@ function h5cLayoutResize()
         $('.CodeMirror').height(roww0 - tw0h);
     }
 
-    $('#h5c-tablet-tabs-framew0').width(lo_ww);
-    $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(
-        lo_ww - $('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
+    //$('#h5c-tablet-tabs-framew0').width(lo_ww);
+    //$('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(
+    //    lo_ww - $('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
 
     tt0h = $('#h5c-tablet-tabs-framet0').height();
     $('#h5c-tablet-body-t0').height(rowt0 - tt0h);    

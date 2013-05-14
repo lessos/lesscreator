@@ -3,7 +3,7 @@
 $path = $this->req->path;
 ?>
 
-<form id="ok8lnk" enctype="multipart/form-data" action="/h5creator/proj/fs/file-upload" method="post">
+<form id="ok8lnk" action="#" method="post">
     <img src="/h5creator/static/img/page_white_get.png" align="absmiddle" />
     <span class="path"><?php echo $path?></span> /
     <input id="attachment" name="attachment" size="40" type="file" />

@@ -98,8 +98,6 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    fmt.Println(req)
-
     reg, _ := regexp.Compile("/+")
     path := strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Path +"/"+ req.Name, "/"), "/")
 
@@ -261,8 +259,7 @@ func FsFileUpl(w http.ResponseWriter, r *http.Request) {
         Path string
         Size int
         Data string
-        Data64 string
-    }   
+    }
     err = utils.JsonDecode(string(body), &req)
     if err != nil {
         return

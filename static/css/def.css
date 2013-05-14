@@ -169,7 +169,7 @@ textarea {
 
 /** Layout:#1 */
 #hdev_layout {
-     width: 100%; margin: 0; padding: 0;
+    width: 100%; margin: 0; padding: 0;
 }
 #hdev_layout_leftbar {
     width: 240px; vertical-align: top;
@@ -188,6 +188,35 @@ textarea {
 }
 #hdev_layout_rightbar {
     width: 80px;
+}
+#hdev_layout table tr td {
+    margin: 0 5px;
+}
+
+#h5c_ly_content {
+    height: 100px;
+    opacity: 1;
+    margin: 0px 15px;
+    padding: 0;
+    position: relative;
+}
+#h5c_ly_content .col {
+    display: block; height: 100%;
+    background: #F6F6F6;
+}
+#h5c_ly_content .col_left {
+    position: absolute;
+    left: -5px; width: 60%;
+}
+#h5c_ly_content .col_right {
+    position: absolute;
+    right: -5px; width: 40%;
+}
+#h5c_ly_col_resize {
+    width: 10px; height: 100%;
+    top: 0px; left: 60%;
+    cursor: col-resize;
+    position: absolute;
 }
 
 .hdev-box-shadow {

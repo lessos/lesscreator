@@ -105,7 +105,7 @@ function _fs_file_upl_modal(path)
     }
     
     var tit = "Upload File From Location";
-    var url = "/h5creator/proj/fs/file-upload?path="+ path;
+    var url = "/h5creator/proj/fs/file-upl?path="+ path;
     h5cModalOpen(url, 0, 550, 160, tit, null);
 }
 
