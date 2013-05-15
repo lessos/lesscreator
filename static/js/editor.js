@@ -150,7 +150,9 @@ function h5cEditorLoad(urid)
         h5cEditorSave(urid, 1);
     };
 
+    // TODO
     h5cLayoutResize();
+    setTimeout(h5cLayoutResize, 100);
 }
 
 var h5cEditorSaveAPI  = "ws://"+h5cServerAPI+"/fs-save-ws";

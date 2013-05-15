@@ -151,10 +151,10 @@
           </td>
         </tr>
 
-        <tr><td height="10px" id="h5c-resize-roww0" class="h5c_resize_row"></td></tr>
+        <tr><td height="10px" id="h5c-resize-roww0" class="h5c_resize_row hide"></td></tr>
         
         <tr>
-          <td id="h5c-tablet-framew1" class="hdev-layout-container" valign="top">
+          <td id="h5c-tablet-framew1" class="hdev-layout-container hide" valign="top">
             
             <div id="h5c-tablet-tabs-framew1" class="h5c_tablet_tabs_frame pgtabs_frame">
               <div class="h5c_tablet_tabs_lm">
@@ -164,7 +164,7 @@
               </div>
             </div>
 
-            <div id="h5c-tablet-body-t1" class="h5c_tablet_body h5c_gen_scroll"></div>
+            <div id="h5c-tablet-body-w1" class="h5c_tablet_body h5c_gen_scroll"></div>
 
           </td>
         </tr>
@@ -197,10 +197,10 @@
           </td>
         </tr>
 
-        <tr><td height="10px" id="h5c-resize-rowt0" class="h5c_resize_row"></td></tr>
+        <tr><td height="10px" id="h5c-resize-rowt0" class="h5c_resize_row hide"></td></tr>
         
         <tr>
-          <td id="h5c-tablet-framet1" class="hdev-layout-container" valign="top">
+          <td id="h5c-tablet-framet1" class="hdev-layout-container hide" valign="top">
             
             <div id="h5c-tablet-tabs-framet1" class="h5c_tablet_tabs_frame pgtabs_frame">
               <div class="h5c_tablet_tabs_lm">
