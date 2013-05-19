@@ -48,12 +48,6 @@
   </tr>
 </table>
 
-<div id="h5c_ly_content" class="hide">
-<fieldset class="col col_left">AAA</fieldset>
-<div id="h5c_ly_col_resize" class="h5c_resize_col"></div>
-<fieldset class="col col_right">BBB</fieldset>
-</div>
-
 <table id="hdev_layout" border="0" cellpadding="0" cellspacing="0" class="">
   <tr>
     <td width="10px"></td>
@@ -293,12 +287,6 @@ $(document).ready(function() {
             var wrs = e.pageX - p.left - 5;
 
             setCookie("cfg_lyo_col_w", wrs / w, 365);
-            h5cLayoutResize();
-        });
-    });
-    $("#h5c_ly_col_resize").bind('mousedown', function() {    
-        $("#h5c_ly_content").mousemove(function(e) {
-            setCookie("cfg_ly_col", e.pageX, 365);
             h5cLayoutResize();
         });
     });

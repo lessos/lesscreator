@@ -48,7 +48,6 @@ function _fs_file_mov()
     $.ajax({
         type    : "POST",
         url     : "/h5creator/api?func=fs-file-mov",
-        //dataType: 'json',
         data    : JSON.stringify(req),
         timeout : 3000,
         success : function(rsp) {

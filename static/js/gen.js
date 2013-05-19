@@ -26,7 +26,7 @@ function h5cDialogTitle(title)
     $(".h5c_dialog_titlec").text(title);
 }
 
-var h5cServerAPI    = "web.example.com:9528/h5creator/api";
+var h5cServerAPI    = "web.example.com:9531/h5creator/api";
 var h5cModalData    = {};
 var h5cModalCurrent = null;
 var h5cModalNextHistory = null;
@@ -698,7 +698,7 @@ function h5cTabClose(urid)
 
 function h5cLayoutResize()
 {
-    console.log("Resizing");
+    // console.log("Resizing");
     
     var spacecol = 10;
 
