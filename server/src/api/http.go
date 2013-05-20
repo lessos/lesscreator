@@ -21,7 +21,7 @@ func (this *Api) Serve(port string) {
 
     go func() {
         //http.Handle("/h5creator/api", websocket.Handler(QueueStatus))
-        http.HandleFunc("/h5creator/api/user-login", UserLogin)      
+        http.HandleFunc("/h5creator/api/user-login", UserLogin)
 
         http.HandleFunc("/h5creator/api/fs-file-get", FsFileGet)
         http.HandleFunc("/h5creator/api/fs-file-new", FsFileNew)
@@ -30,7 +30,7 @@ func (this *Api) Serve(port string) {
         http.HandleFunc("/h5creator/api/fs-file-upl", FsFileUpl)
         http.Handle("/h5creator/api/fs-save-ws", websocket.Handler(FsSaveWS))
 
-        s := &http.Server {
+        s := &http.Server{
             Addr:    ":" + port,
             Handler: nil,
             //ReadTimeout:    30 * time.Second,
@@ -51,7 +51,6 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
         r.Body.Close()
     }()
 
-
     goto RSP
 
 RSP:
@@ -59,4 +58,3 @@ RSP:
 
     return
 }
-

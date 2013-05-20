@@ -20,5 +20,3 @@ func JsonEncode(rs interface{}) (str string, err error) {
     }
     return
 }
-
-

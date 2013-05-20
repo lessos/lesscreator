@@ -2,18 +2,17 @@ package api
 
 import (
     "fmt"
-    "net/http"
     "io"
     "io/ioutil"
-    //"time"
-    "../utils"
-    "os"
+    "net/http"
     "../../deps/go.net/websocket"
-    "regexp"
-    "strings"
+    "../utils"
     "encoding/base64"
     "mime"
+    "os"
     "path/filepath"
+    "regexp"
+    "strings"
 )
 
 func FsSaveWS(ws *websocket.Conn) {
@@ -38,7 +37,7 @@ func FsSaveWS(ws *websocket.Conn) {
         if err != nil {
             return
         }
-        
+
         fp, err := os.OpenFile(req.Path, os.O_RDWR|os.O_CREATE, 0754)
         if err != nil {
             return
@@ -50,11 +49,11 @@ func FsSaveWS(ws *websocket.Conn) {
         fp.Close()
 
         ret := struct {
-            Status   int
+            Status int
             //Content string
             Msg      string
             SumCheck string
-        } {
+        }{
             200,
             //msg,
             "",
@@ -67,15 +66,14 @@ func FsSaveWS(ws *websocket.Conn) {
     }
 }
 
-
 func FsFileGet(w http.ResponseWriter, r *http.Request) {
-    
+
     rsp := struct {
         Status  int    `json:"status"`
         Msg     string `json:"msg"`
         Content string `json:"content"`
         Mime    string `json:"mime"`
-    } {
+    }{
         500,
         "Bad Request",
         "",
@@ -104,10 +102,10 @@ func FsFileGet(w http.ResponseWriter, r *http.Request) {
     }
 
     reg, _ := regexp.Compile("/+")
-    path := "/"+ strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Path, "/"), "/")
-   
-    if st, err := os.Stat(path); os.IsNotExist(err) { 
-        rsp.Msg = "File Not Found "+ path
+    path := "/" + strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.Path, "/"), "/")
+
+    if st, err := os.Stat(path); os.IsNotExist(err) {
+        rsp.Msg = "File Not Found " + path
         return
     } else if st.Size() > (2 * 1024 * 1024) {
         rsp.Msg = "File size is too large"
@@ -116,12 +114,10 @@ func FsFileGet(w http.ResponseWriter, r *http.Request) {
 
     fp, err := os.OpenFile(path, os.O_RDWR, 0754)
     if err != nil {
-        rsp.Msg = "File Can Not Open "+ path
+        rsp.Msg = "File Can Not Open " + path
         return
     }
     defer fp.Close()
-
-
 
     ctn, err := ioutil.ReadAll(fp)
     if err != nil {
@@ -140,18 +136,17 @@ func FsFileGet(w http.ResponseWriter, r *http.Request) {
         ctype = ctypes[0]
     }
     rsp.Mime = ctype
-    
+
     rsp.Status = 200
     rsp.Msg = ""
 }
 
-
 func FsFileNew(w http.ResponseWriter, r *http.Request) {
-    
+
     rsp := struct {
         Status int
         Msg    string
-    } {
+    }{
         500,
         "Bad Request",
     }
@@ -180,35 +175,35 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
     }
 
     reg, _ := regexp.Compile("/+")
-    path := strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Path +"/"+ req.Name, "/"), "/")
+    path := strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.Path+"/"+req.Name, "/"), "/")
 
     var pd string
-    if req.Type == "file"  {
+    if req.Type == "file" {
         ps := strings.Split(path, "/")
-        pd = "/"+ strings.Join(ps[0:len(ps)-1], "/")
+        pd = "/" + strings.Join(ps[0:len(ps)-1], "/")
     } else if req.Type == "dir" {
-        pd = "/"+ path
+        pd = "/" + path
     } else {
         return
     }
-        
+
     if _, err := os.Stat(pd); os.IsNotExist(err) {
-            
+
         if err = os.MkdirAll(pd, 0755); err != nil {
-            rsp.Msg = "Can Not Create Folder /"+ pd
+            rsp.Msg = "Can Not Create Folder /" + pd
         } else {
             rsp.Msg = "Successfully created directory"
         }
         return
     }
 
-    fp, err := os.OpenFile("/"+ path, os.O_RDWR|os.O_CREATE, 0754)
+    fp, err := os.OpenFile("/"+path, os.O_RDWR|os.O_CREATE, 0754)
     if err != nil {
-        rsp.Msg = "Can Not Open /"+ path
+        rsp.Msg = "Can Not Open /" + path
         return
     }
     defer fp.Close()
-    
+
     if _, err = fp.Write([]byte("\n\n")); err != nil {
         rsp.Msg = "File is not Writable"
         return
@@ -218,13 +213,12 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
     rsp.Msg = "Saved successfully"
 }
 
-
 func FsFileDel(w http.ResponseWriter, r *http.Request) {
 
     rsp := struct {
         Status int
         Msg    string
-    } {
+    }{
         500,
         "Bad Request",
     }
@@ -251,9 +245,9 @@ func FsFileDel(w http.ResponseWriter, r *http.Request) {
     }
 
     reg, _ := regexp.Compile("/+")
-    path := strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Path, "/"), "/")
+    path := strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.Path, "/"), "/")
 
-    if err := os.Remove("/"+ path); err != nil {
+    if err := os.Remove("/" + path); err != nil {
         rsp.Msg = err.Error()
         return
     }
@@ -262,13 +256,12 @@ func FsFileDel(w http.ResponseWriter, r *http.Request) {
     rsp.Msg = "OK"
 }
 
-
 func FsFileMov(w http.ResponseWriter, r *http.Request) {
 
     rsp := struct {
         Status int
         Msg    string
-    } {
+    }{
         500,
         "Bad Request",
     }
@@ -286,8 +279,8 @@ func FsFileMov(w http.ResponseWriter, r *http.Request) {
     }
 
     var req struct {
-        Proj string
-        Name string
+        Proj    string
+        Name    string
         PathPre string
         PathOld string
     }
@@ -297,9 +290,9 @@ func FsFileMov(w http.ResponseWriter, r *http.Request) {
     }
 
     reg, _ := regexp.Compile("/+")
-    pathold := "/"+ strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.PathOld, "/"), "/")
-    
-    pathnew := "/"+ strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.PathPre +"/"+ req.Name, "/"), "/")
+    pathold := "/" + strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.PathOld, "/"), "/")
+
+    pathnew := "/" + strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.PathPre+"/"+req.Name, "/"), "/")
 
     if err := os.Rename(pathold, pathnew); err != nil {
         rsp.Msg = err.Error()
@@ -310,14 +303,12 @@ func FsFileMov(w http.ResponseWriter, r *http.Request) {
     rsp.Msg = "OK"
 }
 
-
-
 func FsFileUpl(w http.ResponseWriter, r *http.Request) {
 
     rsp := struct {
         Status int
         Msg    string
-    } {
+    }{
         500,
         "Bad Request",
     }
@@ -358,27 +349,27 @@ func FsFileUpl(w http.ResponseWriter, r *http.Request) {
     }
 
     reg, _ := regexp.Compile("/+")
-    path := "/"+ strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Path +"/"+ req.Name, "/"), "/")
-    
-    if _, err := os.Stat(path); os.IsExist(err) {            
+    path := "/" + strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.Path+"/"+req.Name, "/"), "/")
+
+    if _, err := os.Stat(path); os.IsExist(err) {
         rsp.Msg = "File is Exists"
         fmt.Println("isok")
         return
     }
-    
+
     fp, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0755)
     if err != nil {
-        rsp.Msg = "Can Not Open "+ path
+        rsp.Msg = "Can Not Open " + path
         fmt.Println(err)
         return
     }
     defer fp.Close()
-    
+
     if _, err = fp.Write(data); err != nil {
         rsp.Msg = "File is not Writable"
         return
     }
-    
+
     rsp.Status = 200
     rsp.Msg = "OK"
 }

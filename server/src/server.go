@@ -1,10 +1,10 @@
 package main
 
 import (
-    "os/user"
-    "log"
-    "time"
     "./api"
+    "log"
+    "os/user"
+    "time"
 )
 
 var apiserv api.Api
