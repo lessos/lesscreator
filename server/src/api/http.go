@@ -23,6 +23,7 @@ func (this *Api) Serve(port string) {
         //http.Handle("/h5creator/api", websocket.Handler(QueueStatus))
         http.HandleFunc("/h5creator/api/user-login", UserLogin)      
 
+        http.HandleFunc("/h5creator/api/fs-file-get", FsFileGet)
         http.HandleFunc("/h5creator/api/fs-file-new", FsFileNew)
         http.HandleFunc("/h5creator/api/fs-file-del", FsFileDel)
         http.HandleFunc("/h5creator/api/fs-file-mov", FsFileMov)

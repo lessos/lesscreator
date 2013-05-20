@@ -12,6 +12,8 @@ import (
     "regexp"
     "strings"
     "encoding/base64"
+    "mime"
+    "path/filepath"
 )
 
 func FsSaveWS(ws *websocket.Conn) {
@@ -64,6 +66,85 @@ func FsSaveWS(ws *websocket.Conn) {
         }
     }
 }
+
+
+func FsFileGet(w http.ResponseWriter, r *http.Request) {
+    
+    rsp := struct {
+        Status  int    `json:"status"`
+        Msg     string `json:"msg"`
+        Content string `json:"content"`
+        Mime    string `json:"mime"`
+    } {
+        500,
+        "Bad Request",
+        "",
+        "",
+    }
+
+    defer func() {
+        if rspj, err := utils.JsonEncode(rsp); err == nil {
+            io.WriteString(w, rspj)
+        }
+        r.Body.Close()
+    }()
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        return
+    }
+
+    var req struct {
+        Proj string
+        Path string
+    }
+    err = utils.JsonDecode(string(body), &req)
+    if err != nil {
+        return
+    }
+
+    reg, _ := regexp.Compile("/+")
+    path := "/"+ strings.Trim(reg.ReplaceAllString(req.Proj +"/"+ req.Path, "/"), "/")
+   
+    if st, err := os.Stat(path); os.IsNotExist(err) { 
+        rsp.Msg = "File Not Found "+ path
+        return
+    } else if st.Size() > (2 * 1024 * 1024) {
+        rsp.Msg = "File size is too large"
+        return
+    }
+
+    fp, err := os.OpenFile(path, os.O_RDWR, 0754)
+    if err != nil {
+        rsp.Msg = "File Can Not Open "+ path
+        return
+    }
+    defer fp.Close()
+
+
+
+    ctn, err := ioutil.ReadAll(fp)
+    if err != nil {
+        rsp.Msg = "File Can Not Readable"
+        return
+    }
+    rsp.Content = string(ctn)
+
+    // TODO
+    ctype := mime.TypeByExtension(filepath.Ext(path))
+    if ctype == "" {
+        ctype = http.DetectContentType(ctn)
+    }
+    ctypes := strings.Split(ctype, ";")
+    if len(ctypes) > 0 {
+        ctype = ctypes[0]
+    }
+    rsp.Mime = ctype
+    
+    rsp.Status = 200
+    rsp.Msg = ""
+}
+
 
 func FsFileNew(w http.ResponseWriter, r *http.Request) {
     

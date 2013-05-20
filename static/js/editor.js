@@ -38,18 +38,28 @@ function h5cTabletEditorOpen(urid)
         //var t = '<textarea id="src'+urid+'" class="displaynone"></textarea>';
         //$("#h5c-tablet-body-"+ item.target).prepend(t);
 
+        var req = {
+            proj : sessionStorage.ProjPath,
+            path : item.url,
+        }                
         $.ajax({
-            url     : '/h5creator/app/src?proj='+projCurrent+'&path='+item.url,
-            type    : "GET",
+            url     : '/h5creator/api?func=fs-file-get',
+            type    : "POST",
             timeout : 30000,
-            dataType: "json",
-            async   : false,
+            data    : JSON.stringify(req),
             success : function(rsp) {
-                $('#src'+urid).text(rsp.code);
-                h5cTabletPool[urid].data = rsp.code;
-                h5cTabletPool[urid].mime = rsp.mime;
-                h5cTabletPool[urid].hash = Crypto.MD5(rsp.code);
-                h5cEditorLoad(urid);
+            
+                var obj = JSON.parse(rsp);
+                if (obj.status == 200) {
+                    hdev_header_alert('success', "OK");
+                    $('#src'+urid).text(obj.content);
+                    h5cTabletPool[urid].data = obj.content;
+                    h5cTabletPool[urid].mime = obj.mime;
+                    h5cTabletPool[urid].hash = Crypto.MD5(obj.content);
+                    h5cEditorLoad(urid);                
+                } else {
+                    hdev_header_alert('error', obj.msg);
+                }
             },
             error: function(xhr, textStatus, error) {
                 hdev_header_alert('error', xhr.responseText);
@@ -184,22 +194,6 @@ function h5cEditorSave(urid, force)
         console.log("Nothing change, skip ~");
         return;
     }
-
-    /* $.ajax({
-        url     : "/h5creator/app/src?proj="+projCurrent+"&path="+item.url,
-        type    : "POST",
-        data    : $("#src"+urid).val(),
-        timeout : 30000,
-        success : function(data) {
-            hdev_header_alert('success', data);
-            h5cTabletPool[urid].hash = hash;
-            //$("#pgtab"+pgid+" .chg").hide();
-        },
-        error: function(xhr, textStatus, error) {
-            hdev_header_alert('error', xhr.responseText);
-            //$("#pgtab"+pgid+" .chg").show();
-        }
-    });*/
 
     var req = {
         path : sessionStorage.ProjPath +"/"+ item.url,
