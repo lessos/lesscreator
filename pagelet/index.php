@@ -16,20 +16,26 @@
   <tr>
     <td width="10px"></td>
 
-    <td class="header_logo" width="240px">
-      <img src="/h5creator/static/img/hooto-logo-mc-h30s.png" />
+    <td class="header_logo" width="160px">
+      <img src="/h5creator/static/img/hooto-logo-mc-h30.png" />
       <span class="title">Creator</span>
     </td>
-    
+
     <td align="center">
         <div class="hdev-header-alert border_radius_5 hdev_alert"></div>
     </td>
-    
+
     <td align="right">
+        
+        <a class="btn btn-small" href="#">
+            <i class="icon-play-circle"></i> 
+            &nbsp;&nbsp;Run&nbsp;&nbsp;
+        </a>
+
         <div class="btn-group">
             <div class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
                 <i class="icon-folder-open"></i>
-                &nbsp;&nbsp;<strong>Project</strong>&nbsp;&nbsp;
+                &nbsp;&nbsp;Project&nbsp;&nbsp;
                 <span class="caret" style="margin-top:8px;"></span>
             </div>
             <ul class="dropdown-menu pull-right">
