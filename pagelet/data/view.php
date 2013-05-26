@@ -4,12 +4,13 @@ if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("The instance does not exist");
 }
 
-$h5 = new LessPHP_Service_H5keeper("127.0.0.1");
+use LessPHP\H5keeper\Client;
+$kpr = new Client();
 
-$info = $h5->Get("/h5db/info/{$this->req->id}");
+$info = $kpr->NodeGet("/h5db/info/{$this->req->id}");
 $info = json_decode($info, true);
 
-$struct = $h5->Get("/h5db/struct/{$this->req->id}");
+$struct = $kpr->NodeGet("/h5db/struct/{$this->req->id}");
 $struct = json_decode($struct, true);
 function _struct_dismap($k)
 {

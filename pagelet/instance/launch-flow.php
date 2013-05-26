@@ -8,9 +8,8 @@ $projInstId = $this->req->instanceid;
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
 
-$kpr = new LessPHP_Service_H5keeper("127.0.0.1:9530");
-//$ins = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$projInstId}/info");
-//h5creator_service::debugPrint($ins);
+use LessPHP\H5keeper\Client;
+$kpr = new Client();
 
 $grps = array();
 $glob = $projPath."/dataflow/*.grp.json";
@@ -36,7 +35,7 @@ foreach (glob($glob) as $v) {
         }
 
         // Compare with instances settings, if deployed
-        $actorInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$projInstId}/flow/{$actorInfo['id']}");
+        $actorInst = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$projInstId}/flow/{$actorInfo['id']}");
         $actorInst = json_decode($actorInst, true);
 
         $actorInfo['_ins_seted'] = false;
@@ -55,7 +54,7 @@ foreach (glob($glob) as $v) {
         case h5creator_service::ParaModeDataShard:
 
             $para_datas = explode("_", $actorInfo['para_data']);
-            $dataInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$projInstId}/data/{$para_datas[1]}");
+            $dataInst = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$projInstId}/data/{$para_datas[1]}");
             $dataInst = json_decode($dataInst, true);
             //h5creator_service::debugPrint($dataInst);
             
@@ -75,10 +74,10 @@ foreach (glob($glob) as $v) {
             );
             $fss = $projPath."/dataflow/{$grpInfo['id']}/{$actorInfo['id']}.actor";
             
-            $kpr->Set("/hae/guest/{$projInfo['appid']}/{$projInstId}/flow/{$actorInfo['id']}", json_encode($actorInst));
+            $kpr->NodeSet("/hae/guest/{$projInfo['appid']}/{$projInstId}/flow/{$actorInfo['id']}", json_encode($actorInst));
             
-            $kpr->Set("/h5flow/script/{$projInstId}/{$actorInfo['id']}", file_get_contents($fss));
-            $kpr->Set("/h5flow/ctrlq/{$projInstId}.{$actorInfo['id']}", json_encode($instInfo));
+            $kpr->NodeSet("/h5flow/script/{$projInstId}/{$actorInfo['id']}", file_get_contents($fss));
+            $kpr->NodeSet("/h5flow/ctrlq/{$projInstId}.{$actorInfo['id']}", json_encode($instInfo));
 
             $actorInfo['_ins_setlock'] = true;
             $actorInfo['_ins_seted'] = true;

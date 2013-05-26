@@ -8,16 +8,17 @@
 <div style="padding:10px;">
 <?php
 
-$h5 = new LessPHP_Service_H5keeper("127.0.0.1:9530");
+use LessPHP\H5keeper\Client;
+$kpr = new Client();
 
-$ls = $h5->getChildren("/h5db/info");
+$ls = $kpr->NodeList("/h5db/info");
 
 $ids = array();
 foreach ($ls as $v) {
     $ids[] = "/h5db/info/{$v['P']}";
 }
 $ids = implode(" ", $ids);
-$ls = $h5->Gets($ids);
+$ls = $kpr->NodeGets($ids);
 
 $ls = json_decode($ls, true);
 

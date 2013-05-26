@@ -18,13 +18,14 @@ $actorid = $this->req->flowactorid;
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
 
-$kpr = new LessPHP_Service_H5keeper("127.0.0.1:9530");
+use LessPHP\H5keeper\Client;
+$kpr = new Client();
 
 $actorInfo = $projPath."/dataflow/{$grpid}/{$actorid}.actor.json";
 $actorInfo = file_get_contents($actorInfo);
 $actorInfo = json_decode($actorInfo, true);
 
-$actorIns = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}");
+$actorIns = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}");
 $actorIns = json_decode($actorIns, true);
 
 $pms = h5creator_service::listParaMode();
@@ -43,12 +44,12 @@ if ($actorInfo['para_mode'] == h5creator_service::ParaModeServer) {
     echo $pms[h5creator_service::ParaModeServer];
     //echo "<p class='alert'>Double-click to open the Data Instance</p>";
     echo "<div class='h5c_row_fluid'>";
-    $rs = $kpr->List("/kpr/ls");
+    $rs = $kpr->NodeList("/kpr/ls");
     //h5creator_service::debugPrint($rs);
     $rs = json_decode($rs, true);
     //h5creator_service::debugPrint($rs);
     foreach ($rs as $v) {
-        $rs2 = $kpr->Get("/kpr/ls/{$v['P']}");
+        $rs2 = $kpr->NodeGet("/kpr/ls/{$v['P']}");
         $rs2 = json_decode($rs2, true);
         $hosts[$v['P']] = $rs2;  
         $checked = '';

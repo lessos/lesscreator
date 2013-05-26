@@ -51,7 +51,7 @@ $props_def = h5creator_service::listAll();
       <strong><?php echo $projInfo['name']?></strong> [#<?php echo $projInfo['appid']?>]
     </span>
     <a href="javascript:h5cProjSet()" class="h5c_block pull-right">
-      <img src="/h5creator/static/img/cog.png" class="h5c_icon" />
+      <i class="icon-wrench"></i>
       Setting 
     </a>
   </div>

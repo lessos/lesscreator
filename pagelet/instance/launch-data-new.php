@@ -12,8 +12,9 @@ list($datasetid, $tableid) = explode("_", $this->req->data);
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
 
-$kpr = new LessPHP_Service_H5keeper("127.0.0.1:9530");
-$projInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$projInstId}/info");
+use LessPHP\H5keeper\Client;
+$kpr = new Client();
+$projInst = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$projInstId}/info");
 $projInst = json_decode($projInst, true);
 if (!isset($projInst['ProjId'])) {
     die(json_encode($ret));
@@ -36,7 +37,7 @@ if (!file_exists($fst)) {
 $tableInfo = file_get_contents($fst);
 $tableInfo = json_decode($tableInfo, true);
 
-$dataInst = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$projInstId}/data/{$tableid}");
+$dataInst = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$projInstId}/data/{$tableid}");
 $dataInst = json_decode($dataInst, true);
 
 if (!isset($dataInst['DataInst'])) {
@@ -54,8 +55,8 @@ $dataInst['Updated']   = time();
 $dataInst['TableInfo'] = $tableInfo;
 $dataInst['User']      = 'guest';
 
-$kpr->Set("/hae/guest/{$projInfo['appid']}/{$projInstId}/data/{$tableid}", json_encode($dataInst));
-$kpr->Set("/h5db/actor/setup/{$dataInst['DataInst']}.{$tableid}", json_encode($dataInst));
+$kpr->NodeSet("/hae/guest/{$projInfo['appid']}/{$projInstId}/data/{$tableid}", json_encode($dataInst));
+$kpr->NodeSet("/h5db/actor/setup/{$dataInst['DataInst']}.{$tableid}", json_encode($dataInst));
 
 $ret['Status'] = "OK";
 $ret['DataInst'] = $dataInst['DataInst'];

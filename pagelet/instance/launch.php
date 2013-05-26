@@ -22,8 +22,8 @@ if (!isset($projInfo['appid'])) {
     die(json_encode(array('Status' => 'Bad Request')));
 }
 
-$kpr = new LessPHP_Service_H5keeper("127.0.0.1:9530");
-
+use LessPHP\H5keeper\Client;
+$kpr = new Client();
 
 if ($this->req->func == 'new') {
 
@@ -37,21 +37,21 @@ if ($this->req->func == 'new') {
         'InstanceId'   => $insid,
         'InstanceName' => $this->req->instancename,
     );
-    $kpr->Set("/hae/guest/{$projInfo['appid']}/{$insid}/info", json_encode($set));
+    $kpr->NodeSet("/hae/guest/{$projInfo['appid']}/{$insid}/info", json_encode($set));
     
     $set['Status'] = "OK";
     die(json_encode($set));
 }
 
 
-$rs = $kpr->getChildren("/hae/guest/{$projInfo['appid']}");
+$rs = $kpr->NodeList("/hae/guest/{$projInfo['appid']}");
 
 if (count($rs) > 0) {
     echo "<h4>Launch updates to a Exist Instance</h4>";
     echo '<form id="wilvhq" action="/h5creator/instance/launch?func=new">';
     echo '<table>';
     foreach ($rs as $v) {
-        $v2 = $kpr->Get("/hae/guest/{$projInfo['appid']}/{$v['P']}/info");
+        $v2 = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$v['P']}/info");
         $v2 = json_decode($v2, true);
         if (!isset($v2['ProjId'])) {
             continue;
