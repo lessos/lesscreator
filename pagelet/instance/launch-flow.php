@@ -35,8 +35,8 @@ foreach (glob($glob) as $v) {
         }
 
         // Compare with instances settings, if deployed
-        $actorInst = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$projInstId}/flow/{$actorInfo['id']}");
-        $actorInst = json_decode($actorInst, true);
+        $actorInst = $kpr->NodeGet("/app/u/guest/{$projInfo['appid']}/{$projInstId}/flow/{$actorInfo['id']}");
+        $actorInst = json_decode($actorInst->body, true);
 
         $actorInfo['_ins_seted'] = false;
         $actorInfo['_ins_setlock'] = false;
@@ -54,7 +54,7 @@ foreach (glob($glob) as $v) {
         case h5creator_service::ParaModeDataShard:
 
             $para_datas = explode("_", $actorInfo['para_data']);
-            $dataInst = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$projInstId}/data/{$para_datas[1]}");
+            $dataInst = $kpr->NodeGet("/app/u/guest/{$projInfo['appid']}/{$projInstId}/data/{$para_datas[1]}");
             $dataInst = json_decode($dataInst, true);
             //h5creator_service::debugPrint($dataInst);
             
@@ -74,7 +74,7 @@ foreach (glob($glob) as $v) {
             );
             $fss = $projPath."/dataflow/{$grpInfo['id']}/{$actorInfo['id']}.actor";
             
-            $kpr->NodeSet("/hae/guest/{$projInfo['appid']}/{$projInstId}/flow/{$actorInfo['id']}", json_encode($actorInst));
+            $kpr->NodeSet("/app/u/guest/{$projInfo['appid']}/{$projInstId}/flow/{$actorInfo['id']}", json_encode($actorInst));
             
             $kpr->NodeSet("/h5flow/script/{$projInstId}/{$actorInfo['id']}", file_get_contents($fss));
             $kpr->NodeSet("/h5flow/ctrlq/{$projInstId}.{$actorInfo['id']}", json_encode($instInfo));

@@ -25,8 +25,8 @@ $actorInfo = $projPath."/dataflow/{$grpid}/{$actorid}.actor.json";
 $actorInfo = file_get_contents($actorInfo);
 $actorInfo = json_decode($actorInfo, true);
 
-$actorIns = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}");
-$actorIns = json_decode($actorIns, true);
+$actorIns = $kpr->NodeGet("/app/u/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}");
+$actorIns = json_decode($actorIns->body, true);
 
 $pms = h5creator_service::listParaMode();
 ?>
@@ -46,11 +46,11 @@ if ($actorInfo['para_mode'] == h5creator_service::ParaModeServer) {
     echo "<div class='h5c_row_fluid'>";
     $rs = $kpr->NodeList("/kpr/ls");
     //h5creator_service::debugPrint($rs);
-    $rs = json_decode($rs, true);
+    $rs = json_decode($rs->body, true);
     //h5creator_service::debugPrint($rs);
     foreach ($rs as $v) {
         $rs2 = $kpr->NodeGet("/kpr/ls/{$v['P']}");
-        $rs2 = json_decode($rs2, true);
+        $rs2 = json_decode($rs2->body, true);
         $hosts[$v['P']] = $rs2;  
         $checked = '';
         if (in_array($rs2['Id'], $hostBinded)) {

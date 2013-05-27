@@ -22,6 +22,14 @@ if (!isset($projInfo['appid'])) {
     die(json_encode(array('Status' => 'Bad Request')));
 }
 
+$projProps = explode(",", $projInfo['props']);
+$nexturi = "/h5creator/instance/launch-data";
+$nexttit = "Database Deployment Setup";
+if (in_array("pagelet", $projProps)) {
+    $nexturi = "/h5creator/instance/launch-web";
+    $nexttit = "WebServer Deployment Setup";
+}
+
 use LessPHP\H5keeper\Client;
 $kpr = new Client();
 
@@ -37,27 +45,27 @@ if ($this->req->func == 'new') {
         'InstanceId'   => $insid,
         'InstanceName' => $this->req->instancename,
     );
-    $kpr->NodeSet("/hae/guest/{$projInfo['appid']}/{$insid}/info", json_encode($set));
+    $kpr->NodeSet("/app/u/guest/{$projInfo['appid']}/{$insid}/info", json_encode($set));
     
     $set['Status'] = "OK";
     die(json_encode($set));
 }
 
 
-$rs = $kpr->NodeList("/hae/guest/{$projInfo['appid']}");
+$rs = $kpr->NodeList("/app/u/guest/{$projInfo['appid']}");
+$rs = json_decode($rs->body, true);
 
 if (count($rs) > 0) {
-    echo "<h4>Launch updates to a Exist Instance</h4>";
-    echo '<form id="wilvhq" action="/h5creator/instance/launch?func=new">';
-    echo '<table>';
+
+    $raw = "";    
     foreach ($rs as $v) {
-        $v2 = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$v['P']}/info");
-        $v2 = json_decode($v2, true);
+        $v2 = $kpr->NodeGet("/app/u/guest/{$projInfo['appid']}/{$v['P']}/info");
+        $v2 = json_decode($v2->body, true);
         if (!isset($v2['ProjId'])) {
             continue;
         }
 
-        echo '
+        $raw .= '
 <tr>
     <td width="30px">
         <input type="radio" name="instanceid" value="'.$v2['InstanceId'].'" /> 
@@ -65,10 +73,16 @@ if (count($rs) > 0) {
     <td class="insn'.$v2['InstanceId'].'">'.$v2['InstanceName'].'</td>
 </tr>';
     }
-    echo '</table>';
+
+    if (strlen($raw)) {
+        echo "<h4>Launch updates to a Exist Instance</h4>";
+        echo "<table>{$raw}</table>";
+        echo '<div class="h5c-hrline"></div>';
+    }
 }
 ?>
-<div class="h5c-hrline"></div>
+
+
 <h4>Launch a New Instance</h4>
 <form id="wilvhq" action="/h5creator/instance/launch?func=new">
 <table>
@@ -102,11 +116,15 @@ $('input:radio[name="instanceid"]').click(function() {
     //sessionStorage.LaunchInstanceName = 
 });
 // $("input[@type=radio]").attr("checked",'2');
+
+var nexturi = "<?php echo $nexturi?>";
+var nexttit = "<?php echo $nexttit?>";
+
 function _launch_next()
 {
     if (instanceid == null) {
         alert('Select an instance');
-        return
+        return;
     }
 
     if (instanceid == "new") {
@@ -128,18 +146,19 @@ function _launch_next()
             },
             error: function(xhr, textStatus, error) {
                 hdev_header_alert('error', xhr.responseText);
-                return
+                return;
             }
         });
     }
 
-    var url = "/h5creator/instance/launch-data?";
+    var url = nexturi +"?";
     url += "&proj="+ projCurrent;
     url += "&instanceid="+ instanceid;
     url += "&flowgrpid="+ flowgrpid;
     url += "&flowactorid="+ flowactorid;
+    url += "&_="+ Math.random();
 
-    h5cModalNext(url, "Database Deployment Setup", null);
+    h5cModalNext(url, nexttit, null);
 }
 h5cModalButtonAdd("lkakhn", "Next", "_launch_next()", "btn-inverse");
 

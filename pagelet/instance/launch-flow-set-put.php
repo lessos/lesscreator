@@ -41,8 +41,8 @@ if (!file_exists($fss)) {
 use LessPHP\H5keeper\Client;
 $kpr = new Client();
 
-$actorInst = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}");
-$actorInst = json_decode($actorInst, true);
+$actorInst = $kpr->NodeGet("/app/u/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}");
+$actorInst = json_decode($actorInst->body, true);
 $actorInst['ActorId']    = $actorid;
 $actorInst['ParaHost']   = $this->req->hosts;
 $actorInst['ProjInst']   = $insid;
@@ -62,7 +62,7 @@ $instInfo = array(
     $set['ParaHost'] = $this->req->hosts;
 } */
 
-$kpr->NodeSet("/hae/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}", json_encode($actorInst));
+$kpr->NodeSet("/app/u/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}", json_encode($actorInst));
 
 $kpr->NodeSet("/h5flow/script/{$insid}/{$actorid}", file_get_contents($fss));
 $kpr->NodeSet("/h5flow/ctrlq/{$insid}.{$actorid}", json_encode($instInfo));

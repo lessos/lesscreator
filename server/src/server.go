@@ -15,8 +15,8 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-    if u.Uid == "0" {
-        log.Fatal("Must be run as root")
+    if u.Uid != "0" {
+        //log.Fatal("Must be run as root")
     }
 
     go apiserv.Serve("9531")

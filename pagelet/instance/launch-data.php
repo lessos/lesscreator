@@ -39,8 +39,8 @@ foreach (glob($glob) as $v) {
         }
     
         // Compare with instances settings, if deployed
-        $dataInst = $kpr->NodeGet("/hae/guest/{$projInfo['appid']}/{$projInstId}/data/{$tableInfo['tableid']}");
-        $dataInst = json_decode($dataInst, true);
+        $dataInst = $kpr->NodeGet("/app/u/guest/{$projInfo['appid']}/{$projInstId}/data/{$tableInfo['tableid']}");
+        $dataInst = json_decode($dataInst->body, true);
         if (!isset($dataInst['DataInst'])) {
             $tableInfo['_ins_id'] = "0";
         } else {
@@ -140,7 +140,7 @@ function _launch_data_next()
                 timeout : 30000,
                 async   : false,
                 success : function(rsp) {
-                    console.log(rsp);
+                    //console.log(rsp);
                     var obj = JSON.parse(rsp);
                     if (obj.Status != "OK") {
                         hdev_header_alert('error', obj.Status);
