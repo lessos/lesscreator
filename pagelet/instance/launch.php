@@ -17,7 +17,7 @@ $projpath = preg_replace("/\/+/", "/", rtrim($projpath, '/'));
 if (strlen($projpath) < 1) {
     die(json_encode(array('Status' => 'Error')));
 }
-$projInfo = hwl\Yaml\Yaml::decode(file_get_contents($projpath."/hootoapp.yaml"));
+$projInfo = json_decode(file_get_contents($projpath."/lcproject.json"), true);
 if (!isset($projInfo['appid'])) {
     die(json_encode(array('Status' => 'Bad Request')));
 }

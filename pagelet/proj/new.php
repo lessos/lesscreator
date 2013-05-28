@@ -15,7 +15,7 @@ if (isset($this->req->basedir)
 }
 $basedir = rtrim(preg_replace("/\/\/+/", "/", $basedir), '/');
 
-$f = "{$basedir}/{$appid}/hootoapp.yaml";
+$f = "{$basedir}/{$appid}/lcproject.json";
 $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 if (file_exists($f)) {
     die('Cannot create Project: AppID exists');

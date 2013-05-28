@@ -19,7 +19,7 @@ $path = preg_replace("/\/+/", "/", $this->req->path);
 if (!file_exists($projpath .'/'. $path)) {
     die('ERROR');
 }
-if (!file_exists($projpath ."/hootoapp.yaml")) {
+if (!file_exists($projpath ."/lcproject.json")) {
     die('ERROR');
 }
 ?>
@@ -78,7 +78,7 @@ foreach (glob($glob) as $f) {
         || $fm == "application/x-empty"
         || $fm == 'inode/x-empty') {
         
-        if (strlen($path) == 0 && $fn == 'hootoapp.yaml') {
+        if (strlen($path) == 0 && $fn == 'lcproject.json') {
             $fmi = 'app-t3-16';
         } else if ($fm == 'text/x-php' || substr($f,-4) == '.php') {
             $fmi = 'page_white_php';
@@ -130,7 +130,7 @@ foreach (glob($glob) as $f) {
             <a href='#{$p}' class='rcctn hdev_rcobj_upload'>Upload</a></div>";
     }
     
-    if (strlen($path) != 0 || $fn != 'hootoapp.yaml') {
+    if (strlen($path) != 0 || $fn != 'lcproject.json') {
         
         $lip .= "<div class='rcitem'>
             <div class='rcico'><img src='/h5creator/static/img/page_white_copy.png' align='absmiddle' /></div>
@@ -151,7 +151,7 @@ foreach (glob($glob) as $f) {
     $li .= "</div>";
     $li .= "<div id=\"pt{$pdiv}\" style=\"padding-left:20px;\"></div>";
     
-    if ($fn == 'hootoapp.yaml') {
+    if ($fn == 'lcproject.json') {
         continue;
         $prt0 = $li; // TODO
     } else {

@@ -15,7 +15,7 @@ if (strlen($projpath) < 1) {
     die("ERROR");
 }
 
-$projInfo = hwl\Yaml\Yaml::decode(file_get_contents($projpath."/hootoapp.yaml"));
+$projInfo = json_decode(file_get_contents($projpath."/lcproject.json"), true);
 
 if (isset($projInfo['name'])) {
     

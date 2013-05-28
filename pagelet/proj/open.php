@@ -28,8 +28,8 @@ foreach ($pjs as $appid => $val) {
     }
 
     $noinfo = "";
-    //echo $val['path']."/hootoapp.yaml";
-    if (!file_exists($val['path']."/hootoapp.yaml")) {
+    //echo $val['path']."/lcproject.json";
+    if (!file_exists($val['path']."/lcproject.json")) {
         $noinfo = '<font color="red">This project no longer exists!</font>';
     }
 ?>

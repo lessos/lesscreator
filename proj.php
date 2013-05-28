@@ -16,12 +16,12 @@ class h5creator_proj
     
     public static function info($proj)
     {
-        $path = self::path($proj) ."/hootoapp.yaml";
+        $path = self::path($proj) ."/lcproject.json";
         
         if (!file_exists($path)) {
             return false;
         }
-        $info = hwl\Yaml\Yaml::decode(file_get_contents($path)); 
+        $info = json_decode(file_get_contents($path), true); 
         
         if (!isset($info['appid'])) {
             return false;

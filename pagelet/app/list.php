@@ -27,8 +27,8 @@ foreach (glob($patt, GLOB_ONLYDIR) as $st) {
     continue;
   }
 
-  if (file_exists($st."/hootoapp.yaml")) {
-    $val = hwl\Yaml\Yaml::decode(file_get_contents($st."/hootoapp.yaml"));
+  if (file_exists($st."/lcproject.json")) {
+    $val = json_decode(file_get_contents($st."/lcproject.json"), true);
   } else {
     
     continue;

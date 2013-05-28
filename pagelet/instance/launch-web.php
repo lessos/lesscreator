@@ -63,7 +63,7 @@ if ($this->req->func == 'save') {
         'instid' => $this->req->instanceid,
         'user'   => 'guest',
     );
-    $kpr->NodeSet("/app/qw/", json_encode($qweb));
+    $kpr->NodeSet("/app/qw/{$this->req->instanceid}", json_encode($qweb));
 
     if (isset($projInstSet['webdomain']) 
         && $projInstSet['webdomain'] == $this->req->domainname) {

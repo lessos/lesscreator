@@ -29,12 +29,12 @@ $item = array(
 
 $title = 'New Project';
 
-$f = "{$projpath}/hootoapp.yaml";
+$f = "{$projpath}/lcproject.json";
 $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 
 if (file_exists($f)) {
     $t = file_get_contents($f);
-    $t = hwl\Yaml\Yaml::decode($t);
+    $t = json_decode($t, true);
     $item = array_merge($item, $t);
 }
 
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         }
     }
     
-    $f = "{$projpath}/hootoapp.yaml";
+    $f = "{$projpath}/lcproject.json";
     $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
     $str  = hwl\Yaml\Yaml::encode($item);     
     if (hwl_Fs_Dir::mkfiledir($f, 0755)) {
