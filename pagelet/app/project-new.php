@@ -19,7 +19,7 @@ if (substr($proj, 0, 1) == '/') {
 $msg = '';
 
 $item = array(
-  'appid'   => $proj,
+  'projid'   => $proj,
   'name'    => $proj,
   'summary' => '',
   'version' => '1.0.0',
@@ -69,7 +69,7 @@ return;
   <table class="box" width="100%" border="0" cellpadding="0" cellspacing="10" >
     <tr>
       <td width="100px" align="right" >AppID</td>
-      <td ><input id="proj" name="proj" size="10" type="text" value="<?=$item['appid']?>" /></td>
+      <td ><input id="proj" name="proj" size="10" type="text" value="<?=$item['projid']?>" /></td>
     </tr>
     <tr>
       <td align="right" >Name</td>

@@ -21,7 +21,7 @@ $status = 200;
 $msg    = '';
 
 $item = array(
-  'appid' => $proj,
+  'projid' => $proj,
   'name'  => $proj,
   'summary' => '',
   'version' => '1.0.0',
@@ -78,11 +78,11 @@ echo $msg;
 ?>
 
 <form id="hdev_appedit_form" action="/h5creator/app/project-edit/" method="post" style="padding:5px;">
-  <input name="proj" type="hidden" value="<?=$item['appid']?>" />
+  <input name="proj" type="hidden" value="<?=$item['projid']?>" />
   <table class="" width="100%" style="padding:5px;" >
     <tr>
       <td width="100px"><strong>AppID</strong></td>
-      <td><?=$item['appid']?></td>
+      <td><?=$item['projid']?></td>
     </tr>
     <tr>
       <td><strong>Name</strong></td>

@@ -25,7 +25,7 @@ $actorInfo = $projPath."/dataflow/{$grpid}/{$actorid}.actor.json";
 $actorInfo = file_get_contents($actorInfo);
 $actorInfo = json_decode($actorInfo, true);
 
-$actorIns = $kpr->NodeGet("/app/u/guest/{$projInfo['appid']}/{$insid}/flow/{$actorid}");
+$actorIns = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$insid}/flow/{$actorid}");
 $actorIns = json_decode($actorIns->body, true);
 
 $pms = h5creator_service::listParaMode();

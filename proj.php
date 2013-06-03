@@ -23,7 +23,7 @@ class h5creator_proj
         }
         $info = json_decode(file_get_contents($path), true); 
         
-        if (!isset($info['appid'])) {
+        if (!isset($info['projid'])) {
             return false;
         }
 

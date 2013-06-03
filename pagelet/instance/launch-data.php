@@ -39,7 +39,7 @@ foreach (glob($glob) as $v) {
         }
     
         // Compare with instances settings, if deployed
-        $dataInst = $kpr->NodeGet("/app/u/guest/{$projInfo['appid']}/{$projInstId}/data/{$tableInfo['tableid']}");
+        $dataInst = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$projInstId}/data/{$tableInfo['tableid']}");
         $dataInst = json_decode($dataInst->body, true);
         if (!isset($dataInst['DataInst'])) {
             $tableInfo['_ins_id'] = "0";

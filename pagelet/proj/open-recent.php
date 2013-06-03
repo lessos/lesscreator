@@ -16,8 +16,8 @@ if ($this->req->func == 'del') {
         $pjs = array();
     }
 
-    if (isset($pjs[$this->req->appid])) {
-        unset($pjs[$this->req->appid]);
+    if (isset($pjs[$this->req->projid])) {
+        unset($pjs[$this->req->projid]);
         $pjs = hwl_Json::prettyPrint($pjs);
         if (file_put_contents($pjc, $pjs)) {
             die("OK");

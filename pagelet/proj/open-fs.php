@@ -53,13 +53,13 @@ a._proj_fs_href_click {
 <?php
 foreach (glob($path."/*", GLOB_ONLYDIR) as $st) {
 
-  $appid = trim(strrchr($st, '/'), '/');
+  $projid = trim(strrchr($st, '/'), '/');
 ?>
 <tr>
   <td valign="middle" width="18">
     <img src="/h5creator/static/img/folder.png" align="absmiddle" />
   </td>
-  <td><a href="#<?php echo $appid?>" class="_proj_fs_href"><?=$appid?></a></td>
+  <td><a href="#<?php echo $projid?>" class="_proj_fs_href"><?=$projid?></a></td>
 </tr>
 <?php } ?>
 </table>

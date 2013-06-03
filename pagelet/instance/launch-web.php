@@ -51,7 +51,7 @@ if ($this->req->func == 'save') {
 
     $this->req->domainname = strtolower($this->req->domainname);
     
-    $projInstSet = $kpr->NodeGet("/app/u/guest/{$projInfo['appid']}/{$this->req->instanceid}/info");
+    $projInstSet = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$this->req->instanceid}/info");
     $projInstSet = json_decode($projInstSet->body, true);
     if (!isset($projInstSet['ProjId'])) {
         die(json_encode(array('Status' => 'Bad Request')));
@@ -59,7 +59,7 @@ if ($this->req->func == 'save') {
 
     $qweb = array(
         'webdomain' => $this->req->domainname,
-        'projid' => $projInfo['appid'],
+        'projid' => $projInfo['projid'],
         'instid' => $this->req->instanceid,
         'user'   => 'guest',
     );
@@ -72,7 +72,7 @@ if ($this->req->func == 'save') {
 
     $projInstSet['webdomain'] = $this->req->domainname;
     
-    $kpr->NodeSet("/app/u/guest/{$projInfo['appid']}/{$this->req->instanceid}/info",
+    $kpr->NodeSet("/app/u/guest/{$projInfo['projid']}/{$this->req->instanceid}/info",
         json_encode($projInstSet));    
     
     die(json_encode(array('Status' => 'OK')));

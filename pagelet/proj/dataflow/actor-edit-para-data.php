@@ -21,7 +21,7 @@ foreach (glob($glob) as $v) {
         continue;
     }
 
-    if ($projInfo['appid'] != $json['projid']) {
+    if ($projInfo['projid'] != $json['projid']) {
         continue;
     }
 

@@ -18,7 +18,7 @@ if (strlen($projpath) < 1) {
     die(json_encode(array('Status' => 'Error')));
 }
 $projInfo = json_decode(file_get_contents($projpath."/lcproject.json"), true);
-if (!isset($projInfo['appid'])) {
+if (!isset($projInfo['projid'])) {
     die(json_encode(array('Status' => 'Bad Request')));
 }
 
@@ -41,25 +41,25 @@ if ($this->req->func == 'new') {
 
     $insid = hwl_string::rand(12, 2);
     $set = array(
-        'ProjId'       => $projInfo['appid'],
+        'ProjId'       => $projInfo['projid'],
         'InstanceId'   => $insid,
         'InstanceName' => $this->req->instancename,
     );
-    $kpr->NodeSet("/app/u/guest/{$projInfo['appid']}/{$insid}/info", json_encode($set));
+    $kpr->NodeSet("/app/u/guest/{$projInfo['projid']}/{$insid}/info", json_encode($set));
     
     $set['Status'] = "OK";
     die(json_encode($set));
 }
 
 
-$rs = $kpr->NodeList("/app/u/guest/{$projInfo['appid']}");
+$rs = $kpr->NodeList("/app/u/guest/{$projInfo['projid']}");
 $rs = json_decode($rs->body, true);
 
 if (count($rs) > 0) {
 
     $raw = "";    
     foreach ($rs as $v) {
-        $v2 = $kpr->NodeGet("/app/u/guest/{$projInfo['appid']}/{$v['P']}/info");
+        $v2 = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$v['P']}/info");
         $v2 = json_decode($v2->body, true);
         if (!isset($v2['ProjId'])) {
             continue;

@@ -1,7 +1,7 @@
 <?php
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
-if (!isset($projInfo['appid'])) {
+if (!isset($projInfo['projid'])) {
     die("Bad Request");
 }
 
@@ -20,7 +20,7 @@ if ($this->app->method == 'POST') {
         'id'      => $datasetid,
         'name'    => $this->req->datasetname,
         'type'    => '1',
-        'projid'  => $projInfo['appid'],
+        'projid'  => $projInfo['projid'],
         'created' => time(),
         'updated' => time(),
     );

@@ -2,7 +2,7 @@
 
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
-if (!isset($projInfo['appid'])) {
+if (!isset($projInfo['projid'])) {
     die("Bad Request");
 }
 
@@ -17,7 +17,7 @@ if (!file_exists($fsd)) {
 }
 $dataInfo = file_get_contents($fsd);
 $dataInfo = json_decode($dataInfo, true);
-if ($projInfo['appid'] != $dataInfo['projid']) {
+if ($projInfo['projid'] != $dataInfo['projid']) {
     die("Permission denied");
 }
 

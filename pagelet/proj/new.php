@@ -2,11 +2,11 @@
 
 $basedir = H5C_DIR;
 
-if (!isset($this->req->appid)
-    || strlen($this->req->appid) < 1) {
-    $appid = hwl_string::rand(8, 2);
+if (!isset($this->req->projid)
+    || strlen($this->req->projid) < 1) {
+    $projid = hwl_string::rand(8, 2);
 } else {
-    $appid = $this->req->appid;
+    $projid = $this->req->projid;
 }
 
 if (isset($this->req->basedir)
@@ -15,7 +15,7 @@ if (isset($this->req->basedir)
 }
 $basedir = rtrim(preg_replace("/\/\/+/", "/", $basedir), '/');
 
-$f = "{$basedir}/{$appid}/lcproject.json";
+$f = "{$basedir}/{$projid}/lcproject.json";
 $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 if (file_exists($f)) {
     die('Cannot create Project: AppID exists');
@@ -28,12 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         die("Name cannot be null");
     }
 
-    if (!strlen($appid)) {
+    if (!strlen($projid)) {
         die("Name cannot be null");
     }
 
     $set = array(
-        'appid'   => $appid,
+        'projid'   => $projid,
         'name'    => $this->req->name,
         'summary' => $this->req->summary,
         'version' => '0.0.1',
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
             <i class="icon-folder-close"></i>
             <span class="_proj_new_basedir_dp"><?php echo $basedir?>/</span>
           </button>
-          <input id="appid" name="appid" type="text" class="span2" value="<?php echo $appid?>" />
+          <input id="projid" name="projid" type="text" class="span2" value="<?php echo $projid?>" />
         </div>
         <div id="_proj_new_dir" class="displaynone" style="margin:0 0 5px 0;"></div>
       </td>
@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 
 <script>
 var _basedir = '<?php echo $basedir?>';
-var _appid = "";
+var _projid = "";
 
 function _proj_new_dir(path)
 {
@@ -170,7 +170,7 @@ function _proj_new_commit()
                 $(".h5c_alert").show();
 
                 _basedir = $("#basedir").val();
-                _appid   = $("#appid").val();
+                _projid   = $("#projid").val();
             } else {
                 alert(data);
             }            
@@ -182,7 +182,7 @@ function _proj_new_commit()
 
 function _proj_new_goto()
 {
-    window.open("/h5creator/index?proj="+ _basedir +"/"+ _appid, "_blank");
+    window.open("/h5creator/index?proj="+ _basedir +"/"+ _projid, "_blank");
 }
 
 </script>

@@ -1,7 +1,7 @@
 <?php
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
-if (!isset($projInfo['appid'])) {
+if (!isset($projInfo['projid'])) {
     die("Bad Request");
 }
 
@@ -69,7 +69,7 @@ $schema = $tableInfo['schema'];
       </tr>
     <?php
     }
-    if ($projInfo['appid'] == $dataInfo['projid']) {
+    if ($projInfo['projid'] == $dataInfo['projid']) {
     ?>
     <tr>
         <td></td>

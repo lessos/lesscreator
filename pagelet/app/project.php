@@ -29,12 +29,12 @@ if (isset($projInfo['name'])) {
         $pjs = array();
     }
     
-    if (!isset($pjs[$projInfo['appid']])
-        || $pjs[$projInfo['appid']]['name'] != $projInfo['name']
-        || $pjs[$projInfo['appid']]['path'] != $projpath) {
+    if (!isset($pjs[$projInfo['projid']])
+        || $pjs[$projInfo['projid']]['name'] != $projInfo['name']
+        || $pjs[$projInfo['projid']]['path'] != $projpath) {
 
-        $pjs[$projInfo['appid']]['name'] = $projInfo['name'];
-        $pjs[$projInfo['appid']]['path'] = $projpath;
+        $pjs[$projInfo['projid']]['name'] = $projInfo['name'];
+        $pjs[$projInfo['projid']]['path'] = $projpath;
 
         hwl_util_dir::mkfiledir($pjc);
         file_put_contents($pjc, hwl_Json::prettyPrint($pjs));
@@ -48,7 +48,7 @@ $props_def = h5creator_service::listAll();
 
   <div style="padding:5px 10px 5px 10px; background-color:#f6f7f8;">
     <span>
-      <strong><?php echo $projInfo['name']?></strong> [#<?php echo $projInfo['appid']?>]
+      <strong><?php echo $projInfo['name']?></strong> [#<?php echo $projInfo['projid']?>]
     </span>
     <a href="javascript:h5cProjSet()" class="h5c_block pull-right">
       <i class="icon-wrench"></i>
@@ -87,7 +87,7 @@ if (!is_writable("{$projpath}")) {
     echo 'hdev_header_alert("error", "The Project is not Writable");';
 }
 echo "sessionStorage.ProjPath = '{$projpath}';";
-echo "sessionStorage.ProjId = '{$projInfo['appid']}';";
+echo "sessionStorage.ProjId = '{$projInfo['projid']}';";
 ?>
 
 function _proj_nav_open(plg)

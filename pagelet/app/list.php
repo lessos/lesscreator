@@ -21,9 +21,9 @@ $def  = array(
 
 foreach (glob($patt, GLOB_ONLYDIR) as $st) {
 
-  $appid = trim(strrchr($st, '/'), '/');
+  $projid = trim(strrchr($st, '/'), '/');
   
-  if (in_array($appid, array('h5creator', 'hww', 'Zend'))) {
+  if (in_array($projid, array('h5creator', 'hww', 'Zend'))) {
     continue;
   }
 
@@ -34,16 +34,16 @@ foreach (glob($patt, GLOB_ONLYDIR) as $st) {
     continue;
     
     $val = array(
-      'name'  => $appid,
-      'appid'  => $appid,
+      'name'  => $projid,
+      'projid'  => $projid,
     );
   }
   
   $val = array_merge($def, $val);
 ?>
 <tr>
-  <td><b><a href="javascript:hdev_project('<?=$appid?>')"><?=$val['name']?></a></b></td>
-  <td><?=$val['appid']?></td>
+  <td><b><a href="javascript:hdev_project('<?=$projid?>')"><?=$val['name']?></a></b></td>
+  <td><?=$val['projid']?></td>
   <td><?=$val['version']?></td>
   <td>
     <a href="#">Setting</a>
