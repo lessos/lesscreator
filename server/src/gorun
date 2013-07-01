@@ -12,9 +12,8 @@ find . -type f -name "*.go" | xargs wc -l | sort -n
 dirs=`find . -type d |xargs`
 for dir in $dirs; do
     echo ${dir}
-#    gofmt -tabwidth=4 -tabs=false -w=true ${dir}/*.go
+    gofmt -tabwidth=4 -tabs=false -w=true ${dir}/*.go
 done
-#find . -type f -name "*.go" |xargs sed -i 's/\t/    /g'
 
 rm -f h5creator-server
 

@@ -1,14 +1,14 @@
 package api
 
 import (
-    "fmt"
-    "io"
-    "io/ioutil"
-    "net/http"
     "../../deps/go.net/websocket"
     "../utils"
     "encoding/base64"
+    "fmt"
+    "io"
+    "io/ioutil"
     "mime"
+    "net/http"
     "os"
     "path/filepath"
     "regexp"

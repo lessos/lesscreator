@@ -1,0 +1,3 @@
+[submodule "server/deps/go.net"]
+	path = server/deps/go.net
+	url = git@github.com:eryx/go.net.git
