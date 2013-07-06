@@ -60,11 +60,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             continue;
         }
 
-        if ($v == "id") {
-            $this->req->fstype[$k] = 'varchar';
-        }
+        //if ($v == "id") {
+        //    $this->req->fstype[$k] = 'varchar';
+        //}
         
-        if (in_array($this->req->fstype[$k], array('int', 'varchar'))
+        if (in_array($this->req->fstype[$k], array('int', 'uint', 'uinti', 'varchar'))
             && $this->req->fslen[$k] == 0) {
             die("`$v` Can not be null");
         }
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input name="fsname[<?php echo $v['name']?>]" type="text" value="<?php echo $v['name'] ?>" class="input-medium"/>
             </td>
             <td>
-                <select name="fstype[<?php echo $v['name']?>]" class="input-medium">
+                <select name="fstype[<?php echo $v['name']?>]" class="input-large">
                 <?php
                 foreach ($fieldtypes as $k2 => $v2) {
                     $select = $v['type'] == $k2 ? 'selected' : '';
