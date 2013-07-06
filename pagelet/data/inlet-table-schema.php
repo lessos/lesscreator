@@ -25,11 +25,19 @@ $tableInfo = file_get_contents($fst);
 $tableInfo = json_decode($tableInfo, true);
 
 $fieldtypes = array(
+    'int' => 'Integer',
+    'uint' => 'Integer - Unsigned',
+    'uinti' => 'Integer - Auto Increment',
     'varchar' => 'Varchar',
     'string' => 'Text',
-    'int' => 'Integer',
     'timestamp' => 'Unix Timestamp',
-    'blob' => 'blob',
+    //'blob' => 'blob',
+);
+$fieldidxs = array(
+    '0' => '---',
+    '1' => 'Index',
+    '2' => 'Primary',
+    '3' => 'Unique',
 );
 
 
@@ -50,11 +58,7 @@ $schema = $tableInfo['schema'];
         $schema = array();
     }
     foreach ($schema as $v) {
-      $checked = '';
-      if ($v['idx'] == 1) {
-          $checked = '<img src="/h5creator/static/img/accept.png" />';
-      }
-      ?>
+    ?>
       <tr>
           <td><strong><?=$v['name']?></strong></td>
           <td>
@@ -65,7 +69,7 @@ $schema = $tableInfo['schema'];
               }
               ?>
           </td>
-          <td><?php echo $checked?></td>
+          <td><?php echo $fieldidxs[$v['idx']]?></td>
       </tr>
     <?php
     }

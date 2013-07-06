@@ -1,4 +1,25 @@
 <?php
+/*
+use LessPHP\H5keeper\Client;
+$kpr = new Client();
+
+echo "<pre>";
+$kpr->NodeSet("/test/info", rand());
+
+$rs = $kpr->NodeGet("/test/info");
+print_r($rs);
+
+$rs = $kpr->NodeList("/test/");
+print_r($rs);
+
+$rs = $kpr->NodeDel("/test/info");
+print_r($rs);
+
+$rs = $kpr->NodeGet("/test/info");
+print_r($rs);
+
+echo "</pre>";
+*/
 
 $projbase = H5C_DIR;
 

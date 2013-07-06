@@ -1,12 +1,13 @@
 {
-    "projid":"h5creator",
-    "name":"Hooto Creator",
-    "summary":"Build custom business applications on your own, online",
-    "depends":"",
-    "version":"1.0.0.dev",
-    "props":"dataflow,pagelet",
-    "boot":"app\/h5creator\/index.php",
-    "arch":"all",
-    "release":"1",
-    "targetdir":"h5creator"
+  "projid":"h5creator",
+  "name":"Hooto Creator",
+  "summary":"Hooto Web based IDE",
+  "depends":"bootstrap2,jquery,codemirror3,fam3,LessPHP,hwl",
+  "version":"1.0.1",
+  "props":"dataflow,pagelet",
+  "boot":"app\/h5creator\/index.php",
+  "arch":"all",
+  "release":"1dev",
+  "types": "webstatic,webphp",
+  "targetdir":"h5creator"
 }

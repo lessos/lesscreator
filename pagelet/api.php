@@ -1,6 +1,6 @@
 <?php
 
-require_once 'LessPHP/AutoLoader.php';
+require_once 'LessPHP/Autoloader.php';
 
 $func = $_GET['func'];
 

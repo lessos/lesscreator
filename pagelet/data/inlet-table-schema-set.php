@@ -29,11 +29,20 @@ $tableInfo = file_get_contents($fst);
 $tableInfo = json_decode($tableInfo, true);
 
 $fieldtypes = array(
+    'int' => 'Integer',
+    'uint' => 'Integer - Unsigned',
+    'uinti' => 'Integer - Auto Increment',
     'varchar' => 'Varchar',
     'string' => 'Text',
-    'int' => 'Integer',
     'timestamp' => 'Unix Timestamp',
-    'blob' => 'blob',
+    //'blob' => 'blob',
+);
+
+$fieldidxs = array(
+    '0' => '---',
+    '1' => 'Index',
+    '2' => 'Primary',
+    '3' => 'Unique',
 );
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -90,31 +99,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <th>Name</th>
         <th>Type</th>
         <th>Length (varchar、integer)</th>
-        <th>Index?</th>
+        <th>Index</th>
         <th>Option</th>
     </tr>
 </thead>
 <tbody id="field_list">
-    <tr>
-        <td>
-            <input type="text" name="fsname[0]" value="id"  readonly="readonly" class="input-medium"/>
-        </td>
-        <td>
-            <input type="text" name="fstype[0]" value="Varchar" readonly="readonly" class="input-medium"/>
-        </td>
-        <td>
-            <input type="text" name="fslen[0]" value="40" readonly="readonly" class="input-mini"/>
-        </td>
-        <td>
-            <input type="checkbox" name="fsidx[0]" value="1" readonly="readonly" checked />
-        </td>
-        <td></td>
-    </tr>
     <?php
     foreach ($tableInfo['schema'] as $v) {
-        if ($v['name'] == 'id') {
-            continue;
-        }
         $checked = '';
         if ($v['idx'] == 1) {
             $checked = 'checked';
@@ -138,7 +129,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input name="fslen[<?php echo $v['name']?>]" type="text" value="<?php echo  $v['len'] ?>" class="input-mini"/>
             </td>
             <td>
-                <input name="fsidx[<?php echo $v['name']?>]" type="checkbox" value="1" <?php echo $checked?> />
+                <select name="fsidx[<?php echo $v['name']?>]" class="input-medium">
+                <?php
+                foreach ($fieldidxs as $k2 => $v2) {
+                    $idxSelected = $v['idx'] == $k2 ? 'selected' : '';
+                    echo "<option value='{$k2}' {$idxSelected}>{$v2}</option>"; 
+                }
+                ?>
+                </select>
             </td>
             <td>
                 <a href="javascript:void(0)" onclick="_data_field_del(this)">Delete</a>

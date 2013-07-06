@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'schema'        => array(array('name' => 'id',
             'type'  => 'varchar',
             'len'   => '40',
-            'idx'   => '1'
+            'idx'   => '2'
         )),
         'created'       => time(),
         'updated'       => time(),

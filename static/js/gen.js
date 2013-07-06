@@ -712,10 +712,10 @@ function h5cLayoutResize()
         toset = 0.8;
     }
     var colw = (bw - (3 * spacecol)) * toset;
-    if (colw < 350) {
-        colw = 350;
-    } else if ((colw + 350) > bw) {
-        colw = bw - 350;
+    if (colw < 400) {
+        colw = 400;
+    } else if ((colw + 400) > bw) {
+        colw = bw - 400;
     }
     $('#h5c-lyo-col-w').width(colw);
     $('#h5c-lyo-col-t').width((bw - (3 * spacecol)) - colw);
