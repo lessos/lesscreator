@@ -33,24 +33,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
     }
 
     $set = array(
-        'projid'   => $projid,
+        'projid'  => $projid,
         'name'    => $this->req->name,
         'summary' => $this->req->summary,
         'version' => '0.0.1',
         'release' => '0',
         'depends' => '',
         'props'   => '',
+        'types'   => '',
+        'arch'    => 'all',
     );
     if (isset($this->req->props)) {
         $set['props'] = implode(",", $this->req->props);
     }
+    if (isset($this->req->types)) {
+        $set['types'] = implode(",", $this->req->types);
+    }
 
-    $str  = hwl\Yaml\Yaml::encode($set);
+    $str = hwl_Json::prettyPrint($set);
     if (hwl_Fs_Dir::mkfiledir($f, 0755)) {
+    
+        if (!is_writable("{$f}")) {
+            header("HTTP/1.1 500"); die("The Project is not Writable ($f)");
+        }
+
         $fp = fopen($f, 'w');
+        if ($fp === false) {
+            header("HTTP/1.1 500"); die("Can Not Open ($f)");
+        }
+        
         fwrite($fp, $str);
         fclose($fp);
         chmod($f, 0664);
+        
         $msg = "OK";
     } else {
         $msg = "ERROR";

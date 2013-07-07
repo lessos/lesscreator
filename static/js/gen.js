@@ -819,7 +819,7 @@ function h5cProjNewDialog()
 
 function h5cProjSet()
 {
-    h5cTabOpen('/h5creator/app/project-edit?proj='+projCurrent, 
+    h5cTabOpen('/h5creator/proj/set?proj='+projCurrent, 
         't0', 'html', {'title': 'Project Setting', 'close':'1'});
 }
 
