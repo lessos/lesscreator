@@ -27,7 +27,7 @@ foreach (glob($glob) as $v) {
     $datasets[$dataInfo['id']] = $dataInfo;
     $datasets[$dataInfo['id']]['_tables'] = array();
 
-    $globsub = $projPath."/data/{$dataInfo['id']}_*.tbl.json";
+    $globsub = $projPath."/data/{$dataInfo['id']}.*.tbl.json";
     
     foreach (glob($globsub) as $v2) {
         

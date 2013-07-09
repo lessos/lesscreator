@@ -202,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $para_data_display = $json['name'];
             }
             
-            $fst  = $projpath."/data/{$para_datas[0]}_{$para_datas[1]}.tbl.json";
+            $fst  = $projpath."/data/{$para_datas[0]}.{$para_datas[1]}.tbl.json";
             $json = file_get_contents($fst);
             $json = json_decode($json, true);
             if (isset($json['tablename'])) {
