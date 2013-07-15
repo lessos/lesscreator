@@ -118,8 +118,8 @@ echo "</table>";
 
 
 <script type="text/javascript">
-h5cModalButtonAdd("kdqtr8", "Confirm and Next", "_launch_data_next()", "btn-inverse");
-h5cModalButtonAdd("qqgn7r", "Back", "h5cModalPrev()", "pull-left h5c-marginl0");
+lessModalButtonAdd("kdqtr8", "Confirm and Next", "_launch_data_next()", "btn-inverse");
+lessModalButtonAdd("qqgn7r", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
 
 function _launch_data_next()
 {
@@ -164,6 +164,6 @@ function _launch_data_next()
 
     var url = "/h5creator/instance/launch-flow?"+ uri;
     
-    h5cModalNext(url , "Deployment Dataflow Actor", null);
+    lessModalNext(url , "Deployment Dataflow Actor", null);
 }
 </script>

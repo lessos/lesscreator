@@ -144,8 +144,8 @@ echo "</table>";
 
 
 <script type="text/javascript">
-h5cModalButtonAdd("lho070", "Confirm and Next", "_launch_flow_next()", "btn-inverse");
-h5cModalButtonAdd("dpx9cl", "Back", "h5cModalPrev()", "pull-left h5c-marginl0");
+lessModalButtonAdd("lho070", "Confirm and Next", "_launch_flow_next()", "btn-inverse");
+lessModalButtonAdd("dpx9cl", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
 
 $(".bbwv0a").click(function() {
 
@@ -157,14 +157,14 @@ $(".bbwv0a").click(function() {
     uri += "&flowactorid="+ href[1];
 
     var url = "/h5creator/instance/launch-flow-set?"+ uri;
-    h5cModalNext(url , "Actor Setting", null);
+    lessModalNext(url , "Actor Setting", null);
 });
 
 function _launch_flow_next()
 {
     sessionStorage.InsActive = sessionStorage.LaunchInstanceId;
     var url = "/h5creator/instance/launch-done?";
-    h5cModalNext(url, "Well Done", null);
+    lessModalNext(url, "Well Done", null);
 }
 
 </script>

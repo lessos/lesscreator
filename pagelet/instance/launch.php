@@ -104,7 +104,7 @@ var instanceid  = null;
 var flowgrpid   = '<?php echo $this->req->flowgrpid?>';
 var flowactorid = '<?php echo $this->req->flowactorid?>';
 
-h5cSession.delPrefix("Launch");
+lessSession.delPrefix("Launch");
 
 sessionStorage.LaunchInstanceId  = instanceid;
 sessionStorage.LaunchFlowGrpId   = flowgrpid;
@@ -158,9 +158,9 @@ function _launch_next()
     url += "&flowactorid="+ flowactorid;
     url += "&_="+ Math.random();
 
-    h5cModalNext(url, nexttit, null);
+    lessModalNext(url, nexttit, null);
 }
-h5cModalButtonAdd("lkakhn", "Next", "_launch_next()", "btn-inverse");
+lessModalButtonAdd("lkakhn", "Next", "_launch_next()", "btn-inverse");
 
 if (instanceid == null && sessionStorage.InsActive) {
     $("input[value="+sessionStorage.InsActive+"]").prop("checked", true);

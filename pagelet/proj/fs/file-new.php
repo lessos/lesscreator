@@ -22,8 +22,8 @@ $type = $this->req->type;
 
 <script type="text/javascript">
 
-h5cModalButtonAdd("k8wf2g", "Create", "_fs_file_new()", "btn-inverse pull-left");
-h5cModalButtonAdd("nnjyyb", "Cancel", "h5cModalClose()", "pull-left");
+lessModalButtonAdd("k8wf2g", "Create", "_fs_file_new()", "btn-inverse pull-left");
+lessModalButtonAdd("nnjyyb", "Cancel", "lessModalClose()", "pull-left");
 
 //$(".hutjzx").focus();
 
@@ -59,7 +59,7 @@ function _fs_file_new()
             }
 
             _fs_file_new_callback(req.path);
-            h5cModalClose();
+            lessModalClose();
         },
         error   : function(xhr, textStatus, error) {
             hdev_header_alert('error', textStatus+' '+xhr.responseText);

@@ -78,9 +78,9 @@ $tableid = hwl_string::rand(8, 2);
 
 <script type="text/javascript">
 
-h5cModalButtonAdd("d8id3r", "Close", "h5cModalClose()", "");
+lessModalButtonAdd("d8id3r", "Close", "lessModalClose()", "");
 
-h5cModalButtonAdd("h6xj1q", "Confirm and Save", "_data_tableid_set()", "btn-inverse");
+lessModalButtonAdd("h6xj1q", "Confirm and Save", "_data_tableid_set()", "btn-inverse");
 
 $("#x23w5t").submit(function(event) {
     event.preventDefault();
@@ -95,12 +95,12 @@ function _data_tableid_set()
         data    : $("#x23w5t").serialize() +"&proj="+ projCurrent,
         success : function(rsp) {
             if (rsp == "OK") {
-                h5cGenAlert(".j82fpe", "alert-success", "OK "+ time);
+                lessAlert(".j82fpe", "alert-success", "OK "+ time);
                 if (typeof _proj_data_tabopen == 'function') {
                     _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
                 }
             } else {
-                h5cGenAlert(".j82fpe", "alert-error", rsp +" "+ time);
+                lessAlert(".j82fpe", "alert-error", rsp +" "+ time);
             }
         }
     });

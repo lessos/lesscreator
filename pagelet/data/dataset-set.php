@@ -53,9 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <script type="text/javascript">
 
-h5cModalButtonAdd("o4wn8e", "Close", "h5cModalClose()", "");
+lessModalButtonAdd("o4wn8e", "Close", "lessModalClose()", "");
 
-h5cModalButtonAdd("qe7kft", "Confirm and Save", "_data_dataset_set()", "btn-inverse");
+lessModalButtonAdd("qe7kft", "Confirm and Save", "_data_dataset_set()", "btn-inverse");
 
 $("#b2qcyo").submit(function(event) {
     event.preventDefault();
@@ -70,12 +70,12 @@ function _data_dataset_set()
         data    : $("#b2qcyo").serialize() +"&proj="+ projCurrent,
         success : function(rsp) {
             if (rsp == "OK") {
-                h5cGenAlert(".bmejc8", "alert-success", "OK "+ time);
+                lessAlert(".bmejc8", "alert-success", "OK "+ time);
                 if (typeof _proj_data_tabopen == 'function') {
                     _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
                 }
             } else {
-                h5cGenAlert(".bmejc8", "alert-error", rsp +" "+ time);
+                lessAlert(".bmejc8", "alert-error", rsp +" "+ time);
             }
         }
     });

@@ -117,8 +117,8 @@ if (isset($rs['domains'])) {
 
 
 <script type="text/javascript">
-h5cModalButtonAdd("ogsb1m", "Confirm and Next", "_launch_web_next()", "btn-inverse");
-h5cModalButtonAdd("wdmuxh", "Back", "h5cModalPrev()", "pull-left h5c-marginl0");
+lessModalButtonAdd("ogsb1m", "Confirm and Next", "_launch_web_next()", "btn-inverse");
+lessModalButtonAdd("wdmuxh", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
 
 var domain  = null;
 
@@ -196,7 +196,7 @@ function _launch_web_next()
 
     var url = "/h5creator/instance/launch-data?"+ uri;
     
-    h5cModalNext(url , "Database Deployment Setup", null);
+    lessModalNext(url , "Database Deployment Setup", null);
 }
 
 if (domain == null && sessionStorage.domainActive) {

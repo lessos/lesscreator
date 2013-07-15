@@ -64,7 +64,7 @@ if (count($grps) == 0) {
     </a>
 </div>
 
-<div id="pt<?=$ptpath?>" class="h5c_gen_scroll" style="padding-top:10px;"></div>
+<div id="pt<?=$ptpath?>" class="less_gen_scroll" style="padding-top:10px;"></div>
 
 <div id="_proj_dataflow_grpnew_div" class="hdev-proj-olrcm border_radius_5 displaynone">
     <div class="header">
@@ -210,7 +210,7 @@ $("#_proj_dataflow_actornew_form").submit(function(event) {
 
 function _proj_dataflow_tabopen(proj, path, force)
 {
-    var p = Crypto.MD5(path);
+    var p = lessCryptoMd5(path);
 
     if (force != 1 && $("#pt"+p).html() && $("#pt"+p).html().length > 1) {
         $("#pt"+p).empty();

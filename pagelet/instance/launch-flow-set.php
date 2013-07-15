@@ -72,8 +72,8 @@ if ($actorInfo['para_mode'] == h5creator_service::ParaModeServer) {
 </table>
 
 <script type="text/javascript">
-h5cModalButtonAdd("ofzzbg", "Save and Back", "_launch_flow_set_back()", "btn-inverse");
-h5cModalButtonAdd("lf5krc", "Back", "h5cModalPrev()", "pull-left h5c-marginl0");
+lessModalButtonAdd("ofzzbg", "Save and Back", "_launch_flow_set_back()", "btn-inverse");
+lessModalButtonAdd("lf5krc", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
 
 function _launch_flow_set_back()
 {
@@ -109,7 +109,7 @@ function _launch_flow_set_back()
                 return;
             }
             $("#status"+ actorid).html("<img src='/fam3/icons/accept.png' class='h5c_icon' /> OK");
-            h5cModalPrev()
+            lessModalPrev()
             // $("input[name=dbnew"+ dataid +"]").parent().remove();
                     //$(".irvj4f").val(instanceid);
         },

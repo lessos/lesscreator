@@ -48,7 +48,7 @@ a._proj_fs_href_click {
 </ul>
 </div>
 
-<div id="_proj_fs_body" class="h5c_gen_scroll displaynone" style="margin:0 10px;border:1px solid #ccc;">
+<div id="_proj_fs_body" class="less_gen_scroll displaynone" style="margin:0 10px;border:1px solid #ccc;">
 <table width="100%" sclass="table table-condensed">
 <?php
 foreach (glob($path."/*", GLOB_ONLYDIR) as $st) {

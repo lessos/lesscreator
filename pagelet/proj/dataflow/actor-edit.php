@@ -254,7 +254,7 @@ _exec_mode(<?php echo $actor['exec_mode']?>);
 function _dataflow_edit_paraselect()
 {
     var url = "/h5creator/proj/dataflow/actor-edit-para-data?proj="+projCurrent+"&func=select";
-    h5cModalOpen(url, 0, 400, 300, 'Select a Database', null);
+    lessModalOpen(url, 0, 400, 300, 'Select a Database', null);
 }
 
 function _para_mode(val)

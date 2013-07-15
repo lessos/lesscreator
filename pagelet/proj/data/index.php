@@ -28,13 +28,13 @@ if (strlen($projpath) < 1) {
     </a>
 </div>
 
-<div id="ig3w6o" class="h5c_gen_scroll" style="padding-top:10px;"></div>
+<div id="ig3w6o" class="less_gen_scroll" style="padding-top:10px;"></div>
 
 <script type="text/javascript">
 
 $(".h6tnb9").click(function(){
     var url = "/h5creator/data/create-select-type?proj="+ projCurrent;
-    h5cModalOpen(url, 0, 700, 450, 'New DataSet', null);
+    lessModalOpen(url, 0, 700, 450, 'New DataSet', null);
 });
 
 function _proj_data_tabopen(uri, force)

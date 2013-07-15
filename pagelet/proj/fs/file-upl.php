@@ -11,8 +11,8 @@ $path = $this->req->path;
 
 <script type="text/javascript">
 
-h5cModalButtonAdd("zrkyom", "Upload", "_fs_file_upl()", "btn-inverse pull-left");
-h5cModalButtonAdd("mqaayo", "Cancel", "h5cModalClose()", "pull-left");
+lessModalButtonAdd("zrkyom", "Upload", "_fs_file_upl()", "btn-inverse pull-left");
+lessModalButtonAdd("mqaayo", "Cancel", "lessModalClose()", "pull-left");
 
 
 var path = '<?php echo $path?>';
@@ -71,7 +71,7 @@ function _fs_file_upl()
 
                         _fs_file_new_callback(req.path);
                         
-                        h5cModalClose();
+                        lessModalClose();
                     },
                     error   : function(xhr, textStatus, error) {
                         hdev_header_alert('error', textStatus+' '+xhr.responseText);

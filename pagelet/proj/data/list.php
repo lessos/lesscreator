@@ -99,13 +99,13 @@ echo "</table>";
 $('.g2hvtz').click(function() {
     var uri = $(this).attr('href').substr(1);
     var url = "/h5creator/data/dataset-set?proj="+projCurrent+"&id="+uri;
-    h5cModalOpen(url, 0, 500, 350, "DataSet Setting", null);
+    lessModalOpen(url, 0, 500, 350, "DataSet Setting", null);
 });
 
 $('.weovcr').click(function() {
     var uri = $(this).attr('href').substr(1);
     var url = "/h5creator/data/table-new?proj="+projCurrent+"&id="+uri;
-    h5cModalOpen(url, 0, 400, 260, "New Table", null);
+    lessModalOpen(url, 0, 400, 260, "New Table", null);
 });
 
 $('.p9532p').click(function() {

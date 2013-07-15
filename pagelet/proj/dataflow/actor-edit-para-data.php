@@ -87,7 +87,7 @@ $('.a5ypb6').click(function() {
     var tit = $(this).attr('title');
     $('input[name=para_data]').val(uri);
     $('input[name=para_data_display]').val(tit);
-    h5cModalClose();
+    lessModalClose();
 });
 
 </script>

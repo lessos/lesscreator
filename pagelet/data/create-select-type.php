@@ -51,7 +51,7 @@
 
 <script>
 
-h5cModalButtonAdd("doo8l6", "Close", "h5cModalClose()", "");
+lessModalButtonAdd("doo8l6", "Close", "lessModalClose()", "");
 
 
 $(".j4soeo").click(function(){
@@ -74,7 +74,7 @@ $(".j4soeo").click(function(){
     }
     url += '?proj='+ projCurrent;
 
-    h5cModalNext(url, title, null);
+    lessModalNext(url, title, null);
 });
 
 function _data_create_resize()

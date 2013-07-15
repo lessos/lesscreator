@@ -66,7 +66,7 @@ $("#pmvc8e").submit(function(event) {
             if (rsp == "OK") {
                 hdev_header_alert('success', rsp);
                 _proj_dataflow_tabopen('<?=$proj?>', '', 1);
-                h5cModalClose();
+                lessModalClose();
             } else {
                 alert(rsp);
             }

@@ -129,7 +129,7 @@ function _qstatus_send()
 $('.k810ll').click(function() {
     var uri = $(this).attr('href').substr(1);
     var url = "/h5creator/proj/dataflow/grp-edit?proj="+projCurrent+"&grpid="+uri;
-    h5cModalOpen(url, 0, 400, 0, 'Edit Group', null);
+    lessModalOpen(url, 0, 400, 0, 'Edit Group', null);
 });
 
 $('.to8kit').click(function() {
@@ -159,7 +159,7 @@ $('.j4sa3r').click(function() {
     var url = "/h5creator/instance/launch?proj="+ projCurrent;
     url += "&flowgrpid="+ uri.split('/')[0];
     url += "&flowactorid="+ uri.split('/')[1];
-    h5cModalOpen(url, 1, 700, 400, "Launch Instance", null);    
+    lessModalOpen(url, 1, 700, 400, "Launch Instance", null);    
 });
 if (sessionStorage.InsActive) {
         $("#vtknd6").text(sessionStorage.InsActive);

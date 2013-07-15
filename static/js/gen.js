@@ -27,249 +27,7 @@ function h5cDialogTitle(title)
 }
 
 var h5cServerAPI    = "web.example.com:9531/h5creator/api";
-var h5cModalData    = {};
-var h5cModalCurrent = null;
-var h5cModalNextHistory = null;
-var h5cModalBodyWidth   = null;
-var h5cModalBodyHeight  = null;
-function h5cModalNext(url, title, opt)
-{
-    h5cModalOpen(url, null, null, null, title, opt)
-}
-function h5cModalPrev()
-{
-    var prev = null;
-    for (var i in h5cModalData) {
-        if (h5cModalData[i].urid == h5cModalCurrent && prev != null) {
-            h5cModalNextHistory = h5cModalCurrent;
-            h5cModalSwitch(prev);            
-            break;
-        }
-        prev = i;
-    }
-}
-function h5cModalSwitch(urid)
-{
-    if (!h5cModalData[urid].title) {
-        return;
-    }
-    pp = $('#'+ urid).position();
-    mov = pp.left;
-    if (mov < 0) {
-        mov = 0;
-    }
-    $('.h5c-modal-body-page').animate({top: 0, left: "-"+ mov +"px"}, 300, function() {
-        
-        $('.h5c-modal-header .title').text(h5cModalData[urid].title);
-    
-        $('.h5c-modal-footer').empty();
-        for (var i in h5cModalData[urid].btns) {
-            h5cModalButtonAdd(h5cModalData[urid].btns[i].id, 
-                h5cModalData[urid].btns[i].title,
-                h5cModalData[urid].btns[i].func,
-                h5cModalData[urid].btns[i].style);
-        }
-        h5cModalCurrent = urid;
 
-        if (h5cModalNextHistory != null) {
-            delete h5cModalData[h5cModalNextHistory];
-            $("#"+ h5cModalNextHistory).remove();
-            h5cModalNextHistory = null;
-        }
-    });
-}
-function h5cModalOpen(url, pos, w, h, title, opt)
-{
-    var urid = Crypto.MD5("modal"+url);
-
-    if (/\?/.test(url)) {
-        urls = url + "&_=";
-    } else {
-        urls = url + "?_=";
-    }
-    urls += Math.random();
-
-    var p  = posFetch();
-    var bw = $('body').width() - 60;
-    var bh = $('body').height() - 50;
-    
-    $.ajax({
-        url     : urls,
-        type    : "GET",
-        timeout : 30000,
-        success : function(rsp) {
-
-            var firstload = false;
-            if (h5cModalCurrent == null) {
-                $(".h5c-modal").remove();
-                firstload = true;
-            }
-            h5cModalCurrent = urid;
-            h5cModalData[urid] = {
-                "urid":     urid,
-                "url":      url,
-                "title":    title,
-                "btns":     {},
-            }
-            $(".h5c-modal-footer").empty();            
-
-            var pl = '<div class="h5c-modal-body-pagelet h5c_gen_scroll" id="'+urid+'">'+rsp+'</div>';
-            
-            if (firstload) {
-                var apd = '<div class="h5c-modal">';
-                
-                apd += '<div class="h5c-modal-header">\
-                <span class="title">'+title+'</span>\
-                <button class="close" onclick="h5cModalClose()">×</button>\
-                </div>';
-                
-                apd += '<div class="h5c-modal-body">';
-                apd += '<div class="h5c-modal-body-page">'+pl+'</div>';
-                apd += '</div>';
-                
-                apd += '<div class="h5c-modal-footer"><div>';
-                apd += '</div>'
-
-                $("body").append(apd);
-            } else {
-                $(".h5c-modal-body-page").append(pl);
-                
-            }
-
-            $("#"+urid).css({
-                "z-index": "-100"
-            }).show();
-
-            if (!$('.h5c-modal').is(':visible')) {
-                $(".h5c-modal").css({
-                    "z-index": "-100"
-                }).show();
-            }
-                
-            if (firstload) {
-
-                var hh = $('.h5c-modal-header').outerHeight(true);
-                var fh = $('.h5c-modal-footer').outerHeight(true);
-                
-                if (w < 1) {
-                    w = $("#"+urid).outerWidth(true);
-                }
-                if (w < 200) {
-                    w = 200;
-                }
-                if (h < 1) {
-                    h = $("#"+urid).outerHeight(true) + hh + fh + 10;
-                }
-                if (h < 100) {
-                    h = 100;
-                }
-
-                var t = 0, l = 0;
-                if (pos == 1) {
-                    l = bw / 2 - w / 2;
-                    t = bh / 2 - h / 2;
-                } else {
-                    l = p.left;
-                    t = p.top;
-                }
-                if (l > (bw - w)) {
-                    l = bw - w;
-                }
-                if ((t + h) > bh) {
-                    t = bh - h;
-                }
-                if (t < 10) {
-                    t = 10;
-                }
-
-                $(".h5c-modal").css({
-                    "height": h +'px',
-                    "width": w +'px',
-                });
-                
-                h5cModalBodyHeight = h - hh - fh - 10;
-                h5cModalBodyWidth  = $('.h5c-modal-body').width();
-                $(".h5c-modal-body").height(h5cModalBodyHeight);
-            }
-            
-            $("#"+urid).css({
-                "z-index"   : "1",
-                "width"     : h5cModalBodyWidth +"px",
-                "height"    : h5cModalBodyHeight +"px",
-            });
-            
-            pp = $('#'+ urid).position();
-            mov = pp.left;
-            if (mov < 0) {
-                mov = 0;
-            }
-            
-            if (!$('.h5c-modal-bg').is(':visible')) {
-                $(".h5c-modal-bg").remove();
-                $("body").append('<div class="h5c-modal-bg">');
-            }
-            
-            if (firstload) {
-                $(".h5c-modal").css({
-                    "z-index": 100,
-                    "top": t +'px',
-                    "left": l +'px',
-                //}).hide().slideDown(200, function() {
-                }).hide().show(150, function() {
-                    h5cModalResize();
-                });
-            }
-            $('.h5c-modal-body-page').animate({top: 0, left: "-"+ mov +"px"}, 200, function() {
-                $(".h5c-modal-header .title").text(title);
-                $("#"+urid+" .inputfocus").focus();
-
-                if (h5cModalNextHistory != null) {
-                    delete h5cModalData[h5cModalNextHistory];
-                    $("#"+ h5cModalNextHistory).remove();
-                    h5cModalNextHistory = null;
-                }
-            });
-        },
-        error: function(xhr, textStatus, error) {
-            hdev_header_alert('error', xhr.responseText);
-        }
-    });
-}
-function h5cModalResize()
-{
-    var h  = $('.h5c-modal').height();
-    var hh = $('.h5c-modal-header').outerHeight(true);
-    var fh = $('.h5c-modal-footer').outerHeight(true);
-    h5cModalBodyHeight = h - hh - fh - 10;
-    $('.h5c-modal-body').height(h5cModalBodyHeight);
-    $('.h5c-modal-body-pagelet').height(h5cModalBodyHeight);
-}
-function h5cModalButtonAdd(id, title, func, style)
-{
-    $(".h5c-modal-footer")
-        .append("<button class='btn btn-small "+style+"' onclick='"+func+"'>"+ title +"</button>")
-        .show(0, function() {
-            h5cModalResize();
-            h5cModalData[h5cModalCurrent].btns[id] = {
-                "title":    title,
-                "func":     func,
-                "style":    style,
-            }
-        });
-}
-
-function h5cModalClose()
-{    
-    //$(".h5c-modal").slideUp(150, function(){
-    $(".h5c-modal").hide(150, function(){
-        $(this).remove();
-        $(".h5c-modal-bg").remove();
-        h5cModalData = {};
-        h5cModalCurrent = null;
-        h5cModalBodyWidth = null;
-        h5cModalBodyHeight = null;
-    });
-}
 
 var h5cDialogPool = {};
 var h5cDialogCurrent = "";
@@ -299,7 +57,7 @@ function h5cDialogOpen(url, width, height, title, opt)
             }
 
             if (!$("#dpl"+ urid).length) {
-                $("#h5c_dialog_page").append('<div class="h5c_dialog_pagelet h5c_gen_scroll" id="dpl'+urid+'">'+rsp+'</div>');
+                $("#h5c_dialog_page").append('<div class="h5c_dialog_pagelet less_gen_scroll" id="dpl'+urid+'">'+rsp+'</div>');
             }
 
             if (h5cDialogW == 0) {
@@ -397,7 +155,7 @@ var h5cTabletPool = {};
 
 function h5cTabOpen(uri, target, type, opt)
 {
-    var urid = Crypto.MD5(uri);
+    var urid = lessCryptoMd5(uri);
 
     if (!h5cTabletFrame[target]) {
         h5cTabletFrame[target] = {
@@ -478,7 +236,7 @@ function h5cTabletOpen(url, target, type, title)
         alert("Failed to connect to database."); 
         return;
     } */
-    urid = Crypto.MD5(url);
+    urid = lessCryptoMd5(url);
     h5cTabletFrame[target] = {
         'urid': urid,
         'status': ''
@@ -604,7 +362,7 @@ function h5cTabletMore(tg)
     }
     $('.pgtab-openfiles-ol').html(ol);
     
-    e = h5cGenPosFetch();
+    e = lessPosGet();
     w = 100;
     h = 100;
     //console.log("event top:"+e.top+", left:"+e.left);
@@ -758,29 +516,6 @@ function h5cLayoutResize()
     $('#h5c-tablet-body-t0').height(lo_h - tt0h);    
 }
 
-var h5cPos = null;
-function h5cGenPosFetch()
-{
-    if (window.event) {
-        h5cPos = {"left": window.event.pageX, "top": window.event.pageY};
-    } else if (h5cPos == null) {
-        $(document).mousemove(function(e) {
-            h5cPos = {"left": e.pageX, "top": e.pageY};
-        });
-    }
-    
-    return h5cPos;
-}
-
-function h5cGenAlert(obj, type, msg)
-{    
-    if (type == "") {
-        $(obj).hide();
-    } else {
-        $(obj).removeClass().addClass("alert "+ type).html(msg).show();
-    }
-}
-
 
 function h5cProjectOpen(proj)
 {
@@ -821,21 +556,6 @@ function h5cProjSet()
 {
     h5cTabOpen('/h5creator/proj/set?proj='+projCurrent, 
         't0', 'html', {'title': 'Project Setting', 'close':'1'});
-}
-
-var h5cSession = {};
-h5cSession.delPrefix = function(prefix)
-{
-    var prelen = prefix.length;
-    var qs = {};
-    for (var i = 0, len = sessionStorage.length; i < len; i++) {
-        if (sessionStorage.key(i).slice(0, prelen) == prefix) {
-            qs[i] = sessionStorage.key(i);
-        }
-    }
-    for (var i in qs) {
-        sessionStorage.removeItem(qs[i]);
-    }
 }
 
 //author: meizz   

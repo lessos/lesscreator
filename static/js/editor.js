@@ -55,7 +55,7 @@ function h5cTabletEditorOpen(urid)
                     $('#src'+urid).text(obj.content);
                     h5cTabletPool[urid].data = obj.content;
                     h5cTabletPool[urid].mime = obj.mime;
-                    h5cTabletPool[urid].hash = Crypto.MD5(obj.content);
+                    h5cTabletPool[urid].hash = lessCryptoMd5(obj.content);
                     h5cEditorLoad(urid);                
                 } else {
                     hdev_header_alert('error', obj.msg);
@@ -189,7 +189,7 @@ function h5cEditorSave(urid, force)
         return;
     }
 
-    var hash = Crypto.MD5($("#src"+urid).val());
+    var hash = lessCryptoMd5($("#src"+urid).val());
     if (hash == item.hash) {
         console.log("Nothing change, skip ~");
         return;

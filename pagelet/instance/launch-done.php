@@ -3,7 +3,7 @@
     <p>You have successfully completed all the configuration</p>
 
     <br />
-    <button class="btn" onclick="h5cModalClose()">Close</button>
+    <button class="btn" onclick="lessModalClose()">Close</button>
 </div>
 
 <script type="text/javascript">

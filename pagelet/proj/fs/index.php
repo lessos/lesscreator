@@ -55,7 +55,7 @@ $ptpath = md5("");
 
 
 <!--ProjectFilesManager-->
-<div id="pt<?=$ptpath?>" class="hdev-proj-files h5c_gen_scroll" style="padding-top:10px;"></div>
+<div id="pt<?=$ptpath?>" class="hdev-proj-files less_gen_scroll" style="padding-top:10px;"></div>
 
 
 <script type="text/javascript">
@@ -107,7 +107,7 @@ function _fs_file_new_modal(type, path)
     }
 
     var url = "/h5creator/proj/fs/file-new?path="+ path +"&type="+ type;
-    h5cModalOpen(url, 0, 550, 160, tit, null);
+    lessModalOpen(url, 0, 550, 160, tit, null);
 }
 
 function _fs_file_new_callback(path)
@@ -127,14 +127,14 @@ function _fs_file_upl_modal(path)
     
     var tit = "Upload File From Location";
     var url = "/h5creator/proj/fs/file-upl?path="+ path;
-    h5cModalOpen(url, 0, 550, 160, tit, null);
+    lessModalOpen(url, 0, 550, 160, tit, null);
 }
 
 function _fs_file_mov_modal(path)
 {
     var tit = "Rename File/Folder";
     var url = "/h5creator/proj/fs/file-mov?path="+ path;
-    h5cModalOpen(url, 0, 550, 160, tit, null);
+    lessModalOpen(url, 0, 550, 160, tit, null);
 }
 
 
@@ -201,7 +201,7 @@ function _fs_tree_refresh()
 function _fs_tree_dir(path, force)
 {
     path = path.replace(/(^\/*)|(\/*$)/g, "");
-    p = Crypto.MD5(path);
+    p = lessCryptoMd5(path);
 
     if (force != 1 && $("#pt"+p).html() && $("#pt"+p).html().length > 1) {
         $("#pt"+p).empty();
@@ -222,7 +222,7 @@ function _fs_tree_dir(path, force)
 function _fs_file_del(path)
 {
     path = path.replace(/(^\/*)|(\/*$)/g, "");
-    p = Crypto.MD5(path);
+    p = lessCryptoMd5(path);
     
     var req = {
         proj : sessionStorage.ProjPath,

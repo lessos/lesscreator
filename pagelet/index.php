@@ -1,14 +1,23 @@
-<!DOCTYPE html>
+<?php
+
+use LessPHP\User\Session;
+
+$inst = Session::Instance();
+
+
+?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <title>MQ DEMO</title>
   <script src="/jquery/jquery-2.0.min.js"></script>
+  <script src="/lessui/js/less.js"></script>
   <script src="/bootstrap2/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="/bootstrap2/css/bootstrap.min.css"   media="all" />
-  <link rel="stylesheet" type="text/css" href="/codemirror3/lib/codemirror.css"   media="all" />
-  <link rel="stylesheet" type="text/css" href="/h5creator/static/css/def.css" media="all" />
-  <link rel="shortcut icon" type="image/x-icon" href="/h5creator/static/img/hooto-xicon-mc.ico" /> 
+  <link href="/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/codemirror3/lib/codemirror.css" rel="stylesheet" />
+  <link href="/lessui/css/def.css" rel="stylesheet" />
+  <link href="/h5creator/static/css/def.css" rel="stylesheet" />
+  <link href="/h5creator/static/img/hooto-xicon-mc.ico" rel="shortcut icon" type="image/x-icon" /> 
 </head>
 <body style="background:#D8DCE0 url(/h5creator/static/img/body.png) repeat-x;">
 
@@ -17,7 +26,7 @@
     <td width="10px"></td>
 
     <td class="header_logo" width="160px">
-      <img src="/h5creator/static/img/hooto-logo-mc-h30.png" />
+      <img src="/h5creator/static/img/hooto-logo-mc-h30s.png" />
       <span class="title">Creator</span>
     </td>
 
@@ -164,7 +173,7 @@
               </div>
             </div>
 
-            <div id="h5c-tablet-body-w1" class="h5c_tablet_body h5c_gen_scroll"></div>
+            <div id="h5c-tablet-body-w1" class="h5c_tablet_body less_gen_scroll"></div>
 
           </td>
         </tr>
@@ -192,7 +201,7 @@
               </div>
             </div>
 
-            <div id="h5c-tablet-body-t0" class="h5c_tablet_body h5c_gen_scroll"></div>
+            <div id="h5c-tablet-body-t0" class="h5c_tablet_body less_gen_scroll"></div>
 
           </td>
         </tr>
@@ -210,7 +219,7 @@
               </div>
             </div>
 
-            <div id="h5c-tablet-body-t1" class="h5c_tablet_body h5c_gen_scroll"></div>
+            <div id="h5c-tablet-body-t1" class="h5c_tablet_body less_gen_scroll"></div>
 
           </td>
         </tr>
@@ -223,7 +232,7 @@
   </tr>
 </table>
 
-<div class="pgtab-openfiles-ol hdev-lcmenu h5c_gen_scroll"></div>
+<div class="pgtab-openfiles-ol hdev-lcmenu less_gen_scroll"></div>
 
 <div id="h5c_dialog" class="border_radius_t5 displaynone">
   <table class="h5c_dialog_title border_radius_t5" width="100%">
@@ -249,10 +258,7 @@
 <script src="/h5creator/static/js/c.js"></script>
 <script src="/h5creator/static/js/gen.js"></script>
 <script src="/h5creator/static/js/editor.js"></script>
-
-<script src="/h5creator/static/js/crypto-min.js"></script>
-<script src="/h5creator/static/js/md5-min.js"></script>
-<script src="/h5creator/static/js/BrowserDetect.js"></script>
+<script src="/lessui/js/BrowserDetect.js"></script>
 
 <script src="/codemirror3/lib/codemirror.min.js"></script>
 <script src="/codemirror3/addon/mode/loadmode.js"></script>
@@ -274,6 +280,8 @@ $(document).ready(function() {
         $('body').load('/h5creator/app/err-browser/');
         return;
     }
+    
+    
     
     window.onbeforeunload = function() {
         //return "Leave the page and lose your changes?";

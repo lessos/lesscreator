@@ -52,9 +52,9 @@ $datasetid = LessPHP_Util_String::rand(8, 2);
 </form>
 
 <script>
-h5cModalButtonAdd("hril76", "Close", "h5cModalClose()", "");
-h5cModalButtonAdd("edmfpf", "Confirm and Commit", "_data_new_rds()", "btn-inverse");
-h5cModalButtonAdd("d2jns6", "Back", "h5cModalPrev()", "pull-left h5c-marginl0");
+lessModalButtonAdd("hril76", "Close", "lessModalClose()", "");
+lessModalButtonAdd("edmfpf", "Confirm and Commit", "_data_new_rds()", "btn-inverse");
+lessModalButtonAdd("d2jns6", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
 
 function _data_new_rds()
 {
@@ -71,10 +71,10 @@ function _data_new_rds()
                 rsp += '<p>Your DataSet has been created successfully</p>';
                 rsp += '<p><a class="btn" href="#" onclick="_data_create_open()">Manage</a></p>';
 
-                h5cGenAlert("#h5c_dialog_alert", "alert-success", rsp);
+                lessAlert("#h5c_dialog_alert", "alert-success", rsp);
                 
             } else {
-                h5cGenAlert("#h5c_dialog_alert", "alert-error", rsp);
+                lessAlert("#h5c_dialog_alert", "alert-error", rsp);
             }
         }
     });
@@ -92,6 +92,6 @@ function _data_create_open()
     if (typeof _proj_data_tabopen == 'function') {
         _proj_data_tabopen('/h5creator/proj/data/list?proj='+ projCurrent, 1);
     }
-    h5cModalClose();
+    lessModalClose();
 }
 </script>

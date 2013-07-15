@@ -24,8 +24,8 @@ $pathpre = substr($path, 0, strrpos($path, "/"));
 
 <script type="text/javascript">
 
-h5cModalButtonAdd("fjbcw8", "Create", "_fs_file_mov()", "btn-inverse pull-left");
-h5cModalButtonAdd("y9e9be", "Cancel", "h5cModalClose()", "pull-left");
+lessModalButtonAdd("fjbcw8", "Create", "_fs_file_mov()", "btn-inverse pull-left");
+lessModalButtonAdd("y9e9be", "Cancel", "lessModalClose()", "pull-left");
 
 $(".k2tcrh").focus();
 
@@ -60,7 +60,7 @@ function _fs_file_mov()
             }
 
             _fs_file_new_callback(req.pathpre);
-            h5cModalClose();
+            lessModalClose();
         },
         error   : function(xhr, textStatus, error) {
             hdev_header_alert('error', textStatus+' '+xhr.responseText);
