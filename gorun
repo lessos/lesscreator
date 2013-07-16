@@ -1,0 +1,23 @@
+#!/bin/bash
+
+echo "DIRs"
+find ./src -type d  | wc -l
+echo "FILEs"
+find ./src -type f  | wc -l
+echo "LINEs"
+find ./src -name "*.go" |xargs cat|grep -v ^$|wc -l
+echo "DETAILs"
+find ./src -type f -name "*.go" | xargs wc -l | sort -n
+
+dirs=`find ./src -type d |xargs`
+for dir in $dirs; do
+    echo ${dir}
+    gofmt -tabwidth=4 -tabs=false -w=true ${dir}/*.go
+done
+
+rm -f ./bin/h5creator-server
+
+go build -o ./bin/h5creator-server ./src/server.go 
+
+./bin/h5creator-server
+
