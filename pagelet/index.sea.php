@@ -12,13 +12,6 @@ if (!Session::IsLogin()) {
   <meta charset="utf-8">
   <title>MQ DEMO</title>
   <script src="/lessui/js/sea.js"></script>
-  <script src="/jquery/jquery-2.0.min.js"></script>
-  <script src="/lessui/js/less.js"></script>
-  <script src="/bootstrap2/js/bootstrap.min.js"></script>
-  <link href="/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="/codemirror3/lib/codemirror.css" rel="stylesheet" />
-  <link href="/lessui/css/def.css" rel="stylesheet" />
-  <link href="/h5creator/static/css/def.css" rel="stylesheet" />
   <link href="/h5creator/static/img/hooto-xicon-mc.ico" rel="shortcut icon" type="image/x-icon" /> 
 </head>
 <body style="background:#D8DCE0 url(/h5creator/static/img/body.png) repeat-x;">
@@ -300,31 +293,68 @@ if (!Session::IsLogin()) {
 </div>
 </body>
 </html>
-<script src="/h5creator/static/js/c.js"></script>
-<script src="/h5creator/static/js/gen.js"></script>
-<script src="/h5creator/static/js/editor.js"></script>
-<script src="/lessui/js/BrowserDetect.js"></script>
 
-<script src="/codemirror3/lib/codemirror.min.js"></script>
-<script src="/codemirror3/addon/mode/loadmode.js"></script>
-<script src="/codemirror3/addon/search/searchcursor.js"></script>
-<script src="/codemirror3/keymap/vim.js"></script>
 <script>
 
-$(document).ready(function() {
+seajs.config({
+    alias: {
 
-    if (!isValidBrowser()) {        
-        $('body').css({
-            width: '100%',
-            height: '100%',
-            'min-height': '100px',
-            'min-width': '400px',
-            'background': '#333'
+        "jquery": "/jquery/jquery-2.0.min.js",
+
+        "less_bd": "/lessui/js/BrowserDetect.js",
+        "less_core": "/lessui/js/less.js",
+        "less_css": "/lessui/css/def.css",
+
+        "bt": "/bootstrap2/js/bootstrap.min.js",
+        "bt_css": "/bootstrap2/css/bootstrap.min.css",
+
+        "loc_css": "/h5creator/static/css/def.css",
+        "loc_main": "/h5creator/static/js/c.js",
+        "loc_gen": "/h5creator/static/js/gen.js",
+        "loc_editor": "/h5creator/static/js/editor.js",
+        
+        "cm_loadmode":  "/codemirror3/addon/mode/loadmode.js",
+        "cm_searchcursor": "/codemirror3/addon/search/searchcursor.js",
+        "cm_vim": "/codemirror3/keymap/vim.js",
+        "cm_core": "/codemirror3/lib/codemirror.min.js",
+        "cm_css": "/codemirror3/lib/codemirror.css"
+    }
+});
+
+seajs.use(["less_bd"], function() {
+
+    if (!isValidBrowser()) {
+        
+        seajs.use(["loc_css", "jquery"], function() {
+
+            $('body').css({
+                width: '100%',
+                height: '100%',
+                'min-height': '100px',
+                'min-width': '400px',
+                'background': '#333'
+            });
+
+            $('body').load('/h5creator/app/err-browser/');
         });
-        $('body').load('/h5creator/app/err-browser/');
+
         return;
     }
-    
+
+    seajs.use(["loc_css", "bt_css", "jquery", "less_core", "bt",
+        "loc_main", "loc_gen", "loc_editor"], function() {
+
+        $(document).ready(function() {
+            h5cInit();
+        });
+    });
+});
+
+//seajs.use(["jquery"], function() {
+//$(document).ready(function() {
+
+function h5cInit()
+{
     window.onbeforeunload = function() {
         //return "Leave the page and lose your changes?";
     }
@@ -389,6 +419,8 @@ $(document).ready(function() {
     h5cLayoutResize();
     setTimeout(h5cLayoutResize, 3000);
 
-    //seajs.use(["cm_css", "cm_core", "cm_loadmode", "cm_vim", "cm_searchcursor"]);
-});
+    seajs.use(["cm_css", "cm_core", "cm_loadmode", "cm_vim", "cm_searchcursor"]);
+}
+//});
+//});
 </script>

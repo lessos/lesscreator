@@ -125,6 +125,11 @@ function h5cEditorLoad(urid)
             break;
     }
 
+    //seajs.use(["cm_css", "cm_core"], function() {
+    //require("cm_loadmode");
+    //, "/codemirror3/mode/"+mode+"/"+mode+".js"
+    //seajs.use(["cm_loadmode"], function() {
+
     h5cEditor.urid = urid;
 
     h5cEditor.instance = CodeMirror.fromTextArea(document.getElementById('src'+urid), {
@@ -163,8 +168,11 @@ function h5cEditorLoad(urid)
     // TODO
     h5cLayoutResize();
     setTimeout(h5cLayoutResize, 100);
+    //});
+    //});
 }
 
+var h5cServerAPI    = "web.example.com:9531/h5creator/api";
 var h5cEditorSaveAPI  = "ws://"+h5cServerAPI+"/fs-save-ws";
 var h5cEditorSaveSock = null;
 

@@ -26,7 +26,7 @@ function h5cDialogTitle(title)
     $(".h5c_dialog_titlec").text(title);
 }
 
-var h5cServerAPI    = "web.example.com:9531/h5creator/api";
+
 
 
 var h5cDialogPool = {};
