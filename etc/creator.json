@@ -1,0 +1,5 @@
+{
+    "apiport": "9531",
+    "keeperagent": "127.0.0.1:9528",
+    "appengineprefix": "/opt/src/m12/h5app"
+}
