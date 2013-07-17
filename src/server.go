@@ -2,24 +2,50 @@ package main
 
 import (
     "./api"
-    "log"
+    "./conf"
+    "flag"
+    "fmt"
+    //"log"
+    "../deps/lessgo/keeper"
+    "../deps/lessgo/passport"
+    "os"
     "os/user"
     "time"
 )
 
+const VERSION string = "1.0.0"
+
+var cfg conf.Config
 var apiserv api.Api
+var kpr keeper.Keeper
+var ses passport.Session
+
+var flagPrefix = flag.String("prefix", "", "the prefix folder path")
 
 func main() {
 
-    u, err := user.Current()
-    if err != nil {
-        log.Fatal(err)
-    }
-    if u.Uid != "0" {
-        //log.Fatal("Must be run as root")
+    var err error
+
+    if u, err := user.Current(); err != nil || u.Uid != "0" {
+        //log.Fatal("Permission Denied : must be run as root")
     }
 
-    go apiserv.Serve("9531")
+    //
+    flag.Parse()
+    if cfg, err = conf.NewConfig(*flagPrefix); err != nil {
+        fmt.Println(err)
+        os.Exit(1)
+    }
+    cfg.Version = VERSION
+
+    kpr, _ = keeper.NewKeeper(cfg.KeeperAgent)
+
+    ses, _ = passport.NewSession(kpr)
+
+    apiserv.Session = ses
+    apiserv.Cfg = cfg
+
+    go apiserv.Serve(cfg.ApiPort)
 
     for {
         time.Sleep(3e9)

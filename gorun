@@ -17,7 +17,7 @@ done
 
 rm -f ./bin/h5creator-server
 
-go build -o ./bin/h5creator-server ./src/server.go 
+go build -o ./bin/h5creator-server ./src/server.go
 
-./bin/h5creator-server
+./bin/h5creator-server --prefix=/opt/src/m12/h5app/app/h5creator
 

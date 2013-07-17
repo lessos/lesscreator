@@ -2,12 +2,17 @@ package api
 
 import (
     "../../deps/go.net/websocket"
+    "../../deps/lessgo/passport"
+    "../conf"
     "fmt"
     "net/http"
     "time"
 )
 
-type Api int
+type Api struct {
+    Session passport.Session
+    Cfg     conf.Config
+}
 
 func (this *Api) Serve(port string) {
 
@@ -24,6 +29,8 @@ func (this *Api) Serve(port string) {
         http.HandleFunc("/h5creator/api/fs-file-mov", FsFileMov)
         http.HandleFunc("/h5creator/api/fs-file-upl", FsFileUpl)
         http.Handle("/h5creator/api/fs-save-ws", websocket.Handler(FsSaveWS))
+
+        http.HandleFunc("/h5creator/api/env-init", this.EnvInit)
 
         s := &http.Server{
             Addr:    ":" + port,
