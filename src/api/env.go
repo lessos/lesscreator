@@ -2,7 +2,7 @@ package api
 
 import (
     "../utils"
-    "fmt"
+    //"fmt"
     "io"
     "io/ioutil"
     "net/http"
@@ -15,15 +15,18 @@ import (
     //"../../deps/lessgo/passport"
 )
 
+type ApiEnvResponse struct {
+    ApiResponse
+    Data struct {
+        BaseDir string `json:"basedir"`
+    }   `json:"data"`
+}
+
 func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
 
-    rsp := struct {
-        Status  int    `json:"status"`
-        Message string `json:"message"`
-    }{
-        400,
-        "Bad Request",
-    }
+    var rsp ApiEnvResponse
+    rsp.Status = 400
+    rsp.Message = "Bad Request"
 
     defer func() {
         if rspj, err := utils.JsonEncode(rsp); err == nil {
@@ -61,7 +64,6 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
     u, e := user.Lookup(osuser)
     if e != nil {
         nologin, err := exec.LookPath("nologin")
-        fmt.Println("AA", nologin)
         if err != nil {
             return
         }
@@ -73,13 +75,13 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
     }
     uuid, _ := strconv.Atoi(u.Uid)
     ugid, _ := strconv.Atoi(u.Gid)
-    fmt.Println(userpath)
+    //fmt.Println(userpath)
     // Instance Folder
     makedir(userpath, uuid, ugid, 0755)
     makedir(userpath+"/webpub", uuid, ugid, 0755)
     makedir(userpath+"/conf", uuid, ugid, 0777)
     makedir(userpath+"/data", uuid, ugid, 0777)
-    makedir(userpath+"/app", uuid, ugid, 0755)
+    makedir(userpath+"/app", uuid, ugid, 0777)
 
     //
     if _, err := exec.Command("/bin/cp", "-rp",
@@ -89,8 +91,9 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    fmt.Println(sess.Uid)
+    //fmt.Println(sess.Uid)
 
+    rsp.Data.BaseDir = userpath
     rsp.Status = 200
     rsp.Message = "OK"
 }

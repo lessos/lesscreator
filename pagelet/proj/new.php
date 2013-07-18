@@ -1,6 +1,6 @@
 <?php
 
-$basedir = H5C_DIR;
+$basedir = h5creator_proj::path("");
 
 if (!isset($this->req->projid)
     || strlen($this->req->projid) < 1) {
@@ -17,64 +17,77 @@ $basedir = rtrim(preg_replace("/\/\/+/", "/", $basedir), '/');
 
 $f = "{$basedir}/{$projid}/lcproject.json";
 $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
+
 if (file_exists($f)) {
-    die('Cannot create Project: AppID exists');
+    die('Cannot create Project: Project ID exists');
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'
     || $_SERVER['REQUEST_METHOD'] == 'PUT') {
-    
-    if (!strlen($this->req->name)) {
-        die("Name cannot be null");
-    }
 
-    if (!strlen($projid)) {
-        die("Name cannot be null");
-    }
-
-    $set = array(
-        'projid'  => $projid,
-        'name'    => $this->req->name,
-        'summary' => $this->req->summary,
-        'version' => '0.0.1',
-        'release' => '0',
-        'depends' => '',
-        'props'   => '',
-        'types'   => '',
-        'arch'    => 'all',
+    $ret = array(
+        'status'  => 200,
+        'message' => '',
     );
-    if (isset($this->req->props)) {
-        $set['props'] = implode(",", $this->req->props);
-    }
-    if (isset($this->req->types)) {
-        $set['types'] = implode(",", $this->req->types);
-    }
 
-    $str = hwl_Json::prettyPrint($set);
-    if (hwl_Fs_Dir::mkfiledir($f, 0755)) {
-    
-        if (!is_writable("{$f}")) {
-            header("HTTP/1.1 500"); die("The Project is not Writable ($f)");
+    try {
+        
+        if (!strlen($this->req->name)) {
+            throw new \Exception("Name cannot be null", 400);
         }
 
-        $fp = fopen($f, 'w');
-        if ($fp === false) {
-            header("HTTP/1.1 500"); die("Can Not Open ($f)");
+        if (!strlen($projid)) {
+            throw new \Exception("Project ID cannot be null", 400);
         }
+
+        $set = array(
+            'projid'  => $projid,
+            'name'    => $this->req->name,
+            'summary' => $this->req->summary,
+            'version' => '0.0.1',
+            'release' => '0',
+            'depends' => '',
+            'props'   => '',
+            'types'   => '',
+            'arch'    => 'all',
+        );
+        if (isset($this->req->props)) {
+            $set['props'] = implode(",", $this->req->props);
+        }
+        if (isset($this->req->types)) {
+            $set['types'] = implode(",", $this->req->types);
+        }
+
+        $str = hwl_Json::prettyPrint($set);
+        if (hwl_Fs_Dir::mkfiledir($f, 0755)) {
         
-        fwrite($fp, $str);
-        fclose($fp);
-        chmod($f, 0664);
-        
-        $msg = "OK";
-    } else {
-        $msg = "ERROR";
+            if (!is_writable("{$f}")) {
+                throw new \Exception("The Project is not Writable ($f)", 500);
+            }
+
+            $fp = fopen($f, 'w');
+            if ($fp === false) {
+                throw new \Exception("Can Not Open ($f)", 500);
+            }
+            
+            fwrite($fp, $str);
+            fclose($fp);
+            chmod($f, 0664);
+            
+        } else {
+            throw new \Exception("Can Not Create Directory ({$f})", 500);
+        }
+
+    } catch (\Exception $e) {
+        $ret['status']  = $e->getCode();
+        $ret['message'] = $e->getMessage();
     }
 
-    die($msg);
+    die(json_encode($ret));
 }
 ?>
 
+<div id="m4ph6m" class="hide"></div>
 <div class="h5c_alert displaynone" style="padding:10px;">
 <div class="alert alert-success">
   <p>
@@ -100,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
       <td ><input name="name" type="text" value="" /></td>
     </tr>
     <tr>
-      <td valign="top"><strong>AppID</strong></td>
+      <td valign="top"><strong>Project ID</strong></td>
       <td>
         <div class="input-prepend">
           <button type="button" class="btn" onclick="_proj_new_dir('')">
@@ -132,21 +145,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
   </table>
 </form>
 
-<table id="_proj_new_foo" class="h5c_dialog_footer" width="100%">
-    <tr> 
-        <td width="20px"></td>
-        <td>
-            <button id="_proj_new_open_btn" class="btn btn-inverse" onclick="_proj_new_commit()">Create Project</button>
-        </td>
-        <td align="right">
-            
-            <button class="btn" onclick="h5cDialogClose()">Close</button>
-        </td>
-        <td width="20px"></td>
-    </tr>
-</table>
 
 <script>
+lessModalButtonAdd("d4ngex", "Confirm and Create", "_proj_new_commit()", "btn-inverse");
+lessModalButtonAdd("p5ke7m", "Close", "lessModalClose()", "");
+
+
 var _basedir = '<?php echo $basedir?>';
 var _projid = "";
 
@@ -159,13 +163,13 @@ function _proj_new_dir(path)
     $.get('/h5creator/proj/new-fs?path='+ path, function(data) {
         
         $('#_proj_new_dir').empty();
-        bh = $("#_proj_new_form").height();
+        //bh = $("#_proj_new_form").height();
 
         $('#_proj_new_dir').html(data).show();
-        fp = $("#_proj_new_foo").position();
-        bp = $("#_proj_new_form").position();
+
+        //bp = $("#_proj_new_form").position();
         
-        $("#_proj_new_dir_body").height(fp.top - bp.top - bh - 70);        
+        //$("#_proj_new_dir_body").height(fp.top - bp.top - bh - 70);        
 
         $("._proj_new_basedir").val(path);
         $("._proj_new_basedir_dp").text(path +'/');
@@ -175,20 +179,37 @@ function _proj_new_dir(path)
 function _proj_new_commit()
 {
     $.ajax({
-        type: "POST",
-        url: $("#_proj_new_form").attr('action'),
-        data: $("#_proj_new_form").serialize(),
-        success: function(data) {
-            if (data == "OK") {
-                $("#_proj_new_open_btn").hide();
-                $("#_proj_new_form").hide();
-                $(".h5c_alert").show();
+        type    : "POST",
+        url     : $("#_proj_new_form").attr('action'),
+        data    : $("#_proj_new_form").serialize(),
+        success : function(rsp) {
+//console.log(rsp);
+            try {
+                var rsj = JSON.parse(rsp);
+            } catch (e) {
+                lessAlert("#m4ph6m", "alert-error", "Error: Service Unavailable");
+                return;
+            }
+
+            if (rsj.status == 200) {
+
+                //$("#_proj_new_open_btn").hide();
+                //$("#_proj_new_form").hide();
+                //$(".h5c_alert").show();
 
                 _basedir = $("#basedir").val();
-                _projid   = $("#projid").val();
+                _projid  = $("#projid").val();
+
+                lessAlert("#m4ph6m", "alert-success", "<p><strong>Well done!</strong> \
+                    You successfully create new project.</p> \
+                    <button class=\"btn btn-success\" onclick=\"_proj_new_goto()\">Open this Project</button>");
+
             } else {
-                alert(data);
-            }            
+                lessAlert("#m4ph6m", "alert-error", "Error: "+ rsj.message);
+            }
+        },
+        error: function(xhr, textStatus, error) {
+            lessAlert("#m4ph6m", "alert-error", "Error: "+ xhr.responseText);
         }
     });
 

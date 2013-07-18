@@ -1,16 +1,12 @@
 <?php
-$projbase = H5C_DIR;
 
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
+
+$projPath = h5creator_proj::path($this->req->proj);
 
 $grpid = $this->req->grpid;
 
-$fs = $projpath."/dataflow/{$grpid}.grp.json";
+$fs = $projPath."/dataflow/{$grpid}.grp.json";
 if (!file_exists($fs)) {
     die('Bad Request');
 }

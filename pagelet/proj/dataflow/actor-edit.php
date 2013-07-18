@@ -1,15 +1,9 @@
 <?php
-$projbase = H5C_DIR;
 
-$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
+$projPath = h5creator_proj::path($this->req->proj);
 
-$obj = $projpath ."/dataflow";
-$obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
+
+$obj = $projPath ."/dataflow";
 if (!is_writable($obj)) {
     die("'$obj' is not Writable");
 }
@@ -195,14 +189,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $para_datas = explode("_", $actor['para_data']);
 
-            $fsd  = $projpath."/data/{$para_datas[0]}.ds.json";
+            $fsd  = $projPath."/data/{$para_datas[0]}.ds.json";
             $json = file_get_contents($fsd);
             $json = json_decode($json, true);
             if (isset($json['name'])) {
                 $para_data_display = $json['name'];
             }
             
-            $fst  = $projpath."/data/{$para_datas[0]}.{$para_datas[1]}.tbl.json";
+            $fst  = $projPath."/data/{$para_datas[0]}.{$para_datas[1]}.tbl.json";
             $json = file_get_contents($fst);
             $json = json_decode($json, true);
             if (isset($json['tablename'])) {

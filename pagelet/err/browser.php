@@ -46,7 +46,6 @@ $(window).resize(function() {
 
 function _err_brw_resize()
 {
-    console.log("AA");
     var bh = $('body').height();
     var bw = $('body').width();
 

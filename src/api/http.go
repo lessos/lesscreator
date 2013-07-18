@@ -14,6 +14,11 @@ type Api struct {
     Cfg     conf.Config
 }
 
+type ApiResponse struct {
+    Status  int    `json:"status"`
+    Message string `json:"message"`
+}
+
 func (this *Api) Serve(port string) {
 
     fmt.Println("Api.Serve")

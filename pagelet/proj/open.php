@@ -1,14 +1,11 @@
 
-<div style="padding:10px 10px 0 10px;">
 <ul class="nav nav-tabs" style="margin: 5px 0;">
   <li id="_nav_recent" class="active">
     <a href="javascript:_proj_recent()">Recent Projects</a>
   </li>
   <li id="_nav_fs"><a href="javascript:_proj_fs('', 0)">From Directory</a></li>
 </ul>
-</div>
 
-<div style="padding:0 10px;">
 <table id="_proj_open_recent" width="100%" class="table table-condensed">
 
 <?php
@@ -37,7 +34,10 @@ foreach ($pjs as $projid => $val) {
   <td valign="middle" width="18">
     <img src="/h5creator/static/img/app-t3-16.png" align="absmiddle" />
   </td>
-  <td><strong><a href="javascript:_proj_recent_open('<?=$val['path']?>')"><?=$val['name']?></a></strong> <font color="gray">( <?=$val['path']?> ) <?=$noinfo?></font></td>
+  <td>
+    <strong><a href="javascript:_proj_recent_open('<?=$val['path']?>')"><?=$val['name']?></a></strong>
+    <font color="gray">( <?=$val['path']?> ) <?=$noinfo?></font>
+  </td>
   <td align="right">
     <button type="button" class="close" title="Clean out" onclick="_proj_recent_del('<?php echo $projid?>')">&times;</button>
   </td>
@@ -46,9 +46,8 @@ foreach ($pjs as $projid => $val) {
 }
 ?>
 </table>
-</div>
 
-<div id="_proj_open_fs" class="displaynone" height="100px"></div>
+<div id="_proj_open_fs" class="hide"></div>
 
 <script type="text/javascript">
 function _proj_recent()
@@ -58,21 +57,27 @@ function _proj_recent()
     
     $('#_proj_open_fs').hide();
     $('#_proj_open_recent').show();
+
+    lessModalButtonCleanAll();
+    lessModalButtonAdd("p5ke7m", "Close", "lessModalClose()", "");
 }
 
 function _proj_fs(path, force)
 {
     if ($("#_proj_open_fs").is(':empty') || force == 1) {
+        
         $.get('/h5creator/proj/open-fs?path='+ path, function(data) {
+            
             $('#_proj_open_recent').hide();
             $('#_proj_open_fs').empty().html(data).show();
 
             $("#_proj_fs_body").show();
-            bp = $("#_proj_fs_body").position();
-            fp = $("#_proj_fs_open_foo").position();
-            $("#_proj_fs_body").height(fp.top - bp.top - 10);
+            //bp = $("#_proj_fs_body").position();
+            //fp = $("#_proj_fs_open_foo").position();
+            //$("#_proj_fs_body").height(fp.top - bp.top - 10);
 
         });
+
     } else {
         $('#_proj_open_recent').hide();
         $('#_proj_open_fs').show();
@@ -80,6 +85,9 @@ function _proj_fs(path, force)
 
     $("#_nav_recent").removeClass("active");
     $("#_nav_fs").addClass("active");
+
+    lessModalButtonCleanAll();
+    lessModalButtonAdd("p5ke7m", "Close", "lessModalClose()", "");
 }
 
 function _proj_recent_open(path)
@@ -103,4 +111,14 @@ function _proj_recent_del(projid)
         }
     });
 }
+
+<?php
+
+echo "var _basrdir = lessSession.Get('basedir');";
+
+if (count($pjs) == 0) {
+    echo "_proj_fs(_basrdir+'/app', 0);";
+}
+?>
+
 </script>

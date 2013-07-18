@@ -1,9 +1,13 @@
 <?php
-$basedir = H5C_DIR;
+
+$basedir = h5creator_proj::path("");
+
 if (strlen($this->req->path)) {
     $basedir = $this->req->path;
 }
+
 $basedir = rtrim(preg_replace("/\/\/+/", "/", $basedir), '/');
+
 
 $pathl = trim(strrchr($basedir, '/'), '/');
 $paths = explode("/", $basedir);

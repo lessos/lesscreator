@@ -1,24 +1,19 @@
 <?php
 
-$projbase = H5C_DIR;
-
 if ($this->req->proj == null) {
     die('ERROR');
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
-if (strlen($projpath) < 1) {
+
+$projPath = h5creator_proj::path($proj);
+if (strlen($projPath) < 1) {
     die("ERROR");
 }
 
-$projInfo = json_decode(file_get_contents($projpath."/lcproject.json"), true);
+$projInfo = h5creator_proj::info($proj);
 
 if (isset($projInfo['name'])) {
-    
+
     $pjc = SYS_ROOT .'/conf/h5creator/projlist.json';
     $pjs = "";
     if (file_exists($pjc)) {
@@ -28,13 +23,13 @@ if (isset($projInfo['name'])) {
     if (!is_array($pjs)) {
         $pjs = array();
     }
-    
+
     if (!isset($pjs[$projInfo['projid']])
         || $pjs[$projInfo['projid']]['name'] != $projInfo['name']
-        || $pjs[$projInfo['projid']]['path'] != $projpath) {
+        || $pjs[$projInfo['projid']]['path'] != $projPath) {
 
         $pjs[$projInfo['projid']]['name'] = $projInfo['name'];
-        $pjs[$projInfo['projid']]['path'] = $projpath;
+        $pjs[$projInfo['projid']]['path'] = $projPath;
 
         hwl_util_dir::mkfiledir($pjc);
         file_put_contents($pjc, hwl_Json::prettyPrint($pjs));
@@ -63,11 +58,11 @@ $props_def = h5creator_service::listAll();
         if (!isset($props_def[$v])) {
             continue;
         }
-        if (!file_exists($projpath."/{$v}/project.json")) {
+        if (!file_exists($projPath."/{$v}/project.json")) {
             $json = array(
                 'created' => time(),
             );
-            $jsfi = $projpath."/{$v}/project.json";
+            $jsfi = $projPath."/{$v}/project.json";
             hwl_util_dir::mkfiledir($jsfi);
             file_put_contents($jsfi, hwl_Json::prettyPrint($json));
         }
@@ -83,10 +78,10 @@ $props_def = h5creator_service::listAll();
 // TODO $("title").text('<?php echo $projInfo['name']?> - H5 Creator');
 
 <?php
-if (!is_writable("{$projpath}")) {
+if (!is_writable("{$projPath}")) {
     echo 'hdev_header_alert("error", "The Project is not Writable");';
 }
-echo "sessionStorage.ProjPath = '{$projpath}';";
+echo "sessionStorage.ProjPath = '{$projPath}';";
 echo "sessionStorage.ProjId = '{$projInfo['projid']}';";
 ?>
 

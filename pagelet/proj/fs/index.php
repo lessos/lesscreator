@@ -21,18 +21,13 @@ print_r($rs);
 echo "</pre>";
 */
 
-$projbase = H5C_DIR;
-
 if ($this->req->proj == null) {
     die('ERROR');
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
-if (strlen($projpath) < 1) {
+$projPath = h5creator_proj::path($proj);
+
+if (strlen($projPath) < 1) {
     die("ERROR");
 }
 

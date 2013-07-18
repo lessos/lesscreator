@@ -1,16 +1,10 @@
 <?php
-$projbase = H5C_DIR;
-
 
 $status = 200;
 $msg    = 'Saved successfully';//'Internal Server Error';
 
-$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
+$projPath = h5creator_proj::path($this->req->proj);
+
 
 $grps = array();
 
@@ -24,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("HTTP/1.1 500"); die('Invalid Params');
     }
 
-    $obj = $projpath ."/dataflow";
+    $obj = $projPath ."/dataflow";
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
     if (!is_writable($obj)) {
         header("HTTP/1.1 500"); die("'$obj' is not Writable");

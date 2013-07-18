@@ -1,24 +1,19 @@
 <?php
 
-$projbase = H5C_DIR;
-
 if ($this->req->proj == null) {
     die('ERROR');
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
-if (strlen($projpath) < 1) {
+$projPath = h5creator_proj::path($this->req->proj);
+
+if (strlen($projPath) < 1) {
     die("ERROR");
 }
 
 $ptpath = md5("");
 
 $grps = array();
-$glob = $projpath."/dataflow/*.grp.json";
+$glob = $projPath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
     $json = file_get_contents($v);
     $json = json_decode($json, true);
@@ -32,7 +27,7 @@ if (count($grps) == 0) {
     
     $id = hwl_string::rand(8, 2);
 
-    $obj = $projpath ."/dataflow";
+    $obj = $projPath ."/dataflow";
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
     if (!is_writable($obj)) {
         die("'$obj' is not Writable");

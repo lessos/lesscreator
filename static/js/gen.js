@@ -520,7 +520,6 @@ function h5cLayoutResize()
 function h5cProjectOpen(proj)
 {
     if (!proj) {
-        //hdev_page_open('app/project-new', 'content', 'New Project', 'app-t3-16');
         return;
     }
     
@@ -536,7 +535,9 @@ function h5cProjectOpen(proj)
         'title': 'Project',
     };
     h5cTabOpen('/h5creator/app/project?proj='+proj, 't0', 'html', opt);
+    
     projCurrent = proj;
+    
     sessionStorage.ProjPath = proj;
     
     h5cLayoutResize();
@@ -544,12 +545,13 @@ function h5cProjectOpen(proj)
 
 function h5cProjOpenDialog()
 {
-    h5cDialogOpen('/h5creator/proj/open', 700, 450, 'Open Project', null);
+    lessModalOpen('/h5creator/proj/open', 1, 800, 450, 'Open Project', null);
 }
 
 function h5cProjNewDialog()
 {
-    h5cDialogOpen('/h5creator/proj/new', 700, 450, 'Create New Project', null);
+    lessModalOpen('/h5creator/proj/new?basedir='+ lessSession.Get("basedir") +"/app", 
+        1, 800, 450, 'Create New Project', null);
 }
 
 function h5cProjSet()

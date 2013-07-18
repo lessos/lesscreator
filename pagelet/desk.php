@@ -23,7 +23,7 @@ if (!Session::IsLogin()) {
 
     <td align="right">
 
-        <a class="btn btn-small " href="#">
+        <a class="btn btn-small hide" href="#">
             <i class="icon-play-circle"></i> 
             &nbsp;&nbsp;Run&nbsp;&nbsp;
         </a>

@@ -1,25 +1,20 @@
 <?php
 
-$projbase = H5C_DIR;
-
 if ($this->req->proj == null) {
     die('ERROR');
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj,'/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
-if (strlen($projpath) < 1) {
+$projPath = h5creator_proj::path($proj);
+
+if (strlen($projPath) < 1) {
     die("ERROR");
 }
 
 $path = preg_replace("/\/+/", "/", $this->req->path);
-if (!file_exists($projpath .'/'. $path)) {
+if (!file_exists($projPath .'/'. $path)) {
     die('ERROR');
 }
-if (!file_exists($projpath ."/lcproject.json")) {
+if (!file_exists($projPath ."/lcproject.json")) {
     die('ERROR');
 }
 ?>
@@ -27,7 +22,7 @@ if (!file_exists($projpath ."/lcproject.json")) {
 <div>
 
 <?php
-$glob = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projpath}/{$path}/*");
+$glob = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projPath}/{$path}/*");
 
 $prt = $prt0 = '';
 

@@ -1,6 +1,6 @@
 <?php
 
-$path = H5C_DIR;
+$path = "/";
 
 if (strlen($this->req->path)) {
     $path = $this->req->path;
@@ -27,9 +27,7 @@ a._proj_fs_href_click {
 }
 </style>
 
-<div style="padding:0 10px;">
-    
-<ul class="breadcrumb" style="margin:5px 0;">
+<ul class="breadcrumb" style="margin:5px 20px 5px 0;">
     <li><a href="javascript:_proj_fs('/', 1)"><i class="icon-folder-open"></i></a> <span class="divider">/</span></li>
     <?php
     $sl = '';
@@ -46,9 +44,8 @@ a._proj_fs_href_click {
     }
     ?>
 </ul>
-</div>
 
-<div id="_proj_fs_body" class="less_gen_scroll displaynone" style="margin:0 10px;border:1px solid #ccc;">
+<div id="_proj_fs_body" class="less_gen_scroll hide" style="margin-right:20px; border:1px solid #ccc;">
 <table width="100%" sclass="table table-condensed">
 <?php
 foreach (glob($path."/*", GLOB_ONLYDIR) as $st) {
@@ -65,20 +62,6 @@ foreach (glob($path."/*", GLOB_ONLYDIR) as $st) {
 </table>
 </div>
 
-<table id="_proj_fs_open_foo" class="h5c_dialog_footer" width="100%">
-    <tr> 
-        <td width="20px"></td>
-        <td>
-            <button id="_proj_fs_open_btn" class="btn displaynone btn-inverse" onclick="_proj_fs_open()">Open Project</button>
-        </td>
-        <td align="right">
-            
-            <button class="btn " onclick="h5cDialogClose()">Close</button>
-        </td>
-        <td width="20px"></td>
-    </tr>
-</table>
-
 <script>
 
 var _path = <?php echo "'$path'";?>;
@@ -86,7 +69,7 @@ var _path_click = null;
 
 $('._proj_fs_href').dblclick(function() {
     p = $(this).attr('href').substr(1);
-    _proj_fs(_path +'/'+ p, 1)
+    _proj_fs(_path +'/'+ p, 1);
 });
 
 $('._proj_fs_href').click(function() {
@@ -95,7 +78,8 @@ $('._proj_fs_href').click(function() {
 
     $('._proj_fs_href').removeClass('_proj_fs_href_click');
     $(this).addClass('_proj_fs_href_click');
-    $("#_proj_fs_open_btn").show();
+    
+    lessModalButtonAdd("phtswc", "Open Project", "_proj_fs_open()", "pull-left btn-inverse");
 });
 
 function _proj_fs_open()

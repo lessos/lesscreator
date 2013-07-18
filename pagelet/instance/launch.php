@@ -1,23 +1,16 @@
 <?php
-$projbase = H5C_DIR;
 
 $ret = array();
 if ($this->req->proj == null) {
     die(json_encode(array('Status' => 'Error')));
 }
 
-
-$proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
-$projpath = preg_replace("/\/+/", "/", rtrim($projpath, '/'));
-if (strlen($projpath) < 1) {
+$projPath = h5creator_proj::path($this->req->proj);
+if (strlen($projPath) < 1) {
     die(json_encode(array('Status' => 'Error')));
 }
-$projInfo = json_decode(file_get_contents($projpath."/lcproject.json"), true);
+
+$projInfo = h5creator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
     die(json_encode(array('Status' => 'Bad Request')));
 }

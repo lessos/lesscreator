@@ -1,18 +1,12 @@
 <?php
-$projbase = H5C_DIR;
-
 
 $msg    = 'Internal Server Error';
 
-$proj  = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-if (substr($proj, 0, 1) == '/') {
-    $projpath = $proj;
-} else {
-    $projpath = "{$projbase}/{$proj}";
-}
+$projPath = h5creator_proj::path($this->req->proj);
+
 
 $grps = array();
-$glob = $projpath."/dataflow/*.grp.json";
+$glob = $projPath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
     $json = file_get_contents($v);
     $json = json_decode($json, true);
@@ -36,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // actor config
-    $obj = $projpath ."/dataflow";
+    $obj = $projPath ."/dataflow";
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
     if (!is_writable($obj)) {
         die("'$obj' is not Writable");
@@ -56,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     file_put_contents($obj, hwl_Json::prettyPrint($set));
 
     // actor
-    $obj = $projpath ."/dataflow/{$grpid}/{$id}.actor";        
+    $obj = $projPath ."/dataflow/{$grpid}/{$id}.actor";        
     if (!hwl_Fs_Dir::mkfiledir($obj, 0775)) {
         die("Can not create '$obj'");
     }
