@@ -222,6 +222,17 @@ func fsFilePutWrite(file FsFile) error {
     reg, _ := regexp.Compile("/+")
     path := "/" + strings.Trim(reg.ReplaceAllString(file.Path, "/"), "/")
 
+    dir := filepath.Dir(path)
+    if st, err := os.Stat(dir); os.IsNotExist(err) {
+
+        if err = os.MkdirAll(dir, 0750); err != nil {
+            return err
+        }
+
+    } else if !st.IsDir() {
+        return errors.New("Can not create directory, File exists")
+    }
+
     fp, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0750)
     if err != nil {
         return err
