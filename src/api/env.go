@@ -2,7 +2,7 @@ package api
 
 import (
     "../utils"
-    //"fmt"
+    "fmt"
     "io"
     "io/ioutil"
     "net/http"
@@ -81,7 +81,10 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
     makedir(userpath+"/webpub", uuid, ugid, 0755)
     makedir(userpath+"/conf", uuid, ugid, 0777)
     makedir(userpath+"/data", uuid, ugid, 0777)
-    makedir(userpath+"/app", uuid, ugid, 0777)
+    e = makedir(userpath+"/app", uuid, ugid, 0777)
+    if e != nil {
+        fmt.Println("EE", e)
+    }
 
     //
     if _, err := exec.Command("/bin/cp", "-rp",
@@ -100,10 +103,23 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
 
 func makedir(path string, uuid, ugid int, mode os.FileMode) error {
 
-    if _, err := os.Stat(path); os.IsNotExist(err) {
+    if stat, err := os.Stat(path); os.IsNotExist(err) {
         if err = os.MkdirAll(path, mode); err != nil {
             return err
         }
+    } else {
+
+        if stat.Mode() == 0777 {
+            fmt.Println("mode yes")
+        } else {
+            fmt.Println("mode no")
+        }
+
+        fmt.Println(stat.Name(), stat.Mode(), mode, stat.IsDir())
+    }
+
+    if err := os.Chmod(path, mode); err != nil {
+        return err
     }
 
     if err := os.Chown(path, uuid, ugid); err != nil {
