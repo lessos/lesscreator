@@ -5,7 +5,6 @@ use LessPHP\User\Session;
 if (!Session::IsLogin()) {
     die("Access denied. <a href='/user'>Login</a>");
 }
-
 ?>
 
 <table id="hdev_header" width="100%">
@@ -13,7 +12,7 @@ if (!Session::IsLogin()) {
     <td width="10px"></td>
 
     <td class="header_logo" width="160px">
-      <img src="/h5creator/static/img/hooto-logo-mc-h30s.png" />
+      <img src="/h5creator/static/img/hooto-logo-mc-h30.png" />
       <span class="title">Creator</span>
     </td>
 

@@ -15,11 +15,14 @@ $projInfo = h5creator_proj::info($proj);
 if (isset($projInfo['name'])) {
 
     $pjc = SYS_ROOT .'/conf/h5creator/projlist.json';
-    $pjs = "";
-    if (file_exists($pjc)) {
-        $pjs = file_get_contents($pjc);
+
+    $pjs = null;
+    $rs = h5creator_fs::FsFileGet($pic);
+    //print_r($rs);
+    if ($rs->status == 200) {
+        $pjs = json_decode($rs->data->body, true);
     }
-    $pjs = json_decode($pjs, true);
+
     if (!is_array($pjs)) {
         $pjs = array();
     }
@@ -31,8 +34,7 @@ if (isset($projInfo['name'])) {
         $pjs[$projInfo['projid']]['name'] = $projInfo['name'];
         $pjs[$projInfo['projid']]['path'] = $projPath;
 
-        hwl_util_dir::mkfiledir($pjc);
-        file_put_contents($pjc, hwl_Json::prettyPrint($pjs));
+        h5creator_fs::FsFilePut($pjc, hwl_Json::prettyPrint($pjs));
     }
 }
 
@@ -58,14 +60,14 @@ $props_def = h5creator_service::listAll();
         if (!isset($props_def[$v])) {
             continue;
         }
-        if (!file_exists($projPath."/{$v}/project.json")) {
+        /* if (!file_exists($projPath."/{$v}/project.json")) {
             $json = array(
                 'created' => time(),
             );
             $jsfi = $projPath."/{$v}/project.json";
-            hwl_util_dir::mkfiledir($jsfi);
-            file_put_contents($jsfi, hwl_Json::prettyPrint($json));
-        }
+
+            h5creator_fs::FsFilePut($jsfi, hwl_Json::prettyPrint($json));
+        } */
         echo "<li class='ueg14o_{$v}'><a href=\"#proj/{$v}\" class=\"_proj_tab_href\">{$props_def[$v]}</a></li>";
     }
     ?>

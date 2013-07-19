@@ -22,8 +22,8 @@ use LessPHP\H5keeper\Client;
 $kpr = new Client();
 
 $actorInfo = $projPath."/dataflow/{$grpid}/{$actorid}.actor.json";
-$actorInfo = file_get_contents($actorInfo);
-$actorInfo = json_decode($actorInfo, true);
+$actorInfo = h5creator_fs::FsFileGet($actorInfo);
+$actorInfo = json_decode($actorInfo->data->body, true);
 
 $actorIns = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$insid}/flow/{$actorid}");
 $actorIns = json_decode($actorIns->body, true);

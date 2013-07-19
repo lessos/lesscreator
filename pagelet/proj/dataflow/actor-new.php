@@ -8,8 +8,13 @@ $projPath = h5creator_proj::path($this->req->proj);
 $grps = array();
 $glob = $projPath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
-    $json = file_get_contents($v);
-    $json = json_decode($json, true);
+    
+    $rs = h5creator_fs::FsFileGet($v);
+    if ($rs->status != 200) {
+        continue;
+    }
+
+    $json = json_decode($rs->data->body, true);
     if (!isset($json['id'])) {
         continue;
     }
@@ -46,23 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'created' => time(),
         'updated' => time(),
     );
-    hwl_util_dir::mkfiledir($obj);
-    file_put_contents($obj, hwl_Json::prettyPrint($set));
+    h5creator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
 
     // actor
-    $obj = $projPath ."/dataflow/{$grpid}/{$id}.actor";        
-    if (!hwl_Fs_Dir::mkfiledir($obj, 0775)) {
-        die("Can not create '$obj'");
+    $obj = $projPath ."/dataflow/{$grpid}/{$id}.actor";
+    $rs = h5creator_fs::FsFilePut($obj, "#!/bin/sh\n\n");
+    if ($rs->status != 200) {
+        die($rs->message);
     }
-
-    if (($fp = fopen($obj, 'w')) === FALSE) {
-        die("Can not create '$obj'");
-    }
-    //fputs($fp, "\xef\xbb\xbf#!/bin/sh\n\n");
-    fputs($fp, "#!/bin/sh\n\n");
-    fclose($fp);
-
-    chmod($obj, 0775);
 
     die("OK");
 }

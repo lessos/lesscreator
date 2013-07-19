@@ -11,10 +11,12 @@ if (strlen($projPath) < 1) {
 }
 
 $path = preg_replace("/\/+/", "/", $this->req->path);
-if (!file_exists($projPath .'/'. $path)) {
+$rs = h5creator_fs::FsFileGet($projPath .'/'. $path);
+if ($rs->status != 200) {
     die('ERROR');
 }
-if (!file_exists($projPath ."/lcproject.json")) {
+$rs = h5creator_fs::FsFileGet($projPath ."/lcproject.json");
+if ($rs->status != 200) {
     die('ERROR');
 }
 ?>
@@ -40,8 +42,12 @@ foreach (glob($glob) as $f) {
     if (is_file($f)) {
         $fs = filesize($f);
         if ($fm == 'application/octet-stream' && $fs < 1048576) { // < 1MB
-            $_s = file_get_contents($f);
-            if (is_string($_s)) {
+            $_s = h5creator_fs::FsFileGet($f);
+            if ($_s->status != 200) {
+                continue;
+            }
+            
+            if (is_string($_s->data->body)) {
                 $fm = 'text/plain';
             }
         }

@@ -167,7 +167,7 @@ function _env_init()
 
     <?php
     if (isset($this->req->proj)) {
-        h5cProjectOpen('<?=$this->req->proj?>');
+        echo "h5cProjectOpen('{$this->req->proj}');";
     }
     ?>
     

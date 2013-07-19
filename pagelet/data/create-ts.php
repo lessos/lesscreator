@@ -24,7 +24,7 @@ if ($this->app->method == 'POST') {
         'created' => time(),
         'updated' => time(),
     );
-    file_put_contents($fsd, hwl_Json::prettyPrint($set));
+    h5creator_fs::FsFilePut($fsd, hwl_Json::prettyPrint($set));
     
     die("OK");
 }

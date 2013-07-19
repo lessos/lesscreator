@@ -11,22 +11,22 @@ if (!isset($this->req->data) || strlen($this->req->data) == 0) {
 list($datasetid, $tableid) = explode("/", $this->req->data);
 
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-if (!file_exists($fsd)) {
+$rs = h5creator_fs::FsFileGet($fsd);
+if ($rs->status != 200) {
     die("Bad Request");
 }
-$dataInfo = file_get_contents($fsd);
-$dataInfo = json_decode($dataInfo, true);
+$dataInfo = json_decode($rs->data->body, true);
 if ($projInfo['projid'] != $dataInfo['projid']) {
     die("Permission denied");
 }
 
 
 $fst = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
-if (!file_exists($fst)) {
+$rs = h5creator_fs::FsFileGet($fst);
+if ($rs->status != 200) {
     die("Bad Request");
 }
-$tableInfo = file_get_contents($fst);
-$tableInfo = json_decode($tableInfo, true);
+$tableInfo = json_decode($rs->data->body, true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tableInfo['tablename'] = $this->req->tablename;
     $tableInfo['updated']   = time();
     
-    file_put_contents($fst, hwl_Json::prettyPrint($tableInfo));
+    h5creator_fs::FsFilePut($fst, hwl_Json::prettyPrint($tableInfo));
 
     die("OK");
 }

@@ -18,10 +18,12 @@ class h5creator_proj
     {
         $path = self::path($proj) ."/lcproject.json";
         
-        if (!file_exists($path)) {
+        $rs = h5creator_fs::FsFileGet($path);
+        
+        if ($rs->status != 200) {
             return false;
         }
-        $info = json_decode(file_get_contents($path), true); 
+        $info = json_decode($rs->data->body, true); 
         
         if (!isset($info['projid'])) {
             return false;

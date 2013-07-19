@@ -12,8 +12,8 @@ if (strlen($projPath) < 1) {
 $grps = array();
 $glob = $projPath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
-    $json = file_get_contents($v);
-    $json = json_decode($json, true);
+    $json = h5creator_fs:FsFileGet($v);
+    $json = json_decode($json->data->body, true);
     if (!isset($json['id'])) {
         continue;
     }
@@ -39,8 +39,8 @@ foreach ($grps as $k => $v) {
     $glob = $projPath."/dataflow/{$k}/*.actor.json";
     foreach (glob($glob) as $v2) {
         
-        $json = file_get_contents($v2);
-        $json = json_decode($json, true);
+        $json = h5creator_fs::FsFileGet($v2);
+        $json = json_decode($json->data->body, true);
         
         if (!isset($json['id'])) {
             continue;

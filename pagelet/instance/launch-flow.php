@@ -14,8 +14,8 @@ $kpr = new Client();
 $grps = array();
 $glob = $projPath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
-    $grpInfo = file_get_contents($v);
-    $grpInfo = json_decode($grpInfo, true);
+    $grpInfo = h5creator_fs::FsFileGet($v);
+    $grpInfo = json_decode($grpInfo->data->body, true);
     if (!isset($grpInfo['id'])) {
         continue;
     }
@@ -27,8 +27,8 @@ foreach (glob($glob) as $v) {
     $glob2 = $projPath."/dataflow/{$grpInfo['id']}/*.actor.json";
     foreach (glob($glob2) as $v2) {
         
-        $actorInfo = file_get_contents($v2);
-        $actorInfo = json_decode($actorInfo, true);
+        $actorInfo = h5creator_fs::FsFileGet($v2);
+        $actorInfo = json_decode($actorInfo->data->body, true);
 
         if (!isset($actorInfo['id'])) {
             continue;
@@ -73,10 +73,11 @@ foreach (glob($glob) as $v) {
                 'Info'      => $actorInfo,
             );
             $fss = $projPath."/dataflow/{$grpInfo['id']}/{$actorInfo['id']}.actor";
+            $fss = h5creator_fs::FsFileGet($fss);
             
             $kpr->NodeSet("/app/u/guest/{$projInfo['projid']}/{$projInstId}/flow/{$actorInfo['id']}", json_encode($actorInst));
             
-            $kpr->NodeSet("/h5flow/script/{$projInstId}/{$actorInfo['id']}", file_get_contents($fss));
+            $kpr->NodeSet("/h5flow/script/{$projInstId}/{$actorInfo['id']}", $fss->data->body);
             $kpr->NodeSet("/h5flow/ctrlq/{$projInstId}.{$actorInfo['id']}", json_encode($instInfo));
 
             $actorInfo['_ins_setlock'] = true;

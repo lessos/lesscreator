@@ -10,11 +10,11 @@ if (!isset($this->req->id) || strlen($this->req->id) == 0) {
 }
 $datasetid = $this->req->id;
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-if (!file_exists($fsd)) {
+$rs = h5creator_fs::FsFileGet($fsd);
+if ($rs->status != 200) {
     die("Bad Request");
 }
-$dataInfo = file_get_contents($fsd);
-$dataInfo = json_decode($dataInfo, true);
+$dataInfo = json_decode($rs->data->body, true);
 
 if ($projInfo['projid'] != $dataInfo['projid']) {
     die("Permission denied");
@@ -25,13 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($this->req->name)) {
         $dataInfo['name'] = $this->req->name;
     }
-
-    if (!is_writable($fsd)) {
-        die("Permission denied, Can not write to ". $fsd);
-    }
     
     $dataInfo['updated'] = time();
-    file_put_contents($fsd, hwl_Json::prettyPrint($dataInfo));
+    $rs = h5creator_fs::FsFilePut($fsd, hwl_Json::prettyPrint($dataInfo));
+    if ($rs->status != 200) {
+        die($rs->message);
+    }
 
     die("OK");
 }

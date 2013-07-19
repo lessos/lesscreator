@@ -14,14 +14,15 @@ $fsg = $obj."/{$grpid}.grp.json";
 if (!file_exists($fsg)) {
     die("Bad Request");
 }
-$grp = file_get_contents($fsg);
-$grp = json_decode($grp, true);
+$grp = h5creator_fs::FsFileGet($fsg);
+$grp = json_decode($grp->data->body, true);
 if (!isset($grp['id'])) {
     die("Internal Server Error");
 }
 
 $fsj = $obj."/{$grpid}/{$actorid}.actor.json";
-if (!file_exists($fsj)) {
+$rs = h5creator_fs::FsFileGet($fsj);
+if ($rs->status != 200) {
     die("Bad Request");
 }
 
@@ -37,8 +38,7 @@ $actorDefault = array(
     'para_data'     => '',
 );
 
-$actor = file_get_contents($fsj);
-$actor = json_decode($actor, true);
+$actor = json_decode($rs->data->body, true);
 if (!isset($actor['id'])) {
     die("Internal Server Error");
 }
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $actor['para_mode']     = intval($this->req->para_mode);
     $actor['para_data']     = $this->req->para_data;
     
-    file_put_contents($fsj, hwl_Json::prettyPrint($actor));
+    h5creator_fs::FsFilePut($fsj, hwl_Json::prettyPrint($actor));
 
     die("OK");
 }
@@ -190,15 +190,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $para_datas = explode("_", $actor['para_data']);
 
             $fsd  = $projPath."/data/{$para_datas[0]}.ds.json";
-            $json = file_get_contents($fsd);
-            $json = json_decode($json, true);
+            $json = h5creator_fs::FsFileGet($fsd);
+            $json = json_decode($json->data->body, true);
             if (isset($json['name'])) {
                 $para_data_display = $json['name'];
             }
             
             $fst  = $projPath."/data/{$para_datas[0]}.{$para_datas[1]}.tbl.json";
-            $json = file_get_contents($fst);
-            $json = json_decode($json, true);
+            $json = h5creator_fs::FsFileGet($fst);
+            $json = json_decode($json->data->body, true);
             if (isset($json['tablename'])) {
                 $para_data_display .= " - ". $json['tablename'];
             }

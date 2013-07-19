@@ -18,8 +18,8 @@ $glob = $projPath."/data/*.ds.json";
 
 foreach (glob($glob) as $v) {
 
-    $dataInfo = file_get_contents($v);
-    $dataInfo = json_decode($dataInfo, true);
+    $dataInfo = h5creator_fs:FsFileGet($v);
+    $dataInfo = json_decode($dataInfo->data->body, true);
     if (!isset($dataInfo['id'])) {
         continue;
     }
@@ -31,8 +31,8 @@ foreach (glob($glob) as $v) {
     
     foreach (glob($globsub) as $v2) {
         
-        $tableInfo = file_get_contents($v2);
-        $tableInfo = json_decode($tableInfo, true);
+        $tableInfo = h5creator_fs::FsFileGet($v2);
+        $tableInfo = json_decode($tableInfo->data->body, true);
     
         if (!isset($tableInfo['tableid'])) {
             continue;

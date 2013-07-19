@@ -11,18 +11,18 @@ if (!isset($this->req->data) || strlen($this->req->data) == 0) {
 }
 list($datasetid, $tableid) = explode("/", $this->req->data);
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-if (!file_exists($fsd)) {
+$rs = h5creator_fs::FsFileGet($fsd);
+if ($rs->status != 200) {
     die("Bad Request");
 }
-$dataInfo = file_get_contents($fsd);
-$dataInfo = json_decode($dataInfo, true);
+$dataInfo = json_decode($rs->data->body, true);
 
 $fsdt = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
-if (!file_exists($fsdt)) {
+$rs = h5creator_fs::FsFileGet($fsdt);
+if ($rs->status != 200) {
     die("Bad Request");
 }
-$tableInfo = file_get_contents($fsdt);
-$tableInfo = json_decode($tableInfo, true);
+$tableInfo = json_decode($rs->data->body, true);
 
 ?>
 

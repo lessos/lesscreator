@@ -9,12 +9,13 @@
 <table id="_proj_open_recent" width="100%" class="table table-condensed">
 
 <?php
+
+
 $pjc = SYS_ROOT .'/conf/h5creator/projlist.json';
-$pjs = "";
-if (file_exists($pjc)) {
-    $pjs = file_get_contents($pjc);
-}
-$pjs = json_decode($pjs, true);
+
+
+$pjs = h5creator_fs::FsFileGet($pjc);
+$pjs = json_decode($pjs->data->body, true);
 if (!is_array($pjs)) {
     $pjs = array();
 }
@@ -26,7 +27,8 @@ foreach ($pjs as $projid => $val) {
 
     $noinfo = "";
     //echo $val['path']."/lcproject.json";
-    if (!file_exists($val['path']."/lcproject.json")) {
+    $rs = h5creator_fs::FsFileGet($val['path']."/lcproject.json");
+    if ($rs->status != 200) {
         $noinfo = '<font color="red">This project no longer exists!</font>';
     }
 ?>

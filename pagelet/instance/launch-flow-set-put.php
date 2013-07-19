@@ -20,21 +20,24 @@ $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
 
 $fsg = $projPath."/dataflow/{$grpid}.grp.json";
-if (!file_exists($fsg)) {
+$rs = h5ceator_fs::FsFileGet($fsg);
+if ($rs->status != 200) {
     die(json_encode($ret));
 }
 
 $fsa = $projPath."/dataflow/{$grpid}/{$actorid}.actor.json";
-if (!file_exists($fsa)) {
+$rs = h5ceator_fs::FsFileGet($fsa);
+if ($rs->status != 200) {
     die(json_encode($ret));
 }
-$actorInfo = json_decode(file_get_contents($fsa), true);
+$actorInfo = json_decode($rs->data->body, true);
 if ($actorInfo['para_mode'] != h5creator_service::ParaModeServer) {
     die(json_encode($ret));
 }
 
 $fss = $projPath."/dataflow/{$grpid}/{$actorid}.actor";
-if (!file_exists($fss)) {
+$fss = h5ceator_fs::FsFileGet($fss);
+if ($fss->status != 200) {
     die(json_encode($ret));
 }
 
@@ -64,7 +67,7 @@ $instInfo = array(
 
 $kpr->NodeSet("/app/u/guest/{$projInfo['projid']}/{$insid}/flow/{$actorid}", json_encode($actorInst));
 
-$kpr->NodeSet("/h5flow/script/{$insid}/{$actorid}", file_get_contents($fss));
+$kpr->NodeSet("/h5flow/script/{$insid}/{$actorid}", $fss->data->body);
 $kpr->NodeSet("/h5flow/ctrlq/{$insid}.{$actorid}", json_encode($instInfo));
 
 $ret['Status'] = 'OK';

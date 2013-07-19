@@ -15,12 +15,7 @@ if (isset($this->req->basedir)
 }
 $basedir = rtrim(preg_replace("/\/\/+/", "/", $basedir), '/');
 
-$f = "{$basedir}/{$projid}/lcproject.json";
-$f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 
-if (file_exists($f)) {
-    die('Cannot create Project: Project ID exists');
-}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'
     || $_SERVER['REQUEST_METHOD'] == 'PUT') {
@@ -31,6 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
     );
 
     try {
+
+        $f = "{$basedir}/{$projid}/lcproject.json";
+        $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
+
+        $rs = h5creator_fs::FsFileGet($f);
+        if ($rs->status == 200) {
+            throw new \Exception("Project ID exists");
+        }
         
         if (!strlen($this->req->name)) {
             throw new \Exception("Name cannot be null", 400);
@@ -58,24 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
             $set['types'] = implode(",", $this->req->types);
         }
 
-        $str = hwl_Json::prettyPrint($set);
-        if (hwl_Fs_Dir::mkfiledir($f, 0755)) {
-        
-            if (!is_writable("{$f}")) {
-                throw new \Exception("The Project is not Writable ($f)", 500);
-            }
-
-            $fp = fopen($f, 'w');
-            if ($fp === false) {
-                throw new \Exception("Can Not Open ($f)", 500);
-            }
-            
-            fwrite($fp, $str);
-            fclose($fp);
-            chmod($f, 0664);
-            
-        } else {
-            throw new \Exception("Can Not Create Directory ({$f})", 500);
+        $rs = h5creator_fs::FsFilePut($f, $str);
+        if ($rs->status != 200) {
+            throw new \Exception($rs->message);
         }
 
     } catch (\Exception $e) {

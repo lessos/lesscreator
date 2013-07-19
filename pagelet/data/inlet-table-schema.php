@@ -11,18 +11,18 @@ if (!isset($this->req->data) || strlen($this->req->data) == 0) {
 list($datasetid, $tableid) = explode("/", $this->req->data);
 
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-if (!file_exists($fsd)) {
+$rs = h5creator_fs::FsFileGet($fsd);
+if ($rs->status != 200) {
     die("Bad Request");
 }
-$dataInfo = file_get_contents($fsd);
-$dataInfo = json_decode($dataInfo, true);
+$dataInfo = json_decode($rs->data->body, true);
 
 $fst = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
-if (!file_exists($fst)) {
+$rs = h5creator_fs::FsFileGet($fst);
+if ($rs->status != 200) {
     die("Bad Request");
 }
-$tableInfo = file_get_contents($fst);
-$tableInfo = json_decode($tableInfo, true);
+$tableInfo = json_decode($rs->data->body, true);
 
 $fieldtypes = array(
     'int' => 'Integer',

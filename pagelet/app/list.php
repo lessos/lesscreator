@@ -27,8 +27,9 @@ foreach (glob($patt, GLOB_ONLYDIR) as $st) {
     continue;
   }
 
-  if (file_exists($st."/lcproject.json")) {
-    $val = json_decode(file_get_contents($st."/lcproject.json"), true);
+  $rs = h5creator_fs::FsFileGet($st."/lcproject.json");
+  if ($rs->status == 200 {
+    $val = json_decode($rs->data->body, true);
   } else {
     
     continue;

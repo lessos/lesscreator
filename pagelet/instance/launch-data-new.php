@@ -21,21 +21,21 @@ if (!isset($projInst['ProjId'])) {
 }
 
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-if (!file_exists($fsd)) {
+$rs = h5creator_fs::FsFileGet($fsd);
+if ($rs->status != 200) {
     die(json_encode($ret));
 }
-$dataInfo = file_get_contents($fsd);
-$dataInfo = json_decode($dataInfo, true);
+$dataInfo = json_decode($rs->data->body, true);
 if ($projInfo['projid'] != $dataInfo['projid']) {
     die(json_encode($ret));
 }
 
 $fst = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
-if (!file_exists($fst)) {
+$rs = h5creator_fs::FsFileGet($fst);
+if ($rs->status != 200) {
     die(json_encode($ret));
 }
-$tableInfo = file_get_contents($fst);
-$tableInfo = json_decode($tableInfo, true);
+$tableInfo = json_decode($rs->data->body, true);
 
 $dataInst = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$projInstId}/data/{$tableid}");
 $dataInst = json_decode($dataInst->body, true);

@@ -10,11 +10,11 @@ if (!isset($this->req->id) || strlen($this->req->id) == 0) {
 }
 $datasetid = $this->req->id;
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-if (!file_exists($fsd)) {
+$rs = h5creator_fs::FsFileGet($fsd);
+if ($rs->status != 200) {
     die("Bad Request");
 }
-$dataInfo = file_get_contents($fsd);
-$dataInfo = json_decode($dataInfo, true);
+$dataInfo = json_decode($dataInfo->data->body, true);
 
 if ($projInfo['projid'] != $dataInfo['projid']) {
     die("Permission denied");
@@ -28,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tableid = $this->req->tableid;
 
     $fstbl = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
-    if (file_exists($fstbl)) {
+    $rs = h5creator_fs::FsFileGet($fstbl);
+    if ($rs->status == 200) {
         die("The current table already exists");
     }
 
@@ -46,12 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'updated'       => time(),
     );
 
-    if (!is_writable($projPath."/data/")) {
-        die("Permission denied, Can not write to ". $fstbl);
+    $rs = h5creator_fs::FsFilePut($fstbl, hwl_Json::prettyPrint($tableInfo));
+    if ($rs->status != 200) {
+        die($rs->message);
     }
-
-    file_put_contents($fstbl, hwl_Json::prettyPrint($tableInfo));
-
     die("OK");
 }
 

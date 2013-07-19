@@ -10,8 +10,11 @@ if ($this->req->func == 'del') {
         die('Not Implemented');
     }
 
-    $pjs = file_get_contents($pjc);
-    $pjs = json_decode($pjs, true);
+    $pjs = null;
+    $rs = h5creator_fs::FsFileGet($pjc);
+    if ($rs->status == 200) {
+        $pjs = json_decode($rs->data->body, true);
+    }
     if (!is_array($pjs)) {
         $pjs = array();
     }
@@ -19,7 +22,7 @@ if ($this->req->func == 'del') {
     if (isset($pjs[$this->req->projid])) {
         unset($pjs[$this->req->projid]);
         $pjs = hwl_Json::prettyPrint($pjs);
-        if (file_put_contents($pjc, $pjs)) {
+        if (h5creator_fs::FsFilePut($pjc, $pjs)) {
             die("OK");
         } else {
             die("Permission denied");

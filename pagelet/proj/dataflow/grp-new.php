@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'updated' => time(),
     );
     hwl_util_dir::mkfiledir($obj);
-    file_put_contents($obj, hwl_Json::prettyPrint($set));
+    h5creator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
 
     die("OK");
 }

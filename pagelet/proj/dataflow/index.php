@@ -15,8 +15,10 @@ $ptpath = md5("");
 $grps = array();
 $glob = $projPath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
-    $json = file_get_contents($v);
-    $json = json_decode($json, true);
+
+    $json = h5creator_fs::FsFileGet($v);
+
+    $json = json_decode($json->data->body, true);
     if (!isset($json['id'])) {
         continue;
     }
@@ -29,9 +31,6 @@ if (count($grps) == 0) {
 
     $obj = $projPath ."/dataflow";
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
-    if (!is_writable($obj)) {
-        die("'$obj' is not Writable");
-    }
 
     $obj .= "/{$id}.grp.json";
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
@@ -40,8 +39,8 @@ if (count($grps) == 0) {
         'id'    => $id,
         'name'  => 'Main',
     );
-    hwl_util_dir::mkfiledir($obj);
-    file_put_contents($obj, hwl_Json::prettyPrint($set));
+
+    h5creator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
 
     $grps[$id] = $set;
 }
