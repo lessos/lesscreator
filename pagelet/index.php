@@ -5,8 +5,6 @@ use LessPHP\User\Session;
 if (!Session::IsLogin()) {
     header('Location: /user');
 }
-$rs = h5creator_fs::FsList("//opt/afly/screen/");
-print_r($rs);
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -56,7 +54,7 @@ $(document).ready(function() {
     $("body").html("<h4>Initializing System Environment ...</h4>");
 
     var req = {
-        access_token: lessCookieGet("access_token"),
+        access_token: lessCookie.Get("access_token"),
     }
     $.ajax({
         url     : "/h5creator/api?func=env-init",
@@ -66,7 +64,7 @@ $(document).ready(function() {
         async   : false,
         success : function(rsp) {
 
-            console.log(rsp);
+            //console.log(rsp);
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
@@ -78,14 +76,15 @@ $(document).ready(function() {
                 $("body").html("<h4>Error: Unauthorized, <a href='/user'>try login again</a></h4>");
             } else if (rsj.status == 200) {                
 
+                lessSession.Set("basedir", rsj.data.basedir);
+                lessCookie.Set("basedir", rsj.data.basedir, 0);
+
                 $.ajax({
-                    url     : "/h5creator/desk",
+                    url     : "/h5creator/desk?basedir="+ rsj.data.basedir,
                     type    : "GET",
                     timeout : 30000,
                     success : function(rsp) {
                         $('body').html(rsp);
-                        lessSession.Set("basedir", rsj.data.basedir);
-                        //lessLocalStorage.Set("basedir", rsj.data.basedir);
                         _env_init();
                     },
                     error: function(xhr, textStatus, error) {
@@ -124,7 +123,7 @@ function _env_init()
             var p = $('#h5c-lyo-col-w').position();
             var wrs = e.pageX - p.left - 5;
 
-            setCookie("cfg_lyo_col_w", wrs / w, 365);
+            lessCookie.SetByDay("cfg_lyo_col_w", wrs / w, 365);
             h5cLayoutResize();
         });
     });
@@ -140,7 +139,7 @@ function _env_init()
             if (l < 0) {
                 return;
             }
-            setCookie("config_tablet_roww0", (l - 5), 365);
+            lessCookie.SetByDay("config_tablet_roww0", (l - 5), 365);
             h5cLayoutResize();
         });
     });
@@ -155,7 +154,7 @@ function _env_init()
             if (l < 0) {
                 return;
             }
-            setCookie("config_tablet_rowt0", (l - 5), 365);
+            lessCookie.SetByDay("config_tablet_rowt0", (l - 5), 365);
             h5cLayoutResize();
         });
     });

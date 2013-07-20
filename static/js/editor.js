@@ -141,7 +141,7 @@ function h5cEditorLoad(urid)
         mode: mode,
         indentUnit: h5cEditor.tabSize,
         tabSize: h5cEditor.tabSize,
-        //theme: getCookie("editor_theme"),
+        //theme: lessCookie.Get("editor_theme"),
         smartIndent: h5cEditor.smartIndent,
         lineWrapping: h5cEditor.lineWrapping,
         extraKeys: {Tab: function(cm) {
@@ -154,7 +154,7 @@ function h5cEditorLoad(urid)
     CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
     CodeMirror.autoLoadMode(h5cEditor.instance, mode);
 
-    if (getCookie('editor_keymap_vim') == "on") {
+    if (lessCookie.Get('editor_keymap_vim') == "on") {
         h5cEditor.instance.setOption("keyMap", "vim");
     }
 
@@ -191,7 +191,7 @@ function h5cEditorSave(urid, force)
         h5cEditor.instance.save();
     }
 
-    var autosave = getCookie('editor_autosave');
+    var autosave = lessCookie.Get('editor_autosave');
     if (autosave == 'off' && force == 0) {
         //$("#pgtab"+pgid+" .chg").show();
         return;

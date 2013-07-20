@@ -20,9 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $obj = $projPath ."/dataflow";
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
-    if (!is_writable($obj)) {
-        header("HTTP/1.1 500"); die("'$obj' is not Writable");
-    }
     
     $id = hwl_string::rand(12, 2);
 
@@ -33,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'id'    => $id,
         'name'  => $name,
     );
-    hwl_util_dir::mkfiledir($obj);
     h5creator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
 
     die("OK");

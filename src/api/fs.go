@@ -11,6 +11,7 @@ import (
     "mime"
     "net/http"
     "os"
+    //"os/exec"
     "path/filepath"
     "regexp"
     "strings"
@@ -19,6 +20,7 @@ import (
 
 type FsFile struct {
     Path     string `json:"path"`
+    Name     string `json:"name"`
     Size     int64  `json:"size"`
     Mime     string `json:"mime"`
     Body     string `json:"body"`
@@ -142,31 +144,51 @@ func FsList(w http.ResponseWriter, r *http.Request) {
         if os.IsNotExist(err) {
             continue
         }
-        file.Size = st.Size()
 
+        file.Name = st.Name()
+        file.Size = st.Size()
         file.IsDir = st.IsDir()
         file.ModTime = st.ModTime()
         //file.Mode = uint32(st.Mode())
         //fmt.Println(fmt.Sprintf("%o", st.Mode()), st.Name())
 
-        ctype := mime.TypeByExtension(filepath.Ext(v))
-        //if ctype == "" {
-        //    ctype = http.DetectContentType(ctn)
-        //}
-        ctypes := strings.Split(ctype, ";")
-        if len(ctypes) > 0 {
-            ctype = ctypes[0]
+        if !st.IsDir() {
+            file.Mime = fsFileMime(v)
         }
-
-        file.Mime = ctype
 
         rsp.Data = append(rsp.Data, file)
     }
 
-    fmt.Println(rsp)
+    //fmt.Println(rsp)
     //rsp.Data = file
 
     rsp.Status = 200
+}
+
+func fsFileMime(v string) string {
+
+    // TODO
+    //  ... add more extension types
+    ctype := mime.TypeByExtension(filepath.Ext(v))
+
+    if ctype == "" {
+        fp, err := os.Open(v)
+        if err == nil {
+
+            defer fp.Close()
+
+            if ctn, err := ioutil.ReadAll(fp); err == nil {
+                ctype = http.DetectContentType(ctn)
+            }
+        }
+    }
+
+    ctypes := strings.Split(ctype, ";")
+    if len(ctypes) > 0 {
+        ctype = ctypes[0]
+    }
+
+    return ctype
 }
 
 func FsFileGet(w http.ResponseWriter, r *http.Request) {
@@ -341,15 +363,17 @@ func fsFilePutWrite(file FsFile) error {
 
 func FsFileNew(w http.ResponseWriter, r *http.Request) {
 
-    rsp := struct {
-        Status int
-        Msg    string
-    }{
-        500,
-        "Bad Request",
+    var rsp struct {
+        ApiResponse
     }
 
     defer func() {
+
+        if rsp.Status == 0 {
+            rsp.Status = 500
+            rsp.Message = "Internal Server Error"
+        }
+
         if rspj, err := utils.JsonEncode(rsp); err == nil {
             io.WriteString(w, rspj)
         }
@@ -358,70 +382,86 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
 
     body, err := ioutil.ReadAll(r.Body)
     if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     var req struct {
-        Proj string
-        Path string
-        Name string
-        Type string
+        AccessToken string `json:"access_token"`
+        Data        struct {
+            Type string `json:"type"`
+            Path string `json:"path"`
+        }   `json:"data"`
     }
     err = utils.JsonDecode(string(body), &req)
     if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     reg, _ := regexp.Compile("/+")
-    path := strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.Path+"/"+req.Name, "/"), "/")
+    path := strings.Trim(reg.ReplaceAllString(req.Data.Path, "/"), "/")
 
     var pd string
-    if req.Type == "file" {
+    if req.Data.Type == "file" {
         ps := strings.Split(path, "/")
         pd = "/" + strings.Join(ps[0:len(ps)-1], "/")
-    } else if req.Type == "dir" {
+    } else if req.Data.Type == "dir" {
         pd = "/" + path
     } else {
+        rsp.Status = 500
+        rsp.Message = "Type is incorrect"
         return
     }
 
     if _, err := os.Stat(pd); os.IsNotExist(err) {
 
         if err = os.MkdirAll(pd, 0755); err != nil {
-            rsp.Msg = "Can Not Create Folder /" + pd
-        } else {
-            rsp.Msg = "Successfully created directory"
+            rsp.Message = "Can Not Create Folder /" + pd
+            rsp.Status = 500
+            return
         }
+    }
+
+    if req.Data.Type == "dir" {
+        rsp.Status = 200
         return
     }
 
     fp, err := os.OpenFile("/"+path, os.O_RDWR|os.O_CREATE, 0754)
     if err != nil {
-        rsp.Msg = "Can Not Open /" + path
+        //rsp.Message = "Can Not Open /" + path
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
     defer fp.Close()
 
     if _, err = fp.Write([]byte("\n\n")); err != nil {
-        rsp.Msg = "File is not Writable"
+        //rsp.Message = "File is not Writable"
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     rsp.Status = 200
-    rsp.Msg = "Saved successfully"
 }
 
 func FsFileDel(w http.ResponseWriter, r *http.Request) {
 
-    rsp := struct {
-        Status int
-        Msg    string
-    }{
-        500,
-        "Bad Request",
+    var rsp struct {
+        ApiResponse
     }
 
     defer func() {
+
+        if rsp.Status == 0 {
+            rsp.Status = 500
+            rsp.Message = "Internal Server Error"
+        }
+
         if rspj, err := utils.JsonEncode(rsp); err == nil {
             io.WriteString(w, rspj)
         }
@@ -430,41 +470,48 @@ func FsFileDel(w http.ResponseWriter, r *http.Request) {
 
     body, err := ioutil.ReadAll(r.Body)
     if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     var req struct {
-        Proj string
-        Path string
+        AccessToken string `json:"access_token"`
+        Data        string `json:"data"`
     }
     err = utils.JsonDecode(string(body), &req)
     if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     reg, _ := regexp.Compile("/+")
-    path := strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.Path, "/"), "/")
+    path := strings.Trim(reg.ReplaceAllString(req.Data, "/"), "/")
 
     if err := os.Remove("/" + path); err != nil {
-        rsp.Msg = err.Error()
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     rsp.Status = 200
-    rsp.Msg = "OK"
+    rsp.Message = "OK"
 }
 
 func FsFileMov(w http.ResponseWriter, r *http.Request) {
 
-    rsp := struct {
-        Status int
-        Msg    string
-    }{
-        500,
-        "Bad Request",
+    var rsp struct {
+        ApiResponse
     }
 
     defer func() {
+
+        if rsp.Status == 0 {
+            rsp.Status = 500
+            rsp.Message = "Internal Server Error"
+        }
+
         if rspj, err := utils.JsonEncode(rsp); err == nil {
             io.WriteString(w, rspj)
         }
@@ -473,45 +520,91 @@ func FsFileMov(w http.ResponseWriter, r *http.Request) {
 
     body, err := ioutil.ReadAll(r.Body)
     if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     var req struct {
-        Proj    string
-        Name    string
-        PathPre string
-        PathOld string
+        AccessToken string `json:"access_token"`
+        Data        struct {
+            PathNew string `json:"pathnew"`
+            PathPre string `json:"pathpre"`
+        }   `json:"data"`
     }
     err = utils.JsonDecode(string(body), &req)
     if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     reg, _ := regexp.Compile("/+")
-    pathold := "/" + strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.PathOld, "/"), "/")
+    pathpre := "/" + strings.Trim(reg.ReplaceAllString(req.Data.PathPre, "/"), "/")
 
-    pathnew := "/" + strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.PathPre+"/"+req.Name, "/"), "/")
+    pathnew := "/" + strings.Trim(reg.ReplaceAllString(req.Data.PathNew, "/"), "/")
 
-    if err := os.Rename(pathold, pathnew); err != nil {
-        rsp.Msg = err.Error()
+    if pathnew == pathpre {
+        rsp.Status = 200
+        rsp.Message = ""
         return
     }
 
+    dir := filepath.Dir(pathnew)
+    if _, err := os.Stat(dir); os.IsNotExist(err) {
+
+        if err = os.MkdirAll(dir, 0750); err != nil {
+            rsp.Status = 500
+            rsp.Message = err.Error()
+            return
+        }
+    }
+
+    if err := os.Rename(pathpre, pathnew); err != nil {
+        rsp.Status = 500
+        rsp.Message = "102:" + err.Error()
+        return
+    }
+    /*cp, err := exec.LookPath("cp")
+      if err != nil {
+          rsp.Status = 500
+          rsp.Message = err.Error()
+          return
+      }
+
+      fmt.Println(cp, "-rp", pathpre, pathnew)
+
+      if _, err := exec.Command(cp, "-rp", pathpre, pathnew).Output(); err != nil {
+          rsp.Status = 500
+          rsp.Message = err.Error()
+          return
+      }
+
+      if err := os.Remove(pathpre); err != nil {
+          rsp.Status = 500
+          rsp.Message = err.Error()
+          return
+      }
+    */
+
     rsp.Status = 200
-    rsp.Msg = "OK"
+    rsp.Message = ""
+    return
 }
 
 func FsFileUpl(w http.ResponseWriter, r *http.Request) {
 
-    rsp := struct {
-        Status int
-        Msg    string
-    }{
-        500,
-        "Bad Request",
+    var rsp struct {
+        ApiResponse
     }
 
     defer func() {
+
+        if rsp.Status == 0 {
+            rsp.Status = 500
+            rsp.Message = "Internal Server Error"
+        }
+
         if rspj, err := utils.JsonEncode(rsp); err == nil {
             io.WriteString(w, rspj)
         }
@@ -520,54 +613,58 @@ func FsFileUpl(w http.ResponseWriter, r *http.Request) {
 
     body, err := ioutil.ReadAll(r.Body)
     if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     var req struct {
-        Proj string
-        Name string
-        Path string
-        Size int
-        Data string
+        AccessToken string `json:"access_token"`
+        Data        FsFile `json:"data"`
     }
     err = utils.JsonDecode(string(body), &req)
     if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
-    dataurl := strings.SplitAfter(req.Data, ";base64,")
+    dataurl := strings.SplitAfter(req.Data.Body, ";base64,")
     if len(dataurl) != 2 {
+        rsp.Status = 500
+        rsp.Message = "Bad Request"
         return
     }
 
     data, err := base64.StdEncoding.DecodeString(dataurl[1])
     if err != nil {
-        fmt.Println("error:", err)
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     reg, _ := regexp.Compile("/+")
-    path := "/" + strings.Trim(reg.ReplaceAllString(req.Proj+"/"+req.Path+"/"+req.Name, "/"), "/")
+    path := "/" + strings.Trim(reg.ReplaceAllString(req.Data.Path, "/"), "/")
 
     if _, err := os.Stat(path); os.IsExist(err) {
-        rsp.Msg = "File is Exists"
-        fmt.Println("isok")
+        rsp.Status = 500
+        rsp.Message = "File is Exists"
         return
     }
 
     fp, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0755)
     if err != nil {
-        rsp.Msg = "Can Not Open " + path
-        fmt.Println(err)
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
     defer fp.Close()
 
     if _, err = fp.Write(data); err != nil {
-        rsp.Msg = "File is not Writable"
+        rsp.Status = 500
+        rsp.Message = err.Error()
         return
     }
 
     rsp.Status = 200
-    rsp.Msg = "OK"
 }

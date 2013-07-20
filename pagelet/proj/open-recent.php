@@ -4,17 +4,12 @@ $pjc = SYS_ROOT .'/conf/h5creator/projlist.json';
 
 if ($this->req->func == 'del') {
 
-    $pjs = "";
-
-    if (!file_exists($pjc)) {
+    $rs = h5creator_fs::FsFileGet($pjc);
+    if ($rs->status != 200) {
         die('Not Implemented');
     }
 
-    $pjs = null;
-    $rs = h5creator_fs::FsFileGet($pjc);
-    if ($rs->status == 200) {
-        $pjs = json_decode($rs->data->body, true);
-    }
+    $pjs = json_decode($rs->data->body, true);
     if (!is_array($pjs)) {
         $pjs = array();
     }
@@ -22,14 +17,13 @@ if ($this->req->func == 'del') {
     if (isset($pjs[$this->req->projid])) {
         unset($pjs[$this->req->projid]);
         $pjs = hwl_Json::prettyPrint($pjs);
-        if (h5creator_fs::FsFilePut($pjc, $pjs)) {
+        $rs = h5creator_fs::FsFilePut($pjc, $pjs);
+        if ($rs->status == 200) {
             die("OK");
         } else {
-            die("Permission denied");
+            die($rs->message);
         }
-    } else {
-        die("OK");
     }
-}
 
-die('Not Implemented 2');
+    die("OK");
+}

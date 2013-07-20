@@ -212,7 +212,7 @@ if (!Session::IsLogin()) {
               </div>
             </div>
 
-            <div id="h5c-tablet-body-w1" class="h5c_tablet_body less_gen_scroll"></div>
+            <div id="h5c-tablet-body-w1" class="h5c_tablet_body less_scroll"></div>
 
           </td>
         </tr>
@@ -240,7 +240,7 @@ if (!Session::IsLogin()) {
               </div>
             </div>
 
-            <div id="h5c-tablet-body-t0" class="h5c_tablet_body less_gen_scroll"></div>
+            <div id="h5c-tablet-body-t0" class="h5c_tablet_body less_scroll"></div>
 
           </td>
         </tr>
@@ -258,7 +258,7 @@ if (!Session::IsLogin()) {
               </div>
             </div>
 
-            <div id="h5c-tablet-body-t1" class="h5c_tablet_body less_gen_scroll"></div>
+            <div id="h5c-tablet-body-t1" class="h5c_tablet_body less_scroll"></div>
 
           </td>
         </tr>
@@ -271,7 +271,7 @@ if (!Session::IsLogin()) {
   </tr>
 </table>
 
-<div class="pgtab-openfiles-ol hdev-lcmenu less_gen_scroll"></div>
+<div class="pgtab-openfiles-ol hdev-lcmenu less_scroll"></div>
 
 <div id="h5c_dialog" class="border_radius_t5 displaynone">
   <table class="h5c_dialog_title border_radius_t5" width="100%">
@@ -372,7 +372,7 @@ function h5cInit()
             var p = $('#h5c-lyo-col-w').position();
             var wrs = e.pageX - p.left - 5;
 
-            setCookie("cfg_lyo_col_w", wrs / w, 365);
+            lessCookie.SetByDay("cfg_lyo_col_w", wrs / w, 365);
             h5cLayoutResize();
         });
     });
@@ -388,7 +388,7 @@ function h5cInit()
             if (l < 0) {
                 return;
             }
-            setCookie("config_tablet_roww0", (l - 5), 365);
+            lessCookie.SetByDay("config_tablet_roww0", (l - 5), 365);
             h5cLayoutResize();
         });
     });
@@ -403,7 +403,7 @@ function h5cInit()
             if (l < 0) {
                 return;
             }
-            setCookie("config_tablet_rowt0", (l - 5), 365);
+            lessCookie.SetByDay("config_tablet_rowt0", (l - 5), 365);
             h5cLayoutResize();
         });
     });

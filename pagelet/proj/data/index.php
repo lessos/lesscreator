@@ -12,7 +12,7 @@
     </a>
 </div>
 
-<div id="ig3w6o" class="less_gen_scroll" style="padding-top:10px;"></div>
+<div id="ig3w6o" class="less_scroll" style="padding-top:10px;"></div>
 
 <script type="text/javascript">
 

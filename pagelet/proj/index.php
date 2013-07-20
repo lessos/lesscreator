@@ -12,9 +12,11 @@ if (strlen($projPath) < 1) {
 
 $projInfo = h5creator_proj::info($proj);
 
+$basedir = $_COOKIE["basedir"];
+
 if (isset($projInfo['name'])) {
 
-    $pjc = SYS_ROOT .'/conf/h5creator/projlist.json';
+    $pjc = $basedir .'/conf/h5creator/projlist.json';
 
     $pjs = null;
     $rs = h5creator_fs::FsFileGet($pic);
@@ -77,12 +79,9 @@ $props_def = h5creator_service::listAll();
 
 <script>
 
-// TODO $("title").text('<?php echo $projInfo['name']?> - H5 Creator');
+$("title").text('<?php echo $projInfo['name']?> - Less Creator');
 
 <?php
-if (!is_writable("{$projPath}")) {
-    echo 'hdev_header_alert("error", "The Project is not Writable");';
-}
 echo "sessionStorage.ProjPath = '{$projPath}';";
 echo "sessionStorage.ProjId = '{$projInfo['projid']}';";
 ?>

@@ -37,24 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
     $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
     
     $str = hwl_Json::prettyPrint($info);
-    if (hwl_Fs_Dir::mkfiledir($f, 0755)) {
-    
-        if (!is_writable("{$f}")) {
-            header("HTTP/1.1 500"); die("The Project is not Writable ($f)");
-        }
-
-        $fp = fopen($f, 'w');
-        if ($fp === false) {
-            header("HTTP/1.1 500"); die("Can Not Open ($f)");
-        }
-        
-        fwrite($fp, $str);
-        fclose($fp);
-        
-        header("HTTP/1.1 200"); die('OK');
-        
+    $rs = h5creator_fs::FsFilePut($f, $str);
+    if ($rs->status == 200) {
+        die("OK");
     } else {
-        header("HTTP/1.1 500"); die('ERROR');
+        die("Error, ". $rs->message);
     }
 }
 

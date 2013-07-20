@@ -2,9 +2,6 @@
 
 $path = preg_replace("/\/+/", "/", rtrim("/".$this->req->path, '/'));
 
-$curname = substr($path, strrpos($path, "/") + 1);
-$pathpre = substr($path, 0, strrpos($path, "/"));
-
 ?>
 
 
@@ -13,18 +10,16 @@ $pathpre = substr($path, 0, strrpos($path, "/"));
   <div class="input-prepend" style="margin-left:2px">
     <span class="add-on">
         <img src="/h5creator/static/img/folder_edit.png" class="h5c_icon" />
-        <?php echo $pathpre?>/
     </span>
-    <input type="text" name="name" value="<?php echo $curname?>" class="span2 k2tcrh" />
-    <input type="hidden" name="pathold" value="<?php echo $path?>" />
-    <input type="hidden" name="pathpre" value="<?php echo $pathpre?>" />
+    <input type="text" name="pathnew" value="<?php echo $path?>" class="k2tcrh" style="width:500px;" />
+    <input type="hidden" name="pathpre" value="<?php echo $path?>" />
   </div>
 
 </form>
 
 <script type="text/javascript">
 
-lessModalButtonAdd("fjbcw8", "Create", "_fs_file_mov()", "btn-inverse pull-left");
+lessModalButtonAdd("fjbcw8", "Rename", "_fs_file_mov()", "btn-inverse pull-left");
 lessModalButtonAdd("y9e9be", "Cancel", "lessModalClose()", "pull-left");
 
 $(".k2tcrh").focus();
@@ -38,12 +33,18 @@ $("#c1qtiv").submit(function(event) {
 
 function _fs_file_mov()
 {
+    var pathpre = $("#c1qtiv").find("input[name=pathpre]").val();
+    var pathnew = $("#c1qtiv").find("input[name=pathnew]").val();
     var req = {
-        proj : sessionStorage.ProjPath,
-        name : $("#c1qtiv").find("input[name=name]").val(),
-        pathold : $("#c1qtiv").find("input[name=pathold]").val(),
-        pathpre : $("#c1qtiv").find("input[name=pathpre]").val(),
+        "access_token" : lessCookie.Get("access_token"),
+        "data" : {
+            "pathnew" : lessSession.Get("ProjPath") +"/"+ pathnew,
+            "pathpre" : lessSession.Get("ProjPath") +"/"+ pathpre,
+        }
     }
+    
+    var refreshpre = pathpre.substring(0, pathpre.lastIndexOf('/'));
+    var refreshnew = pathnew.substring(0, pathnew.lastIndexOf('/'));   
 
     $.ajax({
         type    : "POST",
@@ -53,13 +54,35 @@ function _fs_file_mov()
         success : function(rsp) {
 
             var obj = JSON.parse(rsp);
-            if (obj.Status == 200) {
+            if (obj.status == 200) {
+                
                 hdev_header_alert('success', "OK");
+                
+
+                var path = pathpre.replace(/(^\/*)|(\/*$)/g, "");
+                path = path.replace(/(\/+)/g, "/");
+                var p = lessCryptoMd5(path);
+                $("#ptp"+p).remove();
+                $("#pt"+p).remove();
+                
+                path = "";
+                var ps = refreshnew.replace(/(^\/*)|(\/*$)/g, "").split('/');
+                for (var i in ps) {
+
+                    path += "/"+ ps[i];
+                    p = lessCryptoMd5(path);
+                    if (!$("#pt"+p).html() || $("#pt"+p).html().length < 1) {
+                        console.log("load new "+ path);
+                        _fs_tree_dir(path, 1);
+                    }
+                }
+
+                _fs_tree_dir(refreshnew, 1);
+
             } else {
-                hdev_header_alert('error', obj.Msg);
+                hdev_header_alert('error', obj.message);
             }
 
-            _fs_file_new_callback(req.pathpre);
             lessModalClose();
         },
         error   : function(xhr, textStatus, error) {

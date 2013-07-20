@@ -37,9 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // actor config
     $obj = $projPath ."/dataflow";
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
-    if (!is_writable($obj)) {
-        die("'$obj' is not Writable");
-    }
     
     $id = hwl_string::rand(10, 2);
 

@@ -53,13 +53,13 @@ function _save(title)
         hceditor.tabSize = 4;
 
     hceditor.tabs2spaces = $("#tabs2spaces").attr('checked') ? true : false;
-    setCookie('editor_tabs2spaces', hceditor.tabs2spaces, 365);
+    lessCookie.SetByDay('editor_tabs2spaces', hceditor.tabs2spaces, 365);
     
     hceditor.smartIndent = $("#smartIndent").attr('checked') ? true : false;
-    setCookie('editor_smartIndent', hceditor.smartIndent, 365);
+    lessCookie.SetByDay('editor_smartIndent', hceditor.smartIndent, 365);
     
     hceditor.lineWrapping = $("#lineWrapping").attr('checked') ? true : false;
-    setCookie('editor_lineWrapping', hceditor.lineWrapping, 365);
+    lessCookie.SetByDay('editor_lineWrapping', hceditor.lineWrapping, 365);
     
     hdev_header_alert('success', 'Saved successfully "'+title+'"');
 }
@@ -77,7 +77,7 @@ function _init()
     if (hceditor.lineWrapping)
         $("#lineWrapping").prop("checked", true);
 
-    var theme = getCookie('editor_theme');
+    var theme = lessCookie.Get('editor_theme');
     $("#editor_theme option:contains('"+theme+"')").prop("selected", true);
 }
 _init();

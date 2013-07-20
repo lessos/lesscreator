@@ -45,18 +45,23 @@ a._proj_fs_href_click {
     ?>
 </ul>
 
-<div id="_proj_fs_body" class="less_gen_scroll hide" style="margin-right:20px; border:1px solid #ccc;">
+<div id="_proj_fs_body" class="less_scroll hide" style="margin-right:20px; border:1px solid #ccc;">
 <table width="100%" sclass="table table-condensed">
 <?php
-foreach (glob($path."/*", GLOB_ONLYDIR) as $st) {
+$rs = h5creator_fs::FsList($path."/*");
 
-  $projid = trim(strrchr($st, '/'), '/');
+foreach ($rs->data as $v) {
+
+    if ($v->isdir != 1) {
+        continue;
+    }
+
 ?>
 <tr>
   <td valign="middle" width="18">
     <img src="/h5creator/static/img/folder.png" align="absmiddle" />
   </td>
-  <td><a href="#<?php echo $projid?>" class="_proj_fs_href"><?=$projid?></a></td>
+  <td><a href="#<?php echo $v->name?>" class="_proj_fs_href"><?=$v->name?></a></td>
 </tr>
 <?php } ?>
 </table>

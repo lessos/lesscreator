@@ -203,7 +203,7 @@ if (!Session::IsLogin()) {
               </div>
             </div>
 
-            <div id="h5c-tablet-body-w1" class="h5c_tablet_body less_gen_scroll"></div>
+            <div id="h5c-tablet-body-w1" class="h5c_tablet_body less_scroll"></div>
 
           </td>
         </tr>
@@ -231,7 +231,7 @@ if (!Session::IsLogin()) {
               </div>
             </div>
 
-            <div id="h5c-tablet-body-t0" class="h5c_tablet_body less_gen_scroll"></div>
+            <div id="h5c-tablet-body-t0" class="h5c_tablet_body less_scroll"></div>
 
           </td>
         </tr>
@@ -249,7 +249,7 @@ if (!Session::IsLogin()) {
               </div>
             </div>
 
-            <div id="h5c-tablet-body-t1" class="h5c_tablet_body less_gen_scroll"></div>
+            <div id="h5c-tablet-body-t1" class="h5c_tablet_body less_scroll"></div>
 
           </td>
         </tr>
@@ -262,21 +262,4 @@ if (!Session::IsLogin()) {
   </tr>
 </table>
 
-<div class="pgtab-openfiles-ol hdev-lcmenu less_gen_scroll"></div>
-
-<div id="h5c_dialog" class="border_radius_t5 displaynone">
-  <table class="h5c_dialog_title border_radius_t5" width="100%">
-    <tr>
-      <td class="h5c_dialog_titlel"></td>
-      <td class="h5c_dialog_titlec"></td>
-      <td class="h5c_dialog_titler">
-        <button class="close" style="margin: 4px 5px 0 0;" onclick="h5cDialogClose()">&times;</button>
-      </td>
-    </tr>
-  </table>
-
-  <div class="h5c_dialog_body">
-    <div id="h5c_dialog_page"></div>
-  </div>
-</div>
-
+<div class="pgtab-openfiles-ol hdev-lcmenu less_scroll"></div>

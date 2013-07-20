@@ -7,14 +7,11 @@ $projPath = h5creator_proj::path($this->req->proj);
 $grpid = $this->req->grpid;
 
 $fs = $projPath."/dataflow/{$grpid}.grp.json";
-if (!file_exists($fs)) {
-    die('Bad Request');
-}
-if (!is_writable($fs)) {
-    die("'$fs' is not Writable");
-}
 
 $json = h5creator_fs::FsFileGet($fs);
+if ($json->status != 200) {
+    die('Bad Request');
+}
 $json = json_decode($json->data->body, true);
 if (!isset($json['id'])) {
     die('Bad Request');
@@ -30,8 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json['name'] = $name;
     $json['updated'] = time();
 
-    h5creator_fs::FsFilePut($fs, hwl_Json::prettyPrint($json));
-
+    $rs = h5creator_fs::FsFilePut($fs, hwl_Json::prettyPrint($json));
+    if ($rs->status != 200) {
+        die($rs->message);
+    }
+    
     die("OK");
 }
 ?>

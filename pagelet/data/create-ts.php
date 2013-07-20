@@ -9,11 +9,9 @@ if ($this->app->method == 'POST') {
 
     $datasetid = $this->req->datasetid;
     $fsd = $projPath."/data/{$datasetid}.ds.json";
-    if (file_exists($fsd)) {
+    $rs = h5creator_fs::FsFileGet($fsd);
+    if ($rs->status == 200) {
         die("Bad Request, Data already exists");
-    }
-    if (!is_writable($projPath ."/data")) {
-        die("Permission denied, Can not write to ". $fsd);
     }
 
     $set = array(

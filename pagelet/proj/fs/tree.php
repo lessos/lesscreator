@@ -5,20 +5,17 @@ if ($this->req->proj == null) {
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj,'/'));
 $projPath = h5creator_proj::path($proj);
-
 if (strlen($projPath) < 1) {
     die("ERROR");
 }
 
 $path = preg_replace("/\/+/", "/", $this->req->path);
-$rs = h5creator_fs::FsFileGet($projPath .'/'. $path);
-if ($rs->status != 200) {
-    die('ERROR');
-}
+
 $rs = h5creator_fs::FsFileGet($projPath ."/lcproject.json");
 if ($rs->status != 200) {
     die('ERROR');
 }
+
 ?>
 
 <div>
@@ -29,24 +26,30 @@ $glob = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projPath}/{$pa
 $prt = $prt0 = '';
 
 $srvall = h5creator_service::listAll();
+$ls = h5creator_fs::FsList($glob);
+//echo "<pre>";
+//print_r($ls);
+//echo "</pre>";
+foreach ($ls->data as $f) {
 
-foreach (glob($glob) as $f) {
+    $fn = $f->name;
 
-    $fn = substr(strrchr($f, "/"), 1);
+    if (in_array($fn, array(".git"))) {
+        continue;
+    }
 
     if (strlen($path) < 1 && isset($srvall[$fn])) {
         continue;
     }
 
-    $fm = mime_content_type($f);
-    if (is_file($f)) {
-        $fs = filesize($f);
-        if ($fm == 'application/octet-stream' && $fs < 1048576) { // < 1MB
-            $_s = h5creator_fs::FsFileGet($f);
-            if ($_s->status != 200) {
-                continue;
-            }
-            
+    $fs = 0;
+    $fm = $f->mime;
+
+    if ($f->isdir != 1) {
+        
+        $fs = $f->size;
+
+        if ($fm == 'application/octet-stream' && $fs < (10 * 1024 * 1024)) { // < 10MB
             if (is_string($_s->data->body)) {
                 $fm = 'text/plain';
             }
@@ -55,13 +58,13 @@ foreach (glob($glob) as $f) {
     
     $fmi = 'page_white';
     $href = null;
-    
+
     $p = trim("{$path}/$fn", '/');
     $p = preg_replace("/\/+/", "/", $p);
     $pdiv = md5($p);
     
     //$p = urlencode($p);
-    if ($fm == 'directory') {
+    if ($f->isdir == 1) {
         
         if ($fn == 'pagelet') {
             $fmi = 'layers';
@@ -75,40 +78,41 @@ foreach (glob($glob) as $f) {
         
         $href   = "javascript:_fs_tree_dir('{$p}', 0)";
         
-    } else if (substr($fm,0,4) == 'text' 
+    } else if (substr($fm, 0, 4) == "text"
         || $fm == "application/x-empty"
-        || $fm == 'inode/x-empty') {
+        || $fm == "inode/x-empty"
+        || $fm == "application/json") {
         
         if (strlen($path) == 0 && $fn == 'lcproject.json') {
             $fmi = 'app-t3-16';
-        } else if ($fm == 'text/x-php' || substr($f,-4) == '.php') {
+        } else if ($fm == 'text/x-php' || substr($fn, -4) == '.php') {
             $fmi = 'page_white_php';
-        } else if (substr($f,-2) == '.h' || substr($f,-4) == '.hpp') {
+        } else if (substr($fn, -2) == '.h' || substr($fn, -4) == '.hpp') {
             $fmi = 'page_white_h';
-        } else if (substr($f,-2) == '.c') {
+        } else if (substr($fn, -2) == '.c') {
             $fmi = 'page_white_c';
-        } else if (substr($f,-4) == '.cpp' || substr($f,-3) == '.cc') {
+        } else if (substr($fn, -4) == '.cpp' || substr($fn, -3) == '.cc') {
             $fmi = 'page_white_cplusplus';
-        } else if (substr($f,-3) == '.js' || substr($f,-4) == '.css') {
+        } else if (substr($fn, -3) == '.js' || substr($fn, -4) == '.css') {
             $fmi = 'page_white_code';
-        } else if (substr($f,-5) == '.html' || substr($f,-4) == '.htm' || substr($f,-6) == '.xhtml') {
+        } else if (substr($fn, -5) == '.html' || substr($fn, -4) == '.htm' || substr($fn, -6) == '.xhtml') {
             $fmi = 'page_white_world';
-        } else if (substr($f,-3) == '.sh' || $fm == 'text/x-shellscript') {
+        } else if (substr($fn, -3) == '.sh' || $fm == 'text/x-shellscript') {
             $fmi = 'application_osx_terminal';
-        } else if (substr($f,-3) == '.rb') {
+        } else if (substr($fn, -3) == '.rb') {
             $fmi = 'page_white_ruby';
-        } else if (substr($f,-3) == '.go') {
+        } else if (substr($fn, -3) == '.go') {
             $fmi = 'ht-page_white_golang';
-        } else if (substr($f,-3) == '.py' 
-            || substr($f,-4) == '.yml'
-            || substr($f,-5) == '.yaml'
+        } else if (substr($fn, -3) == '.py' 
+            || substr($fn, -4) == '.yml'
+            || substr($fn, -5) == '.yaml'
             ) {
             $fmi = 'page_white_code';
         }
         
         //$href = "javascript:hdev_page_open('{$p}','editor','','{$fmi}')";
         $href = "javascript:h5cTabOpen('{$p}','w0','editor',{'img':'{$fmi}', 'close':'1'})";
-        
+       
     } else if (substr($fm, 0, 5) == 'image') {
         $fmi = 'page_white_picture';
     }
@@ -119,7 +123,7 @@ foreach (glob($glob) as $f) {
     
     $lip = "";
     
-    if ($fm == 'directory') {
+    if ($f->isdir == 1) {
         $lip .= "<div class='rcitem'>
             <div class='rcico'><img src='/h5creator/static/img/page_white_add.png' align='absmiddle' /></div>
             <a href='#{$p}' class='rcctn hdev_rcobj_file'>New File</a></div>";

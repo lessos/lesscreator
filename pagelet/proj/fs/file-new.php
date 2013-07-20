@@ -35,12 +35,17 @@ $("#egj3zj").submit(function(event) {
 });
 
 function _fs_file_new()
-{
+{    
+    var path = lessSession.Get("ProjPath");
+    path += "/"+ $("#egj3zj").find("input[name=path]").val();
+    path += "/"+ $("#egj3zj").find("input[name=name]").val();
+
     var req = {
-        proj : sessionStorage.ProjPath,
-        path : $("#egj3zj").find("input[name=path]").val(),
-        name : $("#egj3zj").find("input[name=name]").val(),
-        type : $("#egj3zj").find("input[name=type]").val(),
+        "access_token" : lessCookie.Get("access_token"),
+        "data" : {
+            "type" : $("#egj3zj").find("input[name=type]").val(),
+            "path" : path,
+        }
     }
 
     $.ajax({
@@ -52,13 +57,13 @@ function _fs_file_new()
         success : function(rsp) {
 
             var obj = JSON.parse(rsp);
-            if (obj.Status == 200) {
+            if (obj.status == 200) {
                 hdev_header_alert('success', "OK");
             } else {
-                hdev_header_alert('error', obj.Msg);
+                hdev_header_alert('error', obj.message);
             }
 
-            _fs_file_new_callback(req.path);
+            _fs_file_new_callback($("#egj3zj").find("input[name=path]").val());
             lessModalClose();
         },
         error   : function(xhr, textStatus, error) {

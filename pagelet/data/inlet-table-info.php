@@ -38,10 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("OK");
     }
 
-    if (!is_writable($fst)) {
-        die("Permission denied, Can not write to ". $fst);
-    }
-
     $tableInfo['tablename'] = $this->req->tablename;
     $tableInfo['updated']   = time();
     

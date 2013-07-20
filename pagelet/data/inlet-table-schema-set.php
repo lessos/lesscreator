@@ -46,10 +46,6 @@ $fieldidxs = array(
 );
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
-    if (!is_writable($fst)) {
-        die("Permission denied, Can not write to ". $fst);
-    }
 
     $schema = array();
     foreach ($this->req->fsname as $k => $v) {

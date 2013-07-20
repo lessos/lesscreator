@@ -1,25 +1,4 @@
 <?php
-/*
-use LessPHP\H5keeper\Client;
-$kpr = new Client();
-
-echo "<pre>";
-$kpr->NodeSet("/test/info", rand());
-
-$rs = $kpr->NodeGet("/test/info");
-print_r($rs);
-
-$rs = $kpr->NodeList("/test/");
-print_r($rs);
-
-$rs = $kpr->NodeDel("/test/info");
-print_r($rs);
-
-$rs = $kpr->NodeGet("/test/info");
-print_r($rs);
-
-echo "</pre>";
-*/
 
 if ($this->req->proj == null) {
     die('ERROR');
@@ -50,7 +29,7 @@ $ptpath = md5("");
 
 
 <!--ProjectFilesManager-->
-<div id="pt<?=$ptpath?>" class="hdev-proj-files less_gen_scroll" style="padding-top:10px;"></div>
+<div id="pt<?=$ptpath?>" class="hdev-proj-files less_scroll" style="padding-top:10px;"></div>
 
 
 <script type="text/javascript">
@@ -197,17 +176,18 @@ function _fs_tree_dir(path, force)
 {
     path = path.replace(/(^\/*)|(\/*$)/g, "");
     p = lessCryptoMd5(path);
-
+    //console.log("do path"+ path)
     if (force != 1 && $("#pt"+p).html() && $("#pt"+p).html().length > 1) {
         $("#pt"+p).empty();
         return;
     }
     
     $.ajax({
-        type: "GET",
-        url: '/h5creator/proj/fs/tree',
-        data: 'proj='+projCurrent+'&path='+path,
-        success: function(data) {
+        type    : "GET",
+        url     : '/h5creator/proj/fs/tree?_='+ Math.random(),
+        data    : 'proj='+projCurrent+'&path='+path,
+        async   : false,
+        success : function(data) {
             $("#pt"+p).html(data);
             h5cLayoutResize();
         }
@@ -220,25 +200,24 @@ function _fs_file_del(path)
     p = lessCryptoMd5(path);
     
     var req = {
-        proj : sessionStorage.ProjPath,
-        path : path,
+        "access_token" : lessCookie.Get("access_token"),
+        "data" : lessSession.Get("ProjPath") +"/"+ path,
     }
 
     $.ajax({
         type    : "POST",
         url     : "/h5creator/api?func=fs-file-del",
-        //dataType: 'json',
         data    : JSON.stringify(req),
         timeout : 3000,
         success : function(rsp) {
 
             var obj = JSON.parse(rsp);
-            if (obj.Status == 200) {
+            if (obj.status == 200) {
                 hdev_header_alert('success', "OK");
                 $("#ptp"+p).remove();
                 $("#pt"+p).remove();
             } else {
-                hdev_header_alert('error', obj.Msg);
+                hdev_header_alert('error', obj.message);
             }
         },
         error   : function(xhr, textStatus, error) {

@@ -45,7 +45,7 @@ a._proj_new_href_click {
     ?>
 </ul>
 
-<div id="_proj_new_dir_body" class="less_gen_scroll" style="border:1px solid #ccc;">
+<div id="_proj_new_dir_body" class="less_scroll" style="border:1px solid #ccc;">
 <table width="100%" sclass="table table-condensed">
 <?php
 foreach (glob($basedir."/*", GLOB_ONLYDIR) as $st) {

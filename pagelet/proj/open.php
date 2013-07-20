@@ -10,8 +10,9 @@
 
 <?php
 
+$basedir = $this->req->basedir;
 
-$pjc = SYS_ROOT .'/conf/h5creator/projlist.json';
+$pjc = $basedir .'/conf/h5creator/projlist.json';
 
 
 $pjs = h5creator_fs::FsFileGet($pjc);
@@ -21,12 +22,9 @@ if (!is_array($pjs)) {
 }
 
 foreach ($pjs as $projid => $val) {
-    if (in_array($projid, array('h5creator'))) {
-        continue;
-    }
 
     $noinfo = "";
-    //echo $val['path']."/lcproject.json";
+
     $rs = h5creator_fs::FsFileGet($val['path']."/lcproject.json");
     if ($rs->status != 200) {
         $noinfo = '<font color="red">This project no longer exists!</font>';
@@ -68,16 +66,15 @@ function _proj_fs(path, force)
 {
     if ($("#_proj_open_fs").is(':empty') || force == 1) {
         
-        $.get('/h5creator/proj/open-fs?path='+ path, function(data) {
+        var url = "/h5creator/proj/open-fs";
+        url += "?path="+ path;
+        
+        $.get(url, function(data) {
             
             $('#_proj_open_recent').hide();
             $('#_proj_open_fs').empty().html(data).show();
 
             $("#_proj_fs_body").show();
-            //bp = $("#_proj_fs_body").position();
-            //fp = $("#_proj_fs_open_foo").position();
-            //$("#_proj_fs_body").height(fp.top - bp.top - 10);
-
         });
 
     } else {
@@ -102,7 +99,7 @@ function _proj_recent_del(projid)
 {
     $.ajax({
         type: "POST",
-        url: '/h5creator/proj/open-recent',
+        url: '/h5creator/proj/open-recent?basedir='+ lessSession.Get("basedir"),
         data: {'func':'del', 'projid':projid},
         success: function(data) {
             if (data == "OK") {

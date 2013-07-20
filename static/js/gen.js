@@ -9,130 +9,7 @@ function h5cPluginDataNew()
     h5cDialogOpen('/h5creator/data/create', 700, 450, 
         'Create Database', null);
 }
-function h5cDialogPrev(url)
-{
-    urid = url.split("?", 1);
-    urid = urid[0].replace(/\//g, '');
-    if (h5cDialogPool[urid].url) {
-        h5cDialogOpen(url, 0, 0, h5cDialogPool[urid].title, null);
-    }
-}
-function h5cDialogNext(url, title)
-{
-    h5cDialogOpen(url, 0, 0, title, null);
-}
-function h5cDialogTitle(title)
-{
-    $(".h5c_dialog_titlec").text(title);
-}
 
-
-
-
-var h5cDialogPool = {};
-var h5cDialogCurrent = "";
-var h5cDialogW = 0;
-var h5cDialogH = 0;
-
-function h5cDialogOpen(url, width, height, title, opt)
-{
-    if (/\?/.test(url)) {
-        urls = url + "&_=";
-    } else {
-        urls = url + "?_=";
-    }
-    urls += Math.random();
-
-    $.ajax({
-        url     : urls,
-        type    : "GET",
-        timeout : 30000,
-        success : function(rsp) {            
-            
-            urid = url.split("?", 1);
-            urid = urid[0].replace(/\//g, '');
-
-            if (title.length) {
-                $(".h5c_dialog_titlec").text(title);
-            }
-
-            if (!$("#dpl"+ urid).length) {
-                $("#h5c_dialog_page").append('<div class="h5c_dialog_pagelet less_gen_scroll" id="dpl'+urid+'">'+rsp+'</div>');
-            }
-
-            if (h5cDialogW == 0) {
-                
-                if (!$('#h5c_dialog').is(':visible')) {
-                    $("#h5c_dialog").css({
-                        "z-index": "-100"
-                    }).show();
-                }
-
-                if (width == 0) {
-                    width = $("#dpl"+ urid).width();
-                }
-                if (width > 800 || width < 200) {
-                    width = 800;
-                }
-
-                if (height == 0) {
-                    height = $("#dpl"+ urid).height();
-                }
-                if (height > 500 || height < 100) {
-                    height = 500;
-                }
-
-                h5cDialogW = width;
-                h5cDialogH = height;
-
-                $(".h5c_dialog_body").width(h5cDialogW);
-                $(".h5c_dialog_body").height(h5cDialogH);
-            }
-
-            $("#dpl"+ urid).width(h5cDialogW);
-            $("#dpl"+ urid).height(h5cDialogH);
-
-            pp = $('#dpl'+ urid).position();
-            mov = pp.left;
-            if (mov < 0) {
-                mov = 0;
-            }
-            $('#h5c_dialog_page').animate({top: 0, left: "-"+ mov +"px"}, 200);
-         
-            if (h5cDialogCurrent == "") {
-                pll = ($('body').width() - h5cDialogW) / 2;
-                plt = ($('body').height() - h5cDialogH - 40) / 2;
-                $("#h5c_dialog").css({
-                    "z-index": 100,
-                    "top": plt +'px',
-                    "left": pll +'px'
-                });
-            }
-            if (!$('.h5c_dialog_bg').is(':visible')) {
-                $(".h5c_dialog_bg").remove();
-                $("body").append('<div class="h5c_dialog_bg">');
-            }
-
-            h5cDialogPool[urid] = {'title': title, 'url': url};
-            h5cDialogCurrent = urid;            
-        },
-        error: function(xhr, textStatus, error) {
-            alert("ERROR:"+ xhr.responseText);
-            hdev_header_alert('error', xhr.responseText);
-        }
-    });
-}
-
-function h5cDialogClose()
-{
-    $(".h5c_dialog_bg").remove();
-    $("#h5c_dialog_page").empty();
-    $("#h5c_dialog").hide();
-    h5cDialogW = 0;
-    h5cDialogH = 0;
-    h5cDialogCurrent = "";
-    h5cDialogPool = {};
-}
 
 var h5cTabletFrame = {};
 /**
@@ -465,7 +342,7 @@ function h5cLayoutResize()
 
     $("#hdev_layout").width(bw);
     
-    var toset = getCookie('cfg_lyo_col_w');
+    var toset = lessCookie.Get('cfg_lyo_col_w');
     if (toset == 0) {
         toset = 0.8;
     }
@@ -480,14 +357,14 @@ function h5cLayoutResize()
 
     /*
     var roww0 = $('#h5c-tablet-framew0').height();
-    toset = parseInt(getCookie('config_tablet_roww0'));
+    toset = parseInt(lessCookie.Get('config_tablet_roww0'));
     if (toset != roww0) {
         roww0 = toset;
         $('#h5c-tablet-framew0').height(roww0);
     }
 
     var rowt0 = $('#h5c-tablet-framet0').height();
-    toset = parseInt(getCookie('config_tablet_rowt0'));
+    toset = parseInt(lessCookie.Get('config_tablet_rowt0'));
     if (toset != rowt0) {
         rowt0 = toset;
         $('#h5c-tablet-framet0').height(rowt0);
@@ -522,10 +399,13 @@ function h5cProjectOpen(proj)
     if (!proj) {
         return;
     }
-    
+
+    var uri = "basedir="+ lessSession.Get("basedir");
+    uri += "&proj="+ proj;
+
     if (projCurrent) {
         if (projCurrent.split("/").pop(-1) != proj.split("/").pop(-1)) {
-            window.open("/h5creator/index?proj="+proj, '_blank');
+            window.open("/h5creator/index?"+ uri, '_blank');
         }
         return;
     }
@@ -534,23 +414,24 @@ function h5cProjectOpen(proj)
         'img': '/h5creator/static/img/app-t3-16.png',
         'title': 'Project',
     };
-    h5cTabOpen('/h5creator/app/project?proj='+proj, 't0', 'html', opt);
+
+    h5cTabOpen("/h5creator/proj/index?"+ uri, 't0', 'html', opt);
     
     projCurrent = proj;
     
-    sessionStorage.ProjPath = proj;
+    lessSession.Set("ProjPath", proj);
     
     h5cLayoutResize();
 }
 
 function h5cProjOpenDialog()
 {
-    lessModalOpen('/h5creator/proj/open', 1, 800, 450, 'Open Project', null);
+    lessModalOpen('/h5creator/proj/open?basedir='+ lessSession.Get("basedir"), 1, 800, 450, 'Open Project', null);
 }
 
 function h5cProjNewDialog()
 {
-    lessModalOpen('/h5creator/proj/new?basedir='+ lessSession.Get("basedir") +"/app", 
+    lessModalOpen('/h5creator/proj/new?basedir='+ lessSession.Get("basedir"), 
         1, 800, 450, 'Create New Project', null);
 }
 

@@ -58,7 +58,7 @@ if (count($grps) == 0) {
     </a>
 </div>
 
-<div id="pt<?=$ptpath?>" class="less_gen_scroll" style="padding-top:10px;"></div>
+<div id="pt<?=$ptpath?>" class="less_scroll" style="padding-top:10px;"></div>
 
 <div id="_proj_dataflow_grpnew_div" class="hdev-proj-olrcm border_radius_5 displaynone">
     <div class="header">

@@ -48,11 +48,12 @@ function _fs_file_upl()
                 }
 
                 var req = {
-                    proj : sessionStorage.ProjPath,
-                    path : path,
-                    size : file.size,
-                    name : file.name,
-                    data : e.target.result,
+                    "access_token" : lessCookie.Get("access_token"),
+                    "data" : {
+                        "path" : lessSession.Get("ProjPath") +"/"+ path +"/"+ file.name,
+                        "size" : file.size,
+                        "body" : e.target.result,
+                    }
                 }
 
                 $.ajax({
@@ -63,13 +64,13 @@ function _fs_file_upl()
                     success : function(rsp) {
 
                         var obj = JSON.parse(rsp);
-                        if (obj.Status == 200) {
+                        if (obj.status == 200) {
                             hdev_header_alert('success', "OK");
                         } else {
-                            hdev_header_alert('error', obj.Msg);
+                            hdev_header_alert('error', obj.message);
                         }
 
-                        _fs_file_new_callback(req.path);
+                        _fs_file_new_callback(path);
                         
                         lessModalClose();
                     },

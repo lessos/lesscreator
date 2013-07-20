@@ -4,17 +4,15 @@ $projPath = h5creator_proj::path($this->req->proj);
 
 
 $obj = $projPath ."/dataflow";
-if (!is_writable($obj)) {
-    die("'$obj' is not Writable");
-}
 
 list($grpid, $actorid) = explode("/", $this->req->uri);
 
 $fsg = $obj."/{$grpid}.grp.json";
-if (!file_exists($fsg)) {
+
+$grp = h5creator_fs::FsFileGet($fsg);
+if ($grp->status != 200) {
     die("Bad Request");
 }
-$grp = h5creator_fs::FsFileGet($fsg);
 $grp = json_decode($grp->data->body, true);
 if (!isset($grp['id'])) {
     die("Internal Server Error");
