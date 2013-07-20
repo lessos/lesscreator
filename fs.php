@@ -17,6 +17,27 @@ class h5creator_fs
         return self::$client;
     }
 
+    public static function FsList($path)
+    {
+        $req = array(
+            'data' => $path,
+        );
+
+        $cli = self::NetHttp("http://127.0.0.1:9531/h5creator/api/fs-list");
+
+        $ret = $cli->Post(json_encode($req));
+        if ($ret != 200) {
+            return false;
+        }
+
+        $ret = json_decode($cli->getBody(), false);
+        if (!isset($ret->status)) {
+            return false;
+        }
+
+        return $ret;
+    }
+
     public static function FsFileGet($file)
     {
         $req = array(

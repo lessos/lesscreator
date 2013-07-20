@@ -5,12 +5,14 @@ use LessPHP\User\Session;
 if (!Session::IsLogin()) {
     header('Location: /user');
 }
+$rs = h5creator_fs::FsList("//opt/afly/screen/");
+print_r($rs);
 
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>MQ DEMO</title>
+  <title>Less Creator</title>
   <script src="/jquery/jquery-2.0.min.js"></script>
   <script src="/lessui/js/less.js"></script>
   <script src="/bootstrap2/js/bootstrap.min.js"></script>

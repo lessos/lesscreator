@@ -14,6 +14,7 @@ import (
     "path/filepath"
     "regexp"
     "strings"
+    "time"
 )
 
 type FsFile struct {
@@ -22,7 +23,10 @@ type FsFile struct {
     Mime     string `json:"mime"`
     Body     string `json:"body"`
     SumCheck string `json:"sumcheck"`
-    Error    string `json:"error"`
+    IsDir    bool   `json:"isdir"`
+    //Mode     uint32    `json:"mode"`
+    ModTime time.Time `json:"modtime"`
+    //Error    string    `json:"error"`
 }
 
 func FsSaveWS(ws *websocket.Conn) {
@@ -74,6 +78,95 @@ func FsSaveWS(ws *websocket.Conn) {
             return
         }
     }
+}
+
+func FsList(w http.ResponseWriter, r *http.Request) {
+
+    var rsp struct {
+        ApiResponse
+        Data []FsFile `json:"data"`
+    }
+
+    defer func() {
+
+        if rsp.Status == 0 {
+            rsp.Status = 500
+            rsp.Message = "Internal Server Error"
+        }
+
+        if rspj, err := utils.JsonEncode(rsp); err == nil {
+            io.WriteString(w, rspj)
+        }
+        r.Body.Close()
+    }()
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
+        return
+    }
+
+    var req struct {
+        AccessToken string `json:"access_token"`
+        Data        string `json:"data"`
+    }
+    err = utils.JsonDecode(string(body), &req)
+    if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
+        return
+    }
+
+    reg, _ := regexp.Compile("/+")
+    req.Data = "/" + strings.Trim(reg.ReplaceAllString(req.Data, "/"), "/")
+    if !strings.Contains(req.Data, "*") {
+        req.Data += "/*"
+    }
+    //fmt.Println(req.Data)
+
+    // req.Data =
+
+    rs, err := filepath.Glob(req.Data)
+    if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
+        return
+    }
+    for _, v := range rs {
+
+        var file FsFile
+        file.Path = v
+
+        st, err := os.Stat(v)
+        if os.IsNotExist(err) {
+            continue
+        }
+        file.Size = st.Size()
+
+        file.IsDir = st.IsDir()
+        file.ModTime = st.ModTime()
+        //file.Mode = uint32(st.Mode())
+        //fmt.Println(fmt.Sprintf("%o", st.Mode()), st.Name())
+
+        ctype := mime.TypeByExtension(filepath.Ext(v))
+        //if ctype == "" {
+        //    ctype = http.DetectContentType(ctn)
+        //}
+        ctypes := strings.Split(ctype, ";")
+        if len(ctypes) > 0 {
+            ctype = ctypes[0]
+        }
+
+        file.Mime = ctype
+
+        rsp.Data = append(rsp.Data, file)
+    }
+
+    fmt.Println(rsp)
+    //rsp.Data = file
+
+    rsp.Status = 200
 }
 
 func FsFileGet(w http.ResponseWriter, r *http.Request) {
