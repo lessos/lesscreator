@@ -1,7 +1,7 @@
 <?php
 
 
-class h5creator_env
+class lesscreator_env
 {  
     public static function TypeList()
     {

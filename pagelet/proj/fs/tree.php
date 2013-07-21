@@ -4,14 +4,14 @@ if ($this->req->proj == null) {
     die('ERROR');
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj,'/'));
-$projPath = h5creator_proj::path($proj);
+$projPath = lesscreator_proj::path($proj);
 if (strlen($projPath) < 1) {
     die("ERROR");
 }
 
 $path = preg_replace("/\/+/", "/", $this->req->path);
 
-$rs = h5creator_fs::FsFileGet($projPath ."/lcproject.json");
+$rs = lesscreator_fs::FsFileGet($projPath ."/lcproject.json");
 if ($rs->status != 200) {
     die('ERROR');
 }
@@ -25,8 +25,8 @@ $glob = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), "{$projPath}/{$pa
 
 $prt = $prt0 = '';
 
-$srvall = h5creator_service::listAll();
-$ls = h5creator_fs::FsList($glob);
+$srvall = lesscreator_service::listAll();
+$ls = lesscreator_fs::FsList($glob);
 //echo "<pre>";
 //print_r($ls);
 //echo "</pre>";
@@ -118,34 +118,34 @@ foreach ($ls->data as $f) {
     }
     
     $li  = "<div id=\"ptp{$pdiv}\" class=\"hdev-proj-tree fileitem\">";
-    $li .= "<img src='/h5creator/static/img/{$fmi}.png' align='absmiddle' title='{$fm}' /> ";
+    $li .= "<img src='/lesscreator/static/img/{$fmi}.png' align='absmiddle' title='{$fm}' /> ";
     $li .= ($href === null) ? $fn : "<a href=\"{$href}\" class=\"anoline\">{$fn}</a>";
     
     $lip = "";
     
     if ($f->isdir == 1) {
         $lip .= "<div class='rcitem'>
-            <div class='rcico'><img src='/h5creator/static/img/page_white_add.png' align='absmiddle' /></div>
+            <div class='rcico'><img src='/lesscreator/static/img/page_white_add.png' align='absmiddle' /></div>
             <a href='#{$p}' class='rcctn hdev_rcobj_file'>New File</a></div>";
         $lip .= "<div class='rcitem'>
-            <div class='rcico'><img src='/h5creator/static/img/folder_add.png' align='absmiddle' /></div>
+            <div class='rcico'><img src='/lesscreator/static/img/folder_add.png' align='absmiddle' /></div>
             <a href='#{$p}' class='rcctn hdev_rcobj_dir'>New Folder</a></div>";
         $lip .= "<div class='rcitem'>
-            <div class='rcico'><img src='/h5creator/static/img/page_white_get.png' align='absmiddle' /></div>
+            <div class='rcico'><img src='/lesscreator/static/img/page_white_get.png' align='absmiddle' /></div>
             <a href='#{$p}' class='rcctn hdev_rcobj_upload'>Upload</a></div>";
     }
     
     if (strlen($path) != 0 || $fn != 'lcproject.json') {
         
         $lip .= "<div class='rcitem'>
-            <div class='rcico'><img src='/h5creator/static/img/page_white_copy.png' align='absmiddle' /></div>
+            <div class='rcico'><img src='/lesscreator/static/img/page_white_copy.png' align='absmiddle' /></div>
             <a href='#{$p}' class='rcctn hdev_rcobj_rename'>Rename</a></div>";
         
         if (strlen($lip)) {
             $lip .= "<div class=\"rcsepli\"></div>";
         }
         $lip .= "<div class='rcitem'>
-            <div class='rcico'><img src='/h5creator/static/img/delete.png' align='absmiddle' /></div>
+            <div class='rcico'><img src='/lesscreator/static/img/delete.png' align='absmiddle' /></div>
             <a href=\"javascript:_fs_file_del('{$p}');\" onclick=\"return confirm('Are you sure you want to delete?')\" class='rcctn'>Delete</a></div>";
     }
     

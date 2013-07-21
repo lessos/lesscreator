@@ -17,7 +17,7 @@
 <script type="text/javascript">
 
 $(".h6tnb9").click(function(){
-    var url = "/h5creator/data/create-select-type?proj="+ projCurrent;
+    var url = "/lesscreator/data/create-select-type?proj="+ projCurrent;
     lessModalOpen(url, 0, 700, 450, 'New DataSet', null);
 });
 
@@ -41,5 +41,5 @@ function _proj_data_tabopen(uri, force)
         }
     });
 }
-_proj_data_tabopen('/h5creator/proj/data/list?proj='+ projCurrent, 1);
+_proj_data_tabopen('/lesscreator/proj/data/list?proj='+ projCurrent, 1);
 </script>

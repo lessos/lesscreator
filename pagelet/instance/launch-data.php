@@ -5,12 +5,12 @@ if (strlen($this->req->instanceid) < 1) {
 }
 $projInstId = $this->req->instanceid;
 
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 
 use LessPHP\LessKeeper\Keeper;
 $kpr = new Keeper();
-//h5creator_service::debugPrint($ins);
+//lesscreator_service::debugPrint($ins);
 
 $datasets = array();
 
@@ -18,7 +18,7 @@ $glob = $projPath."/data/*.ds.json";
 
 foreach (glob($glob) as $v) {
 
-    $dataInfo = h5creator_fs:FsFileGet($v);
+    $dataInfo = lesscreator_fs:FsFileGet($v);
     $dataInfo = json_decode($dataInfo->data->body, true);
     if (!isset($dataInfo['id'])) {
         continue;
@@ -31,7 +31,7 @@ foreach (glob($glob) as $v) {
     
     foreach (glob($globsub) as $v2) {
         
-        $tableInfo = h5creator_fs::FsFileGet($v2);
+        $tableInfo = lesscreator_fs::FsFileGet($v2);
         $tableInfo = json_decode($tableInfo->data->body, true);
     
         if (!isset($tableInfo['tableid'])) {
@@ -50,7 +50,7 @@ foreach (glob($glob) as $v) {
         $datasets[$dataInfo['id']]['_tables'][] = $tableInfo;
     }
 }
-//h5creator_service::debugPrint($datasets);
+//lesscreator_service::debugPrint($datasets);
 
 echo "<table width=\"100%\" class='table table-hover table-condenseds'>";
 echo "<thead><tr>
@@ -134,7 +134,7 @@ function _launch_data_next()
             var req = uri +"&data="+ data;
             //console.log(req);
             $.ajax({
-                url     : "/h5creator/instance/launch-data-new?_="+ Math.random(),
+                url     : "/lesscreator/instance/launch-data-new?_="+ Math.random(),
                 type    : "POST",
                 data    : req,
                 timeout : 30000,
@@ -162,7 +162,7 @@ function _launch_data_next()
     uri += "&flowactorid="+ sessionStorage.LaunchFlowActorId;
     uri += "&_="+ Math.random();
 
-    var url = "/h5creator/instance/launch-flow?"+ uri;
+    var url = "/lesscreator/instance/launch-flow?"+ uri;
     
     lessModalNext(url , "Deployment Dataflow Actor", null);
 }

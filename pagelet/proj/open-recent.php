@@ -1,10 +1,10 @@
 <?php
 
-$pjc = SYS_ROOT .'/conf/h5creator/projlist.json';
+$pjc = SYS_ROOT .'/conf/lesscreator/projlist.json';
 
 if ($this->req->func == 'del') {
 
-    $rs = h5creator_fs::FsFileGet($pjc);
+    $rs = lesscreator_fs::FsFileGet($pjc);
     if ($rs->status != 200) {
         die('Not Implemented');
     }
@@ -17,7 +17,7 @@ if ($this->req->func == 'del') {
     if (isset($pjs[$this->req->projid])) {
         unset($pjs[$this->req->projid]);
         $pjs = hwl_Json::prettyPrint($pjs);
-        $rs = h5creator_fs::FsFilePut($pjc, $pjs);
+        $rs = lesscreator_fs::FsFilePut($pjc, $pjs);
         if ($rs->status == 200) {
             die("OK");
         } else {

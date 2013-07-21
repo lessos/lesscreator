@@ -1,7 +1,7 @@
 <?php
 
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
     die("Bad Request");
 }
@@ -11,14 +11,14 @@ if (!isset($this->req->data) || strlen($this->req->data) == 0) {
 }
 list($datasetid, $tableid) = explode("/", $this->req->data);
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-$rs = h5creator_fs::FsFileGet($fsd);
+$rs = lesscreator_fs::FsFileGet($fsd);
 if ($rs->status != 200) {
     die("Bad Request");
 }
 $dataInfo = json_decode($rs->data->body, true);
 
 $fsdt = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
-$rs = h5creator_fs::FsFileGet($fsdt);
+$rs = lesscreator_fs::FsFileGet($fsdt);
 if ($rs->status != 200) {
     die("Bad Request");
 }
@@ -51,7 +51,7 @@ var data = '<?php echo $this->req->data?>';
 $('.sk79ve').click(function() {    
     
     url = $(this).attr('href').substr(1);
-    _data_inlet_open("/h5creator/"+url);
+    _data_inlet_open("/lesscreator/"+url);
 
     $(".fc4exa li.active").removeClass("active");
     $(this).parent().addClass("active");
@@ -66,7 +66,7 @@ function _data_inlet_open(url)
         success : function(rsp) {            
             $("#vey476").empty().html(rsp);
             if (typeof _proj_data_tabopen == 'function') {
-                _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
+                _proj_data_tabopen('/lesscreator/proj/data/list?proj='+projCurrent, 1);
             }
         },
         error: function(xhr, textStatus, error) {
@@ -78,8 +78,8 @@ function _data_inlet_open(url)
 
 function _data_inlet_schema_edit()
 {
-    _data_inlet_open("/h5creator/data/inlet-table-schema-set");
+    _data_inlet_open("/lesscreator/data/inlet-table-schema-set");
 }
 
-_data_inlet_open("/h5creator/data/inlet-table-info");
+_data_inlet_open("/lesscreator/data/inlet-table-info");
 </script>

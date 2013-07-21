@@ -2,13 +2,13 @@
 
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 
-$projPath = h5creator_proj::path($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
 
 $grpid = $this->req->grpid;
 
 $fs = $projPath."/dataflow/{$grpid}.grp.json";
 
-$json = h5creator_fs::FsFileGet($fs);
+$json = lesscreator_fs::FsFileGet($fs);
 if ($json->status != 200) {
     die('Bad Request');
 }
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json['name'] = $name;
     $json['updated'] = time();
 
-    $rs = h5creator_fs::FsFilePut($fs, hwl_Json::prettyPrint($json));
+    $rs = lesscreator_fs::FsFilePut($fs, hwl_Json::prettyPrint($json));
     if ($rs->status != 200) {
         die($rs->message);
     }
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<form id="pmvc8e" action="/h5creator/proj/dataflow/grp-edit" method="post">
+<form id="pmvc8e" action="/lesscreator/proj/dataflow/grp-edit" method="post">
     <input type="hidden" name="proj" value="<?=$proj?>" />
     <input type="hidden" name="grpid" value="<?=$grpid?>" />
     <div>

@@ -12,16 +12,16 @@ if (!Session::IsLogin()) {
   <meta charset="utf-8">
   <title>MQ DEMO</title>
   <script src="/lessui/js/sea.js"></script>
-  <link href="/h5creator/static/img/hooto-xicon-mc.ico" rel="shortcut icon" type="image/x-icon" /> 
+  <link href="/lesscreator/static/img/hooto-xicon-mc.ico" rel="shortcut icon" type="image/x-icon" /> 
 </head>
-<body style="background:#D8DCE0 url(/h5creator/static/img/body.png) repeat-x;">
+<body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;">
 
 <table id="hdev_header" width="100%">
   <tr>
     <td width="10px"></td>
 
     <td class="header_logo" width="160px">
-      <img src="/h5creator/static/img/hooto-logo-mc-h30s.png" />
+      <img src="/lesscreator/static/img/hooto-logo-mc-h30s.png" />
       <span class="title">Creator</span>
     </td>
 
@@ -129,36 +129,36 @@ if (!Session::IsLogin()) {
       <div class="hdev-ws hdev-tabs hcr-pgbar-editor">
         
         <div class="tabitem" onclick="hdev_editor_undo()">
-            <div class="ico"><img src="/h5creator/static/img/arrow_undo.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/arrow_undo.png" align="absmiddle" /></div>
             <div class="ctn">Undo</div>
         </div>
         
         <div class="tabitem" onclick="hdev_editor_redo()">
-            <div class="ico"><img src="/h5creator/static/img/arrow_redo.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/arrow_redo.png" align="absmiddle" /></div>
             <div class="ctn">Redo</div>
         </div>
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="hdev_editor_search()">
-            <div class="ico"><img src="/h5creator/static/img/magnifier.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/magnifier.png" align="absmiddle" /></div>
             <div class="ctn">Search</div>
         </div>
         
         <div class="tabitemline"></div>
         <div class="tabitem">
-            <div class="ico"><img src="/h5creator/static/img/disk.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/disk.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="hdev_editor_set('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div>
 
         <div class="tabitemline"></div>
         <div class="tabitem">
-            <div class="ico"><img src="/h5creator/static/img/w3_vim.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/w3_vim.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="hdev_editor_set('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> Simple VIM</div>
         </div> 
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="hdev_page_open('app/editor-set', 'content', 'Editor Setting', 'cog')">
-            <div class="ico"><img src="/h5creator/static/img/page_white_gear.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/page_white_gear.png" align="absmiddle" /></div>
             <div class="ctn">Setting</div>
         </div>      
       </div>
@@ -308,10 +308,10 @@ seajs.config({
         "bt": "/bootstrap2/js/bootstrap.min.js",
         "bt_css": "/bootstrap2/css/bootstrap.min.css",
 
-        "loc_css": "/h5creator/static/css/def.css",
-        "loc_main": "/h5creator/static/js/c.js",
-        "loc_gen": "/h5creator/static/js/gen.js",
-        "loc_editor": "/h5creator/static/js/editor.js",
+        "loc_css": "/lesscreator/static/css/def.css",
+        "loc_main": "/lesscreator/static/js/c.js",
+        "loc_gen": "/lesscreator/static/js/gen.js",
+        "loc_editor": "/lesscreator/static/js/editor.js",
         
         "cm_loadmode":  "/codemirror3/addon/mode/loadmode.js",
         "cm_searchcursor": "/codemirror3/addon/search/searchcursor.js",
@@ -335,7 +335,7 @@ seajs.use(["less_bd"], function() {
                 'background': '#333'
             });
 
-            $('body').load('/h5creator/app/err-browser/');
+            $('body').load('/lesscreator/app/err-browser/');
         });
 
         return;

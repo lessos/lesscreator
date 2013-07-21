@@ -5,8 +5,8 @@ if (strlen($this->req->instanceid) < 1) {
 }
 $projInstId = $this->req->instanceid;
 
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 
 use LessPHP\LessKeeper\Keeper;
 $kpr = new Keeper();
@@ -14,7 +14,7 @@ $kpr = new Keeper();
 $grps = array();
 $glob = $projPath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
-    $grpInfo = h5creator_fs::FsFileGet($v);
+    $grpInfo = lesscreator_fs::FsFileGet($v);
     $grpInfo = json_decode($grpInfo->data->body, true);
     if (!isset($grpInfo['id'])) {
         continue;
@@ -27,7 +27,7 @@ foreach (glob($glob) as $v) {
     $glob2 = $projPath."/dataflow/{$grpInfo['id']}/*.actor.json";
     foreach (glob($glob2) as $v2) {
         
-        $actorInfo = h5creator_fs::FsFileGet($v2);
+        $actorInfo = lesscreator_fs::FsFileGet($v2);
         $actorInfo = json_decode($actorInfo->data->body, true);
 
         if (!isset($actorInfo['id'])) {
@@ -43,20 +43,20 @@ foreach (glob($glob) as $v) {
 
         switch ($actorInfo['para_mode']) {
         
-        case h5creator_service::ParaModeServer:
+        case lesscreator_service::ParaModeServer:
             if (strlen($actorInst['ParaHost']) > 7) {
                 $actorInfo['_ins_seted'] = true;
             }
             break;
 
-        case h5creator_service::ParaModeDataSingle:
-        case h5creator_service::ParaModeDataServer: 
-        case h5creator_service::ParaModeDataShard:
+        case lesscreator_service::ParaModeDataSingle:
+        case lesscreator_service::ParaModeDataServer: 
+        case lesscreator_service::ParaModeDataShard:
 
             $para_datas = explode("_", $actorInfo['para_data']);
             $dataInst = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$projInstId}/data/{$para_datas[1]}");
             $dataInst = json_decode($dataInst, true);
-            //h5creator_service::debugPrint($dataInst);
+            //lesscreator_service::debugPrint($dataInst);
             
             $actorInst['ActorId']     = $actorInfo['id'];
             $actorInst['ParaData']    = $dataInst['InstId'];
@@ -73,7 +73,7 @@ foreach (glob($glob) as $v) {
                 'Info'      => $actorInfo,
             );
             $fss = $projPath."/dataflow/{$grpInfo['id']}/{$actorInfo['id']}.actor";
-            $fss = h5creator_fs::FsFileGet($fss);
+            $fss = lesscreator_fs::FsFileGet($fss);
             
             $kpr->NodeSet("/app/u/guest/{$projInfo['projid']}/{$projInstId}/flow/{$actorInfo['id']}", json_encode($actorInst));
             
@@ -89,7 +89,7 @@ foreach (glob($glob) as $v) {
         $grps[$grpInfo['id']]['actor'][$actorInfo['id']] = $actorInfo;
     }
 }
-//h5creator_service::debugPrint($grps);
+//lesscreator_service::debugPrint($grps);
 echo "<table width=\"100%\" class='table table-hover table-condenseds'>";
 echo "<thead><tr>
         <th width='20px'></th>
@@ -157,14 +157,14 @@ $(".bbwv0a").click(function() {
     uri += "&flowgrpid="+ href[0];
     uri += "&flowactorid="+ href[1];
 
-    var url = "/h5creator/instance/launch-flow-set?"+ uri;
+    var url = "/lesscreator/instance/launch-flow-set?"+ uri;
     lessModalNext(url , "Actor Setting", null);
 });
 
 function _launch_flow_next()
 {
     sessionStorage.InsActive = sessionStorage.LaunchInstanceId;
-    var url = "/h5creator/instance/launch-done?";
+    var url = "/lesscreator/instance/launch-done?";
     lessModalNext(url, "Well Done", null);
 }
 

@@ -1,7 +1,7 @@
 <?php
 
 
-class h5creator_service
+class lesscreator_service
 {
     const ExecModeManual     = '1';
     const ExecModeTime       = '2';

@@ -1,13 +1,13 @@
 {
-  "projid":"h5creator",
+  "projid":"lesscreator",
   "name":"Creator",
   "summary":"Hooto Creator, Web based IDE",
   "depends":"bootstrap2,jquery,codemirror3,fam3,LessPHP,hwl,lessui",
   "version":"1.0.2",
   "props":"dataflow,pagelet",
-  "boot":"app\/h5creator\/index.php",
+  "boot":"app\/lesscreator\/index.php",
   "arch":"all",
   "release":"1dev",
   "types": "webstatic,webphp",
-  "targetdir":"h5creator"
+  "targetdir":"lesscreator"
 }

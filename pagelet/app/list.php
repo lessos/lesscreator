@@ -23,11 +23,11 @@ foreach (glob($patt, GLOB_ONLYDIR) as $st) {
 
   $projid = trim(strrchr($st, '/'), '/');
   
-  if (in_array($projid, array('h5creator', 'hww', 'Zend'))) {
+  if (in_array($projid, array('lesscreator', 'hww', 'Zend'))) {
     continue;
   }
 
-  $rs = h5creator_fs::FsFileGet($st."/lcproject.json");
+  $rs = lesscreator_fs::FsFileGet($st."/lcproject.json");
   if ($rs->status == 200 {
     $val = json_decode($rs->data->body, true);
   } else {

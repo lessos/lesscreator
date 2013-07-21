@@ -48,7 +48,7 @@ a._proj_fs_href_click {
 <div id="_proj_fs_body" class="less_scroll hide" style="margin-right:20px; border:1px solid #ccc;">
 <table width="100%" sclass="table table-condensed">
 <?php
-$rs = h5creator_fs::FsList($path."/*");
+$rs = lesscreator_fs::FsList($path."/*");
 
 foreach ($rs->data as $v) {
 
@@ -59,7 +59,7 @@ foreach ($rs->data as $v) {
 ?>
 <tr>
   <td valign="middle" width="18">
-    <img src="/h5creator/static/img/folder.png" align="absmiddle" />
+    <img src="/lesscreator/static/img/folder.png" align="absmiddle" />
   </td>
   <td><a href="#<?php echo $v->name?>" class="_proj_fs_href"><?=$v->name?></a></td>
 </tr>

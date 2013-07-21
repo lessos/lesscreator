@@ -6,11 +6,11 @@ $type = $this->req->type;
 ?>
 
 
-<form id="egj3zj" action="/h5creator/proj/fs/file-new" method="post">
+<form id="egj3zj" action="/lesscreator/proj/fs/file-new" method="post">
 
   <div class="input-prepend" style="margin-left:2px">
     <span class="add-on">
-        <img src="/h5creator/static/img/folder_add.png" class="h5c_icon" />
+        <img src="/lesscreator/static/img/folder_add.png" class="h5c_icon" />
         <?php echo $path?>
     </span>
     <input type="text" name="name" value="" class="span2 hutjzx" />
@@ -50,7 +50,7 @@ function _fs_file_new()
 
     $.ajax({
         type    : "POST",
-        url     : "/h5creator/api?func=fs-file-new",
+        url     : "/lesscreator/api?func=fs-file-new",
         //dataType: 'json',
         data    : JSON.stringify(req),
         timeout : 3000,

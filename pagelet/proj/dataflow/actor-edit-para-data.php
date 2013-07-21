@@ -5,8 +5,8 @@ if ($this->req->proj == null) {
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 
 $datasets = array();
 
@@ -14,7 +14,7 @@ $glob = $projPath."/data/*.ds.json";
 
 foreach (glob($glob) as $v) {
     
-    $json = h5creator_fs::FsFileGet($v);
+    $json = lesscreator_fs::FsFileGet($v);
     $json = json_decode($json->data->body, true);
     
     if (!isset($json['id'])) {
@@ -32,7 +32,7 @@ foreach (glob($glob) as $v) {
     
     foreach (glob($globsub) as $v2) {
         
-        $json2 = h5creator_fs::FsFileGet($v2);
+        $json2 = lesscreator_fs::FsFileGet($v2);
         $json2 = json_decode($json2->data->body, true);
     
         if (!isset($json2['tableid'])) {

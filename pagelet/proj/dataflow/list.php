@@ -4,7 +4,7 @@ if ($this->req->proj == null) {
     die('ERROR');
 }
 
-$projPath = h5creator_proj::path($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
 if (strlen($projPath) < 1) {
     die("ERROR");
 }
@@ -12,7 +12,7 @@ if (strlen($projPath) < 1) {
 $grps = array();
 $glob = $projPath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
-    $json = h5creator_fs:FsFileGet($v);
+    $json = lesscreator_fs:FsFileGet($v);
     $json = json_decode($json->data->body, true);
     if (!isset($json['id'])) {
         continue;
@@ -39,7 +39,7 @@ foreach ($grps as $k => $v) {
     $glob = $projPath."/dataflow/{$k}/*.actor.json";
     foreach (glob($glob) as $v2) {
         
-        $json = h5creator_fs::FsFileGet($v2);
+        $json = lesscreator_fs::FsFileGet($v2);
         $json = json_decode($json->data->body, true);
         
         if (!isset($json['id'])) {
@@ -120,14 +120,14 @@ function _qstatus_send()
 
 $('.k810ll').click(function() {
     var uri = $(this).attr('href').substr(1);
-    var url = "/h5creator/proj/dataflow/grp-edit?proj="+projCurrent+"&grpid="+uri;
+    var url = "/lesscreator/proj/dataflow/grp-edit?proj="+projCurrent+"&grpid="+uri;
     lessModalOpen(url, 0, 400, 0, 'Edit Group', null);
 });
 
 $('.to8kit').click(function() {
     var uri = $(this).attr('href').substr(1);
     var tit = $(this).attr('title');
-    var url = "/h5creator/proj/dataflow/actor-edit?proj="+projCurrent+"&uri="+uri;
+    var url = "/lesscreator/proj/dataflow/actor-edit?proj="+projCurrent+"&uri="+uri;
     h5cTabOpen(url, 'w0', 'html', 
         {'title': tit, 'close':'1', 'img': '/fam3/icons/brick.png'});
 });
@@ -148,7 +148,7 @@ $('.j4sa3r').click(function() {
     }
 
     var uri = $(this).attr('href').substr(1);
-    var url = "/h5creator/instance/launch?proj="+ projCurrent;
+    var url = "/lesscreator/instance/launch?proj="+ projCurrent;
     url += "&flowgrpid="+ uri.split('/')[0];
     url += "&flowactorid="+ uri.split('/')[1];
     lessModalOpen(url, 1, 700, 400, "Launch Instance", null);    

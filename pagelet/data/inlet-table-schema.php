@@ -1,6 +1,6 @@
 <?php
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
     die("Bad Request");
 }
@@ -11,14 +11,14 @@ if (!isset($this->req->data) || strlen($this->req->data) == 0) {
 list($datasetid, $tableid) = explode("/", $this->req->data);
 
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-$rs = h5creator_fs::FsFileGet($fsd);
+$rs = lesscreator_fs::FsFileGet($fsd);
 if ($rs->status != 200) {
     die("Bad Request");
 }
 $dataInfo = json_decode($rs->data->body, true);
 
 $fst = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
-$rs = h5creator_fs::FsFileGet($fst);
+$rs = lesscreator_fs::FsFileGet($fst);
 if ($rs->status != 200) {
     die("Bad Request");
 }

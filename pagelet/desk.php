@@ -12,7 +12,7 @@ if (!Session::IsLogin()) {
     <td width="10px"></td>
 
     <td class="header_logo" width="160px">
-      <img src="/h5creator/static/img/hooto-logo-mc-h30.png" />
+      <img src="/lesscreator/static/img/hooto-logo-mc-h30.png" />
       <span class="title">Creator</span>
     </td>
 
@@ -120,36 +120,36 @@ if (!Session::IsLogin()) {
       <div class="hdev-ws hdev-tabs hcr-pgbar-editor">
         
         <div class="tabitem" onclick="hdev_editor_undo()">
-            <div class="ico"><img src="/h5creator/static/img/arrow_undo.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/arrow_undo.png" align="absmiddle" /></div>
             <div class="ctn">Undo</div>
         </div>
         
         <div class="tabitem" onclick="hdev_editor_redo()">
-            <div class="ico"><img src="/h5creator/static/img/arrow_redo.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/arrow_redo.png" align="absmiddle" /></div>
             <div class="ctn">Redo</div>
         </div>
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="hdev_editor_search()">
-            <div class="ico"><img src="/h5creator/static/img/magnifier.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/magnifier.png" align="absmiddle" /></div>
             <div class="ctn">Search</div>
         </div>
         
         <div class="tabitemline"></div>
         <div class="tabitem">
-            <div class="ico"><img src="/h5creator/static/img/disk.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/disk.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="hdev_editor_set('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div>
 
         <div class="tabitemline"></div>
         <div class="tabitem">
-            <div class="ico"><img src="/h5creator/static/img/w3_vim.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/w3_vim.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="hdev_editor_set('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> Simple VIM</div>
         </div> 
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="hdev_page_open('app/editor-set', 'content', 'Editor Setting', 'cog')">
-            <div class="ico"><img src="/h5creator/static/img/page_white_gear.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/static/img/page_white_gear.png" align="absmiddle" /></div>
             <div class="ctn">Setting</div>
         </div>      
       </div>

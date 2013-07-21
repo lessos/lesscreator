@@ -43,7 +43,7 @@ function h5cTabletEditorOpen(urid)
             path : item.url,
         }                
         $.ajax({
-            url     : '/h5creator/api?func=fs-file-get',
+            url     : '/lesscreator/api?func=fs-file-get',
             type    : "POST",
             timeout : 30000,
             data    : JSON.stringify(req),
@@ -172,7 +172,7 @@ function h5cEditorLoad(urid)
     //});
 }
 
-var h5cServerAPI    = "web.example.com:9531/h5creator/api";
+var h5cServerAPI    = "web.example.com:9531/lesscreator/api";
 var h5cEditorSaveAPI  = "ws://"+h5cServerAPI+"/fs-save-ws";
 var h5cEditorSaveSock = null;
 

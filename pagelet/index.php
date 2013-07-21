@@ -17,17 +17,17 @@ if (!Session::IsLogin()) {
   <link href="/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/codemirror3/lib/codemirror.css" rel="stylesheet" />
   <link href="/lessui/css/def.css" rel="stylesheet" />
-  <link href="/h5creator/static/css/def.css" rel="stylesheet" />
-  <link href="/h5creator/static/img/hooto-xicon-mc.ico" rel="shortcut icon" type="image/x-icon" /> 
+  <link href="/lesscreator/static/css/def.css" rel="stylesheet" />
+  <link href="/lesscreator/static/img/hooto-xicon-mc.ico" rel="shortcut icon" type="image/x-icon" /> 
 </head>
-<body style="background:#D8DCE0 url(/h5creator/static/img/body.png) repeat-x;">
+<body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;">
 
 </body>
 </html>
 
-<script src="/h5creator/static/js/c.js"></script>
-<script src="/h5creator/static/js/gen.js"></script>
-<script src="/h5creator/static/js/editor.js"></script>
+<script src="/lesscreator/static/js/c.js"></script>
+<script src="/lesscreator/static/js/gen.js"></script>
+<script src="/lesscreator/static/js/editor.js"></script>
 <script src="/lessui/js/BrowserDetect.js"></script>
 
 <script src="/codemirror3/lib/codemirror.min.js"></script>
@@ -47,7 +47,7 @@ $(document).ready(function() {
             'min-width': '400px',
             'background': '#656565'
         });
-        $('body').load('/h5creator/err/browser');
+        $('body').load('/lesscreator/err/browser');
         return;
     }
 
@@ -57,7 +57,7 @@ $(document).ready(function() {
         access_token: lessCookie.Get("access_token"),
     }
     $.ajax({
-        url     : "/h5creator/api?func=env-init",
+        url     : "/lesscreator/api?func=env-init",
         type    : "POST",
         timeout : 30000,
         data    : JSON.stringify(req),
@@ -80,7 +80,7 @@ $(document).ready(function() {
                 lessCookie.Set("basedir", rsj.data.basedir, 0);
 
                 $.ajax({
-                    url     : "/h5creator/desk?basedir="+ rsj.data.basedir,
+                    url     : "/lesscreator/desk?basedir="+ rsj.data.basedir,
                     type    : "GET",
                     timeout : 30000,
                     success : function(rsp) {

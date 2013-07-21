@@ -1,6 +1,6 @@
 <?php
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
     die("Bad Request");
 }
@@ -9,7 +9,7 @@ if ($this->app->method == 'POST') {
 
     $datasetid = $this->req->datasetid;
     $fsd = $projPath."/data/{$datasetid}.ds.json";
-    $rs = h5creator_fs::FsFileGet($fsd);
+    $rs = lesscreator_fs::FsFileGet($fsd);
     if ($rs->status == 200) {
         die("Bad Request, Data already exists");
     }
@@ -22,7 +22,7 @@ if ($this->app->method == 'POST') {
         'created' => time(),
         'updated' => time(),
     );
-    h5creator_fs::FsFilePut($fsd, hwl_Json::prettyPrint($set));
+    lesscreator_fs::FsFilePut($fsd, hwl_Json::prettyPrint($set));
     
     die("OK");
 }
@@ -32,7 +32,7 @@ $datasetid = LessPHP_Util_String::rand(8, 2);
 
 <div id="h5c_dialog_alert"></div>
 
-<form id="c47vz9" action="/h5creator/data/create-ts">
+<form id="c47vz9" action="/lesscreator/data/create-ts">
 <table width="100%">
   <tr>
     <td width="180px"><strong>DataSet ID</strong></td>
@@ -88,7 +88,7 @@ function _data_create_open()
     var id = $("input [name=datasetid]").val();
 
     if (typeof _proj_data_tabopen == 'function') {
-        _proj_data_tabopen('/h5creator/proj/data/list?proj='+ projCurrent, 1);
+        _proj_data_tabopen('/lesscreator/proj/data/list?proj='+ projCurrent, 1);
     }
     lessModalClose();
 }

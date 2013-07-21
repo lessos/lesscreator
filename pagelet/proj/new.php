@@ -1,6 +1,6 @@
 <?php
 
-$basedir = h5creator_proj::path("");
+$basedir = lesscreator_proj::path("");
 
 if (!isset($this->req->projid)
     || strlen($this->req->projid) < 1) {
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         $f = "{$basedir}/{$projid}/lcproject.json";
         $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 
-        $rs = h5creator_fs::FsFileGet($f);
+        $rs = lesscreator_fs::FsFileGet($f);
         if ($rs->status == 200) {
             throw new \Exception("Project ID exists");
         }
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
             $set['types'] = implode(",", $this->req->types);
         }
 
-        $rs = h5creator_fs::FsFilePut($f, $str);
+        $rs = lesscreator_fs::FsFilePut($f, $str);
         if ($rs->status != 200) {
             throw new \Exception($rs->message);
         }
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 </div>
 </div>
 
-<form id="_proj_new_form" action="/h5creator/proj/new/" method="post" style="padding:10px;">
+<form id="_proj_new_form" action="/lesscreator/proj/new/" method="post" style="padding:10px;">
   
   <input id="basedir" name="basedir" type="hidden" class="_proj_new_basedir" value="<?php echo $basedir?>" />
   
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
       <td valign="top"><strong>Services</strong></td>
       <td>
         <?php
-        $srvs = h5creator_service::listAll();
+        $srvs = lesscreator_service::listAll();
         foreach ($srvs as $k => $v) {
             echo "<label class=\"checkbox\">
                 <input type=\"checkbox\" name=\"props[]\" value=\"{$k}\" /> {$v}
@@ -148,7 +148,7 @@ function _proj_new_dir(path)
         path = _basedir;
     }
 
-    $.get('/h5creator/proj/new-fs?path='+ path, function(data) {
+    $.get('/lesscreator/proj/new-fs?path='+ path, function(data) {
         
         $('#_proj_new_dir').empty();
         //bh = $("#_proj_new_form").height();
@@ -206,7 +206,7 @@ function _proj_new_commit()
 
 function _proj_new_goto()
 {
-    window.open("/h5creator/index?proj="+ _basedir +"/"+ _projid, "_blank");
+    window.open("/lesscreator/index?proj="+ _basedir +"/"+ _projid, "_blank");
 }
 
 </script>

@@ -4,7 +4,7 @@ $path = $this->req->path;
 ?>
 
 <form id="ok8lnk" action="#" method="post">
-    <img src="/h5creator/static/img/page_white_get.png" align="absmiddle" />
+    <img src="/lesscreator/static/img/page_white_get.png" align="absmiddle" />
     <span class="path"><?php echo $path?></span> /
     <input id="attachment" name="attachment" size="40" type="file" />
 </form>
@@ -58,7 +58,7 @@ function _fs_file_upl()
 
                 $.ajax({
                     type    : "POST",
-                    url     : "/h5creator/api?func=fs-file-upl",
+                    url     : "/lesscreator/api?func=fs-file-upl",
                     data    : JSON.stringify(req),
                     timeout : 3000,
                     success : function(rsp) {

@@ -16,8 +16,8 @@ $insid = $this->req->instanceid;
 $grpid = $this->req->flowgrpid;
 $actorid = $this->req->flowactorid;
 
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 
 $fsg = $projPath."/dataflow/{$grpid}.grp.json";
 $rs = h5ceator_fs::FsFileGet($fsg);
@@ -31,7 +31,7 @@ if ($rs->status != 200) {
     die(json_encode($ret));
 }
 $actorInfo = json_decode($rs->data->body, true);
-if ($actorInfo['para_mode'] != h5creator_service::ParaModeServer) {
+if ($actorInfo['para_mode'] != lesscreator_service::ParaModeServer) {
     die(json_encode($ret));
 }
 

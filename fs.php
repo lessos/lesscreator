@@ -2,7 +2,7 @@
 
 use LessPHP\Net\Http;
 
-class h5creator_fs
+class lesscreator_fs
 {
     private static $client = null;
 
@@ -23,7 +23,7 @@ class h5creator_fs
             'data' => $path,
         );
 
-        $cli = self::NetHttp("http://127.0.0.1:9531/h5creator/api/fs-list");
+        $cli = self::NetHttp("http://127.0.0.1:9531/lesscreator/api/fs-list");
 
         $ret = $cli->Post(json_encode($req));
         if ($ret != 200) {
@@ -44,7 +44,7 @@ class h5creator_fs
             'data' => array('path' => $file),
         );
 
-        $cli = self::NetHttp("http://127.0.0.1:9531/h5creator/api/fs-file-get");
+        $cli = self::NetHttp("http://127.0.0.1:9531/lesscreator/api/fs-file-get");
 
         $ret = $cli->Post(json_encode($req));
         if ($ret != 200) {
@@ -69,7 +69,7 @@ class h5creator_fs
             ),
         );
 
-        $cli = self::NetHttp("http://127.0.0.1:9531/h5creator/api/fs-file-put");
+        $cli = self::NetHttp("http://127.0.0.1:9531/lesscreator/api/fs-file-put");
 
         $ret = $cli->Post(json_encode($req));
         if ($ret != 200) {

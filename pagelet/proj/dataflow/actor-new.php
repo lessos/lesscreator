@@ -2,14 +2,14 @@
 
 $msg    = 'Internal Server Error';
 
-$projPath = h5creator_proj::path($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
 
 
 $grps = array();
 $glob = $projPath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
     
-    $rs = h5creator_fs::FsFileGet($v);
+    $rs = lesscreator_fs::FsFileGet($v);
     if ($rs->status != 200) {
         continue;
     }
@@ -48,11 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'created' => time(),
         'updated' => time(),
     );
-    h5creator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
+    lesscreator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
 
     // actor
     $obj = $projPath ."/dataflow/{$grpid}/{$id}.actor";
-    $rs = h5creator_fs::FsFilePut($obj, "#!/bin/sh\n\n");
+    $rs = lesscreator_fs::FsFilePut($obj, "#!/bin/sh\n\n");
     if ($rs->status != 200) {
         die($rs->message);
     }
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </tr>
 </table>
 
-<form id="_proj_dataflow_actornew_form" action="/h5creator/proj/dataflow/actor-new" style="padding:5px;">
+<form id="_proj_dataflow_actornew_form" action="/lesscreator/proj/dataflow/actor-new" style="padding:5px;">
 
   <table width="100%" cellpadding="3">
     <tr>

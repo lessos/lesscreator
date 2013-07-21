@@ -1,12 +1,12 @@
 
 function h5cPluginDataOpen()
 {
-    h5cDialogOpen('/h5creator/data/open', 700, 450, 
+    h5cDialogOpen('/lesscreator/data/open', 700, 450, 
         'Open Database', null);
 }
 function h5cPluginDataNew()
 {
-    h5cDialogOpen('/h5creator/data/create', 700, 450, 
+    h5cDialogOpen('/lesscreator/data/create', 700, 450, 
         'Create Database', null);
 }
 
@@ -180,7 +180,7 @@ function h5cTabletTitle(urid)
 
         entry  = '<table id="pgtab'+urid+'" class="pgtab"><tr>';
         if (item.img) {
-            var imgsrc = "/h5creator/static/img/"+item.img+".png";
+            var imgsrc = "/lesscreator/static/img/"+item.img+".png";
             if (item.img.slice(0, 1) == '/') {
                 imgsrc = item.img;
             }
@@ -233,7 +233,7 @@ function h5cTabletMore(tg)
         
         href = "javascript:h5cTabSwitch('"+ i +"')";
         ol += '<div class="lcitem hdev_lcobj_file">';
-        ol += '<div class="lcico"><img src="/h5creator/static/img/'+ h5cTabletPool[i].img +'.png" align="absmiddle" /></div>';
+        ol += '<div class="lcico"><img src="/lesscreator/static/img/'+ h5cTabletPool[i].img +'.png" align="absmiddle" /></div>';
         ol += '<div class="lcctn"><a href="'+ href +'">'+ h5cTabletPool[i].title +'</a></div>';
         ol += '</div>';
     }
@@ -405,17 +405,17 @@ function h5cProjectOpen(proj)
 
     if (projCurrent) {
         if (projCurrent.split("/").pop(-1) != proj.split("/").pop(-1)) {
-            window.open("/h5creator/index?"+ uri, '_blank');
+            window.open("/lesscreator/index?"+ uri, '_blank');
         }
         return;
     }
     
     var opt = {
-        'img': '/h5creator/static/img/app-t3-16.png',
+        'img': '/lesscreator/static/img/app-t3-16.png',
         'title': 'Project',
     };
 
-    h5cTabOpen("/h5creator/proj/index?"+ uri, 't0', 'html', opt);
+    h5cTabOpen("/lesscreator/proj/index?"+ uri, 't0', 'html', opt);
     
     projCurrent = proj;
     
@@ -426,18 +426,18 @@ function h5cProjectOpen(proj)
 
 function h5cProjOpenDialog()
 {
-    lessModalOpen('/h5creator/proj/open?basedir='+ lessSession.Get("basedir"), 1, 800, 450, 'Open Project', null);
+    lessModalOpen('/lesscreator/proj/open?basedir='+ lessSession.Get("basedir"), 1, 800, 450, 'Open Project', null);
 }
 
 function h5cProjNewDialog()
 {
-    lessModalOpen('/h5creator/proj/new?basedir='+ lessSession.Get("basedir"), 
+    lessModalOpen('/lesscreator/proj/new?basedir='+ lessSession.Get("basedir"), 
         1, 800, 450, 'Create New Project', null);
 }
 
 function h5cProjSet()
 {
-    h5cTabOpen('/h5creator/proj/set?proj='+projCurrent, 
+    h5cTabOpen('/lesscreator/proj/set?proj='+projCurrent, 
         't0', 'html', {'title': 'Project Setting', 'close':'1'});
 }
 

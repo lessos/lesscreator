@@ -5,7 +5,7 @@
 <table width="100%" class="h5c_dialog_listview">
     <tr class="line">
         <td width="10px"></td>
-        <td width="60px"><img src="/h5creator/static/img/proj-example.png" /></td>
+        <td width="60px"><img src="/lesscreator/static/img/proj-example.png" /></td>
         <td >
             BigTable Service
         </td>
@@ -21,7 +21,7 @@
 <table width="100%" class="h5c_dialog_listview">
     <tr class="line">
         <td width="10px"></td>
-        <td width="60px"><img src="/h5creator/static/img/proj-example.png" /></td>
+        <td width="60px"><img src="/lesscreator/static/img/proj-example.png" /></td>
         <td >
             Relational Database Service
         </td>
@@ -37,7 +37,7 @@
 <table width="100%" class="h5c_dialog_listview">
     <tr class="">
         <td width="10px"></td>
-        <td width="60px"><img src="/h5creator/static/img/proj-example.png" /></td>
+        <td width="60px"><img src="/lesscreator/static/img/proj-example.png" /></td>
         <td >
             Key-Value Database Service (TODO)
         </td>
@@ -58,7 +58,7 @@ $(".j4soeo").click(function(){
         
     var href = $(this).attr('href').substr(1);
 
-    var url = '/h5creator/';
+    var url = '/lesscreator/';
     var title = "";
     switch (href) {
     case "data/create-ts":

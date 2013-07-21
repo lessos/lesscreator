@@ -5,11 +5,11 @@ $path = preg_replace("/\/+/", "/", rtrim("/".$this->req->path, '/'));
 ?>
 
 
-<form id="c1qtiv" action="/h5creator/proj/fs/file-mov" method="post">
+<form id="c1qtiv" action="/lesscreator/proj/fs/file-mov" method="post">
 
   <div class="input-prepend" style="margin-left:2px">
     <span class="add-on">
-        <img src="/h5creator/static/img/folder_edit.png" class="h5c_icon" />
+        <img src="/lesscreator/static/img/folder_edit.png" class="h5c_icon" />
     </span>
     <input type="text" name="pathnew" value="<?php echo $path?>" class="k2tcrh" style="width:500px;" />
     <input type="hidden" name="pathpre" value="<?php echo $path?>" />
@@ -48,7 +48,7 @@ function _fs_file_mov()
 
     $.ajax({
         type    : "POST",
-        url     : "/h5creator/api?func=fs-file-mov",
+        url     : "/lesscreator/api?func=fs-file-mov",
         data    : JSON.stringify(req),
         timeout : 3000,
         success : function(rsp) {

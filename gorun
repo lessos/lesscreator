@@ -15,9 +15,9 @@ for dir in $dirs; do
     gofmt -tabwidth=4 -tabs=false -w=true ${dir}/*.go
 done
 
-rm -f ./bin/h5creator-server
+rm -f ./bin/lesscreatord
 
-go build -o ./bin/h5creator-server ./src/server.go
+go build -o ./bin/lesscreatord ./src/server.go
 
-./bin/h5creator-server --prefix=/opt/src/m12/h5app/app/h5creator
+./bin/lesscreatord --prefix=/opt/src/m12/h5app/app/lesscreator
 

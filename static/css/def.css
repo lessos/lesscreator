@@ -649,11 +649,11 @@ textarea {
 
 .h5c_resize_row {
     cursor: row-resize;
-    background: url(/h5creator/static/img/handle-h.png) center no-repeat;
+    background: url(/lesscreator/static/img/handle-h.png) center no-repeat;
 }
 .h5c_resize_col {
     cursor: col-resize;
-    background: url(/h5creator/static/img/handle-v.png) 3px 50% no-repeat;
+    background: url(/lesscreator/static/img/handle-v.png) 3px 50% no-repeat;
 }
 
 

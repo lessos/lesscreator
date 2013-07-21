@@ -4,7 +4,7 @@ if ($this->req->proj == null) {
     die('ERROR');
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-$projPath = h5creator_proj::path($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
 
 if (strlen($projPath) < 1) {
     die("ERROR");
@@ -16,7 +16,7 @@ $grps = array();
 $glob = $projPath."/dataflow/*.grp.json";
 foreach (glob($glob) as $v) {
 
-    $json = h5creator_fs::FsFileGet($v);
+    $json = lesscreator_fs::FsFileGet($v);
 
     $json = json_decode($json->data->body, true);
     if (!isset($json['id'])) {
@@ -40,7 +40,7 @@ if (count($grps) == 0) {
         'name'  => 'Main',
     );
 
-    h5creator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
+    lesscreator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
 
     $grps[$id] = $set;
 }
@@ -66,7 +66,7 @@ if (count($grps) == 0) {
         <span class="close"><a href="javascript:_dataflow_close()">×</a></span>
     </div>
     <div class="sep clearhr"></div>
-    <form id="_proj_dataflow_grpnew_form" action="/h5creator/proj/dataflow/grp-new" method="post">
+    <form id="_proj_dataflow_grpnew_form" action="/lesscreator/proj/dataflow/grp-new" method="post">
     <input type="hidden" name="proj" value="<?=$proj?>" />
     <div>
         <h5>Name your Group</h5>
@@ -83,7 +83,7 @@ if (count($grps) == 0) {
         <span class="close"><a href="javascript:_dataflow_close()">×</a></span>
     </div>
     <div class="sep clearhr"></div>
-    <form id="_proj_dataflow_actornew_form" action="/h5creator/proj/dataflow/actor-new" method="post">
+    <form id="_proj_dataflow_actornew_form" action="/lesscreator/proj/dataflow/actor-new" method="post">
     <input type="hidden" name="proj" value="<?=$proj?>" />
     <div>
         <h5>Select a Group</h5>
@@ -118,7 +118,7 @@ $(".b0hmqb").click(function() {
         break;
     case "proj/dataflow/actor-new":
         _proj_dataflow_actornew_show();
-        //h5cDialogOpen('/h5creator/proj/dataflow/actor-new?proj='+ _proj, 700, 450, 
+        //h5cDialogOpen('/lesscreator/proj/dataflow/actor-new?proj='+ _proj, 700, 450, 
         //    'Dataflow: New Actor', null);
         break;
     }
@@ -213,7 +213,7 @@ function _proj_dataflow_tabopen(proj, path, force)
     
     $.ajax({
         type: "GET",
-        url: '/h5creator/proj/dataflow/list',
+        url: '/lesscreator/proj/dataflow/list',
         data: 'proj='+proj+'&path='+path,
         success: function(data) {
             $("#pt"+p).html(data);

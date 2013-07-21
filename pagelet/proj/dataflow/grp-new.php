@@ -3,7 +3,7 @@
 $msg = 'Internal Server Error';
 
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-$projPath = h5creator_proj::path($proj);
+$projPath = lesscreator_proj::path($proj);
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'created' => time(),
         'updated' => time(),
     );
-    h5creator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
+    lesscreator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
 
     die("OK");
 }

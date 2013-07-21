@@ -5,21 +5,21 @@ if ($this->req->proj == null) {
     die(json_encode(array('Status' => 'Error')));
 }
 
-$projPath = h5creator_proj::path($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
 if (strlen($projPath) < 1) {
     die(json_encode(array('Status' => 'Error')));
 }
 
-$projInfo = h5creator_proj::info($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
     die(json_encode(array('Status' => 'Bad Request')));
 }
 
 $projProps = explode(",", $projInfo['props']);
-$nexturi = "/h5creator/instance/launch-data";
+$nexturi = "/lesscreator/instance/launch-data";
 $nexttit = "Database Deployment Setup";
 if (in_array("pagelet", $projProps)) {
-    $nexturi = "/h5creator/instance/launch-web";
+    $nexturi = "/lesscreator/instance/launch-web";
     $nexttit = "WebServer Deployment Setup";
 }
 
@@ -77,7 +77,7 @@ if (count($rs) > 0) {
 
 
 <h4>Launch a New Instance</h4>
-<form id="wilvhq" action="/h5creator/instance/launch?func=new">
+<form id="wilvhq" action="/lesscreator/instance/launch?func=new">
 <table>
 <tr>
     <td width="30px" valign="top">

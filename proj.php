@@ -1,7 +1,7 @@
 <?php
 
 
-class h5creator_proj
+class lesscreator_proj
 {
     public static function path($proj)
     {
@@ -18,7 +18,7 @@ class h5creator_proj
     {
         $path = self::path($proj) ."/lcproject.json";
         
-        $rs = h5creator_fs::FsFileGet($path);
+        $rs = lesscreator_fs::FsFileGet($path);
         
         if ($rs->status != 200) {
             return false;

@@ -5,8 +5,8 @@ if ($this->req->proj == null) {
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 
 
 $datasets = array();
@@ -15,7 +15,7 @@ $glob = $projPath."/data/*.ds.json";
 
 foreach (glob($glob) as $v) {
     
-    $json = h5creator_fs::FsFileGet($v);
+    $json = lesscreator_fs::FsFileGet($v);
     $json = json_decode($json->data->body, true);
     
     if (!isset($json['id'])) {
@@ -33,7 +33,7 @@ foreach (glob($glob) as $v) {
     
     foreach (glob($globsub) as $v2) {
         
-        $json2 = h5creator_fs::FsFileGet($v2);
+        $json2 = lesscreator_fs::FsFileGet($v2);
         $json2 = json_decode($json2->data->body, true);
     
         if (!isset($json2['tableid'])) {
@@ -98,20 +98,20 @@ echo "</table>";
 
 $('.g2hvtz').click(function() {
     var uri = $(this).attr('href').substr(1);
-    var url = "/h5creator/data/dataset-set?proj="+projCurrent+"&id="+uri;
+    var url = "/lesscreator/data/dataset-set?proj="+projCurrent+"&id="+uri;
     lessModalOpen(url, 0, 500, 350, "DataSet Setting", null);
 });
 
 $('.weovcr').click(function() {
     var uri = $(this).attr('href').substr(1);
-    var url = "/h5creator/data/table-new?proj="+projCurrent+"&id="+uri;
+    var url = "/lesscreator/data/table-new?proj="+projCurrent+"&id="+uri;
     lessModalOpen(url, 0, 400, 260, "New Table", null);
 });
 
 $('.p9532p').click(function() {
     var uri = $(this).attr('href').substr(1);
     var tit = $(this).attr('title');
-    var url = "/h5creator/data/inlet-table?proj="+projCurrent+"&data="+uri;
+    var url = "/lesscreator/data/inlet-table?proj="+projCurrent+"&data="+uri;
     h5cTabOpen(url, 'w0', 'html', {'title': tit, 'close':'1', 'img': '/fam3/icons/database_table.png'});
 });
 

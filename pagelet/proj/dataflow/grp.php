@@ -3,7 +3,7 @@
 $status = 200;
 $msg    = 'Saved successfully';//'Internal Server Error';
 
-$projPath = h5creator_proj::path($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
 
 
 $grps = array();
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'id'    => $id,
         'name'  => $name,
     );
-    h5creator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
+    lesscreator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
 
     die("OK");
 }

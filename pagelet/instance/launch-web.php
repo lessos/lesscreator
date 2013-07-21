@@ -1,7 +1,7 @@
 <?php
 
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 
 use LessPHP\LessKeeper\Keeper;
 $kpr = new Keeper();
@@ -105,7 +105,7 @@ if (isset($rs['domains'])) {
 ?>
 
 <h4>Setting a New Domain</h4>
-<form id="x7kzwf" action="/h5creator/instance/launch-web?func=new">
+<form id="x7kzwf" action="/lesscreator/instance/launch-web?func=new">
 <table>
 <tr>
     <td>
@@ -171,7 +171,7 @@ function _launch_web_next()
     uri += "&instanceid="+ sessionStorage.LaunchInstanceId;
 
     $.ajax({
-        url     : "/h5creator/instance/launch-web?func=save",
+        url     : "/lesscreator/instance/launch-web?func=save",
         type    : "POST",
         data    : uri +"&domainname="+ domain,
         timeout : 30000,
@@ -194,7 +194,7 @@ function _launch_web_next()
     uri += "&flowactorid="+ sessionStorage.LaunchFlowActorId;
     uri += "&_="+ Math.random();
 
-    var url = "/h5creator/instance/launch-data?"+ uri;
+    var url = "/lesscreator/instance/launch-data?"+ uri;
     
     lessModalNext(url , "Database Deployment Setup", null);
 }

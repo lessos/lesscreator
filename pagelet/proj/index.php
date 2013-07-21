@@ -5,21 +5,21 @@ if ($this->req->proj == null) {
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 
-$projPath = h5creator_proj::path($proj);
+$projPath = lesscreator_proj::path($proj);
 if (strlen($projPath) < 1) {
     die("ERROR");
 }
 
-$projInfo = h5creator_proj::info($proj);
+$projInfo = lesscreator_proj::info($proj);
 
 $basedir = $_COOKIE["basedir"];
 
 if (isset($projInfo['name'])) {
 
-    $pjc = $basedir .'/conf/h5creator/projlist.json';
+    $pjc = $basedir .'/conf/lesscreator/projlist.json';
 
     $pjs = null;
-    $rs = h5creator_fs::FsFileGet($pic);
+    $rs = lesscreator_fs::FsFileGet($pic);
     //print_r($rs);
     if ($rs->status == 200) {
         $pjs = json_decode($rs->data->body, true);
@@ -36,12 +36,12 @@ if (isset($projInfo['name'])) {
         $pjs[$projInfo['projid']]['name'] = $projInfo['name'];
         $pjs[$projInfo['projid']]['path'] = $projPath;
 
-        h5creator_fs::FsFilePut($pjc, hwl_Json::prettyPrint($pjs));
+        lesscreator_fs::FsFilePut($pjc, hwl_Json::prettyPrint($pjs));
     }
 }
 
 $props = isset($projInfo['props']) ? explode(",", $projInfo['props']) : array();
-$props_def = h5creator_service::listAll();
+$props_def = lesscreator_service::listAll();
 
 ?>
 
@@ -68,7 +68,7 @@ $props_def = h5creator_service::listAll();
             );
             $jsfi = $projPath."/{$v}/project.json";
 
-            h5creator_fs::FsFilePut($jsfi, hwl_Json::prettyPrint($json));
+            lesscreator_fs::FsFilePut($jsfi, hwl_Json::prettyPrint($json));
         } */
         echo "<li class='ueg14o_{$v}'><a href=\"#proj/{$v}\" class=\"_proj_tab_href\">{$props_def[$v]}</a></li>";
     }
@@ -90,7 +90,7 @@ function _proj_nav_open(plg)
 {
     $.ajax({
         type    : "GET",
-        url     : '/h5creator/proj/'+ plg +'/index?proj='+ projCurrent,
+        url     : '/lesscreator/proj/'+ plg +'/index?proj='+ projCurrent,
         success : function(rsp) {
             
             $("#_proj_inlet_body").html(rsp);

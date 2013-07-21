@@ -5,14 +5,14 @@ if (!isset($this->req->proj)
     header("HTTP/1.1 404 Not Found"); die('Page Not Found');
 }
 
-$projPath = h5creator_proj::path($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
 
 $title  = 'Edit Project';
 $status = 200;
 $msg    = '';
 
-$info = h5creator_env::ProjInfoDef($proj);
-$t = h5creator_proj::info($this->req->proj);
+$info = lesscreator_env::ProjInfoDef($proj);
+$t = lesscreator_proj::info($this->req->proj);
 if (is_array($t)) {
     $info = array_merge($info, $t);
 }
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
     $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
     
     $str = hwl_Json::prettyPrint($info);
-    $rs = h5creator_fs::FsFilePut($f, $str);
+    $rs = lesscreator_fs::FsFilePut($f, $str);
     if ($rs->status == 200) {
         die("OK");
     } else {
@@ -52,7 +52,7 @@ echo $msg;
     padding: 5px;
 }
 </style>
-<form id="k2948f" action="/h5creator/proj/set/" method="post">
+<form id="k2948f" action="/lesscreator/proj/set/" method="post">
   <input name="proj" type="hidden" value="<?=$info['projid']?>" />
   <table class="table table-striped table-condensed" width="100%">
     <tr>
@@ -68,7 +68,7 @@ echo $msg;
       <td>
         <?php
         $preSrvs = explode(",", $info['props']);
-        $srvs = h5creator_service::listAll();
+        $srvs = lesscreator_service::listAll();
         foreach ($srvs as $k => $v) {
             $ck = '';
             if (in_array($k, $preSrvs)) {
@@ -86,7 +86,7 @@ echo $msg;
       <td>
         <?php
         $preTypes = explode(",", $info['types']);
-        $ts = h5creator_env::TypeList();
+        $ts = lesscreator_env::TypeList();
         foreach ($ts as $k => $v) {
             $ck = '';
             if (in_array($k, $preTypes)) {

@@ -15,20 +15,20 @@ $grpid = $this->req->flowgrpid;
 $actorid = $this->req->flowactorid;
 
 
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 
 use LessPHP\LessKeeper\Keeper;
 $kpr = new Keeper();
 
 $actorInfo = $projPath."/dataflow/{$grpid}/{$actorid}.actor.json";
-$actorInfo = h5creator_fs::FsFileGet($actorInfo);
+$actorInfo = lesscreator_fs::FsFileGet($actorInfo);
 $actorInfo = json_decode($actorInfo->data->body, true);
 
 $actorIns = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$insid}/flow/{$actorid}");
 $actorIns = json_decode($actorIns->body, true);
 
-$pms = h5creator_service::listParaMode();
+$pms = lesscreator_service::listParaMode();
 ?>
 <table width="100%">
 <tr>
@@ -36,18 +36,18 @@ $pms = h5creator_service::listParaMode();
     <td>
 <?php
 $hosts = array();
-if ($actorInfo['para_mode'] == h5creator_service::ParaModeServer) {
+if ($actorInfo['para_mode'] == lesscreator_service::ParaModeServer) {
     $hostBinded = array();
     if (isset($actorIns['ParaHost'])) {
         $hostBinded = explode(",", $actorIns['ParaHost']);
     }
-    echo $pms[h5creator_service::ParaModeServer];
+    echo $pms[lesscreator_service::ParaModeServer];
     //echo "<p class='alert'>Double-click to open the Data Instance</p>";
     echo "<div class='h5c_row_fluid'>";
     $rs = $kpr->NodeList("/kpr/ls");
-    //h5creator_service::debugPrint($rs);
+    //lesscreator_service::debugPrint($rs);
     $rs = json_decode($rs->body, true);
-    //h5creator_service::debugPrint($rs);
+    //lesscreator_service::debugPrint($rs);
     foreach ($rs as $v) {
         $rs2 = $kpr->NodeGet("/kpr/ls/{$v['P']}");
         $rs2 = json_decode($rs2->body, true);
@@ -65,7 +65,7 @@ if ($actorInfo['para_mode'] == h5creator_service::ParaModeServer) {
     }
     echo "</div>";
 }
-//h5creator_service::debugPrint($hosts);
+//lesscreator_service::debugPrint($hosts);
 ?>
     </td>
 </tr>
@@ -96,7 +96,7 @@ function _launch_flow_set_back()
     uri += "&datainsid="+ datains;
 
     $.ajax({
-        url     : "/h5creator/instance/launch-flow-set-put?_="+ Math.random(),
+        url     : "/lesscreator/instance/launch-flow-set-put?_="+ Math.random(),
         type    : "POST",
         data    : uri,
         timeout : 30000,

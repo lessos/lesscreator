@@ -12,10 +12,10 @@
 
 $basedir = $this->req->basedir;
 
-$pjc = $basedir .'/conf/h5creator/projlist.json';
+$pjc = $basedir .'/conf/lesscreator/projlist.json';
 
 
-$pjs = h5creator_fs::FsFileGet($pjc);
+$pjs = lesscreator_fs::FsFileGet($pjc);
 $pjs = json_decode($pjs->data->body, true);
 if (!is_array($pjs)) {
     $pjs = array();
@@ -25,14 +25,14 @@ foreach ($pjs as $projid => $val) {
 
     $noinfo = "";
 
-    $rs = h5creator_fs::FsFileGet($val['path']."/lcproject.json");
+    $rs = lesscreator_fs::FsFileGet($val['path']."/lcproject.json");
     if ($rs->status != 200) {
         $noinfo = '<font color="red">This project no longer exists!</font>';
     }
 ?>
 <tr id="_proj_<?php echo $projid?>">
   <td valign="middle" width="18">
-    <img src="/h5creator/static/img/app-t3-16.png" align="absmiddle" />
+    <img src="/lesscreator/static/img/app-t3-16.png" align="absmiddle" />
   </td>
   <td>
     <strong><a href="javascript:_proj_recent_open('<?=$val['path']?>')"><?=$val['name']?></a></strong>
@@ -66,7 +66,7 @@ function _proj_fs(path, force)
 {
     if ($("#_proj_open_fs").is(':empty') || force == 1) {
         
-        var url = "/h5creator/proj/open-fs";
+        var url = "/lesscreator/proj/open-fs";
         url += "?path="+ path;
         
         $.get(url, function(data) {
@@ -99,7 +99,7 @@ function _proj_recent_del(projid)
 {
     $.ajax({
         type: "POST",
-        url: '/h5creator/proj/open-recent?basedir='+ lessSession.Get("basedir"),
+        url: '/lesscreator/proj/open-recent?basedir='+ lessSession.Get("basedir"),
         data: {'func':'del', 'projid':projid},
         success: function(data) {
             if (data == "OK") {

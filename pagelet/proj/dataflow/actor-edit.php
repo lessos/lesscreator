@@ -1,6 +1,6 @@
 <?php
 
-$projPath = h5creator_proj::path($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
 
 
 $obj = $projPath ."/dataflow";
@@ -9,7 +9,7 @@ list($grpid, $actorid) = explode("/", $this->req->uri);
 
 $fsg = $obj."/{$grpid}.grp.json";
 
-$grp = h5creator_fs::FsFileGet($fsg);
+$grp = lesscreator_fs::FsFileGet($fsg);
 if ($grp->status != 200) {
     die("Bad Request");
 }
@@ -19,7 +19,7 @@ if (!isset($grp['id'])) {
 }
 
 $fsj = $obj."/{$grpid}/{$actorid}.actor.json";
-$rs = h5creator_fs::FsFileGet($fsj);
+$rs = lesscreator_fs::FsFileGet($fsj);
 if ($rs->status != 200) {
     die("Bad Request");
 }
@@ -41,7 +41,7 @@ if (!isset($actor['id'])) {
     die("Internal Server Error");
 }
 $actor      = array_merge($actorDefault, $actor);
-//h5creator_service::debugPrint($actor);
+//lesscreator_service::debugPrint($actor);
 $exec_cron  = explode(",", $actor['exec_cron']);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $actor['para_mode']     = intval($this->req->para_mode);
     $actor['para_data']     = $this->req->para_data;
     
-    h5creator_fs::FsFilePut($fsj, hwl_Json::prettyPrint($actor));
+    lesscreator_fs::FsFilePut($fsj, hwl_Json::prettyPrint($actor));
 
     die("OK");
 }
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     width: 30px;
 }
 </style>
-<form id="sy9p3x" action="/h5creator/proj/dataflow/actor-edit" style="padding:10px;">
+<form id="sy9p3x" action="/lesscreator/proj/dataflow/actor-edit" style="padding:10px;">
   <input type="hidden" name="proj" value="<?php echo $this->req->proj?>" />
   <input type="hidden" name="uri" value="<?php echo $this->req->uri?>" />
   <table width="100%" cellpadding="20px" style="border-spacing:20px;">
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <td>
         <select name="exec_mode" onchange="_exec_mode(this.value)" style="width:500px">
         <?php
-        $vs = h5creator_service::listExecMode();
+        $vs = lesscreator_service::listExecMode();
         foreach ($vs as $k => $v) {
           $select = '';
           if ($k == $actor['exec_mode']) {
@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <td>
         <select name="para_mode" onchange="_para_mode(this.value)" style="width:500px;">
         <?php
-        $vs = h5creator_service::listParaMode();
+        $vs = lesscreator_service::listParaMode();
         foreach ($vs as $k => $v) {
           $select = '';
           if ($k == $actor['para_mode']) {
@@ -188,14 +188,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $para_datas = explode("_", $actor['para_data']);
 
             $fsd  = $projPath."/data/{$para_datas[0]}.ds.json";
-            $json = h5creator_fs::FsFileGet($fsd);
+            $json = lesscreator_fs::FsFileGet($fsd);
             $json = json_decode($json->data->body, true);
             if (isset($json['name'])) {
                 $para_data_display = $json['name'];
             }
             
             $fst  = $projPath."/data/{$para_datas[0]}.{$para_datas[1]}.tbl.json";
-            $json = h5creator_fs::FsFileGet($fst);
+            $json = lesscreator_fs::FsFileGet($fst);
             $json = json_decode($json->data->body, true);
             if (isset($json['tablename'])) {
                 $para_data_display .= " - ". $json['tablename'];
@@ -245,7 +245,7 @@ _exec_mode(<?php echo $actor['exec_mode']?>);
 
 function _dataflow_edit_paraselect()
 {
-    var url = "/h5creator/proj/dataflow/actor-edit-para-data?proj="+projCurrent+"&func=select";
+    var url = "/lesscreator/proj/dataflow/actor-edit-para-data?proj="+projCurrent+"&func=select";
     lessModalOpen(url, 0, 400, 300, 'Select a Database', null);
 }
 

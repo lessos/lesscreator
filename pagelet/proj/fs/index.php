@@ -4,7 +4,7 @@ if ($this->req->proj == null) {
     die('ERROR');
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
-$projPath = h5creator_proj::path($proj);
+$projPath = lesscreator_proj::path($proj);
 
 if (strlen($projPath) < 1) {
     die("ERROR");
@@ -14,15 +14,15 @@ $ptpath = md5("");
 ?>
 <div class="h5c_tab_subnav" style="border-bottom: 1px solid #ddd;">
     <a href="#proj/fs/file-new" class="_proj_fs_cli">
-        <img src="/h5creator/static/img/page_white_add.png" class="h5c_icon" />
+        <img src="/lesscreator/static/img/page_white_add.png" class="h5c_icon" />
         New File
     </a>
     <a href="#proj/fs/file-new-dir" class="_proj_fs_cli">
-        <img src="/h5creator/static/img/folder_add.png" class="h5c_icon" />
+        <img src="/lesscreator/static/img/folder_add.png" class="h5c_icon" />
         New Folder
     </a>
     <a href="#proj/fs/file-upl" class="_proj_fs_cli">
-        <img src="/h5creator/static/img/page_white_get.png" class="h5c_icon" />
+        <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
         Upload
     </a>
 </div>
@@ -80,7 +80,7 @@ function _fs_file_new_modal(type, path)
         tit = 'New Folder';
     }
 
-    var url = "/h5creator/proj/fs/file-new?path="+ path +"&type="+ type;
+    var url = "/lesscreator/proj/fs/file-new?path="+ path +"&type="+ type;
     lessModalOpen(url, 0, 550, 160, tit, null);
 }
 
@@ -100,14 +100,14 @@ function _fs_file_upl_modal(path)
     }
     
     var tit = "Upload File From Location";
-    var url = "/h5creator/proj/fs/file-upl?path="+ path;
+    var url = "/lesscreator/proj/fs/file-upl?path="+ path;
     lessModalOpen(url, 0, 550, 160, tit, null);
 }
 
 function _fs_file_mov_modal(path)
 {
     var tit = "Rename File/Folder";
-    var url = "/h5creator/proj/fs/file-mov?path="+ path;
+    var url = "/lesscreator/proj/fs/file-mov?path="+ path;
     lessModalOpen(url, 0, 550, 160, tit, null);
 }
 
@@ -184,7 +184,7 @@ function _fs_tree_dir(path, force)
     
     $.ajax({
         type    : "GET",
-        url     : '/h5creator/proj/fs/tree?_='+ Math.random(),
+        url     : '/lesscreator/proj/fs/tree?_='+ Math.random(),
         data    : 'proj='+projCurrent+'&path='+path,
         async   : false,
         success : function(data) {
@@ -206,7 +206,7 @@ function _fs_file_del(path)
 
     $.ajax({
         type    : "POST",
-        url     : "/h5creator/api?func=fs-file-del",
+        url     : "/lesscreator/api?func=fs-file-del",
         data    : JSON.stringify(req),
         timeout : 3000,
         success : function(rsp) {

@@ -64,7 +64,7 @@ function _struct_dismap($k)
             foreach ($struct as $k => $v) {
                 $checked = '';
                 if ($v['i'] == 1) {
-                    $checked = '<i class="/h5creator/static/img/accept.png"></i>';
+                    $checked = '<i class="/lesscreator/static/img/accept.png"></i>';
                 }
                 ?>
                 <tr>

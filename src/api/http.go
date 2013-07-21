@@ -25,19 +25,19 @@ func (this *Api) Serve(port string) {
     //kpr = data.NewKprHttp()
 
     go func() {
-        //http.Handle("/h5creator/api", websocket.Handler(QueueStatus))
-        http.HandleFunc("/h5creator/api/user-login", UserLogin)
+        //http.Handle("/lesscreator/api", websocket.Handler(QueueStatus))
+        http.HandleFunc("/lesscreator/api/user-login", UserLogin)
 
-        http.HandleFunc("/h5creator/api/fs-list", FsList)
-        http.HandleFunc("/h5creator/api/fs-file-put", FsFilePut)
-        http.HandleFunc("/h5creator/api/fs-file-get", FsFileGet)
-        http.HandleFunc("/h5creator/api/fs-file-new", FsFileNew)
-        http.HandleFunc("/h5creator/api/fs-file-del", FsFileDel)
-        http.HandleFunc("/h5creator/api/fs-file-mov", FsFileMov)
-        http.HandleFunc("/h5creator/api/fs-file-upl", FsFileUpl)
-        http.Handle("/h5creator/api/fs-save-ws", websocket.Handler(FsSaveWS))
+        http.HandleFunc("/lesscreator/api/fs-list", FsList)
+        http.HandleFunc("/lesscreator/api/fs-file-put", FsFilePut)
+        http.HandleFunc("/lesscreator/api/fs-file-get", FsFileGet)
+        http.HandleFunc("/lesscreator/api/fs-file-new", FsFileNew)
+        http.HandleFunc("/lesscreator/api/fs-file-del", FsFileDel)
+        http.HandleFunc("/lesscreator/api/fs-file-mov", FsFileMov)
+        http.HandleFunc("/lesscreator/api/fs-file-upl", FsFileUpl)
+        http.Handle("/lesscreator/api/fs-save-ws", websocket.Handler(FsSaveWS))
 
-        http.HandleFunc("/h5creator/api/env-init", this.EnvInit)
+        http.HandleFunc("/lesscreator/api/env-init", this.EnvInit)
 
         s := &http.Server{
             Addr:    ":" + port,

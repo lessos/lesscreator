@@ -1,6 +1,6 @@
 <?php
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
     die("Bad Request");
 }
@@ -10,7 +10,7 @@ if (!isset($this->req->id) || strlen($this->req->id) == 0) {
 }
 $datasetid = $this->req->id;
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-$rs = h5creator_fs::FsFileGet($fsd);
+$rs = lesscreator_fs::FsFileGet($fsd);
 if ($rs->status != 200) {
     die("Bad Request");
 }
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tableid = $this->req->tableid;
 
     $fstbl = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
-    $rs = h5creator_fs::FsFileGet($fstbl);
+    $rs = lesscreator_fs::FsFileGet($fstbl);
     if ($rs->status == 200) {
         die("The current table already exists");
     }
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'updated'       => time(),
     );
 
-    $rs = h5creator_fs::FsFilePut($fstbl, hwl_Json::prettyPrint($tableInfo));
+    $rs = lesscreator_fs::FsFilePut($fstbl, hwl_Json::prettyPrint($tableInfo));
     if ($rs->status != 200) {
         die($rs->message);
     }
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $tableid = hwl_string::rand(8, 2);
 ?>
 <div class="j82fpe alert hide"></div>
-<form id="x23w5t" action="/h5creator/data/table-new">
+<form id="x23w5t" action="/lesscreator/data/table-new">
 <input type="hidden" name="id" value="<?php echo $dataInfo['id']?>" />
 <table width="100%">
     <tr>
@@ -96,7 +96,7 @@ function _data_tableid_set()
             if (rsp == "OK") {
                 lessAlert(".j82fpe", "alert-success", "OK "+ time);
                 if (typeof _proj_data_tabopen == 'function') {
-                    _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
+                    _proj_data_tabopen('/lesscreator/proj/data/list?proj='+projCurrent, 1);
                 }
             } else {
                 lessAlert(".j82fpe", "alert-error", rsp +" "+ time);

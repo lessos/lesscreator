@@ -1,6 +1,6 @@
 <?php
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
     die("Bad Request");
 }
@@ -10,7 +10,7 @@ if (!isset($this->req->id) || strlen($this->req->id) == 0) {
 }
 $datasetid = $this->req->id;
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-$rs = h5creator_fs::FsFileGet($fsd);
+$rs = lesscreator_fs::FsFileGet($fsd);
 if ($rs->status != 200) {
     die("Bad Request");
 }
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     $dataInfo['updated'] = time();
-    $rs = h5creator_fs::FsFilePut($fsd, hwl_Json::prettyPrint($dataInfo));
+    $rs = lesscreator_fs::FsFilePut($fsd, hwl_Json::prettyPrint($dataInfo));
     if ($rs->status != 200) {
         die($rs->message);
     }
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 <div class="bmejc8 alert hide"></div>
-<form id="b2qcyo" action="/h5creator/data/dataset-set">
+<form id="b2qcyo" action="/lesscreator/data/dataset-set">
 <input type="hidden" name="id" value="<?php echo $dataInfo['id']?>" />
 <table width="100%">
     <tr>
@@ -71,7 +71,7 @@ function _data_dataset_set()
             if (rsp == "OK") {
                 lessAlert(".bmejc8", "alert-success", "OK "+ time);
                 if (typeof _proj_data_tabopen == 'function') {
-                    _proj_data_tabopen('/h5creator/proj/data/list?proj='+projCurrent, 1);
+                    _proj_data_tabopen('/lesscreator/proj/data/list?proj='+projCurrent, 1);
                 }
             } else {
                 lessAlert(".bmejc8", "alert-error", rsp +" "+ time);

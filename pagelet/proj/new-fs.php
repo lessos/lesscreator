@@ -1,6 +1,6 @@
 <?php
 
-$basedir = h5creator_proj::path("");
+$basedir = lesscreator_proj::path("");
 
 if (strlen($this->req->path)) {
     $basedir = $this->req->path;
@@ -54,7 +54,7 @@ foreach (glob($basedir."/*", GLOB_ONLYDIR) as $st) {
 ?>
 <tr>
   <td valign="middle" width="18">
-    <img src="/h5creator/static/img/folder.png" align="absmiddle" />
+    <img src="/lesscreator/static/img/folder.png" align="absmiddle" />
   </td>
   <td><a href="#<?php echo $st?>" class="_proj_new_href"><?=$st?></a></td>
 </tr>

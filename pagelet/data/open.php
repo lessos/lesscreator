@@ -31,7 +31,7 @@ foreach ($ls as $v) {
     }
     echo '
         <a style="width:90px;" class="span href aklw5v" href="#'.$id.'">
-            <div class="center"><img src="/h5creator/static/img/data/rds.png" align="absmiddle" /></div>
+            <div class="center"><img src="/lesscreator/static/img/data/rds.png" align="absmiddle" /></div>
             <div class="center title">'.$info['name'].'</div>
         </a>
     ';
@@ -61,7 +61,7 @@ $('.aklw5v').dblclick(function() {
         "close": 1
     }
 
-    h5cTabOpen("/h5creator/data/inlet?proj="+projCurrent+"&id="+ p, "w0", 'html', opt);
+    h5cTabOpen("/lesscreator/data/inlet?proj="+projCurrent+"&id="+ p, "w0", 'html', opt);
     h5cDialogClose();
 });
 </script>

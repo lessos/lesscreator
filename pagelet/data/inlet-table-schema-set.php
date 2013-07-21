@@ -1,7 +1,7 @@
 <?php
 
-$projPath = h5creator_proj::path($this->req->proj);
-$projInfo = h5creator_proj::info($this->req->proj);
+$projPath = lesscreator_proj::path($this->req->proj);
+$projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
     die("Bad Request");
 }
@@ -12,7 +12,7 @@ if (!isset($this->req->data) || strlen($this->req->data) == 0) {
 list($datasetid, $tableid) = explode("/", $this->req->data);
 
 $fsd = $projPath."/data/{$datasetid}.ds.json";
-$rs = h5creator_fs::FsFileGet($fsd);
+$rs = lesscreator_fs::FsFileGet($fsd);
 if ($rs->status != 200) {
     die("Bad Request");
 }
@@ -22,7 +22,7 @@ if ($projInfo['projid'] != $dataInfo['projid']) {
 }
 
 $fst = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
-$rs = h5creator_fs::FsFileGet($fst);
+$rs = lesscreator_fs::FsFileGet($fst);
 if ($rs->status != 200) {
     die("Bad Request");
 }
@@ -80,13 +80,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tableInfo['schema']  = $schema;
     $tableInfo['updated'] = time();
     
-    h5creator_fs::FsFilePut($fst, hwl_Json::prettyPrint($tableInfo));
+    lesscreator_fs::FsFilePut($fst, hwl_Json::prettyPrint($tableInfo));
     
     die("OK");
 }
 ?>
 
-<form id="bhw2j1" action="/h5creator/data/inlet-table-schema-set">
+<form id="bhw2j1" action="/lesscreator/data/inlet-table-schema-set">
     
 <input type="hidden" name="data" value="<?php echo $this->req->data?>" />
 
