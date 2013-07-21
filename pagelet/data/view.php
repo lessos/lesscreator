@@ -4,8 +4,8 @@ if (!isset($this->req->id) || strlen($this->req->id) == 0) {
     die("The instance does not exist");
 }
 
-use LessPHP\H5keeper\Client;
-$kpr = new Client();
+use LessPHP\LessKeeper\Keeper;
+$kpr = new Keeper();
 
 $info = $kpr->NodeGet("/h5db/info/{$this->req->id}");
 $info = json_decode($info, true);

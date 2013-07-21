@@ -8,8 +8,8 @@
 <div style="padding:10px;">
 <?php
 
-use LessPHP\H5keeper\Client;
-$kpr = new Client();
+use LessPHP\LessKeeper\Keeper;
+$kpr = new Keeper();
 
 $ls = $kpr->NodeList("/h5db/info");
 

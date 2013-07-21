@@ -3,8 +3,8 @@
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
 
-use LessPHP\H5keeper\Client;
-$kpr = new Client();
+use LessPHP\LessKeeper\Keeper;
+$kpr = new Keeper();
 
 
 if ($this->req->func == 'new') {

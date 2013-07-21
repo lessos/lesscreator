@@ -18,8 +18,8 @@ $actorid = $this->req->flowactorid;
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
 
-use LessPHP\H5keeper\Client;
-$kpr = new Client();
+use LessPHP\LessKeeper\Keeper;
+$kpr = new Keeper();
 
 $actorInfo = $projPath."/dataflow/{$grpid}/{$actorid}.actor.json";
 $actorInfo = h5creator_fs::FsFileGet($actorInfo);

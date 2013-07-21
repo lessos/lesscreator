@@ -23,8 +23,8 @@ if (in_array("pagelet", $projProps)) {
     $nexttit = "WebServer Deployment Setup";
 }
 
-use LessPHP\H5keeper\Client;
-$kpr = new Client();
+use LessPHP\LessKeeper\Keeper;
+$kpr = new Keeper();
 
 if ($this->req->func == 'new') {
 

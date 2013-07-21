@@ -12,8 +12,8 @@ list($datasetid, $tableid) = explode("_", $this->req->data);
 $projPath = h5creator_proj::path($this->req->proj);
 $projInfo = h5creator_proj::info($this->req->proj);
 
-use LessPHP\H5keeper\Client;
-$kpr = new Client();
+use LessPHP\LessKeeper\Keeper;
+$kpr = new Keeper();
 $projInst = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$projInstId}/info");
 $projInst = json_decode($projInst->body, true);
 if (!isset($projInst['ProjId'])) {

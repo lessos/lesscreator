@@ -41,8 +41,8 @@ if ($fss->status != 200) {
     die(json_encode($ret));
 }
 
-use LessPHP\H5keeper\Client;
-$kpr = new Client();
+use LessPHP\LessKeeper\Keeper;
+$kpr = new Keeper();
 
 $actorInst = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$insid}/flow/{$actorid}");
 $actorInst = json_decode($actorInst->body, true);
