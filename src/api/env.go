@@ -57,7 +57,7 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    userpath := this.Cfg.AppEnginePrefix + "/home/" + sess.Uname
+    userpath := this.Cfg.AppEnginePrefix + "/spot/" + sess.Uname
 
     // User ID
     osuser := "lc" + sess.Uname
