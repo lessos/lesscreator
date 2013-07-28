@@ -5,9 +5,5 @@
   "depends":"bootstrap2,jquery,codemirror3,fam3,LessPHP,hwl,lessui",
   "version":"1.0.2",
   "props":"dataflow,pagelet",
-  "boot":"app\/lesscreator\/index.php",
-  "arch":"all",
-  "release":"1dev",
-  "types": "webstatic,webphp",
-  "targetdir":"lesscreator"
+  "types":"webstatic,webphp"
 }
