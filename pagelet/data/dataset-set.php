@@ -1,4 +1,8 @@
 <?php
+
+use LessPHP\Encoding\Json;
+
+
 $projPath = lesscreator_proj::path($this->req->proj);
 $projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
@@ -27,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     $dataInfo['updated'] = time();
-    $rs = lesscreator_fs::FsFilePut($fsd, hwl_Json::prettyPrint($dataInfo));
+    $rs = lesscreator_fs::FsFilePut($fsd, Json::prettyPrint($dataInfo));
     if ($rs->status != 200) {
         die($rs->message);
     }

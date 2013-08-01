@@ -15,9 +15,10 @@ for dir in $dirs; do
     gofmt -tabwidth=4 -tabs=false -w=true ${dir}/*.go
 done
 
-rm -f ./bin/lesscreatord
+rm -f ./bin/lesscreator
 
-go build -o ./bin/lesscreatord ./src/server.go
+go build -ldflags "-w -s" -o ./bin/lesscreator ./src/main.go
 
-./bin/lesscreatord --prefix=/opt/src/m12/h5app/app/lesscreator
+prefix=`pwd`
+./bin/lesscreator --prefix=${prefix}
 

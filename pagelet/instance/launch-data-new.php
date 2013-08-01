@@ -41,7 +41,7 @@ $dataInst = $kpr->NodeGet("/app/u/guest/{$projInfo['projid']}/{$projInstId}/data
 $dataInst = json_decode($dataInst->body, true);
 
 if (!isset($dataInst['DataInst'])) {
-    $dataInst['DataInst'] = hwl_string::rand(8, 2);
+    $dataInst['DataInst'] = LessPHP_Util_String::rand(8, 2);
 }
 if (!isset($dataInst['Created'])) {
     $dataInst['Created'] = time();

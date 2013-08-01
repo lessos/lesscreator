@@ -32,7 +32,7 @@ if ($this->req->func == 'new') {
         die(json_encode(array('Status' => 'Bad Request 1')));
     }
 
-    $insid = hwl_string::rand(12, 2);
+    $insid = LessPHP_Util_String::rand(12, 2);
     $set = array(
         'ProjId'       => $projInfo['projid'],
         'InstanceId'   => $insid,

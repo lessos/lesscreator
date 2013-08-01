@@ -11,11 +11,11 @@ import (
 )
 
 type Config struct {
-    Version         string
-    Prefix          string
-    ApiPort         string `json:"apiport"`
-    KeeperAgent     string `json:"keeperagent"`
-    AppEnginePrefix string `json:"appengineprefix"`
+    Version     string
+    Prefix      string
+    ApiPort     string `json:"apiport"`
+    KeeperAgent string `json:"keeperagent"`
+    LessFlyDir  string `json:"lessfly_dir"`
 }
 
 func NewConfig(prefix string) (Config, error) {
@@ -23,7 +23,7 @@ func NewConfig(prefix string) (Config, error) {
     var cfg Config
 
     if prefix == "" {
-        prefix = "/opt/hooto/data"
+        prefix = "/opt/less/fly/spot/sa/app/lesscreator"
     }
     reg, _ := regexp.Compile("/+")
     cfg.Prefix = "/" + strings.Trim(reg.ReplaceAllString(prefix, "/"), "/")

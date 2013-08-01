@@ -1,4 +1,8 @@
 <?php
+
+use LessPHP\Encoding\Json;
+
+
 $projPath = lesscreator_proj::path($this->req->proj);
 $projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
@@ -22,7 +26,7 @@ if ($this->app->method == 'POST') {
         'created' => time(),
         'updated' => time(),
     );
-    lesscreator_fs::FsFilePut($fsd, hwl_Json::prettyPrint($set));
+    lesscreator_fs::FsFilePut($fsd, Json::prettyPrint($set));
     
     die("OK");
 }

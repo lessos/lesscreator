@@ -1,5 +1,8 @@
 <?php
 
+use LessPHP\Encoding\Json;
+
+
 if ($this->req->proj == null) {
     die('ERROR');
 }
@@ -36,7 +39,7 @@ if (isset($projInfo['name'])) {
         $pjs[$projInfo['projid']]['name'] = $projInfo['name'];
         $pjs[$projInfo['projid']]['path'] = $projPath;
 
-        lesscreator_fs::FsFilePut($pjc, hwl_Json::prettyPrint($pjs));
+        lesscreator_fs::FsFilePut($pjc, Json::prettyPrint($pjs));
     }
 }
 
@@ -68,7 +71,7 @@ $props_def = lesscreator_service::listAll();
             );
             $jsfi = $projPath."/{$v}/project.json";
 
-            lesscreator_fs::FsFilePut($jsfi, hwl_Json::prettyPrint($json));
+            lesscreator_fs::FsFilePut($jsfi, Json::prettyPrint($json));
         } */
         echo "<li class='ueg14o_{$v}'><a href=\"#proj/{$v}\" class=\"_proj_tab_href\">{$props_def[$v]}</a></li>";
     }

@@ -1,29 +1,30 @@
-
-================================================================================
 CURRENT
+    dist/arch pkg
+    lessfly-sandbox
 
 NEXT
-    
+    proj-git
+    Console
+
+TRY
+    func auto complete
+    chat-text
+    chat-video
+
+
+    diff
+
     editor bar
         Close All Tabs
         Close All But Current Tab
 
-NEXT Milestone
-
-    API:helper
-    Console
-    Git
-    auto complete
+    api:helper
     Library Manager
-    
-    AnyStatus
     
     help
         About
         Quick start
         Changelog (Ver 1.0.1)
         Keyboard Shortcuts
-        Support
-            FAQ
-            Report a bug
+        Report a bug
     

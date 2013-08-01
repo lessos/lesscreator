@@ -1,10 +1,11 @@
 <?php
 
+
 $basedir = lesscreator_proj::path("");
 
 if (!isset($this->req->projid)
     || strlen($this->req->projid) < 1) {
-    $projid = hwl_string::rand(8, 2);
+    $projid = LessPHP_Util_String::rand(8, 2);
 } else {
     $projid = $this->req->projid;
 }

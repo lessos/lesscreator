@@ -1,4 +1,8 @@
 <?php
+
+use LessPHP\Encoding\Json;
+
+
 $projPath = lesscreator_proj::path($this->req->proj);
 $projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
@@ -47,14 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'updated'       => time(),
     );
 
-    $rs = lesscreator_fs::FsFilePut($fstbl, hwl_Json::prettyPrint($tableInfo));
+    $rs = lesscreator_fs::FsFilePut($fstbl, Json::prettyPrint($tableInfo));
     if ($rs->status != 200) {
         die($rs->message);
     }
     die("OK");
 }
 
-$tableid = hwl_string::rand(8, 2);
+$tableid = LessPHP_Util_String::rand(8, 2);
 ?>
 <div class="j82fpe alert hide"></div>
 <form id="x23w5t" action="/lesscreator/data/table-new">

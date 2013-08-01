@@ -1,5 +1,8 @@
 <?php
 
+use LessPHP\Encoding\Json;
+
+
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 
 $projPath = lesscreator_proj::path($this->req->proj);
@@ -27,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json['name'] = $name;
     $json['updated'] = time();
 
-    $rs = lesscreator_fs::FsFilePut($fs, hwl_Json::prettyPrint($json));
+    $rs = lesscreator_fs::FsFilePut($fs, Json::prettyPrint($json));
     if ($rs->status != 200) {
         die($rs->message);
     }

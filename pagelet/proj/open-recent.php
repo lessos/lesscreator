@@ -1,5 +1,7 @@
 <?php
 
+use LessPHP\Encoding\Json;
+
 $pjc = SYS_ROOT .'/conf/lesscreator/projlist.json';
 
 if ($this->req->func == 'del') {
@@ -16,7 +18,7 @@ if ($this->req->func == 'del') {
 
     if (isset($pjs[$this->req->projid])) {
         unset($pjs[$this->req->projid]);
-        $pjs = hwl_Json::prettyPrint($pjs);
+        $pjs = Json::prettyPrint($pjs);
         $rs = lesscreator_fs::FsFilePut($pjc, $pjs);
         if ($rs->status == 200) {
             die("OK");

@@ -1,5 +1,8 @@
 <?php
 
+use LessPHP\Encoding\Json;
+
+
 $projPath = lesscreator_proj::path($this->req->proj);
 
 
@@ -61,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $actor['para_mode']     = intval($this->req->para_mode);
     $actor['para_data']     = $this->req->para_data;
     
-    lesscreator_fs::FsFilePut($fsj, hwl_Json::prettyPrint($actor));
+    lesscreator_fs::FsFilePut($fsj, Json::prettyPrint($actor));
 
     die("OK");
 }

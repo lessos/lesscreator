@@ -1,5 +1,8 @@
 <?php
 
+use LessPHP\Encoding\Json;
+
+
 $status = 200;
 $msg    = 'Saved successfully';//'Internal Server Error';
 
@@ -21,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $obj = $projPath ."/dataflow";
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
     
-    $id = hwl_string::rand(12, 2);
+    $id = LessPHP_Util_String::rand(12, 2);
 
     $obj .= "/{$id}/grp.json";
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
@@ -30,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'id'    => $id,
         'name'  => $name,
     );
-    lesscreator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
+    lesscreator_fs::FsFilePut($obj, Json::prettyPrint($set));
 
     die("OK");
 }

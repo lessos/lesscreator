@@ -1,5 +1,8 @@
 <?php
 
+use LessPHP\Encoding\Json;
+
+
 if ($this->req->proj == null) {
     die('ERROR');
 }
@@ -27,7 +30,7 @@ foreach (glob($glob) as $v) {
 }
 if (count($grps) == 0) {
     
-    $id = hwl_string::rand(8, 2);
+    $id = LessPHP_Util_String::rand(8, 2);
 
     $obj = $projPath ."/dataflow";
     $obj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $obj);
@@ -40,7 +43,7 @@ if (count($grps) == 0) {
         'name'  => 'Main',
     );
 
-    lesscreator_fs::FsFilePut($obj, hwl_Json::prettyPrint($set));
+    lesscreator_fs::FsFilePut($obj, Json::prettyPrint($set));
 
     $grps[$id] = $set;
 }

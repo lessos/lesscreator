@@ -1,5 +1,7 @@
 <?php
 
+use LessPHP\Encoding\Json;
+
 if (!isset($this->req->proj)
     || strlen($this->req->proj) < 1) {
     header("HTTP/1.1 404 Not Found"); die('Page Not Found');
@@ -36,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
     $f = "{$projPath}/lcproject.json";
     $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
     
-    $str = hwl_Json::prettyPrint($info);
+    $str = Json::prettyPrint($info);
     $rs = lesscreator_fs::FsFilePut($f, $str);
     if ($rs->status == 200) {
         die("OK");

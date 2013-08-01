@@ -1,9 +1,10 @@
 {
   "projid":"lesscreator",
-  "name":"Creator",
+  "name":"LessCreator",
   "summary":"Less Creator, Web based IDE",
-  "depends":"bootstrap2,jquery,codemirror3,fam3,LessPHP,hwl,lessui",
-  "version":"1.0.2",
+  "depends":"bootstrap2,jquery,codemirror3,fam3,LessPHP,lessui",
+  "version":"1.0.3",
   "props":"dataflow,pagelet",
-  "types":"webstatic,webphp"
+  "types":"webstatic,webphp",
+  "release":"1"
 }

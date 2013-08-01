@@ -1,5 +1,8 @@
 <?php
 
+use LessPHP\Encoding\Json;
+
+
 $projPath = lesscreator_proj::path($this->req->proj);
 $projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
@@ -80,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tableInfo['schema']  = $schema;
     $tableInfo['updated'] = time();
     
-    lesscreator_fs::FsFilePut($fst, hwl_Json::prettyPrint($tableInfo));
+    lesscreator_fs::FsFilePut($fst, Json::prettyPrint($tableInfo));
     
     die("OK");
 }

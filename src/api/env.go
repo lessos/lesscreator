@@ -57,7 +57,7 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    userpath := this.Cfg.AppEnginePrefix + "/spot/" + sess.Uname
+    userpath := this.Cfg.LessFlyDir + "/spot/" + sess.Uname
 
     // User ID
     osuser := "lc" + sess.Uname
@@ -88,7 +88,7 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
 
     //
     if _, err := exec.Command("/bin/cp", "-rp",
-        this.Cfg.AppEnginePrefix+"/misc/php/user.index.php",
+        this.Cfg.LessFlyDir+"/misc/php/user.index.php",
         userpath+"/webpub/index.php").Output(); err != nil {
 
         return
