@@ -121,7 +121,7 @@ $(".b0hmqb").click(function() {
         break;
     case "proj/dataflow/actor-new":
         _proj_dataflow_actornew_show();
-        //h5cDialogOpen('/lesscreator/proj/dataflow/actor-new?proj='+ _proj, 700, 450, 
+        //lessModalOpen('/lesscreator/proj/dataflow/actor-new?proj='+ _proj, 1, 700, 450, 
         //    'Dataflow: New Actor', null);
         break;
     }

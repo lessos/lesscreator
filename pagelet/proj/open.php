@@ -92,7 +92,7 @@ function _proj_fs(path, force)
 function _proj_recent_open(path)
 {
     h5cProjectOpen(path);
-    h5cDialogClose();
+    lessModalClose();
 }
 
 function _proj_recent_del(projid)

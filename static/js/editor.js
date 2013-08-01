@@ -39,9 +39,11 @@ function h5cTabletEditorOpen(urid)
         //$("#h5c-tablet-body-"+ item.target).prepend(t);
 
         var req = {
-            proj : sessionStorage.ProjPath,
-            path : item.url,
-        }                
+            "access_token" : lessCookie.Get("access_token"), 
+            "data" : {
+                "path" : lessSession.Get("ProjPath") +"/"+ item.url
+            }
+        }
         $.ajax({
             url     : '/lesscreator/api?func=fs-file-get',
             type    : "POST",
@@ -52,13 +54,13 @@ function h5cTabletEditorOpen(urid)
                 var obj = JSON.parse(rsp);
                 if (obj.status == 200) {
                     hdev_header_alert('success', "OK");
-                    $('#src'+urid).text(obj.content);
-                    h5cTabletPool[urid].data = obj.content;
-                    h5cTabletPool[urid].mime = obj.mime;
-                    h5cTabletPool[urid].hash = lessCryptoMd5(obj.content);
+                    $('#src'+urid).text(obj.data.body);
+                    h5cTabletPool[urid].data = obj.data.body;
+                    h5cTabletPool[urid].mime = obj.data.mime;
+                    h5cTabletPool[urid].hash = lessCryptoMd5(obj.data.body);
                     h5cEditorLoad(urid);                
                 } else {
-                    hdev_header_alert('error', obj.msg);
+                    hdev_header_alert('error', obj.message);
                 }
             },
             error: function(xhr, textStatus, error) {

@@ -1,7 +1,6 @@
 <?php
 
-
-$basedir = lesscreator_proj::path("");
+use LessPHP\Encoding\Json;
 
 if (!isset($this->req->projid)
     || strlen($this->req->projid) < 1) {
@@ -13,6 +12,8 @@ if (!isset($this->req->projid)
 if (isset($this->req->basedir)
     && strlen($this->req->basedir)) {
     $basedir = $this->req->basedir;
+} else {
+    $basedir = $_COOKIE['basedir'];
 }
 $basedir = rtrim(preg_replace("/\/\/+/", "/", $basedir), '/');
 
@@ -28,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 
     try {
 
-        $f = "{$basedir}/{$projid}/lcproject.json";
+        $f = "{$basedir}/app/{$projid}/lcproject.json";
         $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
 
         $rs = lesscreator_fs::FsFileGet($f);
         if ($rs->status == 200) {
-            throw new \Exception("Project ID exists");
+            throw new \Exception("Project exists");
         }
         
         if (!strlen($this->req->name)) {
@@ -53,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
             'depends' => '',
             'props'   => '',
             'types'   => '',
-            'arch'    => 'all',
         );
         if (isset($this->req->props)) {
             $set['props'] = implode(",", $this->req->props);
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
             $set['types'] = implode(",", $this->req->types);
         }
 
-        $rs = lesscreator_fs::FsFilePut($f, $str);
+        $rs = lesscreator_fs::FsFilePut($f, Json::PrettyPrint($set));
         if ($rs->status != 200) {
             throw new \Exception($rs->message);
         }
@@ -107,14 +107,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         <div class="input-prepend">
           <button type="button" class="btn" onclick="_proj_new_dir('')">
             <i class="icon-folder-close"></i>
-            <span class="_proj_new_basedir_dp"><?php echo $basedir?>/</span>
+            <span class="_proj_new_basedir_dp"><?php echo $basedir?>/app/</span>
           </button>
           <input id="projid" name="projid" type="text" class="span2" value="<?php echo $projid?>" />
         </div>
         <div id="_proj_new_dir" class="displaynone" style="margin:0 0 5px 0;"></div>
       </td>
     </tr>
-    <tr>
+    <!-- TODO <tr>
       <td valign="top"><strong>Services</strong></td>
       <td>
         <?php
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
         }
         ?>
       </td>
-    </tr>
+    </tr> -->
     <tr>
       <td valign="top"><strong>Summary</strong></td>
       <td ><textarea name="summary" rows="3" style="width:400px;"></textarea></td>
@@ -145,6 +145,8 @@ var _projid = "";
 
 function _proj_new_dir(path)
 {
+    return; // TODO
+
     if (path.length < 1) {
         path = _basedir;
     }
@@ -207,7 +209,7 @@ function _proj_new_commit()
 
 function _proj_new_goto()
 {
-    window.open("/lesscreator/index?proj="+ _basedir +"/"+ _projid, "_blank");
+    window.open("/lesscreator/index?proj="+ _basedir +"/app/"+ _projid, "_blank");
 }
 
 </script>

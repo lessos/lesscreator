@@ -1,12 +1,12 @@
 
 function h5cPluginDataOpen()
 {
-    h5cDialogOpen('/lesscreator/data/open', 700, 450, 
+    lessModalOpen('/lesscreator/data/open', 1, 700, 450, 
         'Open Database', null);
 }
 function h5cPluginDataNew()
 {
-    h5cDialogOpen('/lesscreator/data/create', 700, 450, 
+    lessModalOpen('/lesscreator/data/create', 1, 700, 450, 
         'Create Database', null);
 }
 

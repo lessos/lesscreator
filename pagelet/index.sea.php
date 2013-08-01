@@ -273,24 +273,6 @@ if (!Session::IsLogin()) {
 
 <div class="pgtab-openfiles-ol hdev-lcmenu less_scroll"></div>
 
-<div id="h5c_dialog" class="border_radius_t5 displaynone">
-  <table class="h5c_dialog_title border_radius_t5" width="100%">
-    <tr>
-      <td class="h5c_dialog_titlel"></td>
-      <td class="h5c_dialog_titlec"></td>
-      <td class="h5c_dialog_titler">
-        <button class="close" style="margin: 4px 5px 0 0;" onclick="h5cDialogClose()">&times;</button>
-      </td>
-    </tr>
-  </table>
-
-  <div class="h5c_dialog_body">
-    <div id="h5c_dialog_page"></div>
-  </div>
-</div>
-<div class="displaynone">
-
-</div>
 </body>
 </html>
 

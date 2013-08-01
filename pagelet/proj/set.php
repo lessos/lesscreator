@@ -65,7 +65,7 @@ echo $msg;
       <td><strong>Name</strong></td>
       <td><input name="name" class="input-medium" type="text" value="<?=$info['name']?>" /></td>
     </tr>
-    <tr>
+    <!-- <tr>
       <td><strong>Services</strong></td>
       <td>
         <?php
@@ -82,7 +82,7 @@ echo $msg;
         }
         ?>
       </td>
-    </tr>
+    </tr> -->
     <tr>
       <td><strong>Types</strong></td>
       <td>

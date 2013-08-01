@@ -90,6 +90,6 @@ $('._proj_fs_href').click(function() {
 function _proj_fs_open()
 {
     h5cProjectOpen(_path +'/'+ _path_click);
-    h5cDialogClose();
+    lessModalClose();
 }
 </script>

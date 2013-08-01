@@ -43,7 +43,7 @@ echo "</div>";
 <table id="_proj_fs_open_foo" class="h5c_dialog_footer" width="100%">
     <tr>
         <td align="right">            
-            <button class="btn" onclick="h5cDialogClose()">Close</button>
+            <button class="btn" onclick="lessModalClose()">Close</button>
         </td>
         <td width="20px"></td>
     </tr>
@@ -62,6 +62,6 @@ $('.aklw5v').dblclick(function() {
     }
 
     h5cTabOpen("/lesscreator/data/inlet?proj="+projCurrent+"&id="+ p, "w0", 'html', opt);
-    h5cDialogClose();
+    lessModalClose();
 });
 </script>
