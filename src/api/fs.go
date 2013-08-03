@@ -19,14 +19,14 @@ import (
 )
 
 type FsFile struct {
-    Path     string `json:"path"`
-    Name     string `json:"name"`
-    Size     int64  `json:"size"`
-    Mime     string `json:"mime"`
-    Body     string `json:"body"`
-    SumCheck string `json:"sumcheck"`
-    IsDir    bool   `json:"isdir"`
-    ModTime time.Time `json:"modtime"`
+    Path     string    `json:"path"`
+    Name     string    `json:"name"`
+    Size     int64     `json:"size"`
+    Mime     string    `json:"mime"`
+    Body     string    `json:"body"`
+    SumCheck string    `json:"sumcheck"`
+    IsDir    bool      `json:"isdir"`
+    ModTime  time.Time `json:"modtime"`
     //Mode     uint32    `json:"mode"`
     //Error    string    `json:"error"`
 }

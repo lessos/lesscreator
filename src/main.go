@@ -1,13 +1,13 @@
 package main
 
 import (
+    "../deps/lessgo/keeper"
+    "../deps/lessgo/passport"
     "./api"
     "./conf"
     "flag"
     "fmt"
-    //"log"
-    "../deps/lessgo/keeper"
-    "../deps/lessgo/passport"
+    "log"
     "os"
     "os/user"
     "time"
@@ -21,18 +21,19 @@ var kpr keeper.Keeper
 var ses passport.Session
 
 var flagPrefix = flag.String("prefix", "", "the prefix folder path")
+var flagConfig = flag.String("config", "", "the config file path")
 
 func main() {
 
     var err error
 
     if u, err := user.Current(); err != nil || u.Uid != "0" {
-        //log.Fatal("Permission Denied : must be run as root")
+        log.Fatal("Permission Denied : must be run as root")
     }
 
     //
     flag.Parse()
-    if cfg, err = conf.NewConfig(*flagPrefix); err != nil {
+    if cfg, err = conf.NewConfig(*flagPrefix, *flagConfig); err != nil {
         fmt.Println(err)
         os.Exit(1)
     }

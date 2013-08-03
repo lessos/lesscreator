@@ -7,3 +7,4 @@ install -m 0644 -p {lessfly_userappdir}/misc/etc/creator.json {lessfly_userdir}/
 
 lessfly-env-filter {lessfly_userdir}/conf/lesscreator/creator.json
 
+
