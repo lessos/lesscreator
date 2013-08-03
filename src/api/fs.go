@@ -26,8 +26,8 @@ type FsFile struct {
     Body     string `json:"body"`
     SumCheck string `json:"sumcheck"`
     IsDir    bool   `json:"isdir"`
-    //Mode     uint32    `json:"mode"`
     ModTime time.Time `json:"modtime"`
+    //Mode     uint32    `json:"mode"`
     //Error    string    `json:"error"`
 }
 
