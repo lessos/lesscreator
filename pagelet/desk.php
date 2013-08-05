@@ -12,8 +12,7 @@ if (!Session::IsLogin()) {
     <td width="10px"></td>
 
     <td class="header_logo" width="160px">
-      <img src="/lesscreator/static/img/hooto-logo-mc-h30.png" />
-      <span class="title">Creator</span>
+      <span class="title">Less</span> <span class="title">Creator</span>
     </td>
 
     <td align="center">
