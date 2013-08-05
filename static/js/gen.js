@@ -332,9 +332,7 @@ function h5cTabClose(urid)
 }
 
 function h5cLayoutResize()
-{
-    // console.log("Resizing");
-    
+{    
     var spacecol = 10;
 
     var bh = $('body').height();
@@ -344,7 +342,7 @@ function h5cLayoutResize()
     
     var toset = lessCookie.Get('cfg_lyo_col_w');
     if (toset == 0 || toset == null) {
-        toset = 0.8;
+        toset = 0.618;
     }
 
     var colw = (bw - (3 * spacecol)) * toset;
@@ -371,7 +369,7 @@ function h5cLayoutResize()
         $('#h5c-tablet-framet0').height(rowt0);
     }
     */
-
+    console.log(window.location.hostname);
     var lo_p = $('#hdev_layout').position();
     var lo_h = bh - lo_p.top - 10;
     if (lo_h < 400) {

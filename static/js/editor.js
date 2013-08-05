@@ -174,7 +174,7 @@ function h5cEditorLoad(urid)
     //});
 }
 
-var h5cServerAPI    = "web.example.com:9531/lesscreator/api";
+var h5cServerAPI      = window.location.hostname+":9531/lesscreator/api";
 var h5cEditorSaveAPI  = "ws://"+h5cServerAPI+"/fs-save-ws";
 var h5cEditorSaveSock = null;
 
