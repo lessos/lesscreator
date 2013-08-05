@@ -343,9 +343,10 @@ function h5cLayoutResize()
     $("#hdev_layout").width(bw);
     
     var toset = lessCookie.Get('cfg_lyo_col_w');
-    if (toset == 0) {
+    if (toset == 0 || toset == null) {
         toset = 0.8;
     }
+
     var colw = (bw - (3 * spacecol)) * toset;
     if (colw < 400) {
         colw = 400;

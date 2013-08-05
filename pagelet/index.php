@@ -164,7 +164,7 @@ function _env_init()
         $("#h5loc_ly_content").unbind('mousemove');
     });
 
-    hdev_init_setting();
+    //hdev_init_setting();
 
     <?php
     if (isset($this->req->proj)) {
