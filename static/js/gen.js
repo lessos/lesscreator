@@ -369,7 +369,7 @@ function h5cLayoutResize()
         $('#h5c-tablet-framet0').height(rowt0);
     }
     */
-    console.log(window.location.hostname);
+
     var lo_p = $('#hdev_layout').position();
     var lo_h = bh - lo_p.top - 10;
     if (lo_h < 400) {

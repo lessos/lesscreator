@@ -39,13 +39,16 @@ if (!Session::IsLogin()) {
 
 $(document).ready(function() {
 
-    if (!isValidBrowser()) {        
+    var browser = BrowserDetect.browser;
+    var version = BrowserDetect.version;
+    var OS      = BrowserDetect.OS;
+    if (!(browser == 'Chrome' && version >= 6)) {
         $('body').css({
             width: '100%',
             height: '100%',
             'min-height': '100px',
             'min-width': '400px',
-            'background': '#656565'
+            'background': '#eee'
         });
         $('body').load('/lesscreator/err/browser');
         return;
@@ -103,11 +106,9 @@ $(document).ready(function() {
 });
 
 function _env_init()
-{
-    //console.log("INIT OK");
-   
+{   
     window.onbeforeunload = function() {
-        //return "Leave the page and lose your changes?";
+        return "Leave the page and lose your changes?";
     }
 
     $(window).resize(function() {
