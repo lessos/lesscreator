@@ -79,6 +79,7 @@ foreach ($ls->data as $f) {
         $href   = "javascript:_fs_tree_dir('{$p}', 0)";
         
     } else if (substr($fm, 0, 4) == "text"
+        || substr($fm, 0, 23) == "application/x-httpd-php"
         || $fm == "application/x-empty"
         || $fm == "inode/x-empty"
         || $fm == "application/json") {
