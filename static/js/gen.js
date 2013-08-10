@@ -1,141 +1,4 @@
 
-//prefixes of implementation that we want to test
-window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-
-//prefixes of window.IDB objects
-window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
-window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
-
-if (!window.indexedDB) {
-    window.alert("Your browser doesn't support a stable version of IndexedDB.")
-}
-
-var lcData = {};
-lcData.db = null;
-lcData.version = 9;
-lcData.schema = [
-    {
-        name: "files",
-        pri: "id",
-        idx: ["projdir"]
-    },
-    {
-        name: "config",
-        pri: "id",
-        idx: ["type"]
-    }
-];
-lcData.Init = function(dbname)
-{
-    var req = indexedDB.open(dbname, lcData.version);  
-
-    req.onsuccess = function (event) {
-        lcData.db = event.target.result;
-    };
-
-    req.onerror = function (event) {
-        console.log("IndexedDB error: " + event.target.errorCode);
-    };
-
-    req.onupgradeneeded = function (event) {
-        
-        lcData.db = event.target.result;
-
-        for (var i in lcData.schema) {
-            
-            var tbl = lcData.schema[i];
-            
-            if (lcData.db.objectStoreNames.contains(tbl.name)) {
-                lcData.db.deleteObjectStore(tbl.name);
-            }
-
-            var objectStore = lcData.db.createObjectStore(tbl.name, {pri: tbl.pri});
-
-            for (var j in tbl.idx) {
-                objectStore.createIndex(tbl.idx[j], tbl.idx[j], { unique: false });
-            }
-        }
-    };
-}
-
-lcData.Put = function(tbl, entry, cb)
-{    
-    if (lcData.db == null) {
-        return;
-    }
-
-    var req = lcData.db.transaction([tbl], "readwrite").objectStore(tbl).put(entry);
-
-    req.onsuccess = function(event) {
-        if (cb != null && cb != undefined) {
-            cb(true);
-        }
-    };
-
-    req.onerror = function(event) {
-        if (cb != null && cb != undefined) {
-            cb(false);
-        }
-    }
-}
-
-lcData.Get = function(tbl, key, cb)
-{
-    if (lcData.db == null) {
-        return;
-    }
-
-    var req = lcData.db.transaction([tbl]).objectStore(tbl).get(key);
-
-    req.onsuccess = function(event) {
-        cb(req.result);
-    };
-
-    req.onerror = function(event) {
-        cb(req.result);
-    }
-}
-
-lcData.Del = function(tbl, key, cb)
-{
-    if (lcData.db == null) {
-        return;
-    }
-
-    lcData.db.deleteDatabase("eryx");
-
-    var req = lcData.db.transaction([tbl], "readwrite").objectStore(tbl).delete(key);
-
-    req.onsuccess = function(event) {
-        cb(true);
-    };
-
-    req.onerror = function(event) {
-        cb(false);
-    }
-}
-
-lcData.List = function(tbl, cb)
-{
-    if (lcData.db == null) {
-        return;
-    }
-
-    var req = lcData.db.transaction([tbl], "readwrite").objectStore(tbl).openCursor();
-
-    req.onsuccess = function(event) {
-        var cursor = event.target.result;
-        if (cursor) {
-            cb(cursor);
-        }
-    };
-
-    req.onerror = function(event) {
-
-    }
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 function h5cPluginDataOpen()
 {
@@ -148,11 +11,17 @@ function h5cPluginDataNew()
         'Create Database', null);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
+var projCurrent = null;
+var pageArray   = {};
+var pageCurrent = 0;
 
 var h5cTabletFrame = {};
 /**
     h5cTabletFrame[frame] = {
         'urid': 'string',
+        'editor': null,
         'status':  'current/null'
     }
  */
@@ -174,18 +43,19 @@ function h5cTabOpen(uri, target, type, opt)
 
     if (!h5cTabletFrame[target]) {
         h5cTabletFrame[target] = {
-            'urid': 0,
-            'status': ''
+            'urid'   : 0,
+            'editor' : null,
+            'status' : ''
         };
     }
 
     if (!h5cTabletPool[urid]) {
         h5cTabletPool[urid] = {
-            'url': uri,
-            'target': target,
-            'data': '',
-            'type': type,
-            'mime': '',
+            'url'    : uri,
+            'target' : target,
+            'data'   : '',
+            'type'   : type,
+            'mime'   : '',
         };
         for (i in opt) {
             h5cTabletPool[urid][i] = opt[i];
@@ -204,10 +74,11 @@ function h5cTabSwitch(urid)
         return;
     }
 
-    if (h5cEditor.urid && h5cEditor.urid != urid) {
-        h5cEditor.instance.toTextArea();
-        h5cEditorSave(h5cEditor.urid, 1);
-        h5cEditor.urid = 0;
+    if (h5cTabletFrame[item.target].urid 
+        && h5cTabletFrame[item.target].urid != urid) {
+        //lcEditor.instance.toTextArea();
+        //lcEditor.Save(lcEditor.urid, 1);
+        h5cTabletFrame[item.target].urid = 0;
     }
 
     switch (item.type) {
@@ -218,9 +89,11 @@ function h5cTabSwitch(urid)
                 type    : "GET",
                 timeout : 30000,
                 success : function(rsp) {
+                    
                     h5cTabletPool[urid].data = rsp;
                     h5cTabletTitle(urid);
                     h5cTabletFrame[item.target].urid = urid;
+                   
                     $("#h5c-tablet-body-"+ item.target).empty().html(rsp);
                 },
                 error: function(xhr, textStatus, error) {
@@ -230,73 +103,20 @@ function h5cTabSwitch(urid)
         } else {
             h5cTabletTitle(urid);
             h5cTabletFrame[item.target].urid = urid;
+            
             $("#h5c-tablet-body-"+ item.target).empty().html(item.data);
         }
         break;
+
     case 'editor':
-        if (h5cTabletEditorOpen(urid)) {
+        
+        if (lcEditor.TabletOpen(urid)) {
             h5cTabletTitle(urid);
             h5cTabletFrame[item.target].urid = urid;
         }
-        break;
-    default :
-        return;
-    }
-}
-
-function h5cTabletOpen(url, target, type, title)
-{
-    /* TODO:V2 db = openDatabase("ToDo", "0.1", "A list of to do items.", 200000);
-    if(!db) {  
-        alert("Failed to connect to database."); 
-        return;
-    } */
-    urid = lessCryptoMd5(url);
-    h5cTabletFrame[target] = {
-        'urid': urid,
-        'status': ''
-    };
-    h5cTabletPool[urid] = {
-        'url': url,
-        'target': target,
-        'data': '',
-        'title': title,
-        'type': type
-    };
-
-    switch (type) {
-    case 'html':
-        $.ajax({
-            url     : url,
-            type    : "GET",
-            timeout : 30000,
-            success : function(rsp) {
-
-                h5cTabletPool[urid].data = rsp;
-
-                /* TODO fw = $("#h5c-tablet-frame"+ target).width();
-                fh = $("#h5c-tablet-frame"+ target).height();
-                tfh = $("#h5c-tablet-tabs-frame"+ target).height();
-    
-                $("#h5c-tablet-body-"+ target).width(fw);
-                $("#h5c-tablet-body-"+ target).height(fh - tfh);
-                */
-
-                h5cTabletTitle(urid);
-
-                $("#h5c-tablet-body-"+ target).empty().html(rsp);
-            },
-            error: function(xhr, textStatus, error) {
-                //alert("ERROR:"+ xhr.responseText);
-                hdev_header_alert('error', xhr.responseText);
-            }
-        });
-        break;
-    case 'editor':
-        //console.log(h5cTabletPool[urid]);
-
 
         break;
+
     default :
         return;
     }
@@ -325,8 +145,9 @@ function h5cTabletTitle(urid)
             entry += "<td class='ico' onclick=\"h5cTabSwitch('"+urid+"')\">\
                 <img src='"+ imgsrc +"' align='absmiddle' /></td>";
         }
-        entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabSwitch('"+urid+"')\">"+item.title+"</td>";
         entry += '<td class="chg">*</td>';
+        entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabSwitch('"+urid+"')\">"+item.title+"</td>";
+        
         if (item.close) {
             entry += '<td class="close"><a href="javascript:h5cTabClose(\''+urid+'\')">×</a></td>';
         }
@@ -425,7 +246,7 @@ function h5cTabClose(urid)
         $("#h5c-tablet-body-"+ item.target).empty();
         break;
     case 'editor':        
-        h5cEditorClose(urid);
+        lcEditor.Close(urid);
         break;
     default :
         return;
@@ -598,3 +419,139 @@ Date.prototype.format = function(fmt)
     fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
     return fmt;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//prefixes of implementation that we want to test
+window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+
+//prefixes of window.IDB objects
+window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
+
+if (!window.indexedDB) {
+    window.alert("Your browser doesn't support a stable version of IndexedDB.")
+}
+
+var lcData = {};
+lcData.db = null;
+lcData.version = 9;
+lcData.schema = [
+    {
+        name: "files",
+        pri: "id",
+        idx: ["projdir"]
+    },
+    {
+        name: "config",
+        pri: "id",
+        idx: ["type"]
+    }
+];
+lcData.Init = function(dbname)
+{
+    var req = indexedDB.open(dbname, lcData.version);  
+
+    req.onsuccess = function (event) {
+        lcData.db = event.target.result;
+    };
+
+    req.onerror = function (event) {
+        console.log("IndexedDB error: " + event.target.errorCode);
+    };
+
+    req.onupgradeneeded = function (event) {
+        
+        lcData.db = event.target.result;
+
+        for (var i in lcData.schema) {
+            
+            var tbl = lcData.schema[i];
+            
+            if (lcData.db.objectStoreNames.contains(tbl.name)) {
+                lcData.db.deleteObjectStore(tbl.name);
+            }
+
+            var objectStore = lcData.db.createObjectStore(tbl.name, {pri: tbl.pri});
+
+            for (var j in tbl.idx) {
+                objectStore.createIndex(tbl.idx[j], tbl.idx[j], { unique: false });
+            }
+        }
+    };
+}
+
+lcData.Put = function(tbl, entry, cb)
+{    
+    if (lcData.db == null) {
+        return;
+    }
+
+    var req = lcData.db.transaction([tbl], "readwrite").objectStore(tbl).put(entry);
+
+    req.onsuccess = function(event) {
+        if (cb != null && cb != undefined) {
+            cb(true);
+        }
+    };
+
+    req.onerror = function(event) {
+        if (cb != null && cb != undefined) {
+            cb(false);
+        }
+    }
+}
+
+lcData.Get = function(tbl, key, cb)
+{
+    if (lcData.db == null) {
+        return;
+    }
+
+    var req = lcData.db.transaction([tbl]).objectStore(tbl).get(key);
+
+    req.onsuccess = function(event) {
+        cb(req.result);
+    };
+
+    req.onerror = function(event) {
+        cb(req.result);
+    }
+}
+
+lcData.Del = function(tbl, key, cb)
+{
+    if (lcData.db == null) {
+        return;
+    }
+
+    var req = lcData.db.transaction([tbl], "readwrite").objectStore(tbl).delete(key);
+
+    req.onsuccess = function(event) {
+        cb(true);
+    };
+
+    req.onerror = function(event) {
+        cb(false);
+    }
+}
+
+lcData.List = function(tbl, cb)
+{
+    if (lcData.db == null) {
+        return;
+    }
+
+    var req = lcData.db.transaction([tbl], "readwrite").objectStore(tbl).openCursor();
+
+    req.onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            cb(cursor);
+        }
+    };
+
+    req.onerror = function(event) {
+
+    }
+}
+

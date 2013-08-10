@@ -1,7 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-var projCurrent = null;
-var pageArray   = {};
-var pageCurrent = 0;
+
 
 var hceditor = {
     'theme'         : 'default',
@@ -75,7 +73,6 @@ function hdev_init_setting()
         lessCookie.SetByDay("config_tablet_rowt0", v, 365);
     }
     
-    posFetch();
 }
 
 function hdev_editor_set(key, val)
@@ -137,65 +134,11 @@ function hdev_applist()
     hdev_page_open('app/list', 'content', 'My Projects', 'app-t3-16');
 }
 
-function hdev_project_new()
-{
-    window.open("/lesscreator/index#project-new", '_blank');
-}
-
-function hdev_project_setting(proj)
-{
-    hdev_page_open('app/project-edit?proj='+proj, 'content', 'Project Setting', 'app-t3-16');
-}
-
-function hdev_project(proj)
-{
-    // New Project
-    if (!proj) {
-        hdev_page_open('app/project-new', 'content', 'New Project', 'app-t3-16');
-        return;
-    }
-    
-    // Open Project in New Tab
-    if (projCurrent && projCurrent != proj) {
-        window.open("/lesscreator/index?proj="+proj, '_blank');
-        return;
-    }
-    
-    // Open Current Project
-    $.ajax({
-        url     : '/lesscreator/app/project?proj='+proj,
-        type    : "GET",
-        timeout : 30000,
-        success : function(data) {
-            projCurrent = proj;
-            $('#hdev_project').html(data);
-            hdev_layout_resize();
-        },
-        error: function(xhr, textStatus, error) {
-            hdev_header_alert('error', xhr.responseText);
-        }
-    });
-}
-
 function hdev_header_alert(status, alert)
 {
     $(".hdev-header-alert").text(alert);
     $(".hdev-header-alert").removeClass("alert-*");
     $(".hdev-header-alert").addClass(status);
-}
-
-var pos = null;
-function posFetch()
-{
-    if (window.event) {
-        pos = {"left": window.event.pageX, "top": window.event.pageY};
-    } else if (pos == null) {
-        $(document).mousemove(function(e) {
-            pos = {"left": e.pageX, "top": e.pageY};
-        });
-    }
-    
-    return pos;
 }
 
 
@@ -544,7 +487,7 @@ function hdev_pgtab_openfiles()
     }
     $('.pgtab-openfiles-ol').html(ol);
     
-    e = posFetch();
+    e = lessPosGet();
     w = 100;
     h = 100;
     //console.log("event top:"+e.top+", left:"+e.left);

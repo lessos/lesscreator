@@ -719,13 +719,13 @@ textarea {
     color: #db4a37; cursor: pointer;
 }
 .h5c_tablet_tabs .pgtab .chg {
-    color: #db4a37; display: none;
+    color: #db4a37; width: 8px; display: none; text-align: center;
 }
 .h5c_tablet_tabs .pgtab .chglight {
     color: #db4a37;
 }
 .h5c_tablet_tabs .pgtab .close {
-    float: right;  width: 14px; display: inline-block; text-align: center;
+    float: right; width: 14px; display: inline-block; text-align: center;
 }
 .h5c_tablet_tabs .pgtab .close a {
     text-decoration: none;

@@ -41,7 +41,7 @@ func FsSaveWS(ws *websocket.Conn) {
             ws.Close()
             return
         }
-        fmt.Println(msg)
+        fmt.Println("FsSaveWS", msg)
 
         var req struct {
             Path     string
@@ -58,20 +58,22 @@ func FsSaveWS(ws *websocket.Conn) {
         if err != nil {
             return
         } else {
-            if _, err = fp.Write([]byte(req.Content)); err != nil {
+
+            fp.Seek(0, 0)
+            fp.Truncate(int64(len(req.Content)))
+
+            if _, err = fp.WriteString(req.Content); err != nil {
                 fmt.Println(err)
             }
         }
         fp.Close()
 
         ret := struct {
-            Status int
-            //Content string
-            Msg      string
-            SumCheck string
+            Status   int    `json:"status"`
+            Msg      string `json:"message"`
+            SumCheck string `json:"sumcheck"`
         }{
             200,
-            //msg,
             "",
             req.SumCheck,
         }

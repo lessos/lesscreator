@@ -81,6 +81,9 @@ $(document).ready(function() {
 
                 lessSession.Set("basedir", rsj.data.basedir);
                 lessCookie.Set("basedir", rsj.data.basedir, 0);
+                lessSession.Set("sess.user", rsj.data.user);
+
+                lcData.Init(rsj.data.user);
 
                 $.ajax({
                     url     : "/lesscreator/desk?basedir="+ rsj.data.basedir,
@@ -108,7 +111,7 @@ $(document).ready(function() {
 function _env_init()
 {   
     window.onbeforeunload = function() {
-        return "Leave the page and lose your changes?";
+        //return "Leave the page and lose your changes?";
     }
 
     $(window).resize(function() {

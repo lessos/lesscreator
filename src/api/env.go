@@ -18,6 +18,7 @@ import (
 type ApiEnvResponse struct {
     ApiResponse
     Data struct {
+        User    string `json:"user"`
         BaseDir string `json:"basedir"`
     }   `json:"data"`
 }
@@ -96,6 +97,7 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
 
     //fmt.Println(sess.Uid)
 
+    rsp.Data.User = sess.Uname
     rsp.Data.BaseDir = userpath
     rsp.Status = 200
     rsp.Message = "OK"

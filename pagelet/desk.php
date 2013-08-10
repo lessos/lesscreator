@@ -34,8 +34,8 @@ if (!Session::IsLogin()) {
                 <span class="caret" style="margin-top:8px;"></span>
             </div>
             <ul class="dropdown-menu pull-right text-left">
-                <li><a href="javascript:h5cProjOpenDialog()">Open Project</a></li>
                 <li><a href="javascript:h5cProjNewDialog()">Create Project</a></li>
+                <li><a href="javascript:h5cProjOpenDialog()">Open Project</a></li>
             </ul>
                     
         </div>
