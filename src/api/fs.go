@@ -11,22 +11,20 @@ import (
     "mime"
     "net/http"
     "os"
-    //"os/exec"
     "path/filepath"
     "regexp"
     "strings"
-    "time"
 )
 
 type FsFile struct {
-    Path     string    `json:"path"`
-    Name     string    `json:"name"`
-    Size     int64     `json:"size"`
-    Mime     string    `json:"mime"`
-    Body     string    `json:"body"`
-    SumCheck string    `json:"sumcheck"`
-    IsDir    bool      `json:"isdir"`
-    ModTime  time.Time `json:"modtime"`
+    Path     string `json:"path"`
+    Name     string `json:"name"`
+    Size     int64  `json:"size"`
+    Mime     string `json:"mime"`
+    Body     string `json:"body"`
+    SumCheck string `json:"sumcheck"`
+    IsDir    bool   `json:"isdir"`
+    ModTime  string `json:"modtime"`
     //Mode     uint32    `json:"mode"`
     //Error    string    `json:"error"`
 }
@@ -150,7 +148,7 @@ func FsList(w http.ResponseWriter, r *http.Request) {
         file.Name = st.Name()
         file.Size = st.Size()
         file.IsDir = st.IsDir()
-        file.ModTime = st.ModTime()
+        file.ModTime = st.ModTime().Format("2006-01-02T15:04:05Z07:00")
         //file.Mode = uint32(st.Mode())
         //fmt.Println(fmt.Sprintf("%o", st.Mode()), st.Name())
 

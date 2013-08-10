@@ -29,7 +29,7 @@ $ptpath = md5("");
 
 
 <!--ProjectFilesManager-->
-<div id="pt<?=$ptpath?>" class="hdev-proj-files less_scroll" style="padding-top:10px;"></div>
+<div id="pt<?=$ptpath?>" class="hdev-proj-files less_scroll" style="padding-top:5px;"></div>
 
 
 <script type="text/javascript">

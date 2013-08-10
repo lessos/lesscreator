@@ -153,6 +153,8 @@ foreach ($ls->data as $f) {
     if (strlen($lip)) {
         $li .= "<div class=\"hdev-rcmenu displaynone\">".$lip."</div>";
     }
+
+    $li .= "<div class='pull-right gray'>".date("Y-m-d H:i:s", strtotime($f->modtime))."</div>";
     
     $li .= "</div>";
     $li .= "<div id=\"pt{$pdiv}\" style=\"padding-left:20px;\"></div>";

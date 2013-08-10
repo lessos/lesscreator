@@ -273,11 +273,15 @@ lcEditor.Close = function(urid)
 
     lcEditor.Save(urid, 1);
 
+
+
     if (urid == h5cTabletFrame[item.target].urid) {
-        //$('#src'+urid).remove();
-        h5cTabletFrame[item.target].editor = null;
-        h5cTabletFrame[item.target].urid = 0;
+        
+        h5cTabletFrame[item.target].empty();
+//        //$('#src'+urid).remove();
+//        h5cTabletFrame[item.target].editor = null;
+//        h5cTabletFrame[item.target].urid = 0;
     }
 
-    h5cLayoutResize();
+//    h5cLayoutResize();
 }

@@ -506,13 +506,20 @@ textarea {
     background-color: #fff;
 }
 .hdev-proj-files .fileitem {
-    padding: 1px 2px; white-space: nowrap;
+    padding: 3px 2px; white-space: nowrap;
+}
+.hdev-proj-files .fileitem a {
+    color: #1a1a1a;
 }
 .hdev-proj-files .fileitem:hover {
-    background-color: #C9E2FC; color: #555;
+    background-color: #e6e6e6;
 }
 .hdev-proj-files .fileitem a:hover {
     text-decoration: underline;
+}
+
+.hdev-proj-files .fileitem .gray {
+    color: #999;
 }
 
 /** Right Click Menu */
