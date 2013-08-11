@@ -1,9 +1,8 @@
 
-var h5cServerAPI      = window.location.hostname+":9531/lesscreator/api";
-
 var lcEditor = {};
 lcEditor.WebSocket = null;
-lcEditor.SaveAPI = "ws://"+h5cServerAPI+"/fs-save-ws";
+lcEditor.ToolTmpl = null;
+lcEditor.SaveAPI = "ws://"+window.location.hostname+":9531/lesscreator/api/fs-save-ws";
 lcEditor.Config = {
     'theme'         : 'default',
     'tabSize'       : 4,
@@ -123,6 +122,7 @@ lcEditor.Load = function(urid)
 
     if (h5cTabletFrame[item.target].editor != null) {        
         $("#h5c-tablet-body-"+ item.target).empty();
+        $("#h5c-tablet-toolbar-"+ item.target).empty();
     }
 
     h5cTabletFrame[item.target].editor = CodeMirror(
@@ -142,6 +142,14 @@ lcEditor.Load = function(urid)
                 cm.replaceSelection("    ", "end");
             }
         }}
+    });
+
+    if (lcEditor.ToolTmpl == null) {
+        lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
+        //console.log(lcEditor.ToolTmpl);
+    }
+    $("#h5c-tablet-toolbar-"+ item.target).html(lcEditor.ToolTmpl).show(0, function(){
+        h5cLayoutResize();
     });
 
     CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
@@ -181,7 +189,8 @@ lcEditor.Changed = function(urid)
         ctn1_src: h5cTabletFrame[item.target].editor.getValue(),
         ctn1_sum: lessCryptoMd5(h5cTabletFrame[item.target].editor.getValue()),
     }
-    lcData.Put("files", entry);
+    //console.log(entry);
+    lcData.Put("files", entry, null);
     $("#pgtab"+ urid +" .chg").show();
 }
 
@@ -199,6 +208,7 @@ lcEditor.Save = function(urid, force)
     var hash = lessCryptoMd5(h5cTabletFrame[item.target].editor.getValue());
     if (hash == item.hash) {
         console.log("Nothing change, skip ~");
+        $("#pgtab"+ urid +" .chg").hide();
         return;
     }
 
@@ -237,10 +247,12 @@ lcEditor.Save = function(urid, force)
                     
                     var entry = {
                         id      : urid,
+                        projdir : lessSession.Get("ProjPath"),
+                        filepth : item.url, 
                         ctn1_src: "",
                         ctn1_sum: "",
                     }
-                    lcData.Put("files", entry);
+                    lcData.Put("files", entry, null);
 
                     $("#pgtab"+ urid +" .chg").hide();
                     hdev_header_alert('success', "OK");
@@ -273,8 +285,6 @@ lcEditor.Close = function(urid)
 
     lcEditor.Save(urid, 1);
 
-
-
     if (urid == h5cTabletFrame[item.target].urid) {
         
         h5cTabletFrame[item.target].empty();
@@ -284,4 +294,190 @@ lcEditor.Close = function(urid)
     }
 
 //    h5cLayoutResize();
+}
+
+lcEditor.set = function(key, val)
+{
+    if (key == "editor_autosave") {
+        if (lessCookie.Get('editor_autosave') == "on") {
+            lessCookie.SetByDay("editor_autosave", "off", 365);
+        } else {
+            lessCookie.SetByDay("editor_autosave", "on", 365);
+        }
+        msg = "Setting Editor::AutoSave to "+lessCookie.Get('editor_autosave');
+        hdev_header_alert("success", msg);
+    }
+    
+    if (key == "editor_keymap_vim") {
+        if (lessCookie.Get('editor_keymap_vim') == "on") {
+            lessCookie.SetByDay("editor_keymap_vim", "off", 365);
+            h5cTabletFrame["w0"].editor.setOption("keyMap", null);
+        } else {
+            lessCookie.SetByDay("editor_keymap_vim", "on", 365);
+            h5cTabletFrame["w0"].editor.setOption("keyMap", "vim");
+        }
+        msg = "Setting Editor::KeyMap to VIM "+lessCookie.Get('editor_keymap_vim');
+        hdev_header_alert("success", msg);
+    }
+    
+    if (key == "editor_search_case") {
+        if (lessCookie.Get('editor_search_case') == "on") {
+            lessCookie.SetByDay("editor_search_case", "off", 365);
+        } else {
+            lessCookie.SetByDay("editor_search_case", "on", 365);
+        }
+        msg = "Setting Editor::Search Match case "+lessCookie.Get('editor_search_case');
+        hdev_header_alert("success", msg);
+        lcEditor.SearchClean();
+    }
+}
+
+lcEditor.undo = function()
+{
+    if (!h5cTabletFrame["w0"].editor) {
+        return;
+    }
+
+    h5cTabletFrame["w0"].editor.undo();
+}
+
+lcEditor.redo = function()
+{
+    if (!h5cTabletFrame["w0"].editor) {
+        return;
+    }
+    
+    h5cTabletFrame["w0"].editor.redo();
+}
+
+lcEditor.theme = function(node)
+{
+    if (h5cTabletFrame["w0"].editor) {
+        var theme = node.options[node.selectedIndex].innerHTML;
+        h5cTabletFrame["w0"].editor.setOption("theme", theme);
+        lessCookie.SetByDay("editor_theme", theme, 365);
+        h5cLayoutResize();
+        //hdev_header_alert('success', 'Change Editor color theme to "'+theme+'"');
+    }
+}
+
+var search_state_query   = null;
+var search_state_posFrom = null;
+var search_state_posTo   = null;
+var search_state_marked  = [];
+
+lcEditor.Search = function()
+{
+    $(".lc_editor_searchbar").toggle(0, function(){
+        h5cLayoutResize();
+    });
+
+    $(".lc_editor_searchbar").find("input").css("color","#999");
+    $(".lc_editor_searchbar").find("input[type=text]").click(function () { 
+        var check = $(this).val(); 
+        if (check == this.defaultValue) { 
+            $(this).val(""); 
+        }
+    });
+    $(".lc_editor_searchbar").find("input[type=text]").blur(function () { 
+        if ($(this).val() == "") {
+            $(this).val(this.defaultValue); 
+        }
+    });
+
+    lcEditor.SearchNext();
+}
+
+lcEditor.SearchNext = function(rev)
+{
+    var query = $(".lc_editor_searchbar").find("input[name=find]").val();
+    var matchcase = (lessCookie.Get('editor_search_case') == "on") ? false : null;
+    
+    if (search_state_query != query) {
+        lcEditor.SearchClean();
+        
+        for (var cursor = h5cTabletFrame["w0"].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
+
+            search_state_marked.push(h5cTabletFrame["w0"].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
+            
+            search_state_posFrom = cursor.from();
+            search_state_posTo = cursor.to();
+        }
+        
+        search_state_query = query;
+    }
+    
+    var cursor = h5cTabletFrame["w0"].editor.getSearchCursor(
+        search_state_query, 
+        rev ? search_state_posFrom : search_state_posTo,
+        matchcase);
+    
+    if (!cursor.find(rev)) {
+        cursor = h5cTabletFrame["w0"].editor.getSearchCursor(
+            search_state_query, 
+            rev ? {line: h5cTabletFrame["w0"].editor.lineCount() - 1} : {line: 0, ch: 0},
+            matchcase);
+        if (!cursor.find(rev)) {
+            return;
+        }
+    }
+    
+    h5cTabletFrame["w0"].editor.setSelection(cursor.from(), cursor.to());
+    search_state_posFrom = cursor.from(); 
+    search_state_posTo = cursor.to();
+}
+
+lcEditor.SearchReplace = function(all)
+{
+    if (!search_state_query) {
+        return;
+    }
+    
+    var text = $(".lc_editor_searchbar").find("input[name=replace]").val();
+    if (!text) {
+        return;
+    }
+    
+    var matchcase = (lessCookie.Get('editor_search_case') == "on") ? false : null;
+    
+    if (all) {
+
+        for (var cursor = h5cTabletFrame["w0"].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
+            if (typeof search_state_query != "string") {
+                var match = h5cTabletFrame["w0"].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
+                cursor.replace(text.replace(/\$(\d)/, function(w, i) {return match[i];}));
+            } else {
+                cursor.replace(text);
+            }
+        }
+
+    } else {
+          
+        var cursor = h5cTabletFrame["w0"].editor.getSearchCursor(search_state_query, h5cTabletFrame["w0"].editor.getCursor(), matchcase);
+
+        var start = cursor.from(), match;
+        if (!(match = cursor.findNext())) {
+            cursor = h5cTabletFrame["w0"].editor.getSearchCursor(search_state_query, null, matchcase);
+            if (!(match = cursor.findNext()) ||
+                (cursor.from().line == start.line && cursor.from().ch == start.ch)) {return;
+            }
+        }
+        h5cTabletFrame["w0"].editor.setSelection(cursor.from(), cursor.to());
+        
+        cursor.replace(typeof search_state_query == "string" ? text :
+            text.replace(/\$(\d)/, function(w, i) {return match[i];}));        
+    }
+}
+
+lcEditor.SearchClean = function()
+{
+    search_state_query   = null;
+    search_state_posFrom = null;
+    search_state_posTo   = null;
+    
+    for (var i = 0; i < search_state_marked.length; ++i) {
+        search_state_marked[i].clear();
+    }
+    
+    search_state_marked.length = 0;
 }

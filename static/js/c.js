@@ -524,6 +524,7 @@ function hdev_pgtab_openfiles()
         $('.pgtab-openfiles-ol').hide();
     });
 }
+/*
 
 var search_state_query   = null;
 var search_state_posFrom = null;
@@ -637,3 +638,4 @@ function hdev_editor_search_clean()
     
     search_state_marked.length = 0;
 }
+*/

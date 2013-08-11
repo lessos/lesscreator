@@ -158,7 +158,7 @@ if (!Session::IsLogin()) {
         
         <span><input onclick="hdev_editor_set('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" /> Match case</span>
         
-        <input type="text" name="replace" value="Replace with" size="15" /> <button onclick="hdev_editor_search_replace()">Replace</button> <button onclick="hdev_editor_search_replace(true)">All</button> 
+        <input type="text" name="replace" value="Replace with" size="15" /> <button onclick="lcEditor.SearchReplace()">Replace</button> <button onclick="lcEditor.SearchReplace(true)">All</button> 
         
         <span class="close"><a href="javascript:hdev_editor_search()">×</a></span>
       </div>
@@ -173,7 +173,7 @@ if (!Session::IsLogin()) {
     <td id="h5c-lyo-col-w" valign="top">
       <table width="100%" height="100%">
         <tr>
-          <td id="h5c-tablet-framew0" class="hdev-layout-container" height="400px" valign="top">
+          <td id="h5c-tablet-framew0" class="hdev-layout-container" valign="top">
             
             <div id="h5c-tablet-tabs-framew0" class="h5c_tablet_tabs_frame">
               <div class="h5c_tablet_tabs_lm">
@@ -184,6 +184,7 @@ if (!Session::IsLogin()) {
               </div>
             </div>
 
+            <div id="h5c-tablet-toolbar-w0" class="hide"></div>
             <div id="h5c-tablet-body-w0" class="h5c_tablet_body"></div>
 
           </td>
@@ -262,3 +263,59 @@ if (!Session::IsLogin()) {
 </table>
 
 <div class="pgtab-openfiles-ol hdev-lcmenu less_scroll"></div>
+
+<div id="lc_editor_tools" class="hide">
+
+    <div class="editor_bar hdev-ws hdev-tabs hcr-pgbar-editor">
+        
+        <div class="tabitem" onclick="lcEditor.undo()">
+            <div class="ico"><img src="/lesscreator/static/img/arrow_undo.png" align="absmiddle" /></div>
+            <div class="ctn">Undo</div>
+        </div>
+
+        <div class="tabitem" onclick="lcEditor.redo()">
+            <div class="ico"><img src="/lesscreator/static/img/arrow_redo.png" align="absmiddle" /></div>
+            <div class="ctn">Redo</div>
+        </div>
+        
+        <div class="tabitemline"></div>
+        <div class="tabitem" onclick="lcEditor.Search()">
+            <div class="ico"><img src="/lesscreator/static/img/magnifier.png" align="absmiddle" /></div>
+            <div class="ctn">Search</div>
+        </div>
+        
+        <div class="tabitemline"></div>
+        <div class="tabitem">
+            <div class="ico"><img src="/lesscreator/static/img/disk.png" align="absmiddle" /></div>
+            <div class="ctn">Save</div>
+        </div>
+
+        <!-- <div class="tabitemline"></div>
+        <div class="tabitem">
+            <div class="ico"><img src="/lesscreator/static/img/disk.png" align="absmiddle" /></div>
+            <div class="ctn"><input onclick="hdev_editor_set('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
+        </div> -->
+
+        <div class="tabitemline"></div>
+        <div class="tabitem">
+            <div class="ico"><img src="/lesscreator/static/img/w3_vim.png" align="absmiddle" /></div>
+            <div class="ctn"><input onclick="hdev_editor_set('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> Simple VIM</div>
+        </div> 
+        
+        <div class="tabitemline"></div>
+        <div class="tabitem" onclick="hdev_page_open('app/editor-set', 'content', 'Editor Setting', 'cog')">
+            <div class="ico"><img src="/lesscreator/static/img/page_white_gear.png" align="absmiddle" /></div>
+            <div class="ctn">Setting</div>
+        </div>      
+    </div>
+
+    <div class="lc_editor_searchbar hdev-ws hide">
+        <input type="text" name="find" value="Find" size="15" /> <button onclick="lcEditor.SearchNext()">Find</button> 
+        
+        <span><input onclick="hdev_editor_set('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" /> Match case</span>
+        
+        <input type="text" name="replace" value="Replace with" size="15" /> <button onclick="lcEditor.SearchReplace()">Replace</button> <button onclick="lcEditor.SearchReplace(true)">All</button> 
+        
+        <span class="close"><a href="javascript:hdev_editor_search()">×</a></span>
+    </div>
+</div>

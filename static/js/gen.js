@@ -1,4 +1,67 @@
 
+function lcInitSetting()
+{
+    /* var autosave = lessCookie.Get('editor_autosave');
+    if (autosave == null) {
+        lessCookie.SetByDay("editor_autosave", "on", 365);
+        autosave = 'on';
+    }
+    if (autosave == 'on') {
+        $("#editor_autosave").prop("checked", true);
+    } */
+    
+    var theme = lessCookie.Get('editor_theme');
+    if (theme == null) {
+        lessCookie.SetByDay("editor_theme", "default", 365);
+    }
+    
+    var keymap_vim = lessCookie.Get('editor_keymap_vim');
+    if (keymap_vim == null) {
+        lessCookie.SetByDay("editor_keymap_vim", "off", 365);
+        keymap_vim = 'off';
+    }
+    if (keymap_vim == 'on') {
+        $("#editor_keymap_vim").prop("checked", true);
+    }
+    
+    var search_case = lessCookie.Get('editor_search_case');
+    if (search_case == null) {
+        lessCookie.SetByDay("editor_search_case", "off", 365);
+        search_case = 'off';
+    }
+    if (search_case == 'on') {
+        $("#editor_search_case").prop("checked", true);
+    }
+    
+    var tabSize = lessCookie.Get('editor_tabSize');
+    if (tabSize != null) {
+        lcEditor.Config.tabSize = parseInt(tabSize);
+    }
+    
+    lcEditor.Config.tabs2spaces = (lessCookie.Get('editor_tabs2spaces') == 'false') ? false : true;
+    
+    lcEditor.Config.smartIndent = (lessCookie.Get('editor_smartIndent') == 'false') ? false : true;
+    
+    lcEditor.Config.lineWrapping = (lessCookie.Get('editor_lineWrapping') == 'false') ? false : true;
+
+    /* var v = lessCookie.Get('config_tablet_colw');
+    if (v == null) {
+        v = $('#h5c-tablet-vcol-w').innerWidth(true);
+        lessCookie.SetByDay("config_tablet_colw", v, 365);
+    }
+    v = lessCookie.Get('config_tablet_roww0');
+    if (v == null) {
+        v = $('#h5c-tablet-framew0').height();
+        lessCookie.SetByDay("config_tablet_roww0", v, 365);
+    }
+    v = lessCookie.Get('config_tablet_rowt0');
+    if (v == null) {
+        v = $('#h5c-tablet-framet0').height();
+        lessCookie.SetByDay("config_tablet_rowt0", v, 365);
+    } */
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 function h5cPluginDataOpen()
 {
@@ -337,10 +400,11 @@ function h5cLayoutResize()
     $('#hdev_layout').height(lo_h);
 
     var tw0h = $('#h5c-tablet-tabs-framew0').height();
-    $('#h5c-tablet-body-w0').height(lo_h - tw0h);  
+    var bw0h = $('#h5c-tablet-toolbar-w0').height();
+    $('#h5c-tablet-body-w0').height(lo_h - tw0h - bw0h);  
     if ($('.CodeMirror').length) {
         $('.CodeMirror').width(colw);
-        $('.CodeMirror').height(lo_h - tw0h);
+        $('.CodeMirror').height(lo_h - tw0h - bw0h);
     }
     
     $('#h5c-tablet-tabs-framew0').width(colw);
@@ -434,7 +498,7 @@ if (!window.indexedDB) {
 
 var lcData = {};
 lcData.db = null;
-lcData.version = 9;
+lcData.version = 11;
 lcData.schema = [
     {
         name: "files",
@@ -471,10 +535,10 @@ lcData.Init = function(dbname)
                 lcData.db.deleteObjectStore(tbl.name);
             }
 
-            var objectStore = lcData.db.createObjectStore(tbl.name, {pri: tbl.pri});
+            var objectStore = lcData.db.createObjectStore(tbl.name, {keyPath: tbl.pri});
 
             for (var j in tbl.idx) {
-                objectStore.createIndex(tbl.idx[j], tbl.idx[j], { unique: false });
+                objectStore.createIndex(tbl.idx[j], tbl.idx[j], {unique: false});
             }
         }
     };
