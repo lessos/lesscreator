@@ -402,6 +402,7 @@ textarea {
 }
 .CodeMirror-scroll {
   overflow-x: hidden;
+  height: hidden;
 }
 
 .activeline {background: #f0fcff !important;}

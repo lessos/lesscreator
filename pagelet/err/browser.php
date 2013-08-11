@@ -16,12 +16,12 @@
     width: 24px; height: 24px;
 }
 </style>
-<div class="err-brw border_radius_t5">
+<div class="err-brw border_radius_5">
   <div class="">
     <div class="alert alert-error">
         This Application are not fully supported in this browser/version</div>
     
-    <p>Please install the Google Chrome, and upgrade to the latest version</p>
+    <p>Please download the Google Chrome, and Install or Upgrade to the latest version</p>
     <table>
       <tr>
         <td><img src="/lesscreator/static/img/browser/chrome.png" class="imgs1" /></td>
