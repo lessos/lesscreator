@@ -94,82 +94,54 @@ if (!Session::IsLogin()) {
 
 <table id="hdev_layout" border="0" cellpadding="0" cellspacing="0" class="">
   <tr>
-    <td width="10px"></td>
-
     <!--
+    http://www.daqianduan.com/jquery-drag/
+    -->
     <td width="10px"></td>
+   
+    <td id="h5c-lyo-col-t" valign="top">
+      <table width="100%" height="100%">
+        <tr>
+          <td id="h5c-tablet-framet0" class="hdev-layout-container" valign="top">
+            
+            <div id="h5c-tablet-tabs-framet0" class="h5c_tablet_tabs_frame ">
+              <div class="h5c_tablet_tabs_lm">
+                <div id="h5c-tablet-tabs-t0" class="h5c_tablet_tabs"></div>
+              </div>
+              <div class="h5c_tablet_tabs_lr">
+                <div class="pgtab_more" onclick="hdev_pgtab_openfiles()">»</div>
+              </div>
+            </div>
 
-    <td id="hdev_layout_leftbar">
-        <div id="hdev_project" class="hdev-box-shadow"></div>
+            <div id="h5c-tablet-body-t0" class="h5c_tablet_body less_scroll"></div>
+
+          </td>
+        </tr>
+
+        <tr><td height="10px" id="h5c-resize-rowt0" class="h5c_resize_row hide"></td></tr>
+        
+        <tr>
+          <td id="h5c-tablet-framet1" class="hdev-layout-container hide" valign="top">
+            
+            <div id="h5c-tablet-tabs-framet1" class="h5c_tablet_tabs_frame pgtabs_frame">
+              <div class="h5c_tablet_tabs_lm">
+                <div id="h5c-tablet-tabs-t1" class="h5c_tablet_tabs"></div>
+              </div>
+              <div class="h5c_tablet_tabs_lr">
+              </div>
+            </div>
+
+            <div id="h5c-tablet-body-t1" class="h5c_tablet_body less_scroll"></div>
+
+          </td>
+        </tr>
+      
+      </table>
     </td>
 
-    <td width="10px" class="></td>
-
-    <td id="hdev_layout_middle" class="hdev-layout-container">
-
-      <div class="hcr-pgtabs-frame">
-        <div class="hcr-pgtabs-lm">
-            <div id="hcr_pgtabs" class="hcr-pgtabs"></div>
-        </div>
-        <div class="hcr-pgtabs-lr">
-            <div class="pgtab-openfiles" onclick="hdev_pgtab_openfiles()">»</div>
-        </div>
-      </div>
-      
-      <div class="hdev-ws hdev-tabs hcr-pgbar-editor">
-        
-        <div class="tabitem" onclick="lcEditor.Undo()">
-            <div class="ico"><img src="/lesscreator/static/img/arrow_undo.png" align="absmiddle" /></div>
-            <div class="ctn">Undo</div>
-        </div>
-        
-        <div class="tabitem" onclick="lcEditor.Redo()">
-            <div class="ico"><img src="/lesscreator/static/img/arrow_redo.png" align="absmiddle" /></div>
-            <div class="ctn">Redo</div>
-        </div>
-        
-        <div class="tabitemline"></div>
-        <div class="tabitem" onclick="lcEditor.search()">
-            <div class="ico"><img src="/lesscreator/static/img/magnifier.png" align="absmiddle" /></div>
-            <div class="ctn">Search</div>
-        </div>
-        
-        <div class="tabitemline"></div>
-        <div class="tabitem">
-            <div class="ico"><img src="/lesscreator/static/img/disk.png" align="absmiddle" /></div>
-            <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
-        </div>
-
-        <div class="tabitemline"></div>
-        <div class="tabitem">
-            <div class="ico"><img src="/lesscreator/static/img/w3_vim.png" align="absmiddle" /></div>
-            <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> Simple VIM</div>
-        </div> 
-        
-        <div class="tabitemline"></div>
-        <div class="tabitem" onclick="hdev_page_open('app/editor-set', 'content', 'Editor Setting', 'cog')">
-            <div class="ico"><img src="/lesscreator/static/img/page_white_gear.png" align="absmiddle" /></div>
-            <div class="ctn">Setting</div>
-        </div>      
-      </div>
-      
-      <div id="hcr_editor_searchbar" class="hdev-ws displaynone">
-        <input type="text" name="find" value="Find" size="15" /> <button onclick="lcEditor.search_next()">Find</button> 
-        
-        <span><input onclick="lcEditor.ConfigSet('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" /> Match case</span>
-        
-        <input type="text" name="replace" value="Replace with" size="15" /> <button onclick="lcEditor.SearchReplace()">Replace</button> <button onclick="lcEditor.SearchReplace(true)">All</button> 
-        
-        <span class="close"><a href="javascript:lcEditor.search()">×</a></span>
-      </div>
-      
-      <div id="hdev_ws_editor" class="hdev-ws"></div>
-      <div id="hdev_ws_content" class="hdev-ws"></div>
-      
-    </td>  
-    -->
-
-   
+    <!-- column blank 2 -->
+    <td width="10px" id="h5c-lyo-col-w-ctrl" class="h5c_resize_col"></td>
+    
     <td id="h5c-lyo-col-w" valign="top">
       <table width="100%" height="100%">
         <tr>
@@ -211,52 +183,6 @@ if (!Session::IsLogin()) {
       </table>
     </td>
 
-
-    <!-- column blank 2 -->
-    <td width="10px" id="h5c-lyo-col-w-ctrl" class="h5c_resize_col"></td>
-    <!--
-    http://www.daqianduan.com/jquery-drag/
-    -->
-    <td id="h5c-lyo-col-t" valign="top">
-      <table width="100%" height="100%">
-        <tr>
-          <td id="h5c-tablet-framet0" class="hdev-layout-container" valign="top">
-            
-            <div id="h5c-tablet-tabs-framet0" class="h5c_tablet_tabs_frame ">
-              <div class="h5c_tablet_tabs_lm">
-                <div id="h5c-tablet-tabs-t0" class="h5c_tablet_tabs"></div>
-              </div>
-              <div class="h5c_tablet_tabs_lr">
-                <div class="pgtab_more" onclick="hdev_pgtab_openfiles()">»</div>
-              </div>
-            </div>
-
-            <div id="h5c-tablet-body-t0" class="h5c_tablet_body less_scroll"></div>
-
-          </td>
-        </tr>
-
-        <tr><td height="10px" id="h5c-resize-rowt0" class="h5c_resize_row hide"></td></tr>
-        
-        <tr>
-          <td id="h5c-tablet-framet1" class="hdev-layout-container hide" valign="top">
-            
-            <div id="h5c-tablet-tabs-framet1" class="h5c_tablet_tabs_frame pgtabs_frame">
-              <div class="h5c_tablet_tabs_lm">
-                <div id="h5c-tablet-tabs-t1" class="h5c_tablet_tabs"></div>
-              </div>
-              <div class="h5c_tablet_tabs_lr">
-              </div>
-            </div>
-
-            <div id="h5c-tablet-body-t1" class="h5c_tablet_body less_scroll"></div>
-
-          </td>
-        </tr>
-      
-      </table>
-    </td>
-
     <td width="10px"></td>
 
   </tr>
@@ -286,19 +212,17 @@ if (!Session::IsLogin()) {
             <div class="ctn"><i class="icon-search"></i> Search</div>
         </div>
         
-        
-
         <!-- <div class="tabitemline"></div>
         <div class="tabitem">
             <div class="ico"><img src="/lesscreator/static/img/disk.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div> -->
 
-        <div class="tabitemline"></div>
+        <!-- <div class="tabitemline"></div>
         <div class="tabitem">
             <div class="ico"><img src="/lesscreator/static/img/w3_vim.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> VIM Mode</div>
-        </div>
+        </div> -->
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="lcEditor.ConfigModal()">

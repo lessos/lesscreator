@@ -312,6 +312,7 @@ function h5cTabClose(urid)
         $("#h5c-tablet-body-"+ item.target).empty();
         break;
     case 'editor':
+        $("#h5c-tablet-body-"+ item.target).empty();
         lcEditor.Close(urid);
         break;
     default :

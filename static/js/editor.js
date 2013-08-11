@@ -143,7 +143,6 @@ lcEditor.Load = function(urid)
             }
         }}
     });
-    console.log(lcEditor.Config.theme);
 
     if (lcEditor.ToolTmpl == null) {
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
@@ -295,7 +294,7 @@ lcEditor.Close = function(urid)
 
     if (urid == h5cTabletFrame[item.target].urid) {
         
-        h5cTabletFrame[item.target].empty();
+//        h5cTabletFrame[item.target].empty();
 //        //$('#src'+urid).remove();
 //        h5cTabletFrame[item.target].editor = null;
 //        h5cTabletFrame[item.target].urid = 0;
