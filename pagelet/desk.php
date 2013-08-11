@@ -301,7 +301,7 @@ if (!Session::IsLogin()) {
         </div>
         
         <div class="tabitemline"></div>
-        <div class="tabitem" onclick="hdev_page_open('app/editor-set', 'content', 'Editor Setting', 'cog')">
+        <div class="tabitem" onclick="lcEditor.ConfigModal()">
             <div class="ctn"><i class="icon-cog"></i> Setting</div>
         </div>
     </div>

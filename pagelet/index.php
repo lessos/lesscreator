@@ -11,6 +11,7 @@ if (!Session::IsLogin()) {
 <head>
   <meta charset="utf-8">
   <title>Less Creator</title>
+  <script src="/lesscreator/static/js/sea.js"></script>
   <script src="/jquery/jquery-2.0.min.js"></script>
   <script src="/lessui/js/less.js"></script>
   <script src="/bootstrap2/js/bootstrap.min.js"></script>
@@ -110,6 +111,8 @@ $(document).ready(function() {
 
 function _env_init()
 {   
+    lcInitSetting();
+
     window.onbeforeunload = function() {
         //return "Leave the page and lose your changes?";
     }

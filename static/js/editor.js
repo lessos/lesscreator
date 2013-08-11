@@ -134,7 +134,7 @@ lcEditor.Load = function(urid)
         mode          : mode,
         indentUnit    : lcEditor.Config.tabSize,
         tabSize       : lcEditor.Config.tabSize,
-        theme         : "default",//lessCookie.Get("editor_theme"),
+        theme         : lcEditor.Config.theme,
         smartIndent   : lcEditor.Config.smartIndent,
         lineWrapping  : lcEditor.Config.lineWrapping,
         extraKeys     : {Tab: function(cm) {
@@ -143,6 +143,7 @@ lcEditor.Load = function(urid)
             }
         }}
     });
+    console.log(lcEditor.Config.theme);
 
     if (lcEditor.ToolTmpl == null) {
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
@@ -357,16 +358,21 @@ lcEditor.Redo = function()
     h5cTabletFrame["w0"].editor.redo();
 }
 
-lcEditor.Theme = function(node)
+lcEditor.Theme = function(theme)
 {
     if (h5cTabletFrame["w0"].editor) {
-        var theme = node.options[node.selectedIndex].innerHTML;
 
-        h5cTabletFrame["w0"].editor.setOption("theme", theme);
-        h5cLayoutResize();
+        seajs.use("/codemirror3/theme/"+theme+".css", function(){
+            
+            lcEditor.Config.theme = theme;
+            lessCookie.SetByDay("editor_theme", theme, 365);
 
-        lessCookie.SetByDay("editor_theme", theme, 365);
-        //hdev_header_alert('success', 'Change Editor color theme to "'+theme+'"');
+            h5cTabletFrame["w0"].editor.setOption("theme", theme);
+
+            h5cLayoutResize();
+        });        
+        
+        hdev_header_alert('success', 'Change Editor color theme to "'+theme+'"');
     }
 }
 
@@ -489,4 +495,10 @@ lcEditor.SearchClean = function()
     }
     
     search_state_marked.length = 0;
+}
+
+lcEditor.ConfigModal = function()
+{
+    lessModalOpen('/lesscreator/app/editor-set', 1, 700, 400, 
+        'Editor Settings', null);
 }

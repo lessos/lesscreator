@@ -13,6 +13,9 @@ function lcInitSetting()
     var theme = lessCookie.Get('editor_theme');
     if (theme == null) {
         lessCookie.SetByDay("editor_theme", "default", 365);
+    } else if (theme != "default") {
+        seajs.use("/codemirror3/theme/"+theme+".css");
+        lcEditor.Config.theme = theme;
     }
     
     var keymap_vim = lessCookie.Get('editor_keymap_vim');
