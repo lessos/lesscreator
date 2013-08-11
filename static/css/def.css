@@ -622,8 +622,11 @@ textarea {
 }
 .hdev-proj-olrcm input.inputname {width: 300px;}
 
-#lc_editor_tools {
-    padding: 3px; font-size: 13px; 
+#h5c-tablet-toolbar-w0 {
+    font-size: 12px; 
+}
+#h5c-tablet-toolbar-w0 .editor_bar {
+    padding: 2px 0 0 5px;
 }
 
 .lc_editor_searchbar {

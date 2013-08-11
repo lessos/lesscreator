@@ -165,6 +165,9 @@ lcEditor.Load = function(urid)
     CodeMirror.commands.save = function() {
         lcEditor.Save(urid, 1);
     };
+    CodeMirror.commands.find = function(cm) {
+        lcEditor.Search();
+    };
 
     // TODO
     h5cLayoutResize();
@@ -194,6 +197,10 @@ lcEditor.Changed = function(urid)
     $("#pgtab"+ urid +" .chg").show();
 }
 
+lcEditor.SaveCurrent = function()
+{
+    lcEditor.Save(h5cTabletFrame["w0"].urid, 1);
+}
 lcEditor.Save = function(urid, force)
 {
     if (!h5cTabletPool[urid]) {

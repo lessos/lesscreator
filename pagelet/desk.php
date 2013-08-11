@@ -268,27 +268,25 @@ if (!Session::IsLogin()) {
 
     <div class="editor_bar hdev-ws hdev-tabs hcr-pgbar-editor">
         
+        <div class="tabitem" onclick="lcEditor.SaveCurrent()">
+            <div class="ctn"><i class="icon-hdd"></i> Save</div>
+        </div>
+
+        <div class="tabitemline"></div>
         <div class="tabitem" onclick="lcEditor.Undo()">
-            <div class="ico"><img src="/lesscreator/static/img/arrow_undo.png" align="absmiddle" /></div>
-            <div class="ctn">Undo</div>
+            <div class="ctn"><i class="icon-chevron-left"></i> Undo</div>
         </div>
 
         <div class="tabitem" onclick="lcEditor.Redo()">
-            <div class="ico"><img src="/lesscreator/static/img/arrow_redo.png" align="absmiddle" /></div>
-            <div class="ctn">Redo</div>
+            <div class="ctn"><i class="icon-chevron-right"></i> Redo</div>
         </div>
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="lcEditor.Search()">
-            <div class="ico"><img src="/lesscreator/static/img/magnifier.png" align="absmiddle" /></div>
-            <div class="ctn">Search</div>
+            <div class="ctn"><i class="icon-search"></i> Search</div>
         </div>
         
-        <div class="tabitemline"></div>
-        <div class="tabitem">
-            <div class="ico"><img src="/lesscreator/static/img/disk.png" align="absmiddle" /></div>
-            <div class="ctn">Save</div>
-        </div>
+        
 
         <!-- <div class="tabitemline"></div>
         <div class="tabitem">
@@ -304,13 +302,13 @@ if (!Session::IsLogin()) {
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="hdev_page_open('app/editor-set', 'content', 'Editor Setting', 'cog')">
-            <div class="ico"><img src="/lesscreator/static/img/page_white_gear.png" align="absmiddle" /></div>
-            <div class="ctn">Setting</div>
-        </div>      
+            <div class="ctn"><i class="icon-cog"></i> Setting</div>
+        </div>
     </div>
 
     <div class="lc_editor_searchbar hide form-inline">
-        <div class="input-append">
+        <div class="input-prepend input-append">
+            <span class="add-on"><i class="icon-search"></i></span>
             <input class="input-small" type="text" name="find" value="Find Word" />
             <button class="btn" onclick="lcEditor.SearchNext()">Search</button>
         </div>
@@ -323,10 +321,10 @@ if (!Session::IsLogin()) {
             <button class="btn" type="button" onclick="lcEditor.SearchReplace(true)">Replace All</button>
         </div>
         
-        <label class="checkbox inline">
+        <!-- <label class="checkbox inline">
           <input onclick="lcEditor.ConfigSet('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" />
           Match case
-        </label>
+        </label> -->
 
         <button type="button" class="close" onclick="lcEditor.Search()">&times;</button>
     </div>
