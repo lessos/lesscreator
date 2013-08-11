@@ -118,18 +118,18 @@ if (!Session::IsLogin()) {
       
       <div class="hdev-ws hdev-tabs hcr-pgbar-editor">
         
-        <div class="tabitem" onclick="hdev_editor_undo()">
+        <div class="tabitem" onclick="lcEditor.Undo()">
             <div class="ico"><img src="/lesscreator/static/img/arrow_undo.png" align="absmiddle" /></div>
             <div class="ctn">Undo</div>
         </div>
         
-        <div class="tabitem" onclick="hdev_editor_redo()">
+        <div class="tabitem" onclick="lcEditor.Redo()">
             <div class="ico"><img src="/lesscreator/static/img/arrow_redo.png" align="absmiddle" /></div>
             <div class="ctn">Redo</div>
         </div>
         
         <div class="tabitemline"></div>
-        <div class="tabitem" onclick="hdev_editor_search()">
+        <div class="tabitem" onclick="lcEditor.search()">
             <div class="ico"><img src="/lesscreator/static/img/magnifier.png" align="absmiddle" /></div>
             <div class="ctn">Search</div>
         </div>
@@ -137,13 +137,13 @@ if (!Session::IsLogin()) {
         <div class="tabitemline"></div>
         <div class="tabitem">
             <div class="ico"><img src="/lesscreator/static/img/disk.png" align="absmiddle" /></div>
-            <div class="ctn"><input onclick="hdev_editor_set('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
+            <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div>
 
         <div class="tabitemline"></div>
         <div class="tabitem">
             <div class="ico"><img src="/lesscreator/static/img/w3_vim.png" align="absmiddle" /></div>
-            <div class="ctn"><input onclick="hdev_editor_set('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> Simple VIM</div>
+            <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> Simple VIM</div>
         </div> 
         
         <div class="tabitemline"></div>
@@ -154,13 +154,13 @@ if (!Session::IsLogin()) {
       </div>
       
       <div id="hcr_editor_searchbar" class="hdev-ws displaynone">
-        <input type="text" name="find" value="Find" size="15" /> <button onclick="hdev_editor_search_next()">Find</button> 
+        <input type="text" name="find" value="Find" size="15" /> <button onclick="lcEditor.search_next()">Find</button> 
         
-        <span><input onclick="hdev_editor_set('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" /> Match case</span>
+        <span><input onclick="lcEditor.ConfigSet('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" /> Match case</span>
         
         <input type="text" name="replace" value="Replace with" size="15" /> <button onclick="lcEditor.SearchReplace()">Replace</button> <button onclick="lcEditor.SearchReplace(true)">All</button> 
         
-        <span class="close"><a href="javascript:hdev_editor_search()">×</a></span>
+        <span class="close"><a href="javascript:lcEditor.search()">×</a></span>
       </div>
       
       <div id="hdev_ws_editor" class="hdev-ws"></div>
@@ -268,12 +268,12 @@ if (!Session::IsLogin()) {
 
     <div class="editor_bar hdev-ws hdev-tabs hcr-pgbar-editor">
         
-        <div class="tabitem" onclick="lcEditor.undo()">
+        <div class="tabitem" onclick="lcEditor.Undo()">
             <div class="ico"><img src="/lesscreator/static/img/arrow_undo.png" align="absmiddle" /></div>
             <div class="ctn">Undo</div>
         </div>
 
-        <div class="tabitem" onclick="lcEditor.redo()">
+        <div class="tabitem" onclick="lcEditor.Redo()">
             <div class="ico"><img src="/lesscreator/static/img/arrow_redo.png" align="absmiddle" /></div>
             <div class="ctn">Redo</div>
         </div>
@@ -293,14 +293,14 @@ if (!Session::IsLogin()) {
         <!-- <div class="tabitemline"></div>
         <div class="tabitem">
             <div class="ico"><img src="/lesscreator/static/img/disk.png" align="absmiddle" /></div>
-            <div class="ctn"><input onclick="hdev_editor_set('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
+            <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div> -->
 
         <div class="tabitemline"></div>
         <div class="tabitem">
             <div class="ico"><img src="/lesscreator/static/img/w3_vim.png" align="absmiddle" /></div>
-            <div class="ctn"><input onclick="hdev_editor_set('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> Simple VIM</div>
-        </div> 
+            <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> VIM Mode</div>
+        </div>
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="hdev_page_open('app/editor-set', 'content', 'Editor Setting', 'cog')">
@@ -309,13 +309,25 @@ if (!Session::IsLogin()) {
         </div>      
     </div>
 
-    <div class="lc_editor_searchbar hdev-ws hide">
-        <input type="text" name="find" value="Find" size="15" /> <button onclick="lcEditor.SearchNext()">Find</button> 
+    <div class="lc_editor_searchbar hide form-inline">
+        <div class="input-append">
+            <input class="input-small" type="text" name="find" value="Find Word" />
+            <button class="btn" onclick="lcEditor.SearchNext()">Search</button>
+        </div>
+
+        <label class="inline"> or </label>
         
-        <span><input onclick="hdev_editor_set('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" /> Match case</span>
+        <div class="input-append">
+            <input class="input-small" name="replace" type="text" value="Replace with">
+            <button class="btn" type="button" onclick="lcEditor.SearchReplace(false)">Replace</button>
+            <button class="btn" type="button" onclick="lcEditor.SearchReplace(true)">Replace All</button>
+        </div>
         
-        <input type="text" name="replace" value="Replace with" size="15" /> <button onclick="lcEditor.SearchReplace()">Replace</button> <button onclick="lcEditor.SearchReplace(true)">All</button> 
-        
-        <span class="close"><a href="javascript:hdev_editor_search()">×</a></span>
+        <label class="checkbox inline">
+          <input onclick="lcEditor.ConfigSet('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" />
+          Match case
+        </label>
+
+        <button type="button" class="close" onclick="lcEditor.Search()">&times;</button>
     </div>
 </div>

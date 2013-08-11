@@ -622,24 +622,14 @@ textarea {
 }
 .hdev-proj-olrcm input.inputname {width: 300px;}
 
-#hcr_editor_searchbar {
-    padding: 3px; font-size: 13px;
+#lc_editor_tools {
+    padding: 3px; font-size: 13px; 
 }
-#hcr_editor_searchbar input {
-    padding: 2px; font-weight: normal;
-}
-#hcr_editor_searchbar button {
-    padding: 2px 5px; font-weight: bold;
-}
-#hcr_editor_searchbar .close {
-    float: right; 
-}
-#hcr_editor_searchbar .close a {
-    margin-left: 5px; text-decoration: none;
-    font-weight: bold; font-size: 14px;
-}
-#hcr_editor_searchbar .close a:hover {
-    color: #db4a37; cursor: pointer;
+
+.lc_editor_searchbar {
+    font-size: 13px;
+    padding: 4px; margin: 0; background-color: #f6f7f8;
+    border-bottom: 1px solid #cfd4d7;
 }
 
 .tab-config {

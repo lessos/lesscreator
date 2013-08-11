@@ -296,7 +296,7 @@ lcEditor.Close = function(urid)
 //    h5cLayoutResize();
 }
 
-lcEditor.set = function(key, val)
+lcEditor.ConfigSet = function(key, val)
 {
     if (key == "editor_autosave") {
         if (lessCookie.Get('editor_autosave') == "on") {
@@ -332,7 +332,7 @@ lcEditor.set = function(key, val)
     }
 }
 
-lcEditor.undo = function()
+lcEditor.Undo = function()
 {
     if (!h5cTabletFrame["w0"].editor) {
         return;
@@ -341,7 +341,7 @@ lcEditor.undo = function()
     h5cTabletFrame["w0"].editor.undo();
 }
 
-lcEditor.redo = function()
+lcEditor.Redo = function()
 {
     if (!h5cTabletFrame["w0"].editor) {
         return;
@@ -350,13 +350,15 @@ lcEditor.redo = function()
     h5cTabletFrame["w0"].editor.redo();
 }
 
-lcEditor.theme = function(node)
+lcEditor.Theme = function(node)
 {
     if (h5cTabletFrame["w0"].editor) {
         var theme = node.options[node.selectedIndex].innerHTML;
+
         h5cTabletFrame["w0"].editor.setOption("theme", theme);
-        lessCookie.SetByDay("editor_theme", theme, 365);
         h5cLayoutResize();
+
+        lessCookie.SetByDay("editor_theme", theme, 365);
         //hdev_header_alert('success', 'Change Editor color theme to "'+theme+'"');
     }
 }
@@ -465,7 +467,7 @@ lcEditor.SearchReplace = function(all)
         h5cTabletFrame["w0"].editor.setSelection(cursor.from(), cursor.to());
         
         cursor.replace(typeof search_state_query == "string" ? text :
-            text.replace(/\$(\d)/, function(w, i) {return match[i];}));        
+            text.replace(/\$(\d)/, function(w, i) {return match[i];}));
     }
 }
 
