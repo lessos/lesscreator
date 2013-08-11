@@ -199,17 +199,17 @@ if (!Session::IsLogin()) {
         </div>
 
         <div class="tabitemline"></div>
+        <div class="tabitem" onclick="lcEditor.Search()">
+            <div class="ctn"><i class="icon-search"></i> Search</div>
+        </div>
+
+        <div class="tabitemline"></div>
         <div class="tabitem" onclick="lcEditor.Undo()">
             <div class="ctn"><i class="icon-chevron-left"></i> Undo</div>
         </div>
 
         <div class="tabitem" onclick="lcEditor.Redo()">
             <div class="ctn"><i class="icon-chevron-right"></i> Redo</div>
-        </div>
-        
-        <div class="tabitemline"></div>
-        <div class="tabitem" onclick="lcEditor.Search()">
-            <div class="ctn"><i class="icon-search"></i> Search</div>
         </div>
         
         <!-- <div class="tabitemline"></div>

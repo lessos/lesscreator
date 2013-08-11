@@ -50,6 +50,10 @@ foreach ($pjs as $projid => $val) {
 <div id="_proj_open_fs" class="hide"></div>
 
 <script type="text/javascript">
+if (lessModalPrevId() != null) {
+    lessModalButtonAdd("jwyztd", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+}
+
 function _proj_recent()
 {
     $("#_nav_recent").addClass("active");
@@ -58,7 +62,7 @@ function _proj_recent()
     $('#_proj_open_fs').hide();
     $('#_proj_open_recent').show();
 
-    lessModalButtonCleanAll();
+    //lessModalButtonCleanAll();
     lessModalButtonAdd("p5ke7m", "Close", "lessModalClose()", "");
 }
 
@@ -85,7 +89,7 @@ function _proj_fs(path, force)
     $("#_nav_recent").removeClass("active");
     $("#_nav_fs").addClass("active");
 
-    lessModalButtonCleanAll();
+    //lessModalButtonCleanAll();
     lessModalButtonAdd("p5ke7m", "Close", "lessModalClose()", "");
 }
 

@@ -13,9 +13,11 @@ function lcInitSetting()
     var theme = lessCookie.Get('editor_theme');
     if (theme == null) {
         lessCookie.SetByDay("editor_theme", "default", 365);
-    } else if (theme != "default") {
+        theme = "default";
+    }
+    lcEditor.Config.theme = theme;
+    if (theme != "default") {
         seajs.use("/codemirror3/theme/"+theme+".css");
-        lcEditor.Config.theme = theme;
     }
     
     var keymap_vim = lessCookie.Get('editor_keymap_vim');
@@ -422,9 +424,14 @@ function h5cLayoutResize()
 
 
 function h5cProjectOpen(proj)
-{
+{   
     if (!proj) {
-        return;
+
+        proj = lessLocalStorage.Set(lessSession.Get("sess.user") +".lastproj");
+        if (!proj) {
+            lessModalOpen("/lesscreator/app/well", 1, 700, 400, "Start a Project from ...", null);
+            return;
+        }
     }
 
     var uri = "basedir="+ lessSession.Get("basedir");
@@ -447,7 +454,8 @@ function h5cProjectOpen(proj)
     projCurrent = proj;
     
     lessSession.Set("ProjPath", proj);
-    
+    lessLocalStorage.Set(lessSession.Get("sess.user") +".lastproj", proj);
+
     h5cLayoutResize();
 }
 

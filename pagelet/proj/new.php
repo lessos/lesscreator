@@ -136,6 +136,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 
 
 <script>
+if (lessModalPrevId() != null) {
+    lessModalButtonAdd("jwyztd", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+}
+
 lessModalButtonAdd("d4ngex", "Confirm and Create", "_proj_new_commit()", "btn-inverse");
 lessModalButtonAdd("p5ke7m", "Close", "lessModalClose()", "");
 

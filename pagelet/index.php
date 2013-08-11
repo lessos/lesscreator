@@ -187,6 +187,7 @@ function _load_sys_config()
                 lessSession.Set("sess.user", rsj.data.user);
 
                 lcData.Init(rsj.data.user);
+                lessSession.Set("sess.user", rsj.data.user);
 
                 $.ajax({
                     url     : "/lesscreator/desk?basedir="+ rsj.data.basedir,
@@ -224,6 +225,7 @@ function _env_init()
     lcInitSetting();
 
     window.onbeforeunload = function() {
+        //lessLocalStorage.Set(lessSession.Get("sess.user") +".lastproj", proj);
         //return "Leave the page and lose your changes?";
     }
 
@@ -285,9 +287,7 @@ function _env_init()
     //hdev_init_setting();
 
     <?php
-    if (isset($this->req->proj)) {
-        echo "h5cProjectOpen('{$this->req->proj}');";
-    }
+    echo "h5cProjectOpen('{$this->req->proj}');";
     ?>
     
     h5cLayoutResize();

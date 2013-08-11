@@ -80,6 +80,7 @@ foreach ($ls->data as $f) {
         
     } else if (substr($fm, 0, 4) == "text"
         || substr($fm, 0, 23) == "application/x-httpd-php"
+        || $fm == "application/javascript"
         || $fm == "application/x-empty"
         || $fm == "inode/x-empty"
         || $fm == "application/json") {
