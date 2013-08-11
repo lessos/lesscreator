@@ -1,95 +1,81 @@
 <?php
 
-$path = "/";
+$basedir = $this->req->basedir;
 
-if (strlen($this->req->path)) {
-    $path = $this->req->path;
-}
-
-$path = preg_replace("/\/\/+/", "/", $path);
-$path = rtrim($path, '/');
-
-$pathl = trim(strrchr($path, '/'), '/');
-$paths = explode("/", $path);
 ?>
+
+<ul class="nav nav-tabs" style="margin: 5px 0;">
+  <li>
+    <a href="javascript:_proj_open_recent()">Recent Projects</a>
+  </li>
+  <li class="active">
+    <a href="#">From Directory</a>
+  </li>
+</ul>
+
 <style>
-a._proj_fs_href {
+a._proj_open_fs_href {
     padding: 3px; width: 100%;
     text-decoration: none;
 }
-a._proj_fs_href:hover {
+a._proj_open_fs_href:hover {
     background-color: #999;
     color: #fff;
 }
-a._proj_fs_href_click {
+a._proj_open_fs_href_click {
     background-color: #0088cc;
     color: #fff;
 }
+#_proj_fs_body {
+    padding: 5px; border:1px solid #ccc;
+}
 </style>
-
-<ul class="breadcrumb" style="margin:5px 20px 5px 0;">
-    <li><a href="javascript:_proj_fs('/', 1)"><i class="icon-folder-open"></i></a> <span class="divider">/</span></li>
-    <?php
-    $sl = '';
-    foreach ($paths as $v) {
-        if (strlen($v) == 0) {
-            continue;
-        }
-        $sl .= "/{$v}";
-        if ($v == $pathl) {
-            echo "<li><a href=\"javascript:_proj_fs('{$sl}', 1)\">{$v}</a> </li>";
-        } else {
-            echo "<li><a href=\"javascript:_proj_fs('{$sl}', 1)\">{$v}</a> <span class=\"divider\">/</span></li>";
-        }
-    }
-    ?>
-</ul>
-
-<div id="_proj_fs_body" class="less_scroll hide" style="margin-right:20px; border:1px solid #ccc;">
-<table width="100%" sclass="table table-condensed">
-<?php
-$rs = lesscreator_fs::FsList($path."/*");
-
-foreach ($rs->data as $v) {
-
-    if ($v->isdir != 1) {
-        continue;
-    }
-
-?>
-<tr>
-  <td valign="middle" width="18">
-    <img src="/lesscreator/static/img/folder.png" align="absmiddle" />
-  </td>
-  <td><a href="#<?php echo $v->name?>" class="_proj_fs_href"><?=$v->name?></a></td>
-</tr>
-<?php } ?>
-</table>
-</div>
+<div id="_proj_open_fs"></div>
 
 <script>
 
-var _path = <?php echo "'$path'";?>;
+if (lessModalPrevId() != null) {
+    lessModalButtonAdd("vzypd5", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+}
+
+var _path = '<?php echo "{$basedir}/app";?>';
 var _path_click = null;
 
-$('._proj_fs_href').dblclick(function() {
-    p = $(this).attr('href').substr(1);
-    _proj_fs(_path +'/'+ p, 1);
-});
 
-$('._proj_fs_href').click(function() {
 
-    _path_click = $(this).attr('href').substr(1);
+function _proj_open_recent()
+{
+    var url = "/lesscreator/proj/open-recent?basedir="+ lessSession.Get("basedir");
 
-    $('._proj_fs_href').removeClass('_proj_fs_href_click');
-    $(this).addClass('_proj_fs_href_click');
-    
-    lessModalButtonAdd("phtswc", "Open Project", "_proj_fs_open()", "pull-left btn-inverse");
-});
+    if (lessModalPrevId() == lessCryptoMd5("modal"+url)) {
+        lessModalPrev();
+    } else {
+        lessModalNext(url, "Open Project", null);
+    }
+}
 
-function _proj_fs_open()
+function _proj_open_fs_open()
 {
     h5cProjectOpen(_path +'/'+ _path_click);
     lessModalClose();
 }
+
+function _proj_open_fs_inlet(dir, force)
+{
+    if ($("#_proj_open_fs").is(':empty') || force == 1) {
+        
+        var url = "/lesscreator/proj/open-fs-inlet";
+        url += "?path="+ dir +"&_="+ Math.random();
+        
+        $.get(url, function(rsp) {
+            $('#_proj_open_fs').empty().html(rsp).show();
+            lessModalButtonClean("phtswc");
+        });
+
+    }
+}
+
+<?php
+echo "_proj_open_fs_inlet(_path, 1);";
+?>
 </script>

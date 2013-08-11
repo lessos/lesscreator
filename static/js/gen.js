@@ -461,7 +461,7 @@ function h5cProjectOpen(proj)
 
 function h5cProjOpenDialog()
 {
-    lessModalOpen('/lesscreator/proj/open?basedir='+ lessSession.Get("basedir"), 1, 800, 450, 'Open Project', null);
+    lessModalOpen('/lesscreator/proj/open-recent?basedir='+ lessSession.Get("basedir"), 1, 800, 450, 'Open Project', null);
 }
 
 function h5cProjNewDialog()

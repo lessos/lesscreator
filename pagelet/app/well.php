@@ -36,7 +36,7 @@
 </table>
 </a>
 
-<a class="j4soeo" href="#proj/open">
+<a class="j4soeo" href="#proj/open-recent">
 <table>
     <tr class="line">
         <td width="64px"><img src="/lesscreator/static/img/proj-example.png" /></td>
@@ -81,7 +81,7 @@ $(".j4soeo").click(function(){
         url += href;
         title = 'Create New Project';
         break;
-    case "proj/open":
+    case "proj/open-recent":
         url += href;
         title = 'Open Project';
         break;

@@ -9,7 +9,7 @@ class lesscreator_fs
     public static function NetHttp($url)
     {
         if (self::$client === null) {
-            self::$client = new Http();
+            self::$client = new Http("");
         }
 
         self::$client->setUri($url);
