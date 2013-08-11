@@ -3,7 +3,7 @@
   "name":"LessCreator",
   "summary":"Less Creator, Web based IDE",
   "depends":"bootstrap2,jquery,codemirror3,fam3,LessPHP,lessui",
-  "version":"1.0.5.dev",
+  "version":"1.1.0.dev",
   "props":"dataflow,pagelet",
   "types":"webstatic,webphp",
   "release":"1"
