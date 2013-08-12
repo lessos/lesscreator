@@ -122,7 +122,7 @@ $(document).ready(function() {
 
     _lc_loadwell_resize();
 
-    setTimeout(_load_deps, 300);
+    setTimeout(_load_deps, 200);
 });
 
 function _load_deps()
@@ -146,7 +146,7 @@ function _load_deps()
     //var jall = rqs.length + 1;
     seajs.use(rqs, function(){
         $(".load-progress-num").css({"width": "90%"});
-        setTimeout(_load_sys_config, 300);
+        setTimeout(_load_sys_config, 200);
     });
 }
 
@@ -200,7 +200,7 @@ function _load_sys_config()
                         setTimeout(function(){
                             $('body').html(rsp);
                             _env_init();
-                        }, 300);
+                        }, 200);
                     },
                     error: function(xhr, textStatus, error) {
                         $(".load-progress").removeClass("progress-success").addClass("progress-danger");

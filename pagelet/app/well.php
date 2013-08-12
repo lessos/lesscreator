@@ -51,12 +51,12 @@
 </table>
 </a>
 
-<a class="j4soeo" href="#proj/open-vs">
+<a class="j4soeo" href="#proj/fs/vs/well">
 <table>
     <tr class="line">
         <td width="64px"><img src="/lesscreator/static/img/proj-example.png" /></td>
         <td >
-            <div class="title">Version Control (in Development)</div>
+            <div class="title">Version Control</div>
             <div class="desc">Checkout a project from a version control repository</div> 
         </td>
         <td align="right">
@@ -84,6 +84,10 @@ $(".j4soeo").click(function(){
     case "proj/open-recent":
         url += href;
         title = 'Open Project';
+        break;
+    case "proj/fs/vs/well":
+        url += href;
+        title = 'Create Project';
         break;
     default:
         return;
