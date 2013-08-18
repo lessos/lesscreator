@@ -249,7 +249,8 @@ lcEditor.Save = function(urid, force)
             lcEditor.WebSocket.onmessage = function(e) {
 
                 var obj = JSON.parse(e.data);
-
+                console.log("onmessage ...");
+                
                 if (obj.status == 200) {
                     
                     var entry = {

@@ -19,6 +19,8 @@ rm -f ./bin/lesscreator
 
 go build -ldflags "-w -s" -o ./bin/lesscreator ./src/main.go
 
+rm -rf ../../spot/eryx/app/tips.go
+
 prefix=`pwd`
 ./bin/lesscreator --prefix=${prefix}
 

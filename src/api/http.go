@@ -37,6 +37,8 @@ func (this *Api) Serve(port string) {
         http.HandleFunc("/lesscreator/api/fs-file-upl", FsFileUpl)
         http.Handle("/lesscreator/api/fs-save-ws", websocket.Handler(FsSaveWS))
 
+        http.Handle("/lesscreator/api/vs-git-clone-ws", websocket.Handler(this.VsGitClone))
+
         http.HandleFunc("/lesscreator/api/env-init", this.EnvInit)
 
         s := &http.Server{

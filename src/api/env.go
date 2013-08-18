@@ -64,7 +64,7 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
     osuser := "lc" + sess.Uname
     u, e := user.Lookup(osuser)
     if e != nil {
-        nologin, err := exec.LookPath("nologin")
+        nologin, err := exec.LookPath("bash")
         if err != nil {
             return
         }
@@ -105,19 +105,19 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
 
 func makedir(path string, uuid, ugid int, mode os.FileMode) error {
 
-    if stat, err := os.Stat(path); os.IsNotExist(err) {
+    if _, err := os.Stat(path); os.IsNotExist(err) {
         if err = os.MkdirAll(path, mode); err != nil {
             return err
         }
     } else {
 
-        if stat.Mode() == 0777 {
-            fmt.Println("mode yes")
-        } else {
-            fmt.Println("mode no")
-        }
+        /* if stat.Mode() == 0777 {
+               fmt.Println("mode yes")
+           } else {
+               fmt.Println("mode no")
+           } */
 
-        fmt.Println(stat.Name(), stat.Mode(), mode, stat.IsDir())
+        //fmt.Println(stat.Name(), stat.Mode(), mode, stat.IsDir())
     }
 
     if err := os.Chmod(path, mode); err != nil {

@@ -4,3 +4,6 @@
 [submodule "deps/lessgo"]
 	path = deps/lessgo
 	url = git@github.com:eryx/lessgo.git
+[submodule "deps/pty"]
+	path = deps/pty
+	url = https://github.com/kr/pty.git
