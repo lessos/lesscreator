@@ -56,7 +56,7 @@ if (!Session::IsLogin()) {
                     echo '<li class="divider"></li>';
                 }                
                 ?>                    
-                <li><a href="#logout" class="user_logout_cli">Logout</a></li>
+                <li><a href="/user/logout">Logout</a></li>
             </ul>
                     
         </div>
