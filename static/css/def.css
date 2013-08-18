@@ -133,15 +133,17 @@ textarea {
 }
 
 #hdev_header {
-    width: 100%; height: 45px;
+    width: 100%; height: 45px; 
     color: #333;
 }
+#hdev_header .header_logo {
+    display: inline-block; margin: 10px 0; backgsround-color: #ccc;
+}
 #hdev_header .header_logo img {
-    width: 60px; height: 20px;
-    vertical-align: middle;
+    width: 36px; height: 18px; svertical-align:text-top;
 }
 #hdev_header .header_logo .title {
-    font-size: 20px; color: #333;
+    line-height: 20px; font-size: 22px; color: #333;
     vertical-align: middle;
     font-family: Helvetica !important;
 }
@@ -877,6 +879,10 @@ a.h5c_block:focus {
     height: 14px; width: 14px; line-height: 14px;
     display: inline-block;    
     vertical-align: text-top;
+}
+.lc_icon {
+    display: inline-block;
+    vertical-align: text-bottom;
 }
 
 .h5c-hrline {

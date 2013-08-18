@@ -24,7 +24,7 @@ if (!Session::IsLogin()) {
   <link href="/lessui/css/def.css" rel="stylesheet" />
   <link href="/lesscreator/static/css/def.css" rel="stylesheet" />
 
-  <link href="/lesscreator/static/img/hooto-xicon-mc.ico" rel="shortcut icon" type="image/x-icon" /> 
+  <link href="/lesscreator/static/img/for-test/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
 
 </head>
 <body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;">
