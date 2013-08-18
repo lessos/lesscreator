@@ -1,26 +1,38 @@
 <div id="x17kwr" class="hide"></div>
 
-<table class="tab-config" width="100%" border="0" cellpadding="0" cellspacing="0" style="padding:8px;">
+<table class="lc-editor-set-form" width="100%">
 
   <tr class="l">
     <td width="260px" class="t">Tab Stops</td>
     <td>
-        <div>Tab width <input id="tabSize" size="5" type="text" value="2" onchange="_lc_editorset_save('Tab width')" /></div>
-        <div><input type="checkbox" id="tabs2spaces" value="1" onchange="_lc_editorset_save('Insert spaces instead of tabs')" /> Insert spaces instead of tabs</div>
+      <div class="input-prepend">
+        <span class="add-on">Tab width</span>
+        <input class="span2" id="tabSize" type="text" value="4" onchange="_lc_editorset_save('Tab width')">
+      </div>
+      <label class="checkbox">
+        <input type="checkbox" id="tabs2spaces" value="1" onchange="_lc_editorset_save('Insert spaces instead of tabs')" />
+       Insert spaces instead of tabs
+      </label>
     </td>
   </tr>
   
   <tr class="l">
     <td class="t">Automatic Indentation</td>
     <td>
-        <div><input type="checkbox" id="smartIndent" value="1" onchange="_lc_editorset_save('Enable automatic indentation')" /> Enable automatic indentation</div>
+      <label class="checkbox">
+        <input type="checkbox" id="smartIndent" value="1" onchange="_lc_editorset_save('Enable automatic indentation')" />
+       Enable automatic indentation
+      </label>
     </td>
   </tr>
   
   <tr class="l">
     <td class="t">Text Wrapping</td>
     <td>
-        <div><input type="checkbox" id="lineWrapping" value="1" onchange="_lc_editorset_save('Enable text wrapping')" /> Enable text wrapping</div>
+      <label class="checkbox">
+        <input type="checkbox" id="lineWrapping" value="1" onchange="_lc_editorset_save('Enable text wrapping')" />
+       Enable text wrapping
+      </label>
     </td>
   </tr>
   
@@ -28,16 +40,15 @@
     <td class="t">Color Scheme</td>
     <td>
       <select id="editor_theme" onchange="_lc_editorset_theme(this)">
-        <option selected="">default</option>
+        <option selected="">classics</option>
         <option>monokai</option>
         <option>ambiance</option>
         <option>blackboard</option>
-        <option>night</option>
-        <option>neat</option>
-        <option>elegant</option>
-        <option>cobalt</option>
         <option>eclipse</option>
-        <option>rubyblue</option>        
+        <option>erlang-dark</option>
+        <option>lesser-dark</option>
+        <option>rubyblue</option>
+        <option>twilight</option>             
       </select>  
     </td>
   </tr>

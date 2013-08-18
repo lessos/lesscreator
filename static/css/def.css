@@ -636,16 +636,18 @@ textarea {
     border-bottom: 1px solid #cfd4d7;
 }
 
-.tab-config {
-
+.lc-editor-set-form tr td {
+   padding: 6px 0;  vertical-align: top;
 }
-.tab-config tr td {
-   padding: 8px 0;  vertical-align: top;
-}
-.tab-config .t {
+.lc-editor-set-form .t {
     font-weight: bold;
 }
-.tab-config .l td {border-bottom: 1px solid #ccc;}
+.lc-editor-set-form .l td {
+    border-bottom: 1px solid #ccc;
+}
+.lc-editor-set-form select {
+    margin: 5px 0;
+}
 
 .h5c_resize_row {
     cursor: row-resize;

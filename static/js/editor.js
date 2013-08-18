@@ -4,7 +4,7 @@ lcEditor.WebSocket = null;
 lcEditor.ToolTmpl = null;
 lcEditor.SaveAPI = "ws://"+window.location.hostname+":9531/lesscreator/api/fs-save-ws";
 lcEditor.Config = {
-    'theme'         : 'default',
+    'theme'         : 'monokai',
     'tabSize'       : 4,
     'lineWrapping'  : true,
     'smartIndent'   : true,
