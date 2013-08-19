@@ -35,6 +35,16 @@
       </label>
     </td>
   </tr>
+
+  <tr class="l">
+    <td class="t">Code Folding</td>
+    <td>
+      <label class="checkbox">
+        <input type="checkbox" id="codeFolding" value="1" onchange="_lc_editorset_save('Enable Code Folding')" />
+       Enable Code Folding
+      </label>
+    </td>
+  </tr>
   
   <tr class="l">
     <td class="t">Color Scheme</td>
@@ -74,6 +84,9 @@ function _lc_editorset_save(title)
     
     lcEditor.Config.lineWrapping = $("#lineWrapping").prop('checked') ? true : false;
     lessCookie.SetByDay('editor_lineWrapping', lcEditor.Config.lineWrapping, 365);
+
+    lcEditor.Config.codeFolding = $("#codeFolding").prop('checked') ? true : false;
+    lessCookie.SetByDay('editor_codeFolding', lcEditor.Config.codeFolding, 365);
     
     lessAlert('#x17kwr', 'alert-success', 'Saved successfully "'+title+'"');
 }
@@ -99,6 +112,10 @@ function _lc_editorset_init()
 
     if (lcEditor.Config.lineWrapping) {
         $("#lineWrapping").prop("checked", true);
+    }
+
+    if (lcEditor.Config.codeFolding) {
+        $("#codeFolding").prop("checked", true);
     }
 
     var theme = lessCookie.Get('editor_theme');

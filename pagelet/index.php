@@ -140,7 +140,10 @@ function _load_deps()
         //"/codemirror3/lib/codemirror.min.js",
         "/codemirror3/addon/mode/loadmode.js",
         "/codemirror3/addon/search/searchcursor.js",
-        "/codemirror3/keymap/vim.js"
+        "/codemirror3/keymap/vim.js",
+        "/codemirror3/addon/fold/foldcode.js",
+        "/codemirror3/addon/fold/foldgutter.js",
+        "/codemirror3/addon/fold/brace-fold.js",
     ];
 
     //var jall = rqs.length + 1;

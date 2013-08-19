@@ -49,6 +49,8 @@ function lcInitSetting()
     
     lcEditor.Config.lineWrapping = (lessCookie.Get('editor_lineWrapping') == 'false') ? false : true;
 
+    lcEditor.Config.codeFolding = (lessCookie.Get('editor_codeFolding') == 'true') ? true : false;
+
     /* var v = lessCookie.Get('config_tablet_colw');
     if (v == null) {
         v = $('#h5c-tablet-vcol-w').innerWidth(true);

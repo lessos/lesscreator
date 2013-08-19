@@ -9,6 +9,7 @@ lcEditor.Config = {
     'lineWrapping'  : true,
     'smartIndent'   : true,
     'tabs2spaces'   : true,
+    'codeFolding'   : false,
 };
 
 lcEditor.TabletOpen = function(urid)
@@ -137,6 +138,8 @@ lcEditor.Load = function(urid)
         theme         : lcEditor.Config.theme,
         smartIndent   : lcEditor.Config.smartIndent,
         lineWrapping  : lcEditor.Config.lineWrapping,
+        foldGutter    : lcEditor.Config.codeFolding,
+        gutters       : ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
         extraKeys     : {Tab: function(cm) {
             if (lcEditor.Config.tabs2spaces) {
                 cm.replaceSelection("    ", "end");
@@ -146,7 +149,6 @@ lcEditor.Load = function(urid)
 
     if (lcEditor.ToolTmpl == null) {
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
-        //console.log(lcEditor.ToolTmpl);
     }
     $("#h5c-tablet-toolbar-"+ item.target).html(lcEditor.ToolTmpl).show(0, function(){
         h5cLayoutResize();
