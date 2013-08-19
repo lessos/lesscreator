@@ -86,6 +86,7 @@
 
 <script>
 lessModalButtonAdd("ytibxk", "Save and Close", "_lc_editorset_close()", "btn-inverse");
+lessModalButtonAdd("bf65gr", "Close", "lessModalClose()", "");
 
 function _lc_editorset_close()
 {
