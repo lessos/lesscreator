@@ -47,8 +47,6 @@ function lcInitSetting()
     if (fontSize != null) {
         lcEditor.Config.fontSize = parseInt(fontSize);
     }
-    //$(".CodeMirror").css({"font-size": lcEditor.Config.fontSize+"px"});
-    //console.log("sfasdfsa");
     
     lcEditor.Config.tabs2spaces = (lessCookie.Get('editor_tabs2spaces') == 'false') ? false : true;
     
