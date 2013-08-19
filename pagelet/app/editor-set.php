@@ -45,7 +45,15 @@
       </label>
     </td>
   </tr>
-  
+
+  <tr class="l">
+    <td class="t">Code Autocomplete</td>
+    <td>
+      <label>Press `shift + space` to activate autocompletion</label>
+      <p class="alert alert-info">Currently only support the <strong>Javascript</strong>. <br />Other languages ​​are working to develop, pls wait ...</p>
+    </td>
+  </tr>
+
   <tr class="l">
     <td class="t">Font Size</td>
     <td>

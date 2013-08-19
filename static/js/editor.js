@@ -145,7 +145,7 @@ lcEditor.Load = function(urid)
             if (lcEditor.Config.tabs2spaces) {
                 cm.replaceSelection("    ", "end");
             }
-        }}
+        }, "Shift-Space": "autocomplete"}
     });
     $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize+"px"});
 
@@ -157,21 +157,27 @@ lcEditor.Load = function(urid)
     });
 
     CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
-    CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);
+    CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);   
 
     if (lessCookie.Get('editor_keymap_vim') == "on") {
         h5cTabletFrame[item.target].editor.setOption("keyMap", "vim");
     }
 
-    h5cTabletFrame[item.target].editor.on("change", function() {
+    h5cTabletFrame[item.target].editor.on("change", function(cm) {
         lcEditor.Changed(urid);
     });
+
     CodeMirror.commands.save = function() {
         lcEditor.Save(urid, 1);
     };
+    
     CodeMirror.commands.find = function(cm) {
         lcEditor.Search();
     };
+
+    CodeMirror.commands.autocomplete = function(cm) {
+        CodeMirror.showHint(cm, CodeMirror.hint.javascript);
+    }
 
     // TODO
     h5cLayoutResize();
@@ -503,6 +509,6 @@ lcEditor.SearchClean = function()
 
 lcEditor.ConfigModal = function()
 {
-    lessModalOpen('/lesscreator/app/editor-set', 1, 700, 450, 
+    lessModalOpen('/lesscreator/app/editor-set', 1, 800, 530, 
         'Editor Settings', null);
 }

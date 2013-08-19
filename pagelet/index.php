@@ -137,6 +137,8 @@ function _load_deps()
         //"/lesscreator/static/js/editor.js",
         //"/lessui/js/BrowserDetect.js",
 
+        "/codemirror3/addon/hint/show-hint.css",
+
         //"/codemirror3/lib/codemirror.min.js",
         "/codemirror3/addon/mode/loadmode.js",
         "/codemirror3/addon/search/searchcursor.js",
@@ -144,6 +146,8 @@ function _load_deps()
         "/codemirror3/addon/fold/foldcode.js",
         "/codemirror3/addon/fold/foldgutter.js",
         "/codemirror3/addon/fold/brace-fold.js",
+        "/codemirror3/addon/hint/show-hint.js",
+        "/codemirror3/addon/hint/javascript-hint.js",
     ];
 
     //var jall = rqs.length + 1;
