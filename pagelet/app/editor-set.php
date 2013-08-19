@@ -7,7 +7,7 @@
     <td>
       <div class="input-prepend">
         <span class="add-on">Tab width</span>
-        <input class="span2" id="tabSize" type="text" value="4" onchange="_lc_editorset_save('Tab width')">
+        <input class="span1" id="tabSize" type="text" value="4" onchange="_lc_editorset_save('Tab width')">
       </div>
       <label class="checkbox">
         <input type="checkbox" id="tabs2spaces" value="1" onchange="_lc_editorset_save('Insert spaces instead of tabs')" />
@@ -47,6 +47,16 @@
   </tr>
   
   <tr class="l">
+    <td class="t">Font Size</td>
+    <td>
+      <div class="input-append">
+        <input class="span1" id="fontSize" type="text" value="13">
+        <span class="add-on">px</span>
+      </div>
+    </td>
+  </tr>
+
+  <tr class="">
     <td class="t">Color Scheme</td>
     <td>
       <select id="editor_theme" onchange="_lc_editorset_theme(this)">
@@ -67,7 +77,13 @@
 
 
 <script>
-lessModalButtonAdd("ytibxk", "Close", "lessModalClose()", "btn-inverse");
+lessModalButtonAdd("ytibxk", "Save and Close", "_lc_editorset_close()", "btn-inverse");
+
+function _lc_editorset_close()
+{
+    _lc_editorset_save("");
+    setTimeout(lessModalClose, 600);
+}
 
 function _lc_editorset_save(title)
 {
@@ -75,6 +91,17 @@ function _lc_editorset_save(title)
     if (lcEditor.Config.tabSize > 12 || lcEditor.Config.tabSize < 1) {
         lcEditor.Config.tabSize = 4;
     }
+
+    lcEditor.Config.fontSize = parseInt($("#fontSize").val());
+    if (lcEditor.Config.fontSize > 50) {
+        lcEditor.Config.fontSize = 50;
+    }
+    if (lcEditor.Config.fontSize < 8) {
+        lcEditor.Config.fontSize = 8;
+    }
+    lessCookie.SetByDay('editor_fontSize', lcEditor.Config.fontSize, 365);
+    $("#fontSize").val(lcEditor.Config.fontSize);
+    $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize+"px"});
 
     lcEditor.Config.tabs2spaces = $("#tabs2spaces").prop('checked') ? true : false;
     lessCookie.SetByDay('editor_tabs2spaces', lcEditor.Config.tabs2spaces, 365);
@@ -88,7 +115,10 @@ function _lc_editorset_save(title)
     lcEditor.Config.codeFolding = $("#codeFolding").prop('checked') ? true : false;
     lessCookie.SetByDay('editor_codeFolding', lcEditor.Config.codeFolding, 365);
     
-    lessAlert('#x17kwr', 'alert-success', 'Saved successfully "'+title+'"');
+    if (title.length > 0) {
+        title = '"'+title+'"';
+    }
+    lessAlert('#x17kwr', 'alert-success', 'Saved successfully '+title);
 }
 
 function _lc_editorset_theme(node)
@@ -100,7 +130,8 @@ function _lc_editorset_theme(node)
 function _lc_editorset_init()
 {
     $("#tabSize").val(lcEditor.Config.tabSize);
-    
+    $("#fontSize").val(lcEditor.Config.fontSize);
+
     if (lcEditor.Config.tabs2spaces) {
 
         $("#tabs2spaces").prop("checked", true);

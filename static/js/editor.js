@@ -10,6 +10,7 @@ lcEditor.Config = {
     'smartIndent'   : true,
     'tabs2spaces'   : true,
     'codeFolding'   : false,
+    'fontSize'      : 13,
 };
 
 lcEditor.TabletOpen = function(urid)
@@ -146,6 +147,7 @@ lcEditor.Load = function(urid)
             }
         }}
     });
+    $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize+"px"});
 
     if (lcEditor.ToolTmpl == null) {
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
@@ -501,6 +503,6 @@ lcEditor.SearchClean = function()
 
 lcEditor.ConfigModal = function()
 {
-    lessModalOpen('/lesscreator/app/editor-set', 1, 700, 400, 
+    lessModalOpen('/lesscreator/app/editor-set', 1, 700, 450, 
         'Editor Settings', null);
 }
