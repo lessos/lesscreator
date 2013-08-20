@@ -68,16 +68,16 @@
     <td class="t">Color Scheme</td>
     <td>
       <select id="editor_theme" onchange="_lc_editorset_theme(this)">
-        <option selected="">classics</option>
-        <option>monokai</option>
-        <option>ambiance</option>
-        <option>blackboard</option>
-        <option>eclipse</option>
-        <option>erlang-dark</option>
-        <option>lesser-dark</option>
-        <option>rubyblue</option>
-        <option>twilight</option>             
-      </select>  
+        <option value="default" selected="">classic</option>
+        <option value="monokai">monokai</option>
+        <option value="ambiance">ambiance</option>
+        <option value="blackboard">blackboard</option>
+        <option value="eclipse">eclipse</option>
+        <option value="erlang-dark">erlang-dark</option>
+        <option value="lesser-dark">lesser-dark</option>
+        <option value="rubyblue">rubyblue</option>
+        <option value="twilight">twilight</option>             
+      </select> 
     </td>
   </tr>
   
@@ -132,7 +132,7 @@ function _lc_editorset_save(title)
 
 function _lc_editorset_theme(node)
 {
-    var theme = node.options[node.selectedIndex].innerHTML;
+    var theme = node.options[node.selectedIndex].value;
     lcEditor.Theme(theme);
 }
 
