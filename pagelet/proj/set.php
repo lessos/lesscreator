@@ -53,12 +53,16 @@ echo $msg;
 #k2948f {
     padding: 5px;
 }
+#k2948f input,textarea {
+    margin-bottom: 0px;
+}
 </style>
 <form id="k2948f" action="/lesscreator/proj/set/" method="post">
   <input name="proj" type="hidden" value="<?=$info['projid']?>" />
-  <table class="table table-striped table-condensed" width="100%">
+  <table class="table table-condensed" width="100%">
+
     <tr>
-      <td width="100px"><strong>AppID</strong></td>
+      <td width="160px"><strong>Project ID</strong></td>
       <td><?=$info['projid']?></td>
     </tr>
     <tr>
@@ -105,12 +109,12 @@ echo $msg;
       <td><strong>Version</strong></td>
       <td><input name="version" class="input-medium" type="text" value="<?=$info['version']?>" /></td>
     </tr>
-    <tr>
+    <!-- <tr>
       <td><strong>Release</strong></td>
       <td><input name="release" class="input-medium" type="text" value="<?=$info['release']?>" /></td>
-    </tr>
+    </tr> -->
     <tr>
-      <td valign="top"><strong>Summary</strong></td>
+      <td valign="top"><strong>Description</strong></td>
       <td><textarea name="summary" rows="3" style="width:90%;"><?=$info['summary']?></textarea></td>
     </tr>
     <tr>

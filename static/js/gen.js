@@ -169,6 +169,7 @@ function h5cTabSwitch(urid)
                     h5cTabletTitle(urid);
                     h5cTabletFrame[item.target].urid = urid;
                    
+                    $("#h5c-tablet-toolbar-"+ item.target).empty();
                     $("#h5c-tablet-body-"+ item.target).empty().html(rsp);
                 },
                 error: function(xhr, textStatus, error) {
@@ -179,6 +180,7 @@ function h5cTabSwitch(urid)
             h5cTabletTitle(urid);
             h5cTabletFrame[item.target].urid = urid;
             
+            $("#h5c-tablet-toolbar-"+ item.target).empty();
             $("#h5c-tablet-body-"+ item.target).empty().html(item.data);
         }
         break;
@@ -381,10 +383,10 @@ function h5cLayoutResize()
     }
 
     var colt_w = (bw - (3 * spacecol)) * toset;
-    if (colt_w < 400) {
-        colt_w = 400;
-    } else if ((colt_w + 400) > bw) {
-        colt_w = bw - 400;
+    if (colt_w < 350) {
+        colt_w = 350;
+    } else if ((colt_w + 350) > bw) {
+        colt_w = bw - 350;
     }
     colw_w = (bw - (3 * spacecol)) - colt_w;
     $('#h5c-lyo-col-t').width(colt_w);
@@ -479,8 +481,12 @@ function h5cProjNewDialog()
 
 function h5cProjSet()
 {
-    h5cTabOpen('/lesscreator/proj/set?proj='+projCurrent, 
-        't0', 'html', {'title': 'Project Setting', 'close':'1'});
+    var opt = {
+        'title': 'Project Setting',
+        'close':'1',
+        'img': '/lesscreator/static/img/app-t3-16.png',
+    }
+    h5cTabOpen('/lesscreator/proj/set?proj='+projCurrent, 'w0', 'html', opt);
 }
 
 //author: meizz   

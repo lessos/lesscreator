@@ -50,7 +50,7 @@ $props_def = lesscreator_service::listAll();
 
   <div style="padding:5px 10px 5px 10px; background-color:#f6f7f8;">
     <span>
-      <strong><?php echo $projInfo['name']?></strong> [#<?php echo $projInfo['projid']?>]
+      <strong><?php echo $projInfo['name']?></strong>
     </span>
     <a href="javascript:h5cProjSet()" class="h5c_block pull-right">
       <i class="icon-wrench"></i>
