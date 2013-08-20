@@ -171,6 +171,7 @@ function h5cTabSwitch(urid)
                    
                     $("#h5c-tablet-toolbar-"+ item.target).empty();
                     $("#h5c-tablet-body-"+ item.target).empty().html(rsp);
+                    h5cLayoutResize();
                 },
                 error: function(xhr, textStatus, error) {
                     hdev_header_alert('error', xhr.responseText);
@@ -182,6 +183,7 @@ function h5cTabSwitch(urid)
             
             $("#h5c-tablet-toolbar-"+ item.target).empty();
             $("#h5c-tablet-body-"+ item.target).empty().html(item.data);
+            h5cLayoutResize();
         }
         break;
 
