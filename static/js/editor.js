@@ -17,16 +17,23 @@ lcEditor.TabletOpen = function(urid)
 {
     //console.log("lcEditor.TabletOpen: "+ urid);
     var item = h5cTabletPool[urid];
-
     if (h5cTabletFrame[item.target].urid == urid) {
         return true;
     }
 
-    if (item.data) {
+    //console.log(urid);
 
-        lcEditor.Load(urid);
+    lcData.Get("files", urid, function(ret){
+        
+        if (ret == true && urid == ret.id) {
 
-    } else {
+            //h5cTabletPool[urid].data = ret.ctn1_src;
+            //h5cTabletPool[urid].hash = lessCryptoMd5(ret.ctn1_src);
+                
+            lcEditor.LoadInstance(ret);
+            return true;
+        }
+
 
         //$("#src"+urid).remove(); // Force remove
 
@@ -49,14 +56,30 @@ lcEditor.TabletOpen = function(urid)
                 var obj = JSON.parse(rsp);
                 if (obj.status == 200) {
                     
-                    hdev_header_alert('success', "OK");
+                    
                     //$('#src'+urid).text(obj.data.body);
                     
-                    h5cTabletPool[urid].data = obj.data.body;
-                    h5cTabletPool[urid].mime = obj.data.mime;
-                    h5cTabletPool[urid].hash = lessCryptoMd5(obj.data.body);
+                    //h5cTabletPool[urid].data = obj.data.body;
                     
-                    lcEditor.Load(urid);
+                    //h5cTabletPool[urid].hash = lessCryptoMd5(obj.data.body);
+
+                    var entry = {
+                        id: urid,
+                        ctn0_src: obj.data.body,
+                        ctn0_sum: lessCryptoMd5(obj.data.body),
+                        ctn1_src: "",
+                        ctn1_sum: "",
+                        mime: obj.data.mime,
+                    }
+                    console.log(entry);
+
+                    lcData.Put("files", entry, function(ret) {
+                        if (ret) {
+                            //h5cTabletPool[urid].mime = obj.data.mime;
+                            lcEditor.LoadInstance(entry);
+                            hdev_header_alert('success', "OK");
+                        }
+                    });
                 
                 } else {
                     hdev_header_alert('error', obj.message);
@@ -66,14 +89,15 @@ lcEditor.TabletOpen = function(urid)
                 hdev_header_alert('error', xhr.responseText);
             }
         });
-    }
+
+    });
 
     return true;
 }
 
-lcEditor.Load = function(urid)
+lcEditor.LoadInstance = function(entry)
 {
-    var item = h5cTabletPool[urid];
+    var item = h5cTabletPool[entry.id];
 
     var ext = item.url.split('.').pop();
     switch(ext)
@@ -110,7 +134,7 @@ lcEditor.Load = function(urid)
         default:
             mode = 'htmlmixed';
     }
-    switch(item.mime)
+    switch(entry.mime)
     {
         case 'text/x-php':
             mode = 'php';
@@ -120,16 +144,20 @@ lcEditor.Load = function(urid)
             break;
     }
 
-    h5cTabletFrame[item.target].urid = urid;
+    h5cTabletFrame[item.target].urid = entry.id;
 
     if (h5cTabletFrame[item.target].editor != null) {        
         $("#h5c-tablet-body-"+ item.target).empty();
         $("#h5c-tablet-toolbar-"+ item.target).empty();
     }
 
+
+    var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
+    console.log(entry);
+
     h5cTabletFrame[item.target].editor = CodeMirror(
         document.getElementById("h5c-tablet-body-"+ item.target), {
-        value         : item.data,
+        value         : src,
         lineNumbers   : true,
         matchBrackets : true,
         undoDepth     : 1000,
@@ -164,11 +192,11 @@ lcEditor.Load = function(urid)
     }
 
     h5cTabletFrame[item.target].editor.on("change", function(cm) {
-        lcEditor.Changed(urid);
+        lcEditor.Changed(entry.id);
     });
 
     CodeMirror.commands.save = function() {
-        lcEditor.Save(urid, 1);
+        lcEditor.Save(entry.id, 1);
     };
     
     CodeMirror.commands.find = function(cm) {
@@ -202,7 +230,7 @@ lcEditor.Changed = function(urid)
         ctn1_src: h5cTabletFrame[item.target].editor.getValue(),
         ctn1_sum: lessCryptoMd5(h5cTabletFrame[item.target].editor.getValue()),
     }
-    //console.log(entry);
+    console.log(entry);
     lcData.Put("files", entry, null);
     $("#pgtab"+ urid +" .chg").show();
 }
@@ -259,14 +287,13 @@ lcEditor.Save = function(urid, force)
             lcEditor.WebSocket.onmessage = function(e) {
 
                 var obj = JSON.parse(e.data);
-                console.log("onmessage ...");
-                
+                //console.log("onmessage ...");
                 if (obj.status == 200) {
                     
                     var entry = {
                         id      : urid,
                         projdir : lessSession.Get("ProjPath"),
-                        filepth : item.url, 
+                        filepth : item.url,
                         ctn1_src: "",
                         ctn1_sum: "",
                     }
@@ -275,7 +302,7 @@ lcEditor.Save = function(urid, force)
                     $("#pgtab"+ urid +" .chg").hide();
                     hdev_header_alert('success', "OK");
 
-                    h5cTabletPool[urid].hash = obj.sumcheck;
+                    //h5cTabletPool[urid].hash = obj.sumcheck;
 
                 } else {
                     hdev_header_alert('error', obj.message);
@@ -287,7 +314,7 @@ lcEditor.Save = function(urid, force)
             }
 
         } catch(e) {
-            console.log("message open failed: "+ e);
+            //console.log("message open failed: "+ e);
             return;
         }
 
