@@ -19,6 +19,41 @@ if (is_array($t)) {
     $info = array_merge($info, $t);
 }
 
+$lcpj = "{$projPath}/lcproject.json";
+$lcpj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $lcpj);
+
+if ($this->req->apimethod == "runtime.enable") {
+    
+    foreach ($info['runtimes'] as $k => $rt) {
+        
+        if ($this->req->runtime == $rt['name']) {
+            
+            if ($rt['status'] != $this->req->status) {
+                $info['runtimes'][$k]['status'] = $this->req->status;
+
+                $str = Json::prettyPrint($info);
+                $rs = lesscreator_fs::FsFilePut($lcpj, $str);
+                if ($rs->status != 200) {
+                    die("Error, ". $rs->message);
+                }
+            }
+
+            die("OK");
+        }
+    }
+    
+    $info['runtimes'][] = array(
+        'name' => $this->req->runtime,
+        'status' => 1,
+    );
+    $str = Json::prettyPrint($info);
+    $rs = lesscreator_fs::FsFilePut($lcpj, $str);
+    if ($rs->status != 200) {
+        die("Error, ". $rs->message);
+    }
+
+    die("OK");
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'
     || $_SERVER['REQUEST_METHOD'] == 'PUT') {
@@ -33,13 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
     }
     if (isset($info['types']) && is_array($info['types'])) {
         $info['types'] = implode(",", $info['types']);
-    }
-    
-    $f = "{$projPath}/lcproject.json";
-    $f = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $f);
+    }    
     
     $str = Json::prettyPrint($info);
-    $rs = lesscreator_fs::FsFilePut($f, $str);
+    $rs = lesscreator_fs::FsFilePut($lcpj, $str);
     if ($rs->status == 200) {
         die("OK");
     } else {
@@ -56,18 +88,46 @@ echo $msg;
 #k2948f input,textarea {
     margin-bottom: 0px;
 }
+.rky7cv .item {
+    position: relative;
+    background-color: #eee; border: 2px solid #eee;
+    height: 60px; width: 300px;
+    float: left; margin: 5px 20px 5px 0;
+}
+.rky7cv .item img {
+    position: absolute;
+    width: 80px; height: 40px;
+    top: 50%; left: 20px; margin-top: -20px;
+}
+.rky7cv .item .gray {
+    -webkit-filter: grayscale(1);
+}
+.rky7cv .item:hover {
+    border: 2px solid #bbb;
+}
+.rky7cv .item .title {
+    position: absolute; margin-left: 120px;
+    top: 10px; font-weight: bold;
+}
+.rky7cv .item .setting {
+    position: absolute; margin-left: 120px;
+    bottom: 5px;
+}
 </style>
 <form id="k2948f" action="/lesscreator/proj/set/" method="post">
   <input name="proj" type="hidden" value="<?=$info['projid']?>" />
   <table class="table table-condensed" width="100%">
 
     <tr>
-      <td width="160px"><strong>Project ID</strong></td>
+      <td width="180px"><strong>Project ID</strong></td>
       <td><?=$info['projid']?></td>
     </tr>
     <tr>
       <td><strong>Name</strong></td>
-      <td><input name="name" class="input-medium" type="text" value="<?=$info['name']?>" /></td>
+      <td>
+        <input name="name" class="input-medium" type="text" value="<?=$info['name']?>" />
+        <span class="help-inline">Example: Hello World</span>
+      </td>
     </tr>
     <!-- <tr>
       <td><strong>Services</strong></td>
@@ -107,7 +167,10 @@ echo $msg;
     </tr>
     <tr>
       <td><strong>Version</strong></td>
-      <td><input name="version" class="input-medium" type="text" value="<?=$info['version']?>" /></td>
+      <td>
+        <input name="version" class="input-medium" type="text" value="<?=$info['version']?>" /> 
+        <span class="help-inline">Example: 1.0.0</span>
+      </td>
     </tr>
     <!-- <tr>
       <td><strong>Release</strong></td>
@@ -115,16 +178,97 @@ echo $msg;
     </tr> -->
     <tr>
       <td valign="top"><strong>Description</strong></td>
-      <td><textarea name="summary" rows="3" style="width:90%;"><?=$info['summary']?></textarea></td>
+      <td><textarea name="summary" rows="3" style="width:400px;"><?=$info['summary']?></textarea></td>
+    </tr>
+    <tr>
+      <td><strong>Runtime Environment</strong></td>
+      <td>
+
+        <?php
+        $rts = array(
+            'nginx' => array(
+                'title' => 'WebServer (nginx)',
+            ),
+            'php' => array(
+                'title' => 'PHP',
+            ),
+            'go' => array(
+                'title' => 'Go',
+            )
+        )
+        ?>
+        <div class="rky7cv">
+        <?php
+        foreach ($info['runtimes'] as $rt) {
+            echo "
+        <div class=\"item border_radius_5\">
+            <img src=\"/lesscreator/static/img/rt/{$rt['name']}_200.png\" />
+            <label class=\"title\">{$rts[$rt['name']]['title']}</label>
+            <label class=\"checkbox setting\">
+              <input type=\"checkbox\" name=\"runtimes[]\" value=\"{$rt['name']}\" checked=\"true\"/> Enable
+            </label>
+        </div>";
+            unset($rts[$rt['name']]);
+        }
+        foreach ($rts as $name => $rt) {
+            echo "
+        <div class=\"item border_radius_5\">
+            <img class=\"gray\" src=\"/lesscreator/static/img/rt/{$name}_200.png\" />
+            <label class=\"title\">{$rt['title']}</label>
+            <label class=\"checkbox setting\">
+              <input type=\"checkbox\" name=\"runtimes[]\" value=\"{$name}\" /> Enable
+            </label>
+        </div>";
+            unset($rts[$rt['name']]);
+        }
+        ?>
+        </div>
+
+        
+      </td>
     </tr>
     <tr>
       <td></td>
-      <td><input type="submit" name="submit" value="Save" class="btn" /></td>
+      <td><input type="submit" name="submit" value="Save" class="btn btn-inverse" /></td>
     </tr>
   </table>
 </form>
 
 <script>
+
+$(".rky7cv input").click(function(){
+    
+    var url = "/lesscreator/proj/set?";
+    url += "proj=" + lessSession.Get("ProjPath");
+    url += "&apimethod=runtime.enable";
+    
+    if ($(this).is (':checked')) {
+        url += "&status=1";
+        $(this).parent().parent().find("img").removeClass("gray");
+    } else {
+        url += "&status=0";
+        $(this).parent().parent().find("img").addClass("gray");
+    }
+
+    url += "&runtime="+ $(this).val();
+
+    $.ajax({ 
+        type    : "GET",
+        url     : url,
+        success : function(data) {
+            if (data == "OK") {
+                hdev_header_alert('success', data);
+            } else {
+                hdev_header_alert('error', data);
+            }
+        },
+        error: function(xhr, textStatus, error) {
+            hdev_header_alert('error', textStatus+' '+xhr.responseText);
+        }
+    });
+
+    //console.log($(this));
+});
 
 $("#k2948f").submit(function(event) {
 
