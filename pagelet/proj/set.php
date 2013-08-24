@@ -22,39 +22,6 @@ if (is_array($t)) {
 $lcpj = "{$projPath}/lcproject.json";
 $lcpj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $lcpj);
 
-if ($this->req->apimethod == "runtime.enable") {
-    
-    foreach ($info['runtimes'] as $k => $rt) {
-        
-        if ($this->req->runtime == $rt['name']) {
-            
-            if ($rt['status'] != $this->req->status) {
-                $info['runtimes'][$k]['status'] = $this->req->status;
-
-                $str = Json::prettyPrint($info);
-                $rs = lesscreator_fs::FsFilePut($lcpj, $str);
-                if ($rs->status != 200) {
-                    die("Error, ". $rs->message);
-                }
-            }
-
-            die("OK");
-        }
-    }
-    
-    $info['runtimes'][] = array(
-        'name' => $this->req->runtime,
-        'status' => 1,
-    );
-    $str = Json::prettyPrint($info);
-    $rs = lesscreator_fs::FsFilePut($lcpj, $str);
-    if ($rs->status != 200) {
-        die("Error, ". $rs->message);
-    }
-
-    die("OK");
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST'
     || $_SERVER['REQUEST_METHOD'] == 'PUT') {
 
@@ -88,30 +55,45 @@ echo $msg;
 #k2948f input,textarea {
     margin-bottom: 0px;
 }
+.rky7cv a {
+    text-decoration: none;
+}
 .rky7cv .item {
     position: relative;
-    background-color: #eee; border: 2px solid #eee;
+    background-color: #dff0d8;
+    border: 2px solid #dff0d8;
     height: 60px; width: 300px;
     float: left; margin: 5px 20px 5px 0;
 }
-.rky7cv .item img {
+.rky7cv .item .newrt-ico {
+    width: 40px; height: 40px;
+    position: absolute; top: 10px; left: 10px;
+}
+.rky7cv .item .newrt-tit {
+    position: absolute; font-size: 18px;
+    color: #333; top: 12px; left: 60px;
+}
+.rky7cv .item .newrt-desc {
+    position: absolute; font-size: 12px;
+    color: #777; left: 60px;
+    bottom: 8px;
+}
+.rky7cv .item .rt-ico {
     position: absolute;
     width: 80px; height: 40px;
-    top: 50%; left: 20px; margin-top: -20px;
+    top: 50%; left: 10px; margin-top: -20px;
 }
-.rky7cv .item .gray {
-    -webkit-filter: grayscale(1);
+.rky7cv .item.gray {
+    background-color: #fff;
 }
 .rky7cv .item:hover {
-    border: 2px solid #bbb;
+    border: 2px solid #7acfa8;
+    background-color: #dff0d8;
 }
 .rky7cv .item .title {
-    position: absolute; margin-left: 120px;
-    top: 10px; font-weight: bold;
-}
-.rky7cv .item .setting {
-    position: absolute; margin-left: 120px;
-    bottom: 5px;
+    position: absolute;
+    margin-left: 120px; margin-top: -8px; top: 50%;
+    font-weight: bold; font-size: 16px; 
 }
 </style>
 <form id="k2948f" action="/lesscreator/proj/set/" method="post">
@@ -146,7 +128,7 @@ echo $msg;
         }
         ?>
       </td>
-    </tr> -->
+    </tr> 
     <tr>
       <td><strong>Types</strong></td>
       <td>
@@ -164,7 +146,7 @@ echo $msg;
         }
         ?>
       </td>
-    </tr>
+    </tr>-->
     <tr>
       <td><strong>Version</strong></td>
       <td>
@@ -194,32 +176,41 @@ echo $msg;
             ),
             'go' => array(
                 'title' => 'Go',
-            )
+            ),
+            'python' => array(
+                'title' => 'Python',
+            ),
+            'java' => array(
+                'title' => 'Java',
+            ),
         )
         ?>
         <div class="rky7cv">
+        
+        
         <?php
-        foreach ($info['runtimes'] as $rt) {
+        foreach ($info['runtimes'] as $name => $rt) {
+
+            if ($rt['status'] != 1) {
+                continue;
+            }
+
             echo "
-        <div class=\"item border_radius_5\">
-            <img src=\"/lesscreator/static/img/rt/{$rt['name']}_200.png\" />
-            <label class=\"title\">{$rts[$rt['name']]['title']}</label>
-            <label class=\"checkbox setting\">
-              <input type=\"checkbox\" name=\"runtimes[]\" value=\"{$rt['name']}\" checked=\"true\"/> Enable
-            </label>
-        </div>";
-            unset($rts[$rt['name']]);
+        <a class=\"item border_radius_5\" href=\"#rt/{$name}-set\" title=\"Click to configuration\">
+            <img class=\"rt-ico\" src=\"/lesscreator/static/img/rt/{$name}_200.png\" />
+            <label class=\"title\">{$rts[$name]['title']}</label>
+        </a>";
+            unset($rts[$name]);
         }
-        foreach ($rts as $name => $rt) {
-            echo "
-        <div class=\"item border_radius_5\">
-            <img class=\"gray\" src=\"/lesscreator/static/img/rt/{$name}_200.png\" />
-            <label class=\"title\">{$rt['title']}</label>
-            <label class=\"checkbox setting\">
-              <input type=\"checkbox\" name=\"runtimes[]\" value=\"{$name}\" /> Enable
-            </label>
-        </div>";
-            unset($rts[$rt['name']]);
+
+        if (count($rts) > 0) {
+        ?>
+        <a class="item border_radius_5 gray" href="#rt/select">
+            <img class="newrt-ico" src="/lesscreator/static/img/for-test/setting2-128.png" />
+            <span class="newrt-tit">Add Runtime Environment</span>
+            <span class="newrt-desc">PHP, Python, Java, Go ...</span>
+        </a>
+        <?php
         }
         ?>
         </div>
@@ -235,7 +226,28 @@ echo $msg;
 </form>
 
 <script>
+$(".rky7cv a").click(function(){
+    var uri = $(this).attr("href").substr(1);
 
+    var title = "";
+    switch (uri) {
+    case "rt/select":
+        title = "Add Runtime Environment";
+        break;
+    case "rt/nginx-set":
+        title = "Setting Nginx"
+        break;
+    case "rt/php-set":
+        title = "Add Runtime Environment";
+        break;
+    default:
+        return;
+    }
+    
+    uri += "?proj=" + lessSession.Get("ProjPath");
+    lessModalOpen("/lesscreator/"+ uri, 1, 600, 400, title, null);
+});
+/*
 $(".rky7cv input").click(function(){
     
     var url = "/lesscreator/proj/set?";
@@ -244,9 +256,11 @@ $(".rky7cv input").click(function(){
     
     if ($(this).is (':checked')) {
         url += "&status=1";
+        $(this).parent().parent().removeClass("gray");
         $(this).parent().parent().find("img").removeClass("gray");
     } else {
         url += "&status=0";
+        $(this).parent().parent().addClass("gray");
         $(this).parent().parent().find("img").addClass("gray");
     }
 
@@ -269,6 +283,7 @@ $(".rky7cv input").click(function(){
 
     //console.log($(this));
 });
+*/
 
 $("#k2948f").submit(function(event) {
 

@@ -10,7 +10,7 @@ if (!Session::IsLogin()) {
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Less Creator</title>
+  <title>lessCreator</title>
   <script src="/lesscreator/static/js/sea.js"></script>
   <script src="/jquery/jquery-2.0.min.js"></script>
   <script src="/lessui/js/BrowserDetect.js"></script>
@@ -82,6 +82,8 @@ if (!Session::IsLogin()) {
 -->
 <script>
 
+var _load_sleep = 0;
+
 function _lc_loadwell_resize()
 {
     var bh = $('body').height();
@@ -122,7 +124,7 @@ $(document).ready(function() {
 
     _lc_loadwell_resize();
 
-    setTimeout(_load_deps, 200);
+    setTimeout(_load_deps, _load_sleep);
 });
 
 function _load_deps()
@@ -153,7 +155,7 @@ function _load_deps()
     //var jall = rqs.length + 1;
     seajs.use(rqs, function(){
         $(".load-progress-num").css({"width": "90%"});
-        setTimeout(_load_sys_config, 200);
+        setTimeout(_load_sys_config, _load_sleep);
     });
 }
 
@@ -207,7 +209,7 @@ function _load_sys_config()
                         setTimeout(function(){
                             $('body').html(rsp);
                             _env_init();
-                        }, 200);
+                        }, _load_sleep);
                     },
                     error: function(xhr, textStatus, error) {
                         $(".load-progress").removeClass("progress-success").addClass("progress-danger");

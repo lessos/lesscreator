@@ -133,19 +133,25 @@ textarea {
 }
 
 #hdev_header {
-    width: 100%; height: 45px; 
+    width: 100%; height: 50px; 
     color: #333;
+    position: relative;
 }
 #hdev_header .header_logo {
-    display: inline-block; margin: 10px 0; backgsround-color: #ccc;
+    position: absolute; top: 10px;
+    height: 30px;
 }
 #hdev_header .header_logo img {
-    width: 36px; height: 18px; svertical-align:text-top;
+    position: absolute; top: 5px;
+    width: 40px; height: 20px;
 }
 #hdev_header .header_logo .title {
-    line-height: 20px; font-size: 22px; color: #333;
-    vertical-align: middle;
+    position: absolute; top: 5px; left: 42px;
+    line-height: 24px;
+    font-size: 24px;
+    color: #333;
     font-family: Helvetica !important;
+    font-weight: bold;
 }
 
 .hdev-header-alert {

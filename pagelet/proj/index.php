@@ -82,7 +82,7 @@ $props_def = lesscreator_service::listAll();
 
 <script>
 
-$("title").text('<?php echo $projInfo['name']?> - Less Creator');
+$("title").text('<?php echo $projInfo['name']?> - lessCreator');
 
 <?php
 echo "sessionStorage.ProjPath = '{$projPath}';";

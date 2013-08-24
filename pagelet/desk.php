@@ -13,8 +13,8 @@ if (!Session::IsLogin()) {
 
     <td class="header_logo" width="260px">
       
-      <!--<img class="lc_icon" src="/lesscreator/static/img/for-test/less-logo-100.png" />
-      <span class="title">Creator</span> -->
+      <img class="lc_icon" src="/lesscreator/static/img/for-test/less-logo-100.png" />
+      <span class="title">Creator</span>
     </td>
 
     <td align="center">
@@ -39,7 +39,7 @@ if (!Session::IsLogin()) {
                 <li><a href="javascript:h5cProjNewDialog()">Create Project</a></li>
                 <li><a href="javascript:h5cProjOpenDialog()">Open Project</a></li>
             </ul>
-                    
+
         </div>
         
         <div class="btn-group" style="margin-left:0;">
