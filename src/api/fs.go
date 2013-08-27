@@ -29,6 +29,15 @@ type FsFile struct {
     //Error    string    `json:"error"`
 }
 
+type FsSaveWSRsp struct {
+    Status  int    `json:"status"`
+    Message string `json:"message"`
+    Data    struct {
+        Urid     string `json:"urid"`
+        SumCheck string `json:"sumcheck"`
+    }   `json:"data"`
+}
+
 func FsSaveWS(ws *websocket.Conn) {
 
     var err error
@@ -42,39 +51,36 @@ func FsSaveWS(ws *websocket.Conn) {
         fmt.Println("FsSaveWS", msg)
 
         var req struct {
-            Path     string
-            Content  string
-            Mode     string
-            SumCheck string
+            Data struct {
+                Urid     string `json:"urid"`
+                Path     string `json:"path"`
+                Body     string `json:"body"`
+                SumCheck string `json:"sumcheck"`
+            } `json:"data"`
         }
         err = utils.JsonDecode(msg, &req)
         if err != nil {
             return
         }
 
-        fp, err := os.OpenFile(req.Path, os.O_RDWR|os.O_CREATE, 0754)
+        fp, err := os.OpenFile(req.Data.Path, os.O_RDWR|os.O_CREATE, 0754)
         if err != nil {
             return
         } else {
 
             fp.Seek(0, 0)
-            fp.Truncate(int64(len(req.Content)))
+            fp.Truncate(int64(len(req.Data.Body)))
 
-            if _, err = fp.WriteString(req.Content); err != nil {
+            if _, err = fp.WriteString(req.Data.Body); err != nil {
                 fmt.Println(err)
             }
         }
         fp.Close()
 
-        ret := struct {
-            Status   int    `json:"status"`
-            Msg      string `json:"message"`
-            SumCheck string `json:"sumcheck"`
-        }{
-            200,
-            "",
-            req.SumCheck,
-        }
+        var ret FsSaveWSRsp
+        ret.Status = 200
+        ret.Data.Urid = req.Data.Urid
+        ret.Data.SumCheck = req.Data.SumCheck
         if err = websocket.JSON.Send(ws, ret); err != nil {
             ws.Close()
             return

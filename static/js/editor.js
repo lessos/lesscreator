@@ -13,25 +13,25 @@ lcEditor.Config = {
     'fontSize'      : 13,
 };
 
-lcEditor.TabletOpen = function(urid)
+lcEditor.TabletOpen = function(urid, callback)
 {
     //console.log("lcEditor.TabletOpen: "+ urid);
     var item = h5cTabletPool[urid];
     if (h5cTabletFrame[item.target].urid == urid) {
-        return true;
+        callback(true);
     }
 
     //console.log(urid);
 
-    lcData.Get("files", urid, function(ret){
-        
+    lcData.Get("files", urid, function(ret) {
+
         if (ret == true && urid == ret.id) {
 
             //h5cTabletPool[urid].data = ret.ctn1_src;
             //h5cTabletPool[urid].hash = lessCryptoMd5(ret.ctn1_src);
                 
             lcEditor.LoadInstance(ret);
-            return true;
+            callback(true);
         }
 
 
@@ -53,9 +53,15 @@ lcEditor.TabletOpen = function(urid)
             data    : JSON.stringify(req),
             success : function(rsp) {
 
-                var obj = JSON.parse(rsp);
+                try {
+                    var obj = JSON.parse(rsp);
+                } catch (e) {
+                    //lessAlert("#_load-alert", "alert-error", "Error: Service Unavailable ("+url+")");
+                    // TODO
+                    callback(false);
+                }
+
                 if (obj.status == 200) {
-                    
                     
                     //$('#src'+urid).text(obj.data.body);
                     
@@ -64,35 +70,39 @@ lcEditor.TabletOpen = function(urid)
                     //h5cTabletPool[urid].hash = lessCryptoMd5(obj.data.body);
 
                     var entry = {
-                        id: urid,
-                        ctn0_src: obj.data.body,
-                        ctn0_sum: lessCryptoMd5(obj.data.body),
-                        ctn1_src: "",
-                        ctn1_sum: "",
-                        mime: obj.data.mime,
+                        id       : urid,
+                        ctn0_src : obj.data.body,
+                        ctn0_sum : lessCryptoMd5(obj.data.body),
+                        ctn1_src : "",
+                        ctn1_sum : "",
+                        mime     : obj.data.mime,
                     }
-                    console.log(entry);
+                    //console.log(entry);
 
                     lcData.Put("files", entry, function(ret) {
                         if (ret) {
                             //h5cTabletPool[urid].mime = obj.data.mime;
                             lcEditor.LoadInstance(entry);
                             hdev_header_alert('success', "OK");
+                            callback(true);
+                        } else {
+                            // TODO
+                            hdev_header_alert('error', "Can not write to IndexedDB");
+                            callback(false);
                         }
                     });
                 
                 } else {
                     hdev_header_alert('error', obj.message);
+                    callback(false);
                 }
             },
             error: function(xhr, textStatus, error) {
                 hdev_header_alert('error', xhr.responseText);
+                callback(false);
             }
         });
-
     });
-
-    return true;
 }
 
 lcEditor.LoadInstance = function(entry)
@@ -100,51 +110,50 @@ lcEditor.LoadInstance = function(entry)
     var item = h5cTabletPool[entry.id];
 
     var ext = item.url.split('.').pop();
-    switch(ext)
-    {
-        case 'c':
-        case 'h':
-        case 'cc':
-        case 'cpp':
-        case 'hpp':
-            mode = 'clike';
-            break;
-        case 'php':
-        case 'css':
-        case 'xml':
-        case 'go' :
-            mode = ext;
-            break;
-        case 'sql':
-            mode = 'plsql';
-            break;
-        case 'js':
-            mode = 'javascript';
-            break;
-        case 'sh':
-            mode = 'shell';
-            break;
-        case 'py':
-            mode = 'python';
-            break;
-        case 'yml':
-        case 'yaml':
-            mode = 'yaml';
-            break;
-        default:
-            mode = 'htmlmixed';
+    switch(ext) {
+    case 'c':
+    case 'h':
+    case 'cc':
+    case 'cpp':
+    case 'hpp':
+        mode = 'clike';
+        break;
+    case 'php':
+    case 'css':
+    case 'xml':
+    case 'go' :
+        mode = ext;
+        break;
+    case 'sql':
+        mode = 'plsql';
+        break;
+    case 'js':
+        mode = 'javascript';
+        break;
+    case 'sh':
+        mode = 'shell';
+        break;
+    case 'py':
+        mode = 'python';
+        break;
+    case 'yml':
+    case 'yaml':
+        mode = 'yaml';
+        break;
+    default:
+        mode = 'htmlmixed';
     }
-    switch(entry.mime)
-    {
-        case 'text/x-php':
-            mode = 'php';
-            break;
-        case 'text/x-shellscript':
-            mode = 'shell';
-            break;
+    
+    switch(entry.mime) {
+    case 'text/x-php':
+        mode = 'php';
+        break;
+    case 'text/x-shellscript':
+        mode = 'shell';
+        break;
     }
 
-    h5cTabletFrame[item.target].urid = entry.id;
+    //h5cTabletFrame[item.target].urid = entry.id;
 
     if (h5cTabletFrame[item.target].editor != null) {        
         $("#h5c-tablet-body-"+ item.target).empty();
@@ -171,11 +180,20 @@ lcEditor.LoadInstance = function(entry)
         gutters       : ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
         extraKeys     : {Tab: function(cm) {
             if (lcEditor.Config.tabs2spaces) {
-                cm.replaceSelection("    ", "end");
+                var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+                cm.replaceSelection(spaces, "end", "+input");
+            }},
+            "Shift-Space": "autocomplete",
+            "Ctrl-S": function() {
+                lcEditor.Save(entry.id, 1);
+                //console.log("ctrl-s"+ entry.id);
             }
-        }, "Shift-Space": "autocomplete"}
+        }
     });
     $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize+"px"});
+
+    CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
+    CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);
 
     if (lcEditor.ToolTmpl == null) {
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
@@ -183,9 +201,6 @@ lcEditor.LoadInstance = function(entry)
     $("#h5c-tablet-toolbar-"+ item.target).html(lcEditor.ToolTmpl).show(0, function(){
         h5cLayoutResize();
     });
-
-    CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
-    CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);   
 
     if (lessCookie.Get('editor_keymap_vim') == "on") {
         h5cTabletFrame[item.target].editor.setOption("keyMap", "vim");
@@ -195,10 +210,6 @@ lcEditor.LoadInstance = function(entry)
         lcEditor.Changed(entry.id);
     });
 
-    CodeMirror.commands.save = function() {
-        lcEditor.Save(entry.id, 1);
-    };
-    
     CodeMirror.commands.find = function(cm) {
         lcEditor.Search();
     };
@@ -214,7 +225,7 @@ lcEditor.LoadInstance = function(entry)
 
 lcEditor.Changed = function(urid)
 {
-    console.log("lcEditor.Changed:"+ urid);
+    //console.log("lcEditor.Changed:"+ urid);
 
     if (!h5cTabletPool[urid]) {
         return;
@@ -241,33 +252,37 @@ lcEditor.SaveCurrent = function()
 {
     lcEditor.Save(h5cTabletFrame["w0"].urid, 1);
 }
+
 lcEditor.Save = function(urid, force)
 {
-    console.log("lcEditor.Save:"+ urid);
+    //console.log("lcEditor.Save:"+ urid);
 
     if (!h5cTabletPool[urid]) {
-        console.log("lcEditor.Save, h5cTabletPool return");
+        //console.log("lcEditor.Save, h5cTabletPool return");
         return;
     }
     var item = h5cTabletPool[urid];
     //console.log(item);
     if (urid != h5cTabletFrame[item.target].urid) {
-        console.log("lcEditor.Save, h5cTabletFrame return");
+        //console.log("lcEditor.Save, h5cTabletFrame return");
         return;
     }
 
     var hash = lessCryptoMd5(h5cTabletFrame[item.target].editor.getValue());
     if (hash == item.hash) {
-        console.log("Nothing change, skip ~");
+        //console.log("Nothing change, skip ~");
         $("#pgtab"+ urid +" .chg").hide();
         return;
     }
     //console.log()
 
     var req = {
-        path     : sessionStorage.ProjPath +"/"+ item.url,
-        content  : h5cTabletFrame[item.target].editor.getValue(),
-        sumcheck : hash,
+        data : {
+            urid     : urid,
+            path     : sessionStorage.ProjPath +"/"+ item.url,
+            body     : h5cTabletFrame[item.target].editor.getValue(),
+            sumcheck : hash,
+        }        
     }
 
     if (lcEditor.WebSocket == null) {
@@ -297,21 +312,24 @@ lcEditor.Save = function(urid, force)
                 //console.log("onmessage ...");
                 if (obj.status == 200) {
                     
+                    //console.log("onmessage ok"+ obj.data.urid);
+
                     var entry = {
-                        id      : urid,
-                        projdir : lessSession.Get("ProjPath"),
-                        filepth : item.url,
+                        id      : obj.data.urid,
+                        //projdir : lessSession.Get("ProjPath"),
+                        //filepth : item.url,
                         ctn1_src: "",
                         ctn1_sum: "",
                     }
                     lcData.Put("files", entry, null);
 
-                    $("#pgtab"+ urid +" .chg").hide();
+                    $("#pgtab"+ obj.data.urid +" .chg").hide();
                     hdev_header_alert('success', "OK");
 
                     //h5cTabletPool[urid].hash = obj.sumcheck;
 
                 } else {
+                    //console.log("onmessage errot");
                     hdev_header_alert('error', obj.message);
                 }
 

@@ -149,9 +149,7 @@ function h5cTabSwitch(urid)
         return;
     }
 
-    if (h5cTabletFrame[item.target].urid 
-        && h5cTabletFrame[item.target].urid != urid) {
-        //lcEditor.instance.toTextArea();
+    if (h5cTabletFrame[item.target].urid != urid) {
         //lcEditor.Save(lcEditor.urid, 1);
         h5cTabletFrame[item.target].urid = 0;
     }
@@ -191,10 +189,16 @@ function h5cTabSwitch(urid)
 
     case 'editor':
         
-        if (lcEditor.TabletOpen(urid)) {
+        lcEditor.TabletOpen(urid, function(ret) {
+            
+            if (!ret) {
+                return;
+            }
+
+            //console.log("lcEditor.TabletOpen OK");
             h5cTabletTitleImage(urid);
             h5cTabletFrame[item.target].urid = urid;
-        }
+        });
 
         break;
 
