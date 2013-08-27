@@ -420,9 +420,9 @@ function h5cLayoutResize()
     var tw0h = $('#h5c-tablet-tabs-framew0').height();
     var bw0h = $('#h5c-tablet-toolbar-w0').height();
     $('#h5c-tablet-body-w0').height(lo_h - tw0h - bw0h);  
-    if ($('.CodeMirror').length) {
-        $('.CodeMirror').width(colw_w);
-        $('.CodeMirror').height(lo_h - tw0h - bw0h);
+    if ($('.h5c_tablet_body .CodeMirror').length) {
+        $('.h5c_tablet_body .CodeMirror').width(colw_w);
+        $('.h5c_tablet_body .CodeMirror').height(lo_h - tw0h - bw0h);
     }
     
     $('#h5c-tablet-tabs-framew0').width(colw_w);

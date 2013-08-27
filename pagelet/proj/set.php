@@ -22,6 +22,55 @@ if (is_array($t)) {
 $lcpj = "{$projPath}/lcproject.json";
 $lcpj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $lcpj);
 
+if ($this->req->apimethod == "self.rt.list") {
+
+    $rts = array(
+        'nginx' => array(
+            'title' => 'WebServer (nginx)',
+        ),
+        'php' => array(
+            'title' => 'PHP',
+        ),
+        'go' => array(
+            'title' => 'Go',
+        ),
+        'python' => array(
+            'title' => 'Python',
+        ),
+        'java' => array(
+            'title' => 'Java',
+        ),
+    );
+
+    foreach ($info['runtimes'] as $name => $rt) {
+
+        if ($rt['status'] != 1) {
+            continue;
+        }
+
+        echo "
+        <a class=\"item border_radius_5\" href=\"#rt/{$name}-set\" onclick=\"_proj_rt_set(this)\" title=\"Click to configuration\">
+            <img class=\"rt-ico\" src=\"/lesscreator/static/img/rt/{$name}_200.png\" />
+            <label class=\"title\">{$rts[$name]['title']}</label>
+        </a>";
+
+        unset($rts[$name]);
+    }
+
+    if (count($rts) > 0) {
+
+        echo '
+        <a class="item border_radius_5 gray" href="#rt/select" onclick="_proj_rt_set(this)">
+            <img class="newrt-ico" src="/lesscreator/static/img/for-test/setting2-128.png" />
+            <span class="newrt-tit">Add Runtime Environment</span>
+            <span class="newrt-desc">PHP, Python, Java, Go ...</span>
+        </a>';
+    }
+    
+    die();
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST'
     || $_SERVER['REQUEST_METHOD'] == 'PUT') {
 
@@ -154,69 +203,13 @@ echo $msg;
         <span class="help-inline">Example: 1.0.0</span>
       </td>
     </tr>
-    <!-- <tr>
-      <td><strong>Release</strong></td>
-      <td><input name="release" class="input-medium" type="text" value="<?=$info['release']?>" /></td>
-    </tr> -->
     <tr>
       <td valign="top"><strong>Description</strong></td>
       <td><textarea name="summary" rows="3" style="width:400px;"><?=$info['summary']?></textarea></td>
     </tr>
     <tr>
       <td><strong>Runtime Environment</strong></td>
-      <td>
-
-        <?php
-        $rts = array(
-            'nginx' => array(
-                'title' => 'WebServer (nginx)',
-            ),
-            'php' => array(
-                'title' => 'PHP',
-            ),
-            'go' => array(
-                'title' => 'Go',
-            ),
-            'python' => array(
-                'title' => 'Python',
-            ),
-            'java' => array(
-                'title' => 'Java',
-            ),
-        )
-        ?>
-        <div class="rky7cv">
-        
-        
-        <?php
-        foreach ($info['runtimes'] as $name => $rt) {
-
-            if ($rt['status'] != 1) {
-                continue;
-            }
-
-            echo "
-        <a class=\"item border_radius_5\" href=\"#rt/{$name}-set\" title=\"Click to configuration\">
-            <img class=\"rt-ico\" src=\"/lesscreator/static/img/rt/{$name}_200.png\" />
-            <label class=\"title\">{$rts[$name]['title']}</label>
-        </a>";
-            unset($rts[$name]);
-        }
-
-        if (count($rts) > 0) {
-        ?>
-        <a class="item border_radius_5 gray" href="#rt/select">
-            <img class="newrt-ico" src="/lesscreator/static/img/for-test/setting2-128.png" />
-            <span class="newrt-tit">Add Runtime Environment</span>
-            <span class="newrt-desc">PHP, Python, Java, Go ...</span>
-        </a>
-        <?php
-        }
-        ?>
-        </div>
-
-        
-      </td>
+      <td><div class="rky7cv">Loading</div></td>
     </tr>
     <tr>
       <td></td>
@@ -226,9 +219,46 @@ echo $msg;
 </form>
 
 <script>
-$(".rky7cv a").click(function(){
-    var uri = $(this).attr("href").substr(1);
 
+$("#k2948f").submit(function(event) {
+
+    event.preventDefault();
+
+    $.ajax({ 
+        type    : "POST",
+        url     : $(this).attr('action'),
+        data    : $(this).serialize(),
+        success : function(rsp) {
+            hdev_header_alert('success', rsp);
+            window.scrollTo(0,0);
+        },
+        error: function(xhr, textStatus, error) {
+            hdev_header_alert('error', textStatus+' '+xhr.responseText);
+        }
+    });
+});
+
+function _proj_rt_refresh()
+{
+    var url = "/lesscreator/proj/set?apimethod=self.rt.list";
+    url += "&proj=" + lessSession.Get("ProjPath");
+
+    $.ajax({ 
+        type    : "GET",
+        url     : url,
+        success : function(rsp) {
+            $(".rky7cv").empty().html(rsp);
+        },
+        error: function(xhr, textStatus, error) {
+            // 
+        }
+    });
+}
+
+function _proj_rt_set(node)
+{
+    var uri = $(node).attr("href").substr(1);
+    
     var title = "";
     switch (uri) {
     case "rt/select":
@@ -245,61 +275,10 @@ $(".rky7cv a").click(function(){
     }
     
     uri += "?proj=" + lessSession.Get("ProjPath");
-    lessModalOpen("/lesscreator/"+ uri, 1, 600, 400, title, null);
-});
-/*
-$(".rky7cv input").click(function(){
-    
-    var url = "/lesscreator/proj/set?";
-    url += "proj=" + lessSession.Get("ProjPath");
-    url += "&apimethod=runtime.enable";
-    
-    if ($(this).is (':checked')) {
-        url += "&status=1";
-        $(this).parent().parent().removeClass("gray");
-        $(this).parent().parent().find("img").removeClass("gray");
-    } else {
-        url += "&status=0";
-        $(this).parent().parent().addClass("gray");
-        $(this).parent().parent().find("img").addClass("gray");
-    }
+    lessModalOpen("/lesscreator/"+ uri, 1, 800, 500, title, null);
+}
 
-    url += "&runtime="+ $(this).val();
 
-    $.ajax({ 
-        type    : "GET",
-        url     : url,
-        success : function(data) {
-            if (data == "OK") {
-                hdev_header_alert('success', data);
-            } else {
-                hdev_header_alert('error', data);
-            }
-        },
-        error: function(xhr, textStatus, error) {
-            hdev_header_alert('error', textStatus+' '+xhr.responseText);
-        }
-    });
+_proj_rt_refresh();
 
-    //console.log($(this));
-});
-*/
-
-$("#k2948f").submit(function(event) {
-
-    event.preventDefault();
-
-    $.ajax({ 
-        type: "POST",
-        url: $(this).attr('action'),
-        data: $(this).serialize(),
-        success: function(data) {
-            hdev_header_alert('success', data);
-            window.scrollTo(0,0);
-        },
-        error: function(xhr, textStatus, error) {
-            hdev_header_alert('error', textStatus+' '+xhr.responseText);
-        }
-    });
-});
 </script>

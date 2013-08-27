@@ -27,4 +27,14 @@ class lesscreator_env
             'runtimes'=> array(),
         );
     }
+    
+    public static function NginxConfTypes()
+    {
+        return array(
+            'std'    => 'Standard configuration',
+            'static' => 'Pure static files',
+            'phpmix' => 'php-fpm (PHP FastCGI Process Manager) and static files',
+            'custom' => 'Custom Configuration',
+        );
+    }
 }

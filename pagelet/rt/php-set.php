@@ -35,7 +35,7 @@ foreach ($info['runtimes'] as $name => $rt) {
 <td>  
     <h4>PHP runtime environment</h4>
     <br />
-    <div class="alert alert-info">
+    <div id="k3bahm" class="alert alert-info">
         PHP is a popular general-purpose scripting language that is especially suited to web development.
         <br />
         Fast, flexible and pragmatic, PHP powers everything from your blog to the largest social networking site in the world.
@@ -62,17 +62,39 @@ lessModalButtonAdd("mhm701", "Save", "_proj_rt_php_save()", "btn-inverse");
 
 function _proj_rt_php_save()
 {
-    var url = "/lesscreator/rt/gen-set?";
-    url += "proj=" + lessSession.Get("ProjPath");
-    url += "&runtime=php";
+    var req = "proj=" + lessSession.Get("ProjPath");
+    req += "&runtime=php";
 
     if ($("#hldp2x").is (':checked')) {
-        url += "&status=1";
+        req += "&status=1";
     } else {
-        url += "&status=0";
+        req += "&status=0";
     }
 
-    lessModalNext(url, "Runtime Environment Setting", null);
-}
+    $.ajax({ 
+        type    : "POST",
+        url     : "/lesscreator/rt/gen-set-do",
+        data    : req,
+        success : function(rsp) {
 
+            try {
+                var rsj = JSON.parse(rsp);
+            } catch (e) {
+                lessAlert("#k3bahm", "alert-error", "Error: Service Unavailable");
+                return;
+            }
+
+            if (rsj.status != 200) {
+                lessAlert("#k3bahm", "alert-error", rsj.message);
+                return;
+            }
+
+            lessAlert("#k3bahm", "alert-success", rsj.message);
+            _proj_rt_refresh();
+        },
+        error: function(xhr, textStatus, error) {
+            lessAlert("#k3bahm", "alert-error", textStatus+' '+xhr.responseText);
+        }
+    });
+}
 </script>

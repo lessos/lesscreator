@@ -153,7 +153,7 @@ lcEditor.LoadInstance = function(entry)
 
 
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
-    console.log(entry);
+    //console.log(entry);
 
     h5cTabletFrame[item.target].editor = CodeMirror(
         document.getElementById("h5c-tablet-body-"+ item.target), {

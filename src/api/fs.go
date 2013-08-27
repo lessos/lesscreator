@@ -229,19 +229,19 @@ func FsFileGet(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    file, err := fsFileGetRead(req.Data.Path)
+    file, status, err := fsFileGetRead(req.Data.Path)
     if err != nil {
-        rsp.Status = 500
+        rsp.Status = status
         rsp.Message = err.Error()
         return
     }
 
     rsp.Data = file
 
-    rsp.Status = 200
+    rsp.Status = status
 }
 
-func fsFileGetRead(path string) (FsFile, error) {
+func fsFileGetRead(path string) (FsFile, int, error) {
 
     var file FsFile
     file.Path = path
@@ -251,23 +251,23 @@ func fsFileGetRead(path string) (FsFile, error) {
 
     st, err := os.Stat(path)
     if os.IsNotExist(err) {
-        return file, errors.New("File Not Found")
+        return file, 404, errors.New("File Not Found")
     }
     file.Size = st.Size()
 
     if st.Size() > (2 * 1024 * 1024) {
-        return file, errors.New("File size is too large")
+        return file, 413, errors.New("File size is too large") // Request Entity Too Large
     }
 
     fp, err := os.OpenFile(path, os.O_RDWR, 0754)
     if err != nil {
-        return file, errors.New("File Can Not Open")
+        return file, 500, errors.New("File Can Not Open")
     }
     defer fp.Close()
 
     ctn, err := ioutil.ReadAll(fp)
     if err != nil {
-        return file, errors.New("File Can Not Readable")
+        return file, 500, errors.New("File Can Not Readable")
     }
     file.Body = string(ctn)
 
@@ -282,7 +282,7 @@ func fsFileGetRead(path string) (FsFile, error) {
     }
     file.Mime = ctype
 
-    return file, nil
+    return file, 200, nil
 }
 
 func FsFilePut(w http.ResponseWriter, r *http.Request) {
@@ -354,6 +354,8 @@ func fsFilePutWrite(file FsFile) error {
     }
     defer fp.Close()
 
+    fp.Seek(0, 0)
+    fp.Truncate(int64(len(file.Body)))
     if _, err = fp.Write([]byte(file.Body)); err != nil {
         return err
     }
@@ -660,6 +662,8 @@ func FsFileUpl(w http.ResponseWriter, r *http.Request) {
     }
     defer fp.Close()
 
+    fp.Seek(0, 0)
+    fp.Truncate(int64(len(data)))
     if _, err = fp.Write(data); err != nil {
         rsp.Status = 500
         rsp.Message = err.Error()
