@@ -214,6 +214,8 @@ lcEditor.LoadInstance = function(entry)
 
 lcEditor.Changed = function(urid)
 {
+    console.log("lcEditor.Changed:"+ urid);
+
     if (!h5cTabletPool[urid]) {
         return;
     }
@@ -230,7 +232,7 @@ lcEditor.Changed = function(urid)
         ctn1_src: h5cTabletFrame[item.target].editor.getValue(),
         ctn1_sum: lessCryptoMd5(h5cTabletFrame[item.target].editor.getValue()),
     }
-    console.log(entry);
+    //console.log(entry);
     lcData.Put("files", entry, null);
     $("#pgtab"+ urid +" .chg").show();
 }
@@ -241,12 +243,16 @@ lcEditor.SaveCurrent = function()
 }
 lcEditor.Save = function(urid, force)
 {
+    console.log("lcEditor.Save:"+ urid);
+
     if (!h5cTabletPool[urid]) {
+        console.log("lcEditor.Save, h5cTabletPool return");
         return;
     }
     var item = h5cTabletPool[urid];
     //console.log(item);
     if (urid != h5cTabletFrame[item.target].urid) {
+        console.log("lcEditor.Save, h5cTabletFrame return");
         return;
     }
 
@@ -256,6 +262,7 @@ lcEditor.Save = function(urid, force)
         $("#pgtab"+ urid +" .chg").hide();
         return;
     }
+    //console.log()
 
     var req = {
         path     : sessionStorage.ProjPath +"/"+ item.url,

@@ -130,7 +130,7 @@ function h5cTabOpen(uri, target, type, opt)
             'target' : target,
             'data'   : '',
             'type'   : type,
-            'mime'   : '',
+            //'mime'   : '',
         };
         for (i in opt) {
             h5cTabletPool[urid][i] = opt[i];
@@ -156,6 +156,8 @@ function h5cTabSwitch(urid)
         h5cTabletFrame[item.target].urid = 0;
     }
 
+    h5cTabletTitle(urid, true);
+
     switch (item.type) {
     case 'html':
         if (item.data.length < 1) {
@@ -166,7 +168,7 @@ function h5cTabSwitch(urid)
                 success : function(rsp) {
                     
                     h5cTabletPool[urid].data = rsp;
-                    h5cTabletTitle(urid);
+                    h5cTabletTitleImage(urid);
                     h5cTabletFrame[item.target].urid = urid;
                    
                     $("#h5c-tablet-toolbar-"+ item.target).empty();
@@ -178,7 +180,7 @@ function h5cTabSwitch(urid)
                 }
             });
         } else {
-            h5cTabletTitle(urid);
+            h5cTabletTitleImage(urid);
             h5cTabletFrame[item.target].urid = urid;
             
             $("#h5c-tablet-toolbar-"+ item.target).empty();
@@ -190,7 +192,7 @@ function h5cTabSwitch(urid)
     case 'editor':
         
         if (lcEditor.TabletOpen(urid)) {
-            h5cTabletTitle(urid);
+            h5cTabletTitleImage(urid);
             h5cTabletFrame[item.target].urid = urid;
         }
 
@@ -201,7 +203,22 @@ function h5cTabSwitch(urid)
     }
 }
 
-function h5cTabletTitle(urid)
+function h5cTabletTitleImage(urid, imgsrc)
+{
+    var item = h5cTabletPool[urid];
+    if (!item.img) {
+        return;
+    }
+
+    var imgsrc = "/lesscreator/static/img/"+item.img+".png";
+    if (item.img.slice(0, 1) == '/') {
+        imgsrc = item.img;
+    }
+
+    $("#pgtab"+ urid +" .ico img").attr("src", imgsrc);
+}
+
+function h5cTabletTitle(urid, loading)
 {
     var item = h5cTabletPool[urid];
     
@@ -216,8 +233,15 @@ function h5cTabletTitle(urid)
         }
 
         entry  = '<table id="pgtab'+urid+'" class="pgtab"><tr>';
+        
         if (item.img) {
-            var imgsrc = "/lesscreator/static/img/"+item.img+".png";
+            
+            if (loading) {
+                var imgsrc = "/lesscreator/static/img/loading4.gif";
+            } else {
+                var imgsrc = "/lesscreator/static/img/"+item.img+".png";
+            }
+            //
             if (item.img.slice(0, 1) == '/') {
                 imgsrc = item.img;
             }
