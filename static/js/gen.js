@@ -256,7 +256,7 @@ function h5cTabletTitle(urid, loading)
         entry += "<td class=\"pgtabtitle\" onclick=\"h5cTabSwitch('"+urid+"')\">"+item.title+"</td>";
         
         if (item.close) {
-            entry += '<td class="close"><a href="javascript:h5cTabClose(\''+urid+'\')">×</a></td>';
+            entry += '<td><span class="close" onclick="lcTabClose(\''+urid+'\')">&times;</span></td>';
         }
         entry += '</tr></table>';
         $("#h5c-tablet-tabs-"+ item.target).append(entry);            
@@ -280,10 +280,13 @@ function h5cTabletTitle(urid, loading)
     pgl = $('#h5c-tablet-tabs-'+ item.target +' .pgtab').last().position().left 
             + $('#h5c-tablet-tabs-'+ item.target +' .pgtab').last().outerWidth(true);
     
-    if (pgl > pg)
-        $('#h5c-tablet-frame'+ item.target +' .pgtab_more').show();
-    else
-        $('#h5c-tablet-frame'+ item.target +' .pgtab_more').hide();
+    if (pgl > pg) {
+        //$('#h5c-tablet-frame'+ item.target +' .pgtab_more').show();
+        $('#h5c-tablet-frame'+ item.target +' .pgtab_more').html("»");
+    } else {
+        //$('#h5c-tablet-frame'+ item.target +' .pgtab_more').hide();
+        $('#h5c-tablet-frame'+ item.target +' .pgtab_more').empty();
+    }
 
     $('#h5c-tablet-frame'+ item.target +' .h5c_tablet_tabs').animate({left: "-"+mov+"px"}); // COOL!
 }
@@ -303,7 +306,7 @@ function h5cTabletMore(tg)
         ol += '<div class="lcctn"><a href="'+ href +'">'+ h5cTabletPool[i].title +'</a></div>';
         ol += '</div>';
     }
-    $('.pgtab-openfiles-ol').html(ol);
+    $('.pgtab-openfiles-ol').empty().html(ol);
     
     e = lessPosGet();
     w = 100;
@@ -316,7 +319,7 @@ function h5cTabletMore(tg)
         top: (e.top + 10)+'px',
         left: (e.left - w - 10)+'px'
     }).toggle();
-    
+
     rw = $('.pgtab-openfiles-ol').outerWidth(true);   
     if (rw > 400) {
         $('.pgtab-openfiles-ol').css({
@@ -344,22 +347,36 @@ function h5cTabletMore(tg)
 }
 
 
-function h5cTabClose(urid)
+function lcTabClose(urid)
 {
     var item = h5cTabletPool[urid];
-    
+
     switch (item.type) {
     case 'html':
         $("#h5c-tablet-body-"+ item.target).empty();
         break;
     case 'editor':
-        $("#h5c-tablet-body-"+ item.target).empty();
-        lcEditor.Close(urid);
+
+        lcEditor.IsSaved(urid, function(ret) {
+            if (!ret) {
+                
+                //Save changes to document "tmp" before closing?
+
+                lessModalOpen("/lesscreator/editor/changes2save?urid="+ urid, 
+                    1, 500, 150, 'Save changes before closing', null);
+            }
+        });
+
+        //$("#h5c-tablet-body-"+ item.target).empty();
+        //lcEditor.Close(urid);
         break;
     default :
         return;
     }
+}
 
+function _lcTabCloseClean(urid)
+{
     var j = 0;
     for (var i in h5cTabletPool) {
 
@@ -373,8 +390,17 @@ function h5cTabClose(urid)
         }
 
         if (i == urid) {
-            $('#pgtab'+urid).remove();
+            $('#pgtab'+ urid).remove();
             delete h5cTabletPool[urid];
+
+            lcData.Del("files", urid, function(rs) {
+                if (rs) {
+                    console.log("ok");
+                } else {
+                    console.log("err");
+                }
+                //console.log("del: "+ rs);
+            });
             if (urid != h5cTabletFrame[item.target].urid) {
                 return;
             }            
@@ -605,6 +631,8 @@ lcData.Put = function(tbl, entry, cb)
     if (lcData.db == null) {
         return;
     }
+
+    console.log("put: "+ entry.id);
 
     var req = lcData.db.transaction([tbl], "readwrite").objectStore(tbl).put(entry);
 

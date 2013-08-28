@@ -721,15 +721,14 @@ textarea {
 }
 .h5c_tablet_tabs .pgtab {
     display: inline-block; position: relative;
-    height: 23px; font-size: 13px; line-height: 20px; 
-    color: #000; padding: 2px 2px 0 5px; max-width: 300px; margin-right: 0px;
+    height: 23px; font-size: 13px; line-height: 20px;
+    color: #000; padding: 2px 2px 0 5px;
+    max-width: 300px; margin-right: 0px;
     overflow: hidden; 
     text-decoration: none; text-overflow: ellipsis; white-space: nowrap;
     border-left: 1px solid transparent;
     border-right: 1px solid #c6c7c9;
-    -moz-border-top-right-radius: 4px;
-    -webkit-border-top-right-radius: 4px;
-    border-top-right-radius: 4px;
+    border-top-right-radius: 6px;
 }
 .h5c_tablet_tabs .pgtab a {
     color: #000;
@@ -751,32 +750,39 @@ textarea {
     color: #db4a37; cursor: pointer;
 }
 .h5c_tablet_tabs .pgtab .chg {
-    color: #db4a37; width: 8px; display: none; text-align: center;
+    color: #db4a37; width: 8px;
+    display: none; text-align: center;
 }
 .h5c_tablet_tabs .pgtab .chglight {
     color: #db4a37;
 }
 .h5c_tablet_tabs .pgtab .close {
-    float: right; width: 14px; display: inline-block; text-align: center;
+    float: right; margin-top: 1px; display: block;
+    width: 16px; height: 16px;    
+    line-height: 16px;    
+    text-align: center;
+    border-radius: 16px;
+    font-size: 14px; font-weight: bold;
+    color: #000;
 }
-.h5c_tablet_tabs .pgtab .close a {
-    text-decoration: none;
-    font-weight: bold; font-size: 14px;
-}
-.h5c_tablet_tabs .pgtab .close a:hover {
-    color: #db4a37; cursor: pointer;
+.h5c_tablet_tabs .pgtab .close:hover {
+    color: #db4336;
+    background: #edc2bf;
+    cursor: pointer;
 }
 .h5c_tablet_tabs_lr .pgtab_more {
     float: left; font-size: 18px; font-weight: bold;
     width: 20px; text-align: center;
     cursor: pointer; z-index: 100;
-    display: none;
 }
 .h5c_tablet_tabs .pgtab_more_ol {
     position: absolute;
 }
 .h5c_tablet_body {
     overflow: auto;
+}
+.pgtab-openfiles-ol {
+    border-radius: 5px;
 }
 
 .h5c_row_fluid {

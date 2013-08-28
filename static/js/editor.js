@@ -244,15 +244,53 @@ lcEditor.Changed = function(urid)
         ctn1_sum: lessCryptoMd5(h5cTabletFrame[item.target].editor.getValue()),
     }
     //console.log(entry);
-    lcData.Put("files", entry, null);
+    lcData.Put("files", entry, function(ret) {
+        // TODO
+    });
     $("#pgtab"+ urid +" .chg").show();
+    $("#pgtab"+ urid +" .pgtabtitle").addClass("chglight");
 }
 
 lcEditor.SaveCurrent = function()
 {
     lcEditor.Save(h5cTabletFrame["w0"].urid, 1);
 }
+lcEditor.EntrySave = function(urid, cb)
+{
+    lcData.Get("files", urid, function(ret) {
 
+        if (urid != ret.id) {
+            cb(true);
+            return;
+        }
+        
+        var item = h5cTabletPool[urid];
+
+        var req = {
+        data : {
+            urid     : urid,
+            path     : sessionStorage.ProjPath +"/"+ item.url,
+            body     : h5cTabletFrame[item.target].editor.getValue(),
+            sumcheck : hash,
+        }
+        }
+
+        if (urid == h5cTabletFrame[item.target].urid) {
+            
+            var ctn = h5cTabletFrame[item.target].editor.getValue();
+            if (ctn == ret.ctn0_src) {
+                cb(true);
+                return;
+            }
+
+
+        }
+
+        if (ret.id == urid) {
+
+        }
+    });
+}
 lcEditor.Save = function(urid, force)
 {
     //console.log("lcEditor.Save:"+ urid);
@@ -272,6 +310,7 @@ lcEditor.Save = function(urid, force)
     if (hash == item.hash) {
         //console.log("Nothing change, skip ~");
         $("#pgtab"+ urid +" .chg").hide();
+        $("#pgtab"+ urid +" .pgtabtitle").removeClass("chglight");
         return;
     }
     //console.log()
@@ -282,7 +321,7 @@ lcEditor.Save = function(urid, force)
             path     : sessionStorage.ProjPath +"/"+ item.url,
             body     : h5cTabletFrame[item.target].editor.getValue(),
             sumcheck : hash,
-        }        
+        }
     }
 
     if (lcEditor.WebSocket == null) {
@@ -324,6 +363,8 @@ lcEditor.Save = function(urid, force)
                     lcData.Put("files", entry, null);
 
                     $("#pgtab"+ obj.data.urid +" .chg").hide();
+                    $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
+
                     hdev_header_alert('success', "OK");
 
                     //h5cTabletPool[urid].hash = obj.sumcheck;
@@ -347,6 +388,19 @@ lcEditor.Save = function(urid, force)
         //console.log(JSON.stringify(req));
         lcEditor.WebSocket.send(JSON.stringify(req));
     }
+}
+
+
+lcEditor.IsSaved = function(urid, cb)
+{
+    lcData.Get("files", urid, function(ret) {
+
+        if (ret.id == urid && ret.ctn0_sum != ret.ctn1_sum) {
+            cb(false);
+        } else {
+            cb(true);
+        }
+    });
 }
 
 lcEditor.Close = function(urid)

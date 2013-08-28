@@ -469,7 +469,7 @@ function hdev_pgtabs_switch(id)
 
     $('.hcr-pgtabs').animate({left: "-"+mov+"px"}); // COOL!
 }
-
+/*
 function hdev_pgtab_openfiles()
 {
     var ol = '';    
@@ -524,6 +524,7 @@ function hdev_pgtab_openfiles()
         $('.pgtab-openfiles-ol').hide();
     });
 }
+*/
 /*
 
 var search_state_query   = null;
