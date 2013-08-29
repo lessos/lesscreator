@@ -89,13 +89,24 @@ echo "sessionStorage.ProjPath = '{$projPath}';";
 echo "sessionStorage.ProjId = '{$projInfo['projid']}';";
 ?>
 
+$(document).click(function(event) {
+
+    // Mark the last active project path
+    //  will be used in launch the enter project after user signed
+    //  or recover the status after browser crashed
+    var suser = lessSession.Get("SessUser");
+    if (lessLocalStorage.Get(suser +"LastProjPath") != sessionStorage.ProjPath) {
+        lessLocalStorage.Set(suser +"LastProjPath") = sessionStorage.ProjPath;
+    }
+});
+
 function _proj_nav_open(plg)
 {
     $.ajax({
         type    : "GET",
         url     : '/lesscreator/proj/'+ plg +'/index?proj='+ projCurrent,
         success : function(rsp) {
-            
+
             $("#_proj_inlet_body").html(rsp);
             
             if (sessionStorage.ProjNavLast != plg) {
@@ -122,4 +133,33 @@ $('._proj_tab_href').click(function() {
     _proj_nav_open(url);
 });
 
+
+var _proj_tab_active = false;
+
+lcData.Query("files", "projdir", sessionStorage.ProjPath, function(ret) {
+    
+    if (ret == null) {
+        return;
+    }
+    
+    var opt = {close: 1};
+
+    if (ret.value.id) {
+
+        if (ret.value.icon) {
+            opt.img = ret.value.icon;
+        }       
+
+        if (!_proj_tab_active || 
+            lessLocalStorage.Get("tab.fra.urid.w0") == ret.value.id) {
+            _proj_tab_active = true;
+        } else {
+            opt.titleonly = true;            
+        }
+
+        h5cTabOpen(ret.value.filepth, "w0", "editor", opt);
+    }
+
+    ret.continue();
+});
 </script>

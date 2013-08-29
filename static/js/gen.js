@@ -114,6 +114,7 @@ var h5cTabletPool = {};
 
 function h5cTabOpen(uri, target, type, opt)
 {
+    //console.log("BBB:"+ uri);
     var urid = lessCryptoMd5(uri);
 
     if (!h5cTabletFrame[target]) {
@@ -156,6 +157,12 @@ function h5cTabSwitch(urid)
 
     h5cTabletTitle(urid, true);
 
+    if (item.titleonly) {
+        h5cTabletTitleImage(urid);
+        h5cTabletPool[urid].titleonly = false;
+        return;
+    }
+
     switch (item.type) {
     case 'html':
         if (item.data.length < 1) {
@@ -168,7 +175,7 @@ function h5cTabSwitch(urid)
                     h5cTabletPool[urid].data = rsp;
                     h5cTabletTitleImage(urid);
                     h5cTabletFrame[item.target].urid = urid;
-                   
+
                     $("#h5c-tablet-toolbar-"+ item.target).empty();
                     $("#h5c-tablet-body-"+ item.target).empty().html(rsp);
                     h5cLayoutResize();
@@ -188,7 +195,8 @@ function h5cTabSwitch(urid)
         break;
 
     case 'editor':
-        
+        //console.log("AABB");
+
         lcEditor.TabletOpen(urid, function(ret) {
             
             if (!ret) {
@@ -198,6 +206,7 @@ function h5cTabSwitch(urid)
             //console.log("lcEditor.TabletOpen OK");
             h5cTabletTitleImage(urid);
             h5cTabletFrame[item.target].urid = urid;
+            lessLocalStorage.Set("tab.fra.urid."+ item.target, urid);
         });
 
         break;
@@ -262,9 +271,10 @@ function h5cTabletTitle(urid, loading)
         $("#h5c-tablet-tabs-"+ item.target).append(entry);            
     }
 
-    $('#h5c-tablet-tabs-'+ item.target +' .pgtab.current').removeClass('current');
-    $('#pgtab'+ urid).addClass("current");
-    
+    if (!item.titleonly) {
+        $('#h5c-tablet-tabs-'+ item.target +' .pgtab.current').removeClass('current');
+        $('#pgtab'+ urid).addClass("current");
+    }
    
     pg = $('#h5c-tablet-tabs-frame'+ item.target +' .h5c_tablet_tabs_lm').innerWidth();
     //console.log("h5c-tablet-tabs t*"+ pg);
@@ -512,13 +522,20 @@ function h5cLayoutResize()
 
 function h5cProjectOpen(proj)
 {   
-    if (!proj) {
+    var suser = lessSession.Get("SessUser");
 
-        proj = lessLocalStorage.Set(lessSession.Get("sess.user") +".lastproj");
-        if (!proj) {
-            lessModalOpen("/lesscreator/app/well", 1, 700, 400, "Start a Project from ...", null);
-            return;
-        }
+    if (!proj) {
+        proj = lessLocalStorage.Get(suser +"LastProjPath");
+    }
+
+    if (!proj) {
+        proj = lessSession.Get("ProjPath");
+    }
+
+    if (!proj) {
+        lessModalOpen("/lesscreator/app/well", 1, 700, 400,
+            "Start a Project from ...", null);
+        return;
     }
 
     var uri = "basedir="+ lessSession.Get("basedir");
@@ -541,7 +558,7 @@ function h5cProjectOpen(proj)
     projCurrent = proj;
     
     lessSession.Set("ProjPath", proj);
-    lessLocalStorage.Set(lessSession.Get("sess.user") +".lastproj", proj);
+    lessLocalStorage.Set(suser +"LastProjPath", proj);
 
     h5cLayoutResize();
 }
@@ -685,6 +702,22 @@ lcData.Get = function(tbl, key, cb)
 
     req.onerror = function(event) {
         cb(req.result);
+    }
+}
+
+lcData.Query = function(tbl, column, value, cb)
+{
+    if (lcData.db == null) {
+        return;
+    }
+    var req = lcData.db.transaction([tbl]).objectStore(tbl).index(column).openCursor();
+
+    req.onsuccess = function(event) {
+        cb(event.target.result);
+    };
+
+    req.onerror = function(event) {
+        //
     }
 }
 

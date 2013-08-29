@@ -111,7 +111,7 @@ if (!Session::IsLogin()) {
                 <div id="h5c-tablet-tabs-t0" class="h5c_tablet_tabs"></div>
               </div>
               <div class="h5c_tablet_tabs_lr">
-                <div class="pgtab_more" onclick="h5cTabletMore('t0')">»</div>
+                <div class="pgtab_more" onclick="h5cTabletMore('t0')"></div>
               </div>
             </div>
 
@@ -154,7 +154,7 @@ if (!Session::IsLogin()) {
                 <div id="h5c-tablet-tabs-w0" class="h5c_tablet_tabs"></div>
               </div>
               <div class="h5c_tablet_tabs_lr">
-                <div class="pgtab_more lc_pgtab_more" href="#w0">»</div>
+                <div class="pgtab_more lc_pgtab_more" href="#w0"></div>
               </div>
             </div>
 

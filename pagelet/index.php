@@ -11,7 +11,7 @@ if (!Session::IsLogin()) {
 <head>
   <meta charset="utf-8">
   <title>lessCreator</title>
-  <script src="/lesscreator/static/js/sea.js"></script>
+  <script src="/lessui/js/sea.js"></script>
   <script src="/jquery/jquery-2.0.min.js"></script>
   <script src="/lessui/js/BrowserDetect.js"></script>
 
@@ -152,8 +152,7 @@ function _load_deps()
         "/codemirror3/addon/hint/javascript-hint.js",
     ];
 
-    //var jall = rqs.length + 1;
-    seajs.use(rqs, function(){
+    seajs.use(rqs, function() {
         $(".load-progress-num").css({"width": "90%"});
         setTimeout(_load_sys_config, _load_sleep);
     });
@@ -189,14 +188,13 @@ function _load_sys_config()
             if (rsj.status == 401) {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
                 lessAlert("#_load-alert", "alert-error", "Error: Unauthorized, <a href='/user'>try login again</a>");
-            } else if (rsj.status == 200) {                
+            } else if (rsj.status == 200) {
 
                 lessSession.Set("basedir", rsj.data.basedir);
                 lessCookie.Set("basedir", rsj.data.basedir, 0);
-                lessSession.Set("sess.user", rsj.data.user);
+                lessSession.Set("SessUser", rsj.data.user);
 
                 lcData.Init(rsj.data.user);
-                lessSession.Set("sess.user", rsj.data.user);
 
                 $.ajax({
                     url     : "/lesscreator/desk?basedir="+ rsj.data.basedir,
@@ -206,7 +204,7 @@ function _load_sys_config()
 
                         $(".load-progress-num").css({"width": "100%"});
 
-                        setTimeout(function(){
+                        setTimeout(function() {
                             $('body').html(rsp);
                             _env_init();
                         }, _load_sleep);
@@ -234,7 +232,7 @@ function _env_init()
     lcInitSetting();
 
     window.onbeforeunload = function() {
-        //lessLocalStorage.Set(lessSession.Get("sess.user") +".lastproj", proj);
+        //lessLocalStorage.Set(lessSession.Get("SessUser") +".lastproj", proj);
         //return "Leave the page and lose your changes?";
     }
 

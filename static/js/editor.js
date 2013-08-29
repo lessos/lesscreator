@@ -31,11 +31,11 @@ lcEditor.TabletOpen = function(urid, callback)
         callback(true);
     }
 
-    //console.log(urid);
+    //console.log("TabletOpen:"+ urid);
 
     lcData.Get("files", urid, function(ret) {
 
-        if (ret == true && urid == ret.id) {
+        if (ret && urid == ret.id) {
 
             //h5cTabletPool[urid].data = ret.ctn1_src;
             //h5cTabletPool[urid].hash = lessCryptoMd5(ret.ctn1_src);
@@ -83,13 +83,17 @@ lcEditor.TabletOpen = function(urid, callback)
 
                     var entry = {
                         id       : urid,
+                        projdir  : lessSession.Get("ProjPath"),
+                        filepth  : item.url,
                         ctn0_src : obj.data.body,
                         ctn0_sum : lessCryptoMd5(obj.data.body),
                         ctn1_src : "",
                         ctn1_sum : "",
                         mime     : obj.data.mime,
                     }
-                    //console.log(entry);
+                    if (item.img) {
+                        entry.icon = item.img;
+                    }
 
                     lcData.Put("files", entry, function(ret) {
                         if (ret) {
