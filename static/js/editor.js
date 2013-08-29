@@ -12,6 +12,16 @@ lcEditor.Config = {
     'codeFolding'   : false,
     'fontSize'      : 13,
 };
+lcEditor.MessageReply = function(cb, msg)
+{
+    if (cb != null && cb.length > 0) {
+        eval(cb +"(msg)");
+    }
+}
+lcEditor.MessageReplyStatus = function(cb, status, message)
+{
+    lcEditor.MessageReply(cb, {status: status, message: message});
+}
 
 lcEditor.TabletOpen = function(urid, callback)
 {
@@ -32,6 +42,7 @@ lcEditor.TabletOpen = function(urid, callback)
                 
             lcEditor.LoadInstance(ret);
             callback(true);
+            return;
         }
 
 
@@ -47,7 +58,7 @@ lcEditor.TabletOpen = function(urid, callback)
             }
         }
         $.ajax({
-            url     : '/lesscreator/api?func=fs-file-get?_='+ Math.random(),
+            url     : '/lesscreator/api?func=fs-file-get&_='+ Math.random(),
             type    : "POST",
             timeout : 30000,
             data    : JSON.stringify(req),
@@ -59,6 +70,7 @@ lcEditor.TabletOpen = function(urid, callback)
                     //lessAlert("#_load-alert", "alert-error", "Error: Service Unavailable ("+url+")");
                     // TODO
                     callback(false);
+                    return;
                 }
 
                 if (obj.status == 200) {
@@ -160,7 +172,6 @@ lcEditor.LoadInstance = function(entry)
         $("#h5c-tablet-toolbar-"+ item.target).empty();
     }
 
-
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
     //console.log(entry);
 
@@ -185,7 +196,7 @@ lcEditor.LoadInstance = function(entry)
             }},
             "Shift-Space": "autocomplete",
             "Ctrl-S": function() {
-                lcEditor.Save(entry.id, 1);
+                lcEditor.EntrySave(entry.id, null);
                 //console.log("ctrl-s"+ entry.id);
             }
         }
@@ -255,42 +266,145 @@ lcEditor.SaveCurrent = function()
 {
     lcEditor.Save(h5cTabletFrame["w0"].urid, 1);
 }
+
 lcEditor.EntrySave = function(urid, cb)
 {
     lcData.Get("files", urid, function(ret) {
 
         if (urid != ret.id) {
-            cb(true);
-            return;
+            return lcEditor.MessageReplyStatus(cb, 200, null);
         }
-        
-        var item = h5cTabletPool[urid];
 
         var req = {
-        data : {
-            urid     : urid,
-            path     : sessionStorage.ProjPath +"/"+ item.url,
-            body     : h5cTabletFrame[item.target].editor.getValue(),
-            sumcheck : hash,
-        }
+            data : {
+                urid     : urid,
+                path     : ret.projdir +"/"+ ret.filepth,
+                body     : null,
+                sumcheck : null,
+            }
         }
 
+        var item = h5cTabletPool[urid];
         if (urid == h5cTabletFrame[item.target].urid) {
             
             var ctn = h5cTabletFrame[item.target].editor.getValue();
             if (ctn == ret.ctn0_src) {
-                cb(true);
-                return;
+                return lcEditor.MessageReplyStatus(cb, 200, null);
             }
 
+            req.data.body = ctn;
+            req.data.sumcheck = lessCryptoMd5(ctn);
 
+        } else if (ret.ctn1_src != ret.ctn0_src) {
+
+            req.data.body = ret.ctn1_src;
+            req.data.sumcheck = ret.ctn1_sum;
+        
+        } else if (ret.ctn1_src == ret.ctn0_src) {
+
+            //console.log("lcEditor.EntrySave 2");
+            return lcEditor.MessageReplyStatus(cb, 200, null);
         }
 
-        if (ret.id == urid) {
-
-        }
+        //console.log("lcEditor.EntrySave 4"+ JSON.stringify(req));
+        
+        req.msgreply = cb;
+        lcEditor.WebSocketSend(req);
     });
 }
+
+lcEditor.WebSocketSend = function(req)
+{
+    //console.log(req);
+
+    if (lcEditor.WebSocket == null) {
+
+        //console.log("lcEditor.WebSocket == null");
+
+        if (!("WebSocket" in window)) {
+            hdev_header_alert('error', 'WebSocket Open Failed');
+            return;
+        }
+
+        try {
+
+            lcEditor.WebSocket = new WebSocket(lcEditor.SaveAPI);
+
+            lcEditor.WebSocket.onopen = function() {
+                //console.log("connected to " + wsuri);
+                //console.log("ws.send: "+ JSON.stringify(req));
+                lcEditor.WebSocket.send(JSON.stringify(req));
+            }
+
+            lcEditor.WebSocket.onclose = function(e) {
+                //console.log("connection closed (" + e.code + ")");
+                lcEditor.WebSocket = null;
+            }
+
+            lcEditor.WebSocket.onmessage = function(e) {
+
+                //console.log("on onmessage ...");
+
+                var obj = JSON.parse(e.data);
+                
+                if (obj.status == 200) {
+                    
+                    //console.log("onmessage ok"+ obj.data.urid);
+
+                    var entry = {
+                        id      : obj.data.urid,
+                        //projdir : lessSession.Get("ProjPath"),
+                        //filepth : item.url,
+                        ctn1_src: "",
+                        ctn1_sum: "",
+                    }
+
+                    lcData.Put("files", entry, function(ret) {
+
+                        //console.log("onmessage ok 2");
+
+                        if (!ret) {
+                            lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
+                            return;
+                        }
+
+                        ///console.log("onmessage ok 3");
+                        $("#pgtab"+ obj.data.urid +" .chg").hide();
+                        $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
+
+                        hdev_header_alert('success', "OK");
+
+                        lcEditor.MessageReply(obj.msgreply, obj);
+
+                        //console.log(obj);
+                    });
+
+                    //h5cTabletPool[urid].hash = obj.sumcheck;
+
+                } else {
+                    //console.log("onmessage errot");
+                    hdev_header_alert('error', obj.message);
+
+                    lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
+                }
+
+                //if ($("#vtknd6").length == 0) {
+                //    lcEditor.WebSocket.close();
+                //}
+            }
+
+        } catch(e) {
+            //console.log("message open failed: "+ e);
+            return;
+        }
+
+    } else {
+
+        //console.log("ws.send"+ JSON.stringify(req));
+        lcEditor.WebSocket.send(JSON.stringify(req));
+    }
+}
+/*
 lcEditor.Save = function(urid, force)
 {
     //console.log("lcEditor.Save:"+ urid);
@@ -360,12 +474,14 @@ lcEditor.Save = function(urid, force)
                         ctn1_src: "",
                         ctn1_sum: "",
                     }
-                    lcData.Put("files", entry, null);
 
-                    $("#pgtab"+ obj.data.urid +" .chg").hide();
-                    $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
+                    lcData.Put("files", entry, function(ret) {
 
-                    hdev_header_alert('success', "OK");
+                        $("#pgtab"+ obj.data.urid +" .chg").hide();
+                        $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
+
+                        hdev_header_alert('success', "OK");
+                    });
 
                     //h5cTabletPool[urid].hash = obj.sumcheck;
 
@@ -389,13 +505,15 @@ lcEditor.Save = function(urid, force)
         lcEditor.WebSocket.send(JSON.stringify(req));
     }
 }
-
+*/
 
 lcEditor.IsSaved = function(urid, cb)
 {
     lcData.Get("files", urid, function(ret) {
 
-        if (ret.id == urid && ret.ctn0_sum != ret.ctn1_sum) {
+        if (ret.id == urid 
+            && ret.ctn1_sum.length > 30 
+            && ret.ctn0_sum != ret.ctn1_sum) {
             cb(false);
         } else {
             cb(true);
@@ -403,6 +521,7 @@ lcEditor.IsSaved = function(urid, cb)
     });
 }
 
+/* 
 lcEditor.Close = function(urid)
 {
     var item = h5cTabletPool[urid];
@@ -419,6 +538,7 @@ lcEditor.Close = function(urid)
 
 //    h5cLayoutResize();
 }
+*/
 
 lcEditor.ConfigSet = function(key, val)
 {
