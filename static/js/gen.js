@@ -203,7 +203,7 @@ function h5cTabSwitch(urid)
                 return;
             }
 
-            //console.log("lcEditor.TabletOpen OK");
+            console.log("lcEditor.TabletOpen OK");
             h5cTabletTitleImage(urid);
             h5cTabletFrame[item.target].urid = urid;
             lessLocalStorage.Set("tab.fra.urid."+ item.target, urid);

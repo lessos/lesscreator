@@ -135,6 +135,7 @@ $('._proj_tab_href').click(function() {
 
 
 var _proj_tab_active = false;
+var _proj_tab_last = lessLocalStorage.Get("tab.fra.urid.w0");
 
 lcData.Query("files", "projdir", sessionStorage.ProjPath, function(ret) {
     
@@ -150,9 +151,9 @@ lcData.Query("files", "projdir", sessionStorage.ProjPath, function(ret) {
             opt.img = ret.value.icon;
         }       
 
-        if (!_proj_tab_active || 
-            lessLocalStorage.Get("tab.fra.urid.w0") == ret.value.id) {
+        if (!_proj_tab_active || _proj_tab_last == ret.value.id) {
             _proj_tab_active = true;
+            console.log("real open:"+ ret.value.filepth);
         } else {
             opt.titleonly = true;            
         }
