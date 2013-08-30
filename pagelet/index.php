@@ -194,26 +194,14 @@ function _load_sys_config()
                 lessCookie.Set("basedir", rsj.data.basedir, 0);
                 lessSession.Set("SessUser", rsj.data.user);
 
-                lcData.Init(rsj.data.user);
-
-                $.ajax({
-                    url     : "/lesscreator/desk?basedir="+ rsj.data.basedir,
-                    type    : "GET",
-                    timeout : 30000,
-                    success : function(rsp) {
-
-                        $(".load-progress-num").css({"width": "100%"});
-
-                        setTimeout(function() {
-                            $('body').html(rsp);
-                            _env_init();
-                        }, _load_sleep);
-                    },
-                    error: function(xhr, textStatus, error) {
-                        $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                        lessAlert("#_load-alert", "alert-error", "Initializing System Environment. Error!");
+                lcData.Init(rsj.data.user, function(ret) {
+                    if (!ret) {
+                        return lessAlert("#_load-alert", "alert-error", "Error: Local database (IndexedDB) initialization failed");
                     }
+                    _load_desk(rsj.data.basedir);
                 });
+
+                
 
             } else {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
@@ -223,6 +211,28 @@ function _load_sys_config()
         error: function(xhr, textStatus, error) {
             $(".load-progress").removeClass("progress-success").addClass("progress-danger");
             lessAlert("#_load-alert", "alert-error", "Error: Service Unavailable");
+        }
+    });
+}
+
+function _load_desk(basedir)
+{
+    $.ajax({
+        url     : "/lesscreator/desk?basedir="+ basedir,
+        type    : "GET",
+        timeout : 30000,
+        success : function(rsp) {
+
+            $(".load-progress-num").css({"width": "100%"});
+
+            setTimeout(function() {
+                $('body').html(rsp);
+                _env_init();
+            }, _load_sleep);
+        },
+        error: function(xhr, textStatus, error) {
+            $(".load-progress").removeClass("progress-success").addClass("progress-danger");
+            lessAlert("#_load-alert", "alert-error", "Initializing System Environment. Error!");
         }
     });
 }

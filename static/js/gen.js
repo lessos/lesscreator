@@ -632,16 +632,18 @@ lcData.schema = [
         idx: ["type"]
     }
 ];
-lcData.Init = function(dbname)
+lcData.Init = function(dbname, cb)
 {
     var req = indexedDB.open(dbname, lcData.version);  
 
     req.onsuccess = function (event) {
         lcData.db = event.target.result;
+        cb(true);
     };
 
     req.onerror = function (event) {
         console.log("IndexedDB error: " + event.target.errorCode);
+        cb(true);
     };
 
     req.onupgradeneeded = function (event) {
@@ -662,6 +664,7 @@ lcData.Init = function(dbname)
                 objectStore.createIndex(tbl.idx[j], tbl.idx[j], {unique: false});
             }
         }
+        cb(true);
     };
 }
 
@@ -708,6 +711,7 @@ lcData.Get = function(tbl, key, cb)
 lcData.Query = function(tbl, column, value, cb)
 {
     if (lcData.db == null) {
+        console.log("lcData is NULL");
         return;
     }
     var req = lcData.db.transaction([tbl]).objectStore(tbl).index(column).openCursor();
