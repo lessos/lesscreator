@@ -471,10 +471,10 @@ function h5cLayoutResize()
     }
 
     var colt_w = (bw - (3 * spacecol)) * toset;
-    if (colt_w < 350) {
-        colt_w = 350;
-    } else if ((colt_w + 350) > bw) {
-        colt_w = bw - 350;
+    if (colt_w < 300) {
+        colt_w = 300;
+    } else if ((colt_w + 300) > bw) {
+        colt_w = bw - 300;
     }
     colw_w = (bw - (3 * spacecol)) - colt_w;
     $('#h5c-lyo-col-t').width(colt_w);
@@ -632,16 +632,18 @@ lcData.schema = [
         idx: ["type"]
     }
 ];
-lcData.Init = function(dbname)
+lcData.Init = function(dbname, cb)
 {
     var req = indexedDB.open(dbname, lcData.version);  
 
     req.onsuccess = function (event) {
         lcData.db = event.target.result;
+        cb(true);
     };
 
     req.onerror = function (event) {
         console.log("IndexedDB error: " + event.target.errorCode);
+        cb(true);
     };
 
     req.onupgradeneeded = function (event) {
@@ -662,6 +664,7 @@ lcData.Init = function(dbname)
                 objectStore.createIndex(tbl.idx[j], tbl.idx[j], {unique: false});
             }
         }
+        cb(true);
     };
 }
 
@@ -708,6 +711,7 @@ lcData.Get = function(tbl, key, cb)
 lcData.Query = function(tbl, column, value, cb)
 {
     if (lcData.db == null) {
+        console.log("lcData is NULL");
         return;
     }
     var req = lcData.db.transaction([tbl]).objectStore(tbl).index(column).openCursor();

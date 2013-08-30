@@ -149,9 +149,8 @@ textarea {
     position: absolute; top: 5px; left: 42px;
     line-height: 24px;
     font-size: 24px;
-    color: #333;
+    color: #63666a;
     font-family: Helvetica !important;
-    font-weight: bold;
 }
 
 .hdev-header-alert {
@@ -883,10 +882,9 @@ ul.h5c_navtabs {
     line-height: 100%;
 }
 .h5c_tab_subnav a {
-  margin-right: 10px;
   padding: 4px;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 10px;
 }
 .h5c_tab_subnav a:hover,
 .h5c_tab_subnav a:focus {
