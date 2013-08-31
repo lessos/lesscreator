@@ -565,13 +565,15 @@ function h5cProjectOpen(proj)
 
 function h5cProjOpenDialog()
 {
-    lessModalOpen('/lesscreator/proj/open-recent?basedir='+ lessSession.Get("basedir"), 1, 800, 450, 'Open Project', null);
+    lessModalOpen('/lesscreator/proj/open-recent?basedir='+ lessSession.Get("basedir"), 1, 900, 450, 'Open Project', null);
 }
 
-function h5cProjNewDialog()
+function lcProjNew()
 {
-    lessModalOpen('/lesscreator/proj/new?basedir='+ lessSession.Get("basedir"), 
-        1, 800, 450, 'Create New Project', null);
+    //lessModalOpen('/lesscreator/proj/new?basedir='+ lessSession.Get("basedir"), 
+    //    1, 800, 450, 'Create New Project', null);
+    lessModalOpen("/lesscreator/app/well", 1, 900, 450,
+            "Start a Project from ...", null);
 }
 
 function h5cProjSet()

@@ -5,6 +5,8 @@ use LessPHP\User\Session;
 if (!Session::IsLogin()) {
     die("Access denied. <a href='/user'>Login</a>");
 }
+$lcinfo = file_get_contents(LESSCREATOR_DIR ."/lesscreator/lcproject.json");
+$lcinfo = json_decode($lcinfo, true);
 ?>
 
 <table id="hdev_header" width="100%">
@@ -15,6 +17,7 @@ if (!Session::IsLogin()) {
       
       <img class="lc_icon" src="/lesscreator/static/img/for-test/less-logo-100.png" />
       <span class="title">Creator</span>
+      <span class="version"><?php echo $lcinfo['version']?></span>
     </td>
 
     <td align="center">
@@ -36,7 +39,7 @@ if (!Session::IsLogin()) {
                 <span class="caret" style="margin-top:8px;"></span>
             </div>
             <ul class="dropdown-menu pull-right text-left">
-                <li><a href="javascript:h5cProjNewDialog()">Create Project</a></li>
+                <li><a href="javascript:lcProjNew()">Create Project</a></li>
                 <li><a href="javascript:h5cProjOpenDialog()">Open Project</a></li>
             </ul>
 
@@ -81,7 +84,7 @@ if (!Session::IsLogin()) {
               </a>
               <ul class="dropdown-menu">
                 <li><a href="javascript:h5cProjOpenDialog()">Open Project</a></li>
-                <li><a href="javascript:h5cProjNewDialog()">Create Project</a></li>
+                <li><a href="javascript:lcProjNew()">Create Project</a></li>
 
               </ul>
                     

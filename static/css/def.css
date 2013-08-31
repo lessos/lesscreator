@@ -152,7 +152,13 @@ textarea {
     color: #63666a;
     font-family: Helvetica !important;
 }
-
+#hdev_header .header_logo .version {
+    position: absolute; bottom: 6px; left: 130px;
+    line-height: 8px;
+    font-size: 6px;
+    color: #aaa;
+    font-family: Helvetica !important;
+}
 .hdev-header-alert {
     padding: 4px 6px;
     width: auto; height:16px;
