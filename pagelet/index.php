@@ -202,7 +202,7 @@ function _load_sys_config()
                     }
 
                     _load_desk(rsj.data.basedir);
-                });                
+                });                             
 
             } else {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
