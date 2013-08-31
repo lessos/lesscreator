@@ -13,7 +13,7 @@ $title  = 'Edit Project';
 $status = 200;
 $msg    = '';
 
-$info = lesscreator_env::ProjInfoDef($proj);
+$info = lesscreator_env::ProjInfoDef("");
 $t = lesscreator_proj::info($this->req->proj);
 if (is_array($t)) {
     $info = array_merge($info, $t);
@@ -74,17 +74,22 @@ if ($this->req->apimethod == "self.rt.list") {
 if ($_SERVER['REQUEST_METHOD'] == 'POST'
     || $_SERVER['REQUEST_METHOD'] == 'PUT') {
 
+    //print_r($info);
+
     foreach ($info as $k => $v) {
-        if (isset($_POST[$k])) {
+        if (isset($_POST[$k]) && $k != "runtimes") {
             $info[$k] = $_POST[$k];
         }
     }
     if (isset($info['props']) && is_array($info['props'])) {
         $info['props'] = implode(",", $info['props']);
     }
-    if (isset($info['types']) && is_array($info['types'])) {
-        $info['types'] = implode(",", $info['types']);
-    }    
+    if (isset($info['props_app']) && is_array($info['props_app'])) {
+        $info['props_app'] = implode(",", $info['props_app']);
+    }
+    if (isset($info['props_dev']) && is_array($info['props_dev'])) {
+        $info['props_dev'] = implode(",", $info['props_dev']);
+    }
     
     $str = Json::prettyPrint($info);
     $rs = lesscreator_fs::FsFilePut($lcpj, $str);
@@ -111,26 +116,26 @@ echo $msg;
     position: relative;
     background-color: #dff0d8;
     border: 2px solid #dff0d8;
-    height: 60px; width: 300px;
-    float: left; margin: 5px 20px 5px 0;
+    height: 50px; width: 300px;
+    float: left; margin: 3px 20px 3px 0;
 }
 .rky7cv .item .newrt-ico {
-    width: 40px; height: 40px;
+    width: 30px; height: 30px;
     position: absolute; top: 10px; left: 10px;
 }
 .rky7cv .item .newrt-tit {
-    position: absolute; font-size: 18px;
-    color: #333; top: 12px; left: 60px;
+    position: absolute; font-size: 14px; font-weight: bold;
+    color: #333; top: 7px; left: 60px;
 }
 .rky7cv .item .newrt-desc {
-    position: absolute; font-size: 12px;
+    position: absolute; font-size: 8px;
     color: #777; left: 60px;
-    bottom: 8px;
+    bottom: 3px;
 }
 .rky7cv .item .rt-ico {
     position: absolute;
-    width: 80px; height: 40px;
-    top: 50%; left: 10px; margin-top: -20px;
+    width: 60px; height: 30px;
+    top: 50%; left: 10px; margin-top: -15px;
 }
 .rky7cv .item.gray {
     background-color: #fff;
@@ -140,24 +145,32 @@ echo $msg;
     background-color: #dff0d8;
 }
 .rky7cv .item .title {
-    position: absolute;
-    margin-left: 120px; margin-top: -8px; top: 50%;
-    font-weight: bold; font-size: 16px; 
+    position: absolute; color: #333;
+    margin-left: 100px; margin-top: -10px; top: 50%;
+    font-weight: bold; font-size: 14px; 
+}
+.r0330s .item {
+    position: relative;
+    width: 280px;
+    float: left; margin: 3px 10px 3px 0;
+}
+.r0330s .item input {
+    margin-bottom: 0;
 }
 </style>
 <form id="k2948f" action="/lesscreator/proj/set/" method="post">
-  <input name="proj" type="hidden" value="<?=$info['projid']?>" />
+  <input name="proj" type="hidden" value="<?=$projPath?>" />
   <table class="table table-condensed" width="100%">
 
     <tr>
-      <td width="180px"><strong>Project ID</strong></td>
+      <td width="220px"><strong>Project ID</strong></td>
       <td><?=$info['projid']?></td>
     </tr>
     <tr>
-      <td><strong>Name</strong></td>
+      <td><strong>Display Name</strong></td>
       <td>
         <input name="name" class="input-medium" type="text" value="<?=$info['name']?>" />
-        <span class="help-inline">Example: Hello World</span>
+        <span class="help-inline">Example: <strong>Hello World</strong></span>
       </td>
     </tr>
     <!-- <tr>
@@ -177,40 +190,64 @@ echo $msg;
         }
         ?>
       </td>
-    </tr> 
-    <tr>
-      <td><strong>Types</strong></td>
-      <td>
-        <?php
-        $preTypes = explode(",", $info['types']);
-        $ts = lesscreator_env::TypeList();
-        foreach ($ts as $k => $v) {
-            $ck = '';
-            if (in_array($k, $preTypes)) {
-                $ck = "checked";
-            }
-            echo "<label class=\"checkbox\">
-                <input type=\"checkbox\" name=\"types[]\" value=\"{$k}\" {$ck}/> {$v}
-                </label>";       
-        }
-        ?>
-      </td>
-    </tr>-->
+    </tr> -->
+    
     <tr>
       <td><strong>Version</strong></td>
       <td>
         <input name="version" class="input-medium" type="text" value="<?=$info['version']?>" /> 
-        <span class="help-inline">Example: 1.0.0</span>
+        <span class="help-inline">Example: <strong>1.0.0</strong></span>
       </td>
     </tr>
-    <tr>
-      <td valign="top"><strong>Description</strong></td>
-      <td><textarea name="summary" rows="3" style="width:400px;"><?=$info['summary']?></textarea></td>
-    </tr>
+    
     <tr>
       <td><strong>Runtime Environment</strong></td>
       <td><div class="rky7cv">Loading</div></td>
     </tr>
+
+    <tr>
+      <td><strong>Group by Application</strong></td>
+      <td class="r0330s">
+        <?php
+        $preProps = explode(",", $info['props_app']);
+        $ls = lesscreator_env::GroupByAppList();
+        foreach ($ls as $k => $v) {
+            $ck = '';
+            if (in_array($k, $preProps)) {
+                $ck = "checked";
+            }
+            echo "<label class=\"item checkbox\">
+                <input type=\"checkbox\" name=\"props_app[]\" value=\"{$k}\" {$ck}/> {$v}
+                </label>";
+        }
+        ?>
+      </td>
+    </tr>
+
+    <tr>
+      <td><strong>Group by Develop</strong></td>
+      <td class="r0330s">
+        <?php
+        $preProps = explode(",", $info['props_dev']);
+        $ls = lesscreator_env::GroupByDevList();
+        foreach ($ls as $k => $v) {
+            $ck = '';
+            if (in_array($k, $preProps)) {
+                $ck = "checked";
+            }
+            echo "<label class=\"item checkbox\">
+                <input type=\"checkbox\" name=\"props_dev[]\" value=\"{$k}\" {$ck}/> {$v}
+                </label>";       
+        }
+        ?>
+      </td>
+    </tr>
+
+    <tr>
+      <td valign="top"><strong>Description</strong></td>
+      <td><textarea name="summary" rows="3" style="width:400px;"><?=$info['summary']?></textarea></td>
+    </tr>
+
     <tr>
       <td></td>
       <td><input type="submit" name="submit" value="Save" class="btn btn-inverse" /></td>

@@ -69,7 +69,7 @@
     <tr class="line">
         <td width="100px"><img class="rtlogo imggray" src="/lesscreator/static/img/rt/java_200.png" /></td>
         <td >
-            <div class="title">Java <span class="indev">(being developed, later supported)</span></div>
+            <div class="title">Java <span class="indev">(Upcoming, later supported)</span></div>
             <div class="desc">Java Runtime Environment</div>
         </td>
         <td align="right">
@@ -84,7 +84,7 @@
     <tr class="line">
         <td width="100px"><img class="rtlogo imggray" src="/lesscreator/static/img/rt/python_200.png" /></td>
         <td >
-            <div class="title">Python <span class="indev">(being developed, later supported)</span></div>
+            <div class="title">Python <span class="indev">(Upcoming, later supported)</span></div>
             <div class="desc">Python Runtime Environment</div>
         </td>
         <td align="right">
@@ -99,7 +99,7 @@
     <tr class="line">
         <td width="100px"><img class="rtlogo imggray" src="/lesscreator/static/img/rt/go_200.png" /></td>
         <td >
-            <div class="title">Go <span class="indev">(being developed, later supported)</span></div>
+            <div class="title">Go <span class="indev">(Upcoming, later supported)</span></div>
             <div class="desc">Go Runtime Environment</div>
         </td>
         <td align="right">
@@ -114,7 +114,7 @@
     <tr class="line">
         <td width="100px"><img class="rtlogo imggray" src="/lesscreator/static/img/rt/nodejs_200.png" /></td>
         <td >
-            <div class="title">NodeJS <span class="indev">(being developed, later supported)</span></div>
+            <div class="title">NodeJS <span class="indev">(Upcoming, later supported)</span></div>
             <div class="desc">NodeJS Runtime Environment</div>
         </td>
         <td align="right">

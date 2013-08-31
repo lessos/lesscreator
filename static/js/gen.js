@@ -581,7 +581,10 @@ function h5cProjSet()
         'close':'1',
         'img': '/lesscreator/static/img/app-t3-16.png',
     }
-    h5cTabOpen('/lesscreator/proj/set?proj='+projCurrent, 'w0', 'html', opt);
+
+    var url = '/lesscreator/proj/set?proj='+ lessSession.Get("ProjPath");
+
+    h5cTabOpen(url, 'w0', 'html', opt);
 }
 
 //author: meizz   
