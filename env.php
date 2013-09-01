@@ -3,22 +3,13 @@
 
 class lesscreator_env
 {  
-    public static function TypeList()
-    {
-        return array(
-            'webphp'    => 'Web - PHP',
-            'webstatic' => 'Web - Static',
-            'libphp'    => 'Library - PHP',
-        );
-    }
-
     public static function GroupByAppList()
     {
         return array(
-            '50' => 'Business Applications',
-            '51' => 'Collaboration Applications',
-            '52' => 'Productivity Applications',
-            '53' => 'Develop Library, Middleware'
+            '50' => 'Business',
+            '51' => 'Collaboration',
+            '52' => 'Productivity',
+            '53' => 'Developer Tools'
         );
     }
     
@@ -46,28 +37,11 @@ class lesscreator_env
     public static function GroupByDevList()
     {
         return array(
-            '61' => 'Web Frontend Library, Framework',
-            '62' => 'Web Backend Library, Framework',
+            '60' => 'Web Frontend Library, Framework',
+            '61' => 'Web Backend Library, Framework',
             '70' => 'System Library',
-            '71' => 'System Server, Service'
-            //'63' => '',
+            '71' => 'System Server, Service',
         );
-
-        /*
-            'Develop Libs',
-
-            'Business Tools',
-            'Education',
-            'Entertainment',
-            'Games',
-            'Lifestyle',
-            'News & Weather',
-            'Productivity',
-            'Social & Communication',
-            'Utilities',
-
-            'Developer Tools',
-        */
     }
     
     public static function ProjInfoDef($proj)

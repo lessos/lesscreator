@@ -1,6 +1,8 @@
 <?php
 
 use LessPHP\Encoding\Json;
+use LessPHP\LessKeeper\Keeper;
+
 
 if (!isset($this->req->proj)
     || strlen($this->req->proj) < 1) {
@@ -10,8 +12,6 @@ if (!isset($this->req->proj)
 $projPath = lesscreator_proj::path($this->req->proj);
 
 $title  = 'Edit Project';
-$status = 200;
-$msg    = '';
 
 $info = lesscreator_env::ProjInfoDef("");
 $t = lesscreator_proj::info($this->req->proj);
@@ -54,51 +54,87 @@ if ($this->req->apimethod == "self.rt.list") {
     die();
 }
 
+if ($this->req->apimethod == "self.pkg.list") {
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST'
-    || $_SERVER['REQUEST_METHOD'] == 'PUT') {
+    $kpr = new Keeper();
 
-    $ret = array("status" => 400, "message" => null);
-
-    foreach ($info as $k => $v) {
-        if (isset($_POST[$k]) && $k != "runtimes") {
-            $info[$k] = trim($_POST[$k]);
-        }
-    }
-
-    if (!isset($info['name']) || strlen($info['name']) < 1) {
-        $ret['message'] = "Name can not be null";
-        die(json_encode($ret));
-    }
-
-    if (!isset($info['version']) || strlen($info['version']) < 1) {
-        $ret['version'] = "Version can not be null";
-        die(json_encode($ret));
-    }
-
-    if (isset($info['props']) && is_array($info['props'])) {
-        $info['props'] = implode(",", $info['props']);
-    }
-    if (isset($info['props_app']) && is_array($info['props_app'])) {
-        $info['props_app'] = implode(",", $info['props_app']);
-    }
-    if (isset($info['props_dev']) && is_array($info['props_dev'])) {
-        $info['props_dev'] = implode(",", $info['props_dev']);
-    }
+    $rs = $kpr->LocalNodeListAndGet("/lf/pkg/");
     
-    $str = Json::prettyPrint($info);
-    $rs = lesscreator_fs::FsFilePut($lcpj, $str);
-    if ($rs->status != 200) {
-        $ret['message'] = 
-        die(json_encode($ret));
+    $dps = explode(",", $info['depends']);
+
+    foreach ($rs->elems as $v) {
+
+        $v = json_decode($v->body);
+        if (!isset($v->projid)) {
+            continue;
+        }
+
+        if (!in_array($v->projid, $dps)) {
+            continue;
+        }
+
+        echo "
+        <span class=\"item border_radius_5\">
+            {$v->name}
+        </span>";
     }
 
-    $ret['status'] = 200;
+    echo '
+        <a class="item-set border_radius_5" href="#" onclick="_proj_pkgs_select(this)">
+            <img class="newrt-ico" src="/lesscreator/static/img/app-t3-16.png" />
+            <span class="newrt-tit">Add or Remove Projects</span>
+        </a>';
+    
+    die();
+}
+
+
+if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
+
+    $ret = array("status" => 200, "message" => null);
+
+    try {
+
+        foreach ($info as $k => $v) {
+            if (isset($_POST[$k]) && $k != "runtimes") {
+                $info[$k] = trim($_POST[$k]);
+            }
+        }
+
+        if (!isset($info['name']) || strlen($info['name']) < 1) {
+            throw new \Exception("Name can not be null", 400);
+        }
+
+        if (!isset($info['version']) || strlen($info['version']) < 1) {
+            throw new \Exception("Version can not be null", 400);
+        }
+
+        if (isset($info['props']) && is_array($info['props'])) {
+            $info['props'] = implode(",", $info['props']);
+        }
+        if (isset($info['props_app']) && is_array($info['props_app'])) {
+            $info['props_app'] = implode(",", $info['props_app']);
+        }
+        if (isset($info['props_dev']) && is_array($info['props_dev'])) {
+            $info['props_dev'] = implode(",", $info['props_dev']);
+        }
+    
+        $str = Json::prettyPrint($info);
+        $rs = lesscreator_fs::FsFilePut($lcpj, $str);
+        if ($rs->status != 200) {
+            throw new \Exception($rs->message, 400);
+        }
+
+    } catch (\Exception $e) {
+        $ret['status']  = $e->getCode();
+        $ret['message'] = $e->getMessage();
+    }
+
     die(json_encode($ret));
 }
 
-echo $msg;
 ?>
+
 <style>
 #k2948f {
     padding: 5px;
@@ -116,26 +152,27 @@ echo $msg;
     position: relative;
     background-color: #dff0d8;
     border: 2px solid #dff0d8;
-    height: 50px; width: 300px;
-    float: left; margin: 3px 20px 3px 0;
+    height: 40px; width: 220px;
+    float: left; margin: 2px 5px 2px 0;
+    line-height: 100%;
 }
 .rky7cv .item .newrt-ico {
     width: 30px; height: 30px;
-    position: absolute; top: 10px; left: 10px;
+    position: absolute; top: 5px; left: 5px;
 }
 .rky7cv .item .newrt-tit {
-    position: absolute; font-size: 14px; font-weight: bold;
-    color: #333; top: 7px; left: 60px;
+    position: absolute; font-size: 12px; font-weight: bold;
+    color: #333; top: 5px; left: 40px;
 }
 .rky7cv .item .newrt-desc {
-    position: absolute; font-size: 8px;
-    color: #777; left: 60px;
+    position: absolute; font-size: 11px;
+    color: #777; left: 40px;
     bottom: 3px;
 }
 .rky7cv .item .rt-ico {
     position: absolute;
     width: 60px; height: 30px;
-    top: 50%; left: 10px; margin-top: -15px;
+    top: 50%; left: 5px; margin-top: -15px;
 }
 .rky7cv .item.gray {
     background-color: #fff;
@@ -146,62 +183,69 @@ echo $msg;
 }
 .rky7cv .item .rt-tit {
     position: absolute; color: #333;
-    margin-left: 100px; margin-top: -10px; top: 50%;
-    font-weight: bold; font-size: 14px; 
+    margin-left: 80px; margin-top: -6px; top: 50%;
+    font-weight: bold; font-size: 12px; line-height: 100%; 
 }
 .r0330s .item {
     position: relative;
-    width: 280px;
+    width: 220px;
+    font-size: 12px;
     float: left; margin: 3px 10px 3px 0;
 }
 .r0330s .item input {
     margin-bottom: 0;
 }
 
+.lgjn8r a {
+    text-decoration: none;
+}
+.lgjn8r .item {
+    background-color: #dff0d8;
+    border: 2px solid #7acfa8;
+    padding: 5px; 
+    float: left; margin: 2px 5px 2px 0;
+    color: #000; font-weight: bold; font-size: 13px; line-height: 100%;
+}
+.lgjn8r .item-set {
+    background-color: #fff;
+    border: 2px solid #dff0d8;
+    padding: 5px;
+    float: left; margin: 2px 5px 2px 0;
+    color: #000; font-weight: bold; font-size: 13px; line-height: 100%;
+}
+.lgjn8r .item-set img {
+    width: 13px; height: 13px;
+}
+.lgjn8r .item-set:hover {
+    border: 2px solid #7acfa8;
+    background-color: #dff0d8;
+}
 </style>
 <form id="k2948f" action="/lesscreator/proj/set/" method="post">
   <input name="proj" type="hidden" value="<?=$projPath?>" />
   <table class="table table-condensed" width="100%">
 
     <tr class="bordernil">
-      <td width="220px"><strong>Project ID</strong></td>
+      <td width="240px"><strong>Project ID</strong></td>
       <td><?=$info['projid']?></td>
     </tr>
     <tr>
-      <td><strong>Display Name</strong> <span class="label label-important">Required</span></td>
+      <td><strong>Display Name</strong></td>
       <td>
         <input name="name" class="input-medium" type="text" value="<?=$info['name']?>" />
+        <label class="label label-important">Required</label>
         <span class="help-inline">Example: <strong>Hello World</strong></span>
       </td>
     </tr>
-    <!-- <tr>
-      <td><strong>Services</strong></td>
-      <td>
-        <?php
-        $preSrvs = explode(",", $info['props']);
-        $srvs = lesscreator_service::listAll();
-        foreach ($srvs as $k => $v) {
-            $ck = '';
-            if (in_array($k, $preSrvs)) {
-                $ck = "checked";
-            }
-            echo "<label class=\"checkbox\">
-                <input type=\"checkbox\" name=\"props[]\" value=\"{$k}\" {$ck}/> {$v}
-                </label>";
-        }
-        ?>
-      </td>
-    </tr> -->
     
     <tr>
-      <td><strong>Version</strong> <span class="label label-important">Required</span></td>
+      <td><strong>Version</strong></td>
       <td>
         <input name="version" class="input-medium" type="text" value="<?=$info['version']?>" /> 
+        <label class="label label-important">Required</label>
         <span class="help-inline">Example: <strong>1.0.0</strong></span>
       </td>
     </tr>
-    
-    
 
     <tr>
       <td><strong>Group by Application</strong></td>
@@ -252,6 +296,11 @@ echo $msg;
     </tr>
 
     <tr>
+      <td><strong>Dependent Projects</strong></td>
+      <td><div class="lgjn8r">Loading</div></td>
+    </tr>
+
+    <tr>
       <td></td>
       <td><input type="submit" name="submit" value="Save" class="btn btn-inverse" /></td>
     </tr>
@@ -269,8 +318,20 @@ $("#k2948f").submit(function(event) {
         url     : $(this).attr('action'),
         data    : $(this).serialize(),
         success : function(rsp) {
-            hdev_header_alert('success', rsp);
-            window.scrollTo(0,0);
+            
+            try {
+                var rsj = JSON.parse(rsp);
+            } catch (e) {
+                hdev_header_alert('error', "Error: Service Unavailable");
+                return;
+            }
+
+            if (rsj.status == 200) {
+                hdev_header_alert('success', "Successfully Updated");
+                //window.scrollTo(0,0);
+            } else {
+                hdev_header_alert('error', rsj.message);
+            }            
         },
         error: function(xhr, textStatus, error) {
             hdev_header_alert('error', textStatus+' '+xhr.responseText);
@@ -318,7 +379,33 @@ function _proj_rt_set(node)
     lessModalOpen("/lesscreator/"+ uri, 1, 800, 500, title, null);
 }
 
-
 _proj_rt_refresh();
+
+
+function _proj_pkgs_refresh()
+{
+    var url = "/lesscreator/proj/set?apimethod=self.pkg.list";
+    url += "&proj=" + lessSession.Get("ProjPath");
+
+    $.ajax({ 
+        type    : "GET",
+        url     : url,
+        success : function(rsp) {
+            $(".lgjn8r").empty().html(rsp);
+        },
+        error: function(xhr, textStatus, error) {
+            // 
+        }
+    });
+}
+
+function _proj_pkgs_select(node)
+{
+    var uri = "/lesscreator/proj/set-pkgs?proj="+ lessSession.Get("ProjPath");
+    lessModalOpen(uri, 1, 800, 500, "Select Dependent Projects", null);
+}
+
+_proj_pkgs_refresh();
+
 
 </script>

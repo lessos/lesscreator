@@ -16,13 +16,9 @@ if (isset($this->req->basedir) && strlen($this->req->basedir)) {
 
 $basedir = rtrim(preg_replace("/\/\/+/", "/", $basedir), '/');
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST'
-    || $_SERVER['REQUEST_METHOD'] == 'PUT') {
+if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
 
-    $ret = array(
-        'status'  => 200,
-        'message' => '',
-    );
+    $ret = array("status" => 200, "message" => null);
 
     $proj_new = "{$basedir}/app/{$projid}";
     $proj_new = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $proj_new);
@@ -80,9 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 #sdtqvj .bordernil td {
     border-top:0px;
 }
-#sdtqvj s.required {
-    float: right;
-}
+
 .r0330s .item {
     position: relative;
     width: 260px;
@@ -103,15 +97,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
   <table width="100%" class="table table-condensed">
     
     <tr class="bordernil">
-      <td width="180px"><strong>Project ID</strong> <span class="label label-important requireds">Required</span></td>
+      <td width="180px"><strong>Project ID</strong> </td>
       <td>
-        <input name="projid" type="text" class="span3" value="<?php echo $projid?>" />
+        <input name="projid" type="text" class="span2" value="<?php echo $projid?>" />
+        <label class="label label-important">Required</label>
+        <label class="help-inline">Unique identifier, similar to the package name</label>
       </td>
     </tr>
 
     <tr>
-      <td><strong>Display Name</strong> <span class="label label-important">Required</span></td>
-      <td ><input name="name" type="text" value="" /></td>
+      <td><strong>Display Name</strong> </td>
+      <td >
+        <input name="name" type="text" class="span2" value="" />
+        <label class="label label-important">Required</label>
+        <label class="help-inline">Example: Hello World</label>
+      </td>
     </tr>
 
     <tr>
@@ -169,7 +169,7 @@ function _proj_new_commit()
         url     : $("#sdtqvj").attr('action'),
         data    : $("#sdtqvj").serialize(),
         success : function(rsp) {
-            console.log(rsp);
+            //console.log(rsp);
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {

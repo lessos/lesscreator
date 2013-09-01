@@ -22,7 +22,7 @@ if (isset($projInfo['name'])) {
     $pjc = $basedir .'/conf/lesscreator/projlist.json';
 
     $pjs = null;
-    $rs = lesscreator_fs::FsFileGet($pic);
+    $rs = lesscreator_fs::FsFileGet($pjc);
     //print_r($rs);
     if ($rs->status == 200) {
         $pjs = json_decode($rs->data->body, true);
@@ -48,13 +48,13 @@ $props_def = lesscreator_service::listAll();
 
 ?>
 
-  <div style="padding:5px 10px 5px 10px; background-color:#f6f7f8;">
+  <div style="padding:3px 10px 3px 10px; background-color:#f6f7f8;">
     <span>
       <strong><?php echo $projInfo['name']?></strong>
     </span>
     <a href="javascript:h5cProjSet()" class="h5c_block pull-right">
       <i class="icon-wrench"></i>
-      Setting 
+      Settings
     </a>
   </div>
 
