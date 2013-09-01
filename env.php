@@ -21,6 +21,27 @@ class lesscreator_env
             '53' => 'Develop Library, Middleware'
         );
     }
+    
+    public static function RuntimesList()
+    {
+        return array(
+            'nginx' => array(
+                'title' => 'WebServer (nginx)',
+            ),
+            'php' => array(
+                'title' => 'PHP',
+            ),
+            'go' => array(
+                'title' => 'Go',
+            ),
+            'python' => array(
+                'title' => 'Python',
+            ),
+            'java' => array(
+                'title' => 'Java',
+            ),
+        );
+    }
 
     public static function GroupByDevList()
     {

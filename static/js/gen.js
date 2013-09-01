@@ -563,16 +563,14 @@ function h5cProjectOpen(proj)
     h5cLayoutResize();
 }
 
-function h5cProjOpenDialog()
+function lcProjOpen()
 {
-    lessModalOpen('/lesscreator/proj/open-recent?basedir='+ lessSession.Get("basedir"), 1, 900, 450, 'Open Project', null);
+    lessModalOpen('/lesscreator/proj/open-recent?basedir='+ lessSession.Get("basedir"), 1, 800, 450, 'Open Project', null);
 }
 
 function lcProjNew()
 {
-    //lessModalOpen('/lesscreator/proj/new?basedir='+ lessSession.Get("basedir"), 
-    //    1, 800, 450, 'Create New Project', null);
-    lessModalOpen("/lesscreator/app/well", 1, 900, 450,
+    lessModalOpen("/lesscreator/app/well", 1, 800, 450,
             "Start a Project from ...", null);
 }
 

@@ -125,6 +125,9 @@
 </a>
 
 <script>
+if (lessModalPrevId() != null) {
+    lessModalButtonAdd("qc7cbv", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+}
 
 lessModalButtonAdd("y4l8t6", "Close", "lessModalClose()", "");
 

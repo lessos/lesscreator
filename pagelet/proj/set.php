@@ -24,23 +24,7 @@ $lcpj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $lcpj);
 
 if ($this->req->apimethod == "self.rt.list") {
 
-    $rts = array(
-        'nginx' => array(
-            'title' => 'WebServer (nginx)',
-        ),
-        'php' => array(
-            'title' => 'PHP',
-        ),
-        'go' => array(
-            'title' => 'Go',
-        ),
-        'python' => array(
-            'title' => 'Python',
-        ),
-        'java' => array(
-            'title' => 'Java',
-        ),
-    );
+    $rts = lesscreator_env::RuntimesList();
 
     foreach ($info['runtimes'] as $name => $rt) {
 
@@ -51,7 +35,7 @@ if ($this->req->apimethod == "self.rt.list") {
         echo "
         <a class=\"item border_radius_5\" href=\"#rt/{$name}-set\" onclick=\"_proj_rt_set(this)\" title=\"Click to configuration\">
             <img class=\"rt-ico\" src=\"/lesscreator/static/img/rt/{$name}_200.png\" />
-            <label class=\"title\">{$rts[$name]['title']}</label>
+            <label class=\"rt-tit\">{$rts[$name]['title']}</label>
         </a>";
 
         unset($rts[$name]);
@@ -74,13 +58,24 @@ if ($this->req->apimethod == "self.rt.list") {
 if ($_SERVER['REQUEST_METHOD'] == 'POST'
     || $_SERVER['REQUEST_METHOD'] == 'PUT') {
 
-    //print_r($info);
+    $ret = array("status" => 400, "message" => null);
 
     foreach ($info as $k => $v) {
         if (isset($_POST[$k]) && $k != "runtimes") {
-            $info[$k] = $_POST[$k];
+            $info[$k] = trim($_POST[$k]);
         }
     }
+
+    if (!isset($info['name']) || strlen($info['name']) < 1) {
+        $ret['message'] = "Name can not be null";
+        die(json_encode($ret));
+    }
+
+    if (!isset($info['version']) || strlen($info['version']) < 1) {
+        $ret['version'] = "Version can not be null";
+        die(json_encode($ret));
+    }
+
     if (isset($info['props']) && is_array($info['props'])) {
         $info['props'] = implode(",", $info['props']);
     }
@@ -93,11 +88,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
     
     $str = Json::prettyPrint($info);
     $rs = lesscreator_fs::FsFilePut($lcpj, $str);
-    if ($rs->status == 200) {
-        die("OK");
-    } else {
-        die("Error, ". $rs->message);
+    if ($rs->status != 200) {
+        $ret['message'] = 
+        die(json_encode($ret));
     }
+
+    $ret['status'] = 200;
+    die(json_encode($ret));
 }
 
 echo $msg;
@@ -108,6 +105,9 @@ echo $msg;
 }
 #k2948f input,textarea {
     margin-bottom: 0px;
+}
+#k2948f .bordernil td {
+    border-top:0px;
 }
 .rky7cv a {
     text-decoration: none;
@@ -144,7 +144,7 @@ echo $msg;
     border: 2px solid #7acfa8;
     background-color: #dff0d8;
 }
-.rky7cv .item .title {
+.rky7cv .item .rt-tit {
     position: absolute; color: #333;
     margin-left: 100px; margin-top: -10px; top: 50%;
     font-weight: bold; font-size: 14px; 
@@ -157,17 +157,18 @@ echo $msg;
 .r0330s .item input {
     margin-bottom: 0;
 }
+
 </style>
 <form id="k2948f" action="/lesscreator/proj/set/" method="post">
   <input name="proj" type="hidden" value="<?=$projPath?>" />
   <table class="table table-condensed" width="100%">
 
-    <tr>
+    <tr class="bordernil">
       <td width="220px"><strong>Project ID</strong></td>
       <td><?=$info['projid']?></td>
     </tr>
     <tr>
-      <td><strong>Display Name</strong></td>
+      <td><strong>Display Name</strong> <span class="label label-important">Required</span></td>
       <td>
         <input name="name" class="input-medium" type="text" value="<?=$info['name']?>" />
         <span class="help-inline">Example: <strong>Hello World</strong></span>
@@ -193,17 +194,14 @@ echo $msg;
     </tr> -->
     
     <tr>
-      <td><strong>Version</strong></td>
+      <td><strong>Version</strong> <span class="label label-important">Required</span></td>
       <td>
         <input name="version" class="input-medium" type="text" value="<?=$info['version']?>" /> 
         <span class="help-inline">Example: <strong>1.0.0</strong></span>
       </td>
     </tr>
     
-    <tr>
-      <td><strong>Runtime Environment</strong></td>
-      <td><div class="rky7cv">Loading</div></td>
-    </tr>
+    
 
     <tr>
       <td><strong>Group by Application</strong></td>
@@ -245,7 +243,12 @@ echo $msg;
 
     <tr>
       <td valign="top"><strong>Description</strong></td>
-      <td><textarea name="summary" rows="3" style="width:400px;"><?=$info['summary']?></textarea></td>
+      <td><textarea name="summary" rows="2" style="width:400px;"><?=$info['summary']?></textarea></td>
+    </tr>
+
+    <tr>
+      <td><strong>Runtime Environment</strong></td>
+      <td><div class="rky7cv">Loading</div></td>
     </tr>
 
     <tr>

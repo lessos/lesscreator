@@ -40,7 +40,7 @@ $lcinfo = json_decode($lcinfo, true);
             </div>
             <ul class="dropdown-menu pull-right text-left">
                 <li><a href="javascript:lcProjNew()">Create Project</a></li>
-                <li><a href="javascript:h5cProjOpenDialog()">Open Project</a></li>
+                <li><a href="javascript:lcProjOpen()">Open Project</a></li>
             </ul>
 
         </div>
@@ -83,7 +83,7 @@ $lcinfo = json_decode($lcinfo, true);
                 <span class="caret" style="margin-top:8px;"></span>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="javascript:h5cProjOpenDialog()">Open Project</a></li>
+                <li><a href="javascript:lcProjOpen()">Open Project</a></li>
                 <li><a href="javascript:lcProjNew()">Create Project</a></li>
 
               </ul>
