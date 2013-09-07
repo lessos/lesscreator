@@ -52,7 +52,7 @@ $props_def = lesscreator_service::listAll();
     <span>
       <strong><?php echo $projInfo['name']?></strong>
     </span>
-    <a href="javascript:h5cProjSet()" class="h5c_block pull-right">
+    <a href="javascript:lcProjSet()" class="h5c_block pull-right">
       <i class="icon-wrench"></i>
       Settings
     </a>

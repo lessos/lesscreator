@@ -68,6 +68,10 @@ $dps = explode(",", $info['depends']);
             continue;
         }
 
+        if (in_array($v->projid, array('lesscreator', 'user'))) {
+            continue;
+        }
+
         $ck = '';
         if (in_array($v->projid, $dps)) {
             $ck = "checked";

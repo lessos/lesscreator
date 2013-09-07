@@ -574,7 +574,7 @@ function lcProjNew()
             "Start a Project from ...", null);
 }
 
-function h5cProjSet()
+function lcProjSet()
 {
     var opt = {
         'title': 'Project Settings',
@@ -587,6 +587,20 @@ function h5cProjSet()
     h5cTabOpen(url, 'w0', 'html', opt);
 }
 
+var lc_launch_def = null;
+function lcProjLaunch()
+{
+    if (lc_launch_def == null) {
+
+    }
+
+    var uri = "/lesscreator/launch/webserver";
+    uri += "?proj="+ lessSession.Get("ProjPath");
+    uri += "&user="+ lessSession.Get("SessUser"); // TODO access_token
+
+    lessModalOpen(uri, 1, 800, 450,
+            "Launch with Web Server", null);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //prefixes of implementation that we want to test

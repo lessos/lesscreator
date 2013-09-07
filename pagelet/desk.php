@@ -14,10 +14,9 @@ $lcinfo = json_decode($lcinfo, true);
     <td width="10px"></td>
 
     <td class="header_logo" width="200px">
-      
-      <img class="lc_icon" src="/lesscreator/static/img/for-test/less-logo-100.png" />
+      <!--<img class="lc_icon" src="/lesscreator/static/img/for-test/less-logo-100.png" />
       <span class="title">Creator</span>
-      <span class="version"><?php echo $lcinfo['version']?></span>
+      <span class="version"><?php echo $lcinfo['version']?></span> -->
     </td>
 
     <td align="right">
@@ -26,9 +25,9 @@ $lcinfo = json_decode($lcinfo, true);
 
     <td align="right">
 
-        <a class="btn btn-small hide" href="#">
+        <a class="btn btn-small" href="#launch" onclick="lcProjLaunch()">
             <i class="icon-play-circle"></i> 
-            &nbsp;&nbsp;Run&nbsp;&nbsp;
+            &nbsp;&nbsp;Launch&nbsp;&nbsp;
         </a>
 
         <div class="btn-group" >
@@ -62,35 +61,9 @@ $lcinfo = json_decode($lcinfo, true);
                 }                
                 ?>                    
                 <li><a href="/user/logout">Logout</a></li>
-            </ul>
-                    
+            </ul>                    
         </div>
-        
-        <!-- <ul class="pull-right">
-            
-            <li>
-              <a class="btn btn-small" href="#">
-                <i class="icon-play-circle"></i> 
-                &nbsp;&nbsp;Run&nbsp;&nbsp;
-              </a>
-            </li>
-            
-            
-            <li class="btn-group">
-              <a class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
-                <i class="icon-folder-open"></i>
-                &nbsp;&nbsp;Project&nbsp;&nbsp;
-                <span class="caret" style="margin-top:8px;"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a href="javascript:lcProjOpen()">Open Project</a></li>
-                <li><a href="javascript:lcProjNew()">Create Project</a></li>
 
-              </ul>
-                    
-            </li>
-        
-        </ul> -->
     </td>
 
     <td width="10px"></td>
