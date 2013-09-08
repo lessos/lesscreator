@@ -43,6 +43,7 @@ func main() {
 
     ses, _ = passport.NewSession(kpr)
 
+    apiserv.Kpr = kpr
     apiserv.Session = ses
     apiserv.Cfg = cfg
 

@@ -70,16 +70,6 @@ if (!Session::IsLogin()) {
 </html>
 <script src="/codemirror3/lib/codemirror.min.js"></script>
 
-<!--
-<script src="/lesscreator/static/js/c.js"></script>
-<script src="/lesscreator/static/js/gen.js"></script>
-<script src="/lesscreator/static/js/editor.js"></script>
-<script src="/lessui/js/BrowserDetect.js"></script>
-
-<script src="/codemirror3/addon/mode/loadmode.js"></script>
-<script src="/codemirror3/addon/search/searchcursor.js"></script>
-<script src="/codemirror3/keymap/vim.js"></script>
--->
 <script>
 
 var _load_sleep = 0;

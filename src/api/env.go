@@ -23,9 +23,110 @@ type ApiEnvResponse struct {
     }   `json:"data"`
 }
 
-func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
+func (this *Api) EnvPkgSetup(w http.ResponseWriter, r *http.Request) {
 
     var rsp ApiEnvResponse
+    rsp.Status = 400
+    rsp.Message = "Bad Request"
+
+    defer func() {
+        if rspj, err := utils.JsonEncode(rsp); err == nil {
+            io.WriteString(w, rspj)
+        }
+        fmt.Println("ere", rsp)
+        r.Body.Close()
+    }()
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        return
+    }
+
+    var req struct {
+        AccessToken string `json:"access_token"`
+        Data        struct {
+            ProjId string `json:"projid"`
+        }   `json:"data"`
+    }
+
+    err = utils.JsonDecode(string(body), &req)
+    if err != nil {
+        return
+    }
+
+    sess := this.Session.Instance(req.AccessToken)
+
+    if sess.Uid == "0" || sess.Uid == "" {
+        rsp.Status = 401
+        rsp.Message = "Unauthorized"
+        return
+    }
+
+    // User ID
+    osuser := "lc" + sess.Uname
+
+    rs := this.Kpr.LocalNodeGet("/lf/pkg/" + req.Data.ProjId)
+    if rs.Body == "" {
+        rsp.Status = 404
+        rsp.Message = "Package Not Found"
+        return
+    }
+
+    var pkg struct {
+        Version string `json:"version"`
+        Release string `json:"release"`
+        Dist    string `json:"dist"`
+        Arch    string `json:"arch"`
+    }
+    err = utils.JsonDecode(rs.Body, &pkg)
+    if err != nil {
+        return
+    }
+
+    pkgpath := fmt.Sprintf("%s/var/pkg/%s-%s-%s.%s.%s",
+        this.Cfg.LessFlyDir, req.Data.ProjId, pkg.Version, pkg.Release, pkg.Dist, pkg.Arch)
+    if _, err := os.Stat(pkgpath); os.IsNotExist(err) {
+        rsp.Status = 404
+        rsp.Message = "Package Not Found"
+        return
+    }
+    userdir := this.Cfg.LessFlyDir + "/spot/" + sess.Uname
+    instdir := userdir + "/app/" + req.Data.ProjId
+
+    cmdrsync, err := exec.LookPath("rsync")
+    if err != nil {
+        return
+    }
+
+    cmdchown, err := exec.LookPath("chown")
+    if err != nil {
+        return
+    }
+
+    makedir(instdir, 0, 0, 0755)
+    if _, err := exec.Command(cmdrsync, "-avz", "--delete", pkgpath+"/", instdir).Output(); err != nil {
+        fmt.Println("rsync error", err)
+        rsp.Status = 500
+        rsp.Message = err.Error()
+        return
+    }
+
+    if _, err := exec.Command(cmdchown, "-R", osuser+":"+osuser, instdir).Output(); err != nil {
+        //
+    }
+
+    rsp.Status = 200
+}
+
+func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
+
+    var rsp struct {
+        ApiResponse
+        Data struct {
+            User    string `json:"user"`
+            BaseDir string `json:"basedir"`
+        }   `json:"data"`
+    }
     rsp.Status = 400
     rsp.Message = "Bad Request"
 

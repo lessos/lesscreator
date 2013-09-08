@@ -2,6 +2,7 @@ package api
 
 import (
     "../../deps/go.net/websocket"
+    "../../deps/lessgo/keeper"
     "../../deps/lessgo/passport"
     "../conf"
     "fmt"
@@ -10,6 +11,7 @@ import (
 )
 
 type Api struct {
+    Kpr     keeper.Keeper
     Session passport.Session
     Cfg     conf.Config
 }
@@ -40,6 +42,7 @@ func (this *Api) Serve(port string) {
         http.Handle("/lesscreator/api/vs-git-clone-ws", websocket.Handler(this.VsGitClone))
 
         http.HandleFunc("/lesscreator/api/env-init", this.EnvInit)
+        http.HandleFunc("/lesscreator/api/env-pkgsetup", this.EnvPkgSetup)
 
         s := &http.Server{
             Addr:    ":" + port,

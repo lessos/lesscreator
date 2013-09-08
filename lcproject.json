@@ -3,6 +3,6 @@
   "name":"LessCreator",
   "summary":"Less Creator, Web based IDE",
   "depends":"bootstrap2,jquery,codemirror3,fam3,LessPHP,lessui",
-  "version":"1.2.0.dev",
+  "version":"0.2.0.dev",
   "release":"1"
 }
