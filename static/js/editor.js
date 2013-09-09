@@ -97,6 +97,10 @@ lcEditor.TabletOpen = function(urid, callback)
 
                     lcData.Put("files", entry, function(ret) {
                         if (ret) {
+                            
+                            $("#h5c-tablet-toolbar-"+ item.target).empty();
+                            $("#h5c-tablet-body-"+ item.target).empty();
+
                             //h5cTabletPool[urid].mime = obj.data.mime;
                             lcEditor.LoadInstance(entry);
                             hdev_header_alert('success', "OK");

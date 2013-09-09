@@ -61,6 +61,7 @@ func (this *Api) EnvPkgSetup(w http.ResponseWriter, r *http.Request) {
         rsp.Message = "Unauthorized"
         return
     }
+    fmt.Println(sess)
 
     // User ID
     osuser := "lc" + sess.Uname
@@ -116,6 +117,7 @@ func (this *Api) EnvPkgSetup(w http.ResponseWriter, r *http.Request) {
     }
 
     rsp.Status = 200
+    rsp.Message = ""
 }
 
 func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {

@@ -241,6 +241,7 @@ $(".lc_pgtab_more").click(function(event) {
 
     $(document).click(function() {
         $('.pgtab-openfiles-ol').empty().hide();
+        $(document).unbind('click');
     });
 });
 </script>

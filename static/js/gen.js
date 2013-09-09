@@ -73,6 +73,68 @@ function lcInitSetting()
     } */
 }
 
+////////////////////////////////////////////////////////////////////////////////
+function lcNavletRefresh(target)
+{  
+    pg = $('#lc-navlet-frame-'+ target +' .lc_navlet_lm').innerWidth();
+    //console.log("lc_navlet_lm"+ pg);
+
+    pgl = $('#lc-navlet-frame-'+ target +' .navitem').last().position().left 
+            + $('#lc-navlet-frame-'+ target +' .navitem').last().outerWidth(true);
+    //console.log("lc_navlet_lm pgl"+ pgl);
+
+    if (pgl > pg) {
+        $('#lc-navlet-frame-'+ target +' .navitem_more').html("»");
+    } else {
+        $('#lc-navlet-frame-'+ target +' .navitem_more').empty();
+    }
+}
+function lcNavletMore(target)
+{
+    var ls = $('#lc-navlet-frame-'+ target +' .lc_navlet_navs').html();
+    
+    if (!$('.lc-navlet-moreol').length) {
+        $("body").append('<div class="lc-navlet-moreol"></div>');
+    }
+
+    $('.lc-navlet-moreol').html(ls);
+    
+    e = lessPosGet();
+    w = 100;
+    h = 100;
+    
+    $('.lc-navlet-moreol').css({
+        width: w+'px',
+        height: 'auto',
+        top: (e.top + 10)+'px',
+        left: (e.left - w - 10)+'px'
+    }).toggle();
+
+    rw = $('.lc-navlet-moreol').outerWidth(true);   
+    if (rw > 400) {
+        $('.lc-navlet-moreol').css({
+            width: '400px',
+            left: (e.left - 410)+'px'
+        });
+    } else if (rw > w) {
+        $('.lc-navlet-moreol').css({
+            width: rw+'px',
+            left: (e.left - rw - 10)+'px'
+        });
+    }
+    
+    rh = $('.lc-navlet-moreol').height();
+    bh = $('body').height();
+    hmax = bh - e.top - 30;
+    if (rh > hmax) {
+        $('.lc-navlet-moreol').css({height: hmax+"px"});
+    }
+
+    $(".lc-navlet-moreol").find(".navitem").click(function() {
+        $('.lc-navlet-moreol').hide();
+    });
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 function h5cPluginDataOpen()
@@ -203,7 +265,7 @@ function h5cTabSwitch(urid)
                 return;
             }
 
-            console.log("lcEditor.TabletOpen OK");
+            //console.log("lcEditor.TabletOpen OK");
             h5cTabletTitleImage(urid);
             h5cTabletFrame[item.target].urid = urid;
             lessLocalStorage.Set("tab.fra.urid."+ item.target, urid);

@@ -927,3 +927,66 @@ a.h5c_block:focus {
 .h5c_hovershow:hover .showitem {
     display: block;
 }
+
+
+.lc_navlet_frame {
+    position: relative; left: 0; top: 0;
+    height: 23px;
+}
+.lc_navlet_lr {
+    position: absolute; top: 0; right: 0;
+    padding: 0; text-align: right;
+    border-bottom: 1px solid #cfd4d7; height: 22px; width: 30px;
+}
+.lc_navlet_lm {
+    overflow: hidden;
+    position: relative; left: 0; top: 0;
+    height: 23px;
+    margin-right: 30px;
+}
+.lc_navlet_navs {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    width: 16384px; height: 23px; 
+    border-bottom: 1px solid #cfd4d7; cursor: default;
+}
+.lc_navlet_navs .navitem {
+    display: inline-block; position: relative;
+    height: 23px; font-size: 12px; line-height: 20px;
+    padding: 2px 2px 0 5px;
+    max-width: 300px; margin-right: 0px;
+    overflow: hidden; text-decoration: none;
+}
+.lc_navlet_navs .navitem:hover,
+.lc_navlet_navs .navitem:focus {
+    background-color: #eee;
+    border-radius: 4px;
+}
+.lc_navlet_navs .navitem a {
+    color: #000;
+    text-decoration: none; text-overflow: ellipsis; white-space: nowrap;
+}
+.lc_navlet_navs .navitem .itemtitle {
+    padding-right: 8px;
+}
+.lc_navlet_lr .navitem_more {
+    float: left; font-size: 18px; font-weight: bold;
+    width: 30px; text-align: center; text-align: center;
+    cursor: pointer; z-index: 100;
+    color: #999;
+}
+.lc_navlet_lr .navitem_more:hover {
+    background-color: #e6e6e6;
+}
+.lc-navlet-moreol {
+    position: absolute;
+    border-radius: 5px; display: none;
+    background-color: #fff; border: 1px solid #ccc;
+    padding: 5px; max-width: 500px; min-width: 180px;
+}
+.lc-navlet-moreol .navitem {
+    display: block; overflow: hidden; text-decoration: none;
+}
+.lc-navlet-moreol .navitem:hover {
+    background-color: #eee;
+    border-radius: 4px; padding-left: 5px;
+}

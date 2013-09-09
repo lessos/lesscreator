@@ -12,6 +12,37 @@ if (strlen($projPath) < 1) {
 
 $ptpath = md5("");
 ?>
+<style>
+
+</style>
+
+<div id="lc-navlet-frame-projfs" class="lc_navlet_frame">
+    <div class="lc_navlet_lm">
+        <div class="lc_navlet_navs">
+    
+    <a href="#proj/fs/file-new" class="navitem" onclick="_proj_fs_nav_olclick(this)">
+        <img src="/lesscreator/static/img/page_white_add.png" class="h5c_icon" />
+        New File
+    </a>
+    <a href="#proj/fs/file-new-dir" class="navitem" onclick="_proj_fs_nav_olclick(this)">
+        <img src="/lesscreator/static/img/folder_add.png" class="h5c_icon" />
+        New Folder
+    </a>
+    <a href="#proj/fs/file-upl" class="navitem" onclick="_proj_fs_nav_olclick(this)">
+        <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
+        Upload
+    </a>
+    <a href="#proj/fs/file-upl" class="navitem" onclick="_proj_fs_nav_olclick(this)">
+        <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
+        Zend Framework
+    </a>
+        </div>
+    </div>
+    <div class="lc_navlet_lr">
+        <div class="navitem_more" onclick="lcNavletMore('projfs')"></div>
+    </div>
+</div>
+<!--
 <div class="h5c_tab_subnav" style="border-bottom: 1px solid #ddd;">
     <a href="#proj/fs/file-new" class="_proj_fs_cli">
         <img src="/lesscreator/static/img/page_white_add.png" class="h5c_icon" />
@@ -26,6 +57,7 @@ $ptpath = md5("");
         Upload
     </a>
 </div>
+-->
 
 
 <!--ProjectFilesManager-->
@@ -34,10 +66,20 @@ $ptpath = md5("");
 
 <script type="text/javascript">
 
-$("._proj_fs_cli").click(function() {
+$(".navitem_more").click(function(event) {
+    
+    event.stopPropagation();
 
-    var uri = $(this).attr('href').substr(1);
+    $(document).click(function() {
+        //console.log("lc-navlet-moreol, out click, empty/hide");
+        $('.lc-navlet-moreol').empty().hide();
+        $(document).unbind('click');
+    });
+});
+lcNavletRefresh("projfs");
 
+function _proj_fs_nav_hdr(uri)
+{
     switch (uri) {
     case "proj/fs/file-new":
         _fs_file_new_modal("file", "");
@@ -49,8 +91,19 @@ $("._proj_fs_cli").click(function() {
         _fs_file_new_modal("dir", "");
         break;
     }
+}
+function _proj_fs_nav_olclick(node)
+{
+    var uri = node.getAttribute("href").substr(1);
+    _proj_fs_nav_hdr(uri);
+}
+/* $("#lc-navlet-frame-projfs .navitem").click(function() {
 
-});
+    var uri = $(this).attr('href').substr(1);
+
+    _proj_fs_nav_hdr(uri);
+});*/
+
 /*
 function _proj_set_refresh()
 {
