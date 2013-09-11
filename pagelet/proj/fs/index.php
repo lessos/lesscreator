@@ -32,8 +32,8 @@ $ptpath = md5("");
         <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
         Upload
     </a>
-    <a href="#proj/fs/file-upl" class="navitem" onclick="_proj_fs_nav_olclick(this)">
-        <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
+    <a href="#plugins/php-zf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
+        <img src="/lesscreator/static/img/plugins/php-zf/zf-ico-48.png" class="h5c_icon" />
         Zend Framework
     </a>
         </div>
@@ -89,6 +89,17 @@ function _proj_fs_nav_hdr(uri)
         break;
     case "proj/fs/file-new-dir":
         _fs_file_new_modal("dir", "");
+        break;
+    case "plugins/php-zf/index":
+        var opt = {
+            'title': 'Zend Framework',
+            'close':'1',
+            'img': '/lesscreator/static/img/plugins/php-zf/zf-ico-48.png',
+        }
+
+        var url = '/lesscreator/'+ uri +'?proj='+ lessSession.Get("ProjPath");
+
+        h5cTabOpen(url, 'w0', 'html', opt);
         break;
     }
 }

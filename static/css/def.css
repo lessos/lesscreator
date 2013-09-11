@@ -145,13 +145,13 @@ textarea {
 #hdev_header .header_logo .title {
     position: relative; top: 14px; left: 0;
     line-height: 24px; font-size: 24px;
-    color: #63666a;
+    color: #444;
     font-family: Helvetica !important;
 }
 #hdev_header .header_logo .version {
     position: relative; top: 13px; left: 5px;
     line-height: 8px; font-size: 12px;
-    color: #aaa;
+    color: #666;
 }
 
 #hdev_header .hdev-header-alert {
