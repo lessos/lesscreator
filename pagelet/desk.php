@@ -5,7 +5,7 @@ use LessPHP\User\Session;
 if (!Session::IsLogin()) {
     die("Access denied. <a href='/user'>Login</a>");
 }
-$lcinfo = file_get_contents(LESSCREATOR_DIR ."/lesscreator/lcproject.json");
+$lcinfo = file_get_contents(LESSCREATOR_DIR ."/lcproject.json");
 $lcinfo = json_decode($lcinfo, true);
 ?>
 
@@ -13,7 +13,7 @@ $lcinfo = json_decode($lcinfo, true);
   <tr>
     <td width="10px"></td>
 
-    <td class="header_logo" width="200px">
+    <td class="header_logo" width="280px">
       <img class="lc_icon" src="/lesscreator/static/img/for-test/less-logo-100.png" />
       <span class="title">Creator</span>
       <span class="version"><?php echo $lcinfo['version']?></span>

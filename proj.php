@@ -8,7 +8,7 @@ class lesscreator_proj
         if (substr($proj, 0, 1) == '/') {
             $path = $proj;
         } else {
-            $path = LESSCREATOR_DIR ."/". $proj;
+            $path = PROJROOT_DIR ."/". $proj;
         }
         
         return preg_replace("/\/+/", "/", rtrim($path, '/'));

@@ -31,7 +31,7 @@ if ($this->req->apimethod == "launch.web") {
         if ($ngx_conf_mode == "custom") {
             $ngx_conf = file_get_contents($ProjPath ."/misc/nginx/virtual.custom.conf");
         } else if (in_array($ngx_conf_mode, array("std", "static", "phpmix"))) {
-            $ngx_conf = file_get_contents(LESSCREATOR_DIR."/lesscreator/misc/nginx/virtual.{$ngx_conf_mode}.conf");
+            $ngx_conf = file_get_contents(LESSCREATOR_DIR."/misc/nginx/virtual.{$ngx_conf_mode}.conf");
         } else {
             throw new \Exception("You have not enabled WebServer in Runtimes Settings", 400);
         }

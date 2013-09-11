@@ -11,7 +11,7 @@
 </thead>
 
 <?php
-$patt = SYS_ROOT.'app/*';
+$patt = SYSROOT_DIR.'/app/*';
 $def  = array(
   'id'    => '',
   'name'  => '',

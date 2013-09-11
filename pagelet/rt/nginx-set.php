@@ -56,7 +56,7 @@ if ($this->req->apimethod == "ngx_conf.get") {
             $ret['data'] = $ctn->data->body;
         } else if ($ctn->status == 404) {
             
-            $tmp = LESSCREATOR_DIR."/lesscreator/misc/nginx/virtual.phpmix.conf";
+            $tmp = LESSCREATOR_DIR."/misc/nginx/virtual.phpmix.conf";
         
             $ctn = file_get_contents($tmp);
             if ($ctn !== false) {
@@ -69,7 +69,7 @@ if ($this->req->apimethod == "ngx_conf.get") {
         //print_r($cfg);
     } else {
 
-        $lcpj = LESSCREATOR_DIR."/lesscreator/misc/nginx/virtual.{$this->req->ngx_conf_mode}.conf";
+        $lcpj = LESSCREATOR_DIR."/misc/nginx/virtual.{$this->req->ngx_conf_mode}.conf";
         
         $ctn = file_get_contents($lcpj);
         if ($ctn === false) {
