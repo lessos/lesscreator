@@ -1,17 +1,23 @@
 <?php
 
 use LessPHP\Util\Directory;
+    
+$info = lesscreator_proj::info($this->req->proj);
+if (!isset($info['projid'])) {
+    die("Bad Request");
+}
+$projPath = lesscreator_proj::path($this->req->proj);
 
 ?>
 
-<div style="background:#f6f7f8;padding: 10px 5px;">
+<div style="background:#f6f7f8;padding: 10px 5px;border-bottom:1px solid #ccc;">
     <img src="/lesscreator/static/img/plugins/php-yaf/yaf-ico-l-360.png" class="h5c_ico" width="60" height="30" />
     <span class="inline"><strong>PHP Yaf Framework</strong> ( <em>Version: <?php echo YAF_VERSION?></em> )</span>
 </div>
 
 <div style="padding:5px;">
 
-<div  class="alert alert-success">
+<div id="jxaebr" class="alert alert-success hide">
 
 <h3>PHP Yaf Framework MVC</h3>
 
@@ -33,13 +39,21 @@ foreach ($fs as $v) {
 </ul><br/>
 
 <a class="btn btn-success" href="#php-yaf/start" onclick="_plugin_yaf_mvc_start()">Confirm and Start PHP Yaf Framework MVC layer</a>
-</div>
-
-<div id="f79gwj">
 
 </div>
 
 <script type="text/javascript">
+
+<?php
+//echo "{$projPath}/conf/application.ini";
+//die();
+$item = lesscreator_fs::FsFileGet("{$projPath}/conf/application.ini");
+//print_r($item);
+
+if ($item->status != 200) {
+    echo '$("#jxaebr").show();';
+}
+?>
 
 function _plugin_yaf_mvc_start()
 {
@@ -57,7 +71,9 @@ function _plugin_yaf_mvc_start()
         success : function(rsp) {
             //$("#pt"+p).html(data);
             //h5cLayoutResize();
-            lessAlert("#f79gwj", "alert-success", rsp);
+            _fs_file_new_callback("/");
+            $("#jxaebr").hide();
+            //lessAlert("#f79gwj", "alert-success", rsp);
         },
         error   : function(xhr, textStatus, error) {
             //hdev_header_alert('error', textStatus+' '+xhr.responseText);

@@ -34,7 +34,7 @@ $ptpath = md5("");
     </a>
     <a href="#plugins/php-yaf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
         <img src="/lesscreator/static/img/plugins/php-yaf/yaf-ico-48.png" class="h5c_icon" />
-        Yaf Framework
+        PHP Yaf
     </a>
     <!-- <a href="#plugins/php-zf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
         <img src="/lesscreator/static/img/plugins/php-zf/zf-ico-48.png" class="h5c_icon" />

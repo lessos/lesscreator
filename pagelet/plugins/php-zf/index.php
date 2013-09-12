@@ -5,7 +5,7 @@ use LessPHP\Util\Directory;
 
 ?>
 
-<div style="background:#f6f7f8;padding: 10px 5px;">
+<div style="background:#f6f7f8;padding: 10px 5px;border-bottom:1px solid #999;">
     <img src="/lesscreator/static/img/plugins/php-zf/zf-ico-l-360.png" class="h5c_ico" width="60" height="30" />
     <span class="inline"><strong>Zend Framework 2</strong> ( <em>Version: <?php echo Version::VERSION?></em> )</span>
 </div>
