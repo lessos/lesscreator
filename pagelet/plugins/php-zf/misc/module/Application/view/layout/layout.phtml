@@ -1,8 +1,19 @@
-<html>
-<head>
-    <title>Hello World</title>
-</head>
-<body>
-    <h1>Hello World</h1>
-</body>
+<?php echo $this->doctype(); ?>
+<?php
+print_r($this);
+?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('ZF2 Skeleton Application') ?>
+    </head>
+    <body>
+        <div class="container">
+            <?php echo $this->content; ?>
+            <hr>
+            <footer>
+                <p>&copy; 2005 - <?php echo date('Y') ?> by Zend Technologies Ltd.</p>
+            </footer>
+        </div>
+    </body>
 </html>

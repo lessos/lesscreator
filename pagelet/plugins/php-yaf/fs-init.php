@@ -29,46 +29,18 @@ try {
     $lcpj = "{$projPath}/lcproject.json";
     $lcpj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $lcpj);
 
-    $tplpath = LESSCREATOR_DIR ."/pagelet/plugins/php-zf/misc";
+    $tplpath = LESSCREATOR_DIR ."/pagelet/plugins/php-yaf/fs-init-tpl";
     $fs = Directory::listFiles($tplpath);
     foreach ($fs as $file) {
-        $str = file_get_contents($tplpath . $file);
+        $file = trim($file, "/");
+        $str = file_get_contents($tplpath ."/". $file);        
+
+        if ($file == "conf/application.ini") {
+            $str = str_replace("{{.projid}}", $info['projid'], $str);
+        }
+
         lesscreator_fs::FsFilePut("{$projPath}/{$file}", $str);
     }
-    
-    /*
-    $ret['fs'] = $fs;
-
-    //
-    $pth = LESSCREATOR_DIR ."/pagelet/plugins/php-zf/misc/public/index.php";
-    $str = file_get_contents($pth);
-    lesscreator_fs::FsFilePut("{$projPath}/public/index.php", $str);
-
-    //
-    $pth = LESSCREATOR_DIR ."/pagelet/plugins/php-zf/misc/init_autoloader.php";
-    $str = file_get_contents($pth);
-    lesscreator_fs::FsFilePut("{$projPath}/init_autoloader.php", $str);
-
-    //
-    $pth = LESSCREATOR_DIR ."/pagelet/plugins/php-zf/misc/config/application.config.php";
-    $str = file_get_contents($pth);
-    lesscreator_fs::FsFilePut("{$projPath}/config/application.config.php", $str);
-
-    //
-    $pth = LESSCREATOR_DIR ."/pagelet/plugins/php-zf/misc/config/autoload/global.php";
-    $str = file_get_contents($pth);
-    lesscreator_fs::FsFilePut("{$projPath}/config/autoload/global.php", $str);
-
-    //
-    $pth = LESSCREATOR_DIR ."/pagelet/plugins/php-zf/misc/data/cache/.gitignore";
-    $str = file_get_contents($pth);
-    lesscreator_fs::FsFilePut("{$projPath}/data/cache/.gitignore", $str);
-
-    //
-    $pth = LESSCREATOR_DIR ."/pagelet/plugins/php-zf/misc/config/virtual.custom.conf";
-    $str = file_get_contents($pth);
-    lesscreator_fs::FsFilePut("{$projPath}/misc/nginx/virtual.custom.conf", $str);
-    */
 
     if (!isset($info['runtimes']['nginx']) 
         || $info['runtimes']['nginx']['ngx_conf_mode'] != "custom"

@@ -32,10 +32,14 @@ $ptpath = md5("");
         <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
         Upload
     </a>
-    <a href="#plugins/php-zf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
+    <a href="#plugins/php-yaf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
+        <img src="/lesscreator/static/img/plugins/php-yaf/yaf-ico-48.png" class="h5c_icon" />
+        Yaf Framework
+    </a>
+    <!-- <a href="#plugins/php-zf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
         <img src="/lesscreator/static/img/plugins/php-zf/zf-ico-48.png" class="h5c_icon" />
         Zend Framework
-    </a>
+    </a> -->
         </div>
     </div>
     <div class="lc_navlet_lr">
@@ -89,6 +93,17 @@ function _proj_fs_nav_hdr(uri)
         break;
     case "proj/fs/file-new-dir":
         _fs_file_new_modal("dir", "");
+        break;
+    case "plugins/php-yaf/index":
+        var opt = {
+            'title': 'Yaf Framework',
+            'close':'1',
+            'img': '/lesscreator/static/img/plugins/php-yaf/yaf-ico-48.png',
+        }
+
+        var url = '/lesscreator/'+ uri +'?proj='+ lessSession.Get("ProjPath");
+
+        h5cTabOpen(url, 'w0', 'html', opt);
         break;
     case "plugins/php-zf/index":
         var opt = {

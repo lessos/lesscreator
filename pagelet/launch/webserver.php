@@ -29,7 +29,13 @@ if ($this->req->apimethod == "launch.web") {
         $ngx_conf_mode = $projInfo['runtimes']['nginx']['ngx_conf_mode'];
         $ngx_conf = null;
         if ($ngx_conf_mode == "custom") {
-            $ngx_conf = file_get_contents($ProjPath ."/misc/nginx/virtual.custom.conf");
+            
+            $rs = lesscreator_fs::FsFileGet($projPath ."/misc/nginx/virtual.custom.conf");
+            if ($rs->status != 200) {
+                throw new \Exception("Configuration can not found ($projPath/misc/nginx/virtual.custom.conf)", 404);
+            }
+            $ngx_conf = $rs->data->body;
+
         } else if (in_array($ngx_conf_mode, array("std", "static", "phpmix"))) {
             $ngx_conf = file_get_contents(LESSCREATOR_DIR."/misc/nginx/virtual.{$ngx_conf_mode}.conf");
         } else {
@@ -67,6 +73,7 @@ if ($this->req->apimethod == "launch.web") {
 
         $projInst['rt_ngx_conf'] = $ngx_conf;
         $rs = $kpr->LocalNodeSet("/app/local/setup/{$qid}", json_encode($projInst), 9000);
+        //print_r($projInst);
 
         for ($i = 0; $i < 5; $i++) {
 
@@ -143,6 +150,8 @@ function _proj_launch_webserver_try()
         timeout : 30000,
         success : function(rsp) {
             
+            console.log(rsp);
+
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
