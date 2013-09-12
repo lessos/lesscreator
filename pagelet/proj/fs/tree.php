@@ -97,7 +97,10 @@ foreach ($ls->data as $f) {
             $fmi = 'page_white_cplusplus';
         } else if (substr($fn, -3) == '.js' || substr($fn, -4) == '.css') {
             $fmi = 'page_white_code';
-        } else if (substr($fn, -5) == '.html' || substr($fn, -4) == '.htm' || substr($fn, -6) == '.xhtml') {
+        } else if (substr($fn, -5) == '.html' 
+            || substr($fn, -4) == '.htm' 
+            || substr($fn, -6) == '.phtml'
+            || substr($fn, -6) == '.xhtml') {
             $fmi = 'page_white_world';
         } else if (substr($fn, -3) == '.sh' || $fm == 'text/x-shellscript') {
             $fmi = 'application_osx_terminal';
