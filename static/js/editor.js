@@ -35,7 +35,9 @@ lcEditor.TabletOpen = function(urid, callback)
 
     lcData.Get("files", urid, function(ret) {
 
-        if (ret && urid == ret.id) {
+        if (ret && urid == ret.id
+            && ((ret.ctn1_sum && ret.ctn1_sum.length > 30)
+                || (ret.ctn0_sum && ret.ctn0_sum.length > 30))) {
 
             //h5cTabletPool[urid].data = ret.ctn1_src;
             //h5cTabletPool[urid].hash = lessCryptoMd5(ret.ctn1_src);
@@ -255,17 +257,20 @@ lcEditor.Changed = function(urid)
         return;
     }
 
-    var entry = {
-        id      : urid,
-        projdir : lessSession.Get("ProjPath"),
-        filepth : item.url,
-        ctn1_src: h5cTabletFrame[item.target].editor.getValue(),
-        ctn1_sum: lessCryptoMd5(h5cTabletFrame[item.target].editor.getValue()),
-    }
-    //console.log(entry);
-    lcData.Put("files", entry, function(ret) {
-        // TODO
+    lcData.Get("files", urid, function(entry) {
+                        
+        if (!entry || entry.id != urid) {
+            return;
+        }
+
+        entry.ctn1_src = h5cTabletFrame[item.target].editor.getValue();
+        entry.ctn1_sum = lessCryptoMd5(h5cTabletFrame[item.target].editor.getValue());
+
+        lcData.Put("files", entry, function(ret) {
+            // TODO
+        });
     });
+    
     $("#pgtab"+ urid +" .chg").show();
     $("#pgtab"+ urid +" .pgtabtitle").addClass("chglight");
 }
@@ -359,32 +364,34 @@ lcEditor.WebSocketSend = function(req)
                     
                     //console.log("onmessage ok"+ obj.data.urid);
 
-                    var entry = {
-                        id      : obj.data.urid,
-                        //projdir : lessSession.Get("ProjPath"),
-                        //filepth : item.url,
-                        ctn1_src: "",
-                        ctn1_sum: "",
-                    }
-
-                    lcData.Put("files", entry, function(ret) {
-
-                        //console.log("onmessage ok 2");
-
-                        if (!ret) {
-                            lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
+                    lcData.Get("files", obj.data.urid, function(entry) {
+                        
+                        if (!entry || entry.id != obj.data.urid) {
                             return;
                         }
 
-                        ///console.log("onmessage ok 3");
-                        $("#pgtab"+ obj.data.urid +" .chg").hide();
-                        $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
+                        entry.ctn1_src = "";
+                        entry.ctn1_sum = "";
 
-                        hdev_header_alert('success', "OK");
+                        lcData.Put("files", entry, function(ret) {
 
-                        lcEditor.MessageReply(obj.msgreply, obj);
+                            //console.log("onmessage ok 2");
 
-                        //console.log(obj);
+                            if (!ret) {
+                                lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
+                                return;
+                            }
+
+                            ///console.log("onmessage ok 3");
+                            $("#pgtab"+ obj.data.urid +" .chg").hide();
+                            $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
+
+                            hdev_header_alert('success', "OK");
+
+                            lcEditor.MessageReply(obj.msgreply, obj);
+
+                            //console.log(obj);
+                        });
                     });
 
                     //h5cTabletPool[urid].hash = obj.sumcheck;
