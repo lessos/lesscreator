@@ -17,7 +17,7 @@ if ($this->req->func == "action-new") {
 
     try {
 
-        if (!preg_match('/^([0-9a-zA-Z]{1,30})Action$/', $this->req->func_name)) {
+        if (!preg_match('/^([a-z]{1})([0-9a-zA-Z]{1,30})Action$/', $this->req->func_name)) {
             throw new \Exception("Invalid Name", 400);
         }
 
@@ -61,7 +61,7 @@ if ($this->req->func == "action-new") {
 
 <form id="td5kfz" action="#" method="post">
     <input type="text" name="func_name" value="" class="span3" />
-    <span class="help-inline">Example: <strong>helloAction</strong></span>
+    <span class="help-inline">First character must be a lowercase letter, Example: <strong>helloAction</strong></span>
 </form>
 
 <script type="text/javascript">

@@ -93,6 +93,9 @@ foreach ($fs as $file) {
 
     echo "<td>";
     foreach ($vs2 as $k => $v) {
+
+        $k = strtolower(substr($k, 0, 1)) . substr($k, 1);
+
         if ($v == null) {
             echo "<a class='badge pull-left tyaery-new' href='#fs/{$ctln}/{$k}.phtml'><i class='icon-plus-sign icon-white'></i>  New View</a>";
         } else {
@@ -128,7 +131,7 @@ $(".rcifxb-new").click(function(event) {
     var url = "/lesscreator/plugins/php-yaf/fs-ov-controller-new";
     url += "?proj="+ lessSession.Get("ProjPath");
 
-    lessModalOpen(url, 0, 550, 160, tit, null);
+    lessModalOpen(url, 0, 550, 180, tit, null);
 });
 
 $(".rr20fx").click(function(event) {
@@ -155,8 +158,7 @@ $(".rr20fx-new").click(function(event) {
     url += "&proj="+ lessSession.Get("ProjPath");
 
 
-    lessModalOpen(url, 0, 550, 160, tit, null);
-    //_fs_file_new_modal("file", "/application/controllers/", uri[1], 1);
+    lessModalOpen(url, 0, 550, 180, tit, null);
 });
 
 $(".tyaery").click(function(event) {
