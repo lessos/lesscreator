@@ -2,7 +2,12 @@
 
 $path = preg_replace("/\/+/", "/", '/'.$this->req->path.'/');
 $type = $this->req->type;
+$file = $this->req->file;
 
+$readonly = "";
+if (isset($this->req->readonly) && $this->req->readonly == 1) {
+    $readonly = "readonly='readonly'";
+}
 ?>
 
 
@@ -13,7 +18,7 @@ $type = $this->req->type;
         <img src="/lesscreator/static/img/folder_add.png" class="h5c_icon" />
         <?php echo $path?>
     </span>
-    <input type="text" name="name" value="" class="span2 hutjzx" />
+    <input type="text" name="name" value="<?php echo $file?>" class="span2 hutjzx" <?php echo $readonly?>/>
     <input type="hidden" name="path" value="<?php echo $path?>" />
     <input type="hidden" name="type" value="<?php echo $type?>" />
   </div>
@@ -63,6 +68,10 @@ function _fs_file_new()
                 hdev_header_alert('error', obj.message);
             }
 
+            if (typeof _plugin_yaf_cvlist == 'function') {
+                _plugin_yaf_cvlist();
+            }
+            
             _fs_file_new_callback($("#egj3zj").find("input[name=path]").val());
             lessModalClose();
         },

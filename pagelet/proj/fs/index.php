@@ -68,13 +68,13 @@ function _proj_fs_nav_hdr(uri)
 {
     switch (uri) {
     case "proj/fs/file-new":
-        _fs_file_new_modal("file", "");
+        _fs_file_new_modal("file", "", "", 0);
         break;
     case "proj/fs/file-upl":
         _fs_file_upl_modal("");
         break;
     case "proj/fs/file-new-dir":
-        _fs_file_new_modal("dir", "");
+        _fs_file_new_modal("dir", "", "", 0);
         break;
     case "plugins/php-yaf/index":
         var opt = {
@@ -136,7 +136,7 @@ function _proj_set_refresh()
     });
 }*/
 
-function _fs_file_new_modal(type, path)
+function _fs_file_new_modal(type, path, file, readonly)
 {
     var tit = "New File";
     if (type == 'dir') {
@@ -144,6 +144,9 @@ function _fs_file_new_modal(type, path)
     }
 
     var url = "/lesscreator/proj/fs/file-new?path="+ path +"&type="+ type;
+    url += "&readonly="+ readonly;
+    url += "&file="+ file;
+    
     lessModalOpen(url, 0, 550, 160, tit, null);
 }
 
@@ -212,11 +215,11 @@ function _fs_tree_refresh()
         $(this).find(".hdev_rcobj_file").click(function() {
             p = $(this).position();
             path = $(this).attr('href').substr(1);
-            _fs_file_new_modal("file", path);
+            _fs_file_new_modal("file", path, "", 0);
         });
         $(this).find(".hdev_rcobj_dir").click(function() {
             path = $(this).attr('href').substr(1);
-            _fs_file_new_modal("dir", path);
+            _fs_file_new_modal("dir", path, "", 0);
         });
         $(this).find(".hdev_rcobj_upload").click(function() {
             path = $(this).attr('href').substr(1);

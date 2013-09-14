@@ -25,7 +25,7 @@ $projPath = lesscreator_proj::path($this->req->proj);
     font-family: monospace !important;
 }
 .rpmzfe .badge:hover {
-    background-color: #999;
+    background-color: #f5b400;
 }
 .rpmzfe a.btn {
     margin: 0;  
@@ -54,7 +54,7 @@ foreach ($fs as $file) {
     }
 
     echo "<tr>";
-    echo "<td><a class=\"badge badge-inverse rr20fx\" href='#fs/{$file}/'>$file</a></td>";
+    echo "<td><a class=\"badge badge-important rr20fx\" href='#fs/{$file}/'>$file</a></td>";
 
     $ctln = strtolower(strstr($file, '.', true));
 
@@ -75,21 +75,26 @@ foreach ($fs as $file) {
 
         foreach ($mat[2] as $v) {
 
-            echo "<a class='badge badge-info pull-right rr20fx' href='#fs/{$file}/{$v}'>{$v}Action( )</a>";
+            echo "<a class='badge badge-info pull-right rr20fx' href='#fs/{$file}/{$v}'>{$v}Action</a>";
             
             if (in_array($v, $vs)) {
-                $vs2[] = $v;
+                $vs2[$v] = $v;
             } else {
-                $vs2[] = null;
+                $vs2[$v] = null;
             }
         }
     }
+
+    echo "<a class='badge pull-right rr20fx-new' href='#fs/{$file}/new'>
+        <i class='icon-plus-sign icon-white'></i> 
+        New Action
+        </a>";
     echo "</td>";
 
     echo "<td>";
-    foreach ($vs2 as $v) {
+    foreach ($vs2 as $k => $v) {
         if ($v == null) {
-            echo "<div class='badge pull-left'>Create</div>";
+            echo "<a class='badge pull-left tyaery-new' href='#fs/{$ctln}/{$k}.phtml'><i class='icon-plus-sign icon-white'></i>  New View</a>";
         } else {
             echo "<a class='badge badge-success pull-left tyaery' href='#fs/{$ctln}/{$v}.phtml'>{$v}.phtml</a>";
         }
@@ -119,6 +124,21 @@ $(".rr20fx").click(function(event) {
     h5cTabOpen('application/controllers/'+ uri[1],'w0','editor', opt);
 });
 
+$(".rr20fx-new").click(function(event) {
+
+    var uri = $(this).attr("href").split("/");
+
+
+    var tit = "New Action";
+    var url = "/lesscreator/plugins/php-yaf/fs-ov-action-new";
+    url += "?ctl="+ uri[1];
+    url += "&proj="+ lessSession.Get("ProjPath");
+
+
+    lessModalOpen(url, 0, 550, 160, tit, null);
+    //_fs_file_new_modal("file", "/application/controllers/", uri[1], 1);
+});
+
 $(".tyaery").click(function(event) {
 
     var uri = $(this).attr("href").split("/");
@@ -130,5 +150,13 @@ $(".tyaery").click(function(event) {
 
     h5cTabOpen('application/views/'+ uri[1] +"/"+ uri[2],'w0','editor', opt);
 });
+
+$(".tyaery-new").click(function(event) {
+
+    var uri = $(this).attr("href").split("/");
+
+    _fs_file_new_modal("file", "/application/views/"+ uri[1], uri[2], 1);
+});
+
 
 </script>
