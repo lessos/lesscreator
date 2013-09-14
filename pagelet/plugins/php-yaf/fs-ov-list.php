@@ -106,10 +106,30 @@ foreach ($fs as $file) {
     //echo $file;
 }
 ?>
+<tr>
+<td>
+    <a class='badge rcifxb-new' href='#fs/new'>
+        <i class='icon-plus-sign icon-white'></i> 
+        New Controller
+    </a>
+</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 
 <script type="text/javascript">
+
+$(".rcifxb-new").click(function(event) {
+
+    var tit = "New Controller";
+    var url = "/lesscreator/plugins/php-yaf/fs-ov-controller-new";
+    url += "?proj="+ lessSession.Get("ProjPath");
+
+    lessModalOpen(url, 0, 550, 160, tit, null);
+});
 
 $(".rr20fx").click(function(event) {
 

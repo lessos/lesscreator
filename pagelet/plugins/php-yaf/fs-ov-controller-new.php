@@ -8,7 +8,7 @@ if (!isset($info['projid'])) {
 }
 $projPath = lesscreator_proj::path($this->req->proj);
 
-if ($this->req->func == "action-new") {
+if ($this->req->func == "controller-new") {
 
     $ret = array(
         'status'  => 200,
@@ -17,30 +17,28 @@ if ($this->req->func == "action-new") {
 
     try {
 
-        if (!preg_match('/^([0-9a-zA-Z]{1,30})Action$/', $this->req->func_name)) {
+        if (!preg_match('/^([A-Z]{1})([0-9a-zA-Z]{1,30})$/', $this->req->ctrl_name)) {
             throw new \Exception("Invalid Name", 400);
         }
 
-        $lcf = "{$projPath}/{$this->req->path}";
+        $lcf = "{$projPath}/application/controllers/{$this->req->ctrl_name}.php";
         $lcf = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $lcf);
         
         $rs = lesscreator_fs::FsFileGet($lcf);
 
-        if ($rs->status != 200) {
-            throw new \Exception("File Not Found", 404);
+        if ($rs->status == 200) {
+            throw new \Exception("Controller Exists", 500);
         }
 
-        $cls = $this->req->class;
+        $str = '
+<?php
 
-        $match = array(
-            "%class\s{$cls}Controller(.*?)\{(.*?)%si",
+class '.$this->req->ctrl_name.'Controller extends Yaf_Controller_Abstract
+{
 
-        );
-        $replace = array(
-            "class {$cls}Controller$1{\n    function {$this->req->func_name}()\n    {\n    }\n\n$2",
-        );
-        $str = preg_replace($match, $replace, $rs->data->body);
-        $rs = lesscreator_fs::FsFilePut($projPath ."/". $this->req->path, $str);
+}
+';
+        $rs = lesscreator_fs::FsFilePut($lcf, $str);
 
         if ($rs->status != 200) {
             throw new \Exception("Error Processing Request", 500);
@@ -59,32 +57,29 @@ if ($this->req->func == "action-new") {
 ?>
 
 
-<form id="td5kfz" action="#" method="post">
-    <input type="text" name="func_name" value="" class="span3" />
-    <span class="help-inline">Example: <strong>helloAction</strong></span>
+<form id="illb99" action="#" method="post">
+    <input type="text" name="ctrl_name" value="" class="span3" />
+    <span class="help-inline">The first character must be an uppercase letter, Example: <strong>Hello</strong></span>
 </form>
 
 <script type="text/javascript">
 
-lessModalButtonAdd("xldqgw", "Create", "_php_yaf_action_new()", "btn-inverse pull-left");
+lessModalButtonAdd("xldqgw", "Create", "_php_yaf_controller_new()", "btn-inverse pull-left");
 lessModalButtonAdd("g7yhlm", "Cancel", "lessModalClose()", "pull-left");
 
-$("#td5kfz").submit(function(event) {
+$("#illb99").submit(function(event) {
 
     event.preventDefault();
 
-    _php_yaf_action_new();
+    _php_yaf_controller_new();
 });
 
-function _php_yaf_action_new()
+function _php_yaf_controller_new()
 {
-    var url = "/lesscreator/plugins/php-yaf/fs-ov-action-new?func=action-new";
+    var url = "/lesscreator/plugins/php-yaf/fs-ov-controller-new?func=controller-new";
 
     var data = "proj="+ lessSession.Get("ProjPath");
-    data += "&path=/application/controllers/<?php echo $this->req->ctl?>";
-    data += "&func_name="+ $("#td5kfz").find("input[name=func_name]").val();
-    data += "&class=<?php echo strstr($this->req->ctl, ".", true)?>";
-    //console.log(data);
+    data += "&ctrl_name="+ $("#illb99").find("input[name=ctrl_name]").val();
 
     $.ajax({
         type    : "POST",
@@ -107,7 +102,7 @@ function _php_yaf_action_new()
             }
             
             // TODO tree refresh
-            //_fs_file_new_callback($("#td5kfz").find("input[name=path]").val());
+            //_fs_file_new_callback($("#illb99").find("input[name=path]").val());
             lessModalClose();
         },
         error   : function(xhr, textStatus, error) {
