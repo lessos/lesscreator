@@ -8,12 +8,33 @@ if (!isset($info['projid'])) {
 }
 $projPath = lesscreator_proj::path($this->req->proj);
 
+$version = "Unknown";
+if (defined("YAF_VERSION")) {
+    $version = YAF_VERSION;
+}
 ?>
 
 <div style="background:#f6f7f8;padding: 10px 5px;border-bottom:1px solid #ccc;">
     <img src="/lesscreator/static/img/plugins/php-yaf/yaf-ico-l-360.png" class="h5c_ico" width="60" height="30" />
-    <span class="inline"><strong>PHP Yaf Framework</strong> ( <em>Version: <?php echo YAF_VERSION?></em> )</span>
+    <span class="inline"><strong>PHP Yaf Framework</strong> ( <em>Version: <?php echo $version?></em> )</span>
 </div>
+
+
+<?php
+if (!defined("YAF_VERSION")) {
+    die("<div class='alert alert-error' style='margin:5px;'>
+        <h4>Your current system is not installed the PHP-Yaf extension!</h4><br/>
+        Please login system and execute the following command to install ...
+        <pre style='margin:5px 0;'>
+yum install php54-devel
+pecl install yaf
+echo \"extension=yaf.so\">/etc/php.d/yaf.ini
+service php-fpm restart</pre>
+        TODO: Integrated into the LessFly Engine
+        </div>");
+}
+?>
+
 
 <div style="padding:5px;">
 
@@ -31,9 +52,14 @@ This Wizard will create a default directory structure and initial configuration 
 
 <ul>
 <?php
-$fs = Directory::listFiles(LESSCREATOR_DIR ."/pagelet/plugins/php-yaf/fs-init-tpl");
-foreach ($fs as $v) {
-    echo "<li>$v</li>";
+$fsini = lesscreator_fs::FsFileGet("{$projPath}/conf/application.ini");
+
+if ($fsini->status != 200) {
+
+    $fs = Directory::listFiles(LESSCREATOR_DIR ."/pagelet/plugins/php-yaf/fs-init-tpl");
+    foreach ($fs as $v) {
+        echo "<li>$v</li>";
+    }
 }
 ?>
 </ul><br/>
@@ -42,43 +68,58 @@ foreach ($fs as $v) {
 
 </div>
 
+<div id="qwq3rw"></div>
+
 <script type="text/javascript">
-
-<?php
-//echo "{$projPath}/conf/application.ini";
-//die();
-$item = lesscreator_fs::FsFileGet("{$projPath}/conf/application.ini");
-//print_r($item);
-
-if ($item->status != 200) {
-    echo '$("#jxaebr").show();';
-}
-?>
 
 function _plugin_yaf_mvc_start()
 {
 	var req = {
         "access_token" : lessCookie.Get("access_token"),
         "data" : {
-        	"projdir": lessSession.Get("ProjPath")
+            "projdir": lessSession.Get("ProjPath")
         }
     }
 
+    var uri = '/lesscreator/plugins/php-yaf/fs-init?_='+ Math.random();
+
 	$.ajax({
         type    : "POST",
-        url     : '/lesscreator/plugins/php-yaf/fs-init?_='+ Math.random(),
+        url     : uri,
         data    : JSON.stringify(req),
         success : function(rsp) {
-            //$("#pt"+p).html(data);
-            //h5cLayoutResize();
             _fs_file_new_callback("/");
             $("#jxaebr").hide();
-            //lessAlert("#f79gwj", "alert-success", rsp);
         },
         error   : function(xhr, textStatus, error) {
-            //hdev_header_alert('error', textStatus+' '+xhr.responseText);
+            //
         }
     });
 }
+
+function _plugin_yaf_cvlist()
+{
+    var uri = '/lesscreator/plugins/php-yaf/fs-ov-list?_='+ Math.random();
+    uri += "&proj="+ lessSession.Get("ProjPath");
+
+    $.ajax({
+        type    : "GET",
+        url     : uri,
+        success : function(rsp) {
+            $("#qwq3rw").html(rsp);
+        },
+        error   : function(xhr, textStatus, error) {
+            //
+        }
+    });
+}
+
+<?php
+if ($fsini->status != 200) {
+    echo '$("#jxaebr").show();';
+} else {
+    echo "_plugin_yaf_cvlist();";
+}
+?>
 
 </script>

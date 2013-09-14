@@ -46,27 +46,9 @@ $ptpath = md5("");
         <div class="navitem_more" onclick="lcNavletMore('projfs')"></div>
     </div>
 </div>
-<!--
-<div class="h5c_tab_subnav" style="border-bottom: 1px solid #ddd;">
-    <a href="#proj/fs/file-new" class="_proj_fs_cli">
-        <img src="/lesscreator/static/img/page_white_add.png" class="h5c_icon" />
-        New File
-    </a>
-    <a href="#proj/fs/file-new-dir" class="_proj_fs_cli">
-        <img src="/lesscreator/static/img/folder_add.png" class="h5c_icon" />
-        New Folder
-    </a>
-    <a href="#proj/fs/file-upl" class="_proj_fs_cli">
-        <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
-        Upload
-    </a>
-</div>
--->
-
 
 <!--ProjectFilesManager-->
 <div id="pt<?=$ptpath?>" class="hdev-proj-files less_scroll" style="padding-top:5px;"></div>
-
 
 <script type="text/javascript">
 
@@ -123,6 +105,8 @@ function _proj_fs_nav_olclick(node)
     var uri = node.getAttribute("href").substr(1);
     _proj_fs_nav_hdr(uri);
 }
+
+
 /* $("#lc-navlet-frame-projfs .navitem").click(function() {
 
     var uri = $(this).attr('href').substr(1);

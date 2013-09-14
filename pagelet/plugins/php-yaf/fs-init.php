@@ -28,6 +28,7 @@ try {
 
     $lcpj = "{$projPath}/lcproject.json";
     $lcpj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $lcpj);
+    
 
     $tplpath = LESSCREATOR_DIR ."/pagelet/plugins/php-yaf/fs-init-tpl";
     $fs = Directory::listFiles($tplpath);

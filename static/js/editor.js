@@ -185,6 +185,37 @@ lcEditor.LoadInstance = function(entry)
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
     //console.log(entry);
 
+    var opt_line_strto = null;
+    if (item.editor_strto && item.editor_strto.length > 1) {
+        //console.log("editor_strto "+ item.editor_strto);
+        opt_line_strto = item.editor_strto;
+        h5cTabletPool[entry.id].editor_strto = null;
+    }
+
+    if (h5cTabletFrame[item.target].editor == null) {
+        
+        CodeMirror.defineInitHook(function(cminst) {
+            
+            if (opt_line_strto != null) {
+                
+                //console.log("line to"+ opt_line_strto);
+                                
+                var crs = cminst.getSearchCursor(opt_line_strto, cminst.getCursor(), null);
+                
+                if (crs.findNext()) {
+                
+                    var lineto = crs.from().line + 2;
+                    if (lineto > cminst.lineCount()) {
+                        lineto = cminst.lineCount() - 1;
+                    }
+
+                    cminst.scrollIntoView({line: lineto, ch: 0});
+                }
+            }
+        });
+    }
+   
+
     h5cTabletFrame[item.target].editor = CodeMirror(
         document.getElementById("h5c-tablet-body-"+ item.target), {
         value         : src,
@@ -216,6 +247,8 @@ lcEditor.LoadInstance = function(entry)
     CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
     CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);
 
+    //CodeMirror.skipTo(opt_line_strto);
+
     if (lcEditor.ToolTmpl == null) {
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
     }
@@ -238,7 +271,7 @@ lcEditor.LoadInstance = function(entry)
     CodeMirror.commands.autocomplete = function(cm) {
         CodeMirror.showHint(cm, CodeMirror.hint.javascript);
     }
-
+    
     // TODO
     h5cLayoutResize();
     setTimeout(h5cLayoutResize, 100);
