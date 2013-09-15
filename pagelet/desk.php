@@ -13,10 +13,10 @@ $lcinfo = json_decode($lcinfo, true);
   <tr>
     <td width="10px"></td>
 
-    <td class="header_logo" width="280px">
+    <td class="header_logo" width="380px">
       <img class="lc_icon" src="/lesscreator/static/img/for-test/less-logo-100.png" />
       <span class="title">Creator</span>
-      <span class="version"><?php echo $lcinfo['version']?></span>
+      <span class="version"><?php echo $lcinfo['version']?></span>      
     </td>
 
     <td align="right">
@@ -63,6 +63,11 @@ $lcinfo = json_decode($lcinfo, true);
                 <li><a href="/user/logout">Logout</a></li>
             </ul>                    
         </div>
+
+        <a class="btn btn-small btn-inverse" href="http://git.oschina.net/eryx/lesscreator/issues/new" target="_blank">
+            <img src="/lesscreator/static/img/proj/bug0-16.png" class="h5c_ico " /> 
+            &nbsp;&nbsp;Report Issue&nbsp;&nbsp;
+        </a>
 
     </td>
 
