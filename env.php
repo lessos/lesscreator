@@ -2,7 +2,7 @@
 
 
 class lesscreator_env
-{  
+{
     public static function GroupByAppList()
     {
         return array(

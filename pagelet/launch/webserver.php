@@ -65,6 +65,7 @@ if ($this->req->apimethod == "launch.web") {
         $projInst['projid'] = $projInfo['projid'];
         $projInst['projpath'] = $projPath;
         $projInst['status'] = 9;
+        $projInst['rt_ngx_enable'] = 1;
         
         $rs = $kpr->NodeSet($kvPath, json_encode($projInst));
         //print_r($rs);
@@ -150,7 +151,7 @@ function _proj_launch_webserver_try()
         timeout : 30000,
         success : function(rsp) {
             
-            console.log(rsp);
+            //console.log(rsp);
 
             try {
                 var rsj = JSON.parse(rsp);
