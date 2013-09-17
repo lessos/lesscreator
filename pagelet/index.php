@@ -11,17 +11,17 @@ if (!Session::IsLogin()) {
 <head>
   <meta charset="utf-8">
   <title>lessCreator</title>
-  <script src="/lessui/js/sea.js"></script>
-  <script src="/jquery/jquery-2.0.min.js"></script>
-  <script src="/lessui/js/BrowserDetect.js"></script>
+  <script src="/lesscreator/~/lessui/js/sea.js"></script>
+  <script src="/lesscreator/~/jquery/jquery-2.0.min.js"></script>
+  <script src="/lesscreator/~/lessui/js/BrowserDetect.js"></script>
 
-  <script src="/lessui/js/less.js"></script>
+  <script src="/lesscreator/~/lessui/js/less.js"></script>
   <script src="/lesscreator/static/js/c.js"></script>
   <script src="/lesscreator/static/js/gen.js"></script>
   <script src="/lesscreator/static/js/editor.js"></script>
 
-  <link href="/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="/lessui/css/def.css" rel="stylesheet" />
+  <link href="/lesscreator/~/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/lesscreator/~/lessui/css/def.css" rel="stylesheet" />
   <link href="/lesscreator/static/css/def.css" rel="stylesheet" />
 
   <link href="/lesscreator/static/img/for-test/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
@@ -68,7 +68,7 @@ if (!Session::IsLogin()) {
 
 </body>
 </html>
-<script src="/codemirror3/lib/codemirror.min.js"></script>
+<script src="/lesscreator/~/codemirror3/lib/codemirror.min.js"></script>
 
 <script>
 
@@ -120,26 +120,26 @@ $(document).ready(function() {
 function _load_deps()
 {
     var rqs = [
-        //"/lessui/js/less.js",
-        "/bootstrap2/js/bootstrap.min.js",
-        "/codemirror3/lib/codemirror.css",
+        //"/lesscreator/~/lessui/js/less.js",
+        "/lesscreator/~/bootstrap2/js/bootstrap.min.js",
+        "/lesscreator/~/codemirror3/lib/codemirror.css",
 
         //"/lesscreator/static/js/c.js",
         //"/lesscreator/static/js/gen.js",
         //"/lesscreator/static/js/editor.js",
-        //"/lessui/js/BrowserDetect.js",
+        //"/lesscreator/~/lessui/js/BrowserDetect.js",
 
-        "/codemirror3/addon/hint/show-hint.css",
+        "/lesscreator/~/codemirror3/addon/hint/show-hint.css",
 
-        //"/codemirror3/lib/codemirror.min.js",
-        "/codemirror3/addon/mode/loadmode.js",
-        "/codemirror3/addon/search/searchcursor.js",
-        "/codemirror3/keymap/vim.js",
-        "/codemirror3/addon/fold/foldcode.js",
-        "/codemirror3/addon/fold/foldgutter.js",
-        "/codemirror3/addon/fold/brace-fold.js",
-        "/codemirror3/addon/hint/show-hint.js",
-        "/codemirror3/addon/hint/javascript-hint.js",
+        //"/lesscreator/~/codemirror3/lib/codemirror.min.js",
+        "/lesscreator/~/codemirror3/addon/mode/loadmode.js",
+        "/lesscreator/~/codemirror3/addon/search/searchcursor.js",
+        "/lesscreator/~/codemirror3/keymap/vim.js",
+        "/lesscreator/~/codemirror3/addon/fold/foldcode.js",
+        "/lesscreator/~/codemirror3/addon/fold/foldgutter.js",
+        "/lesscreator/~/codemirror3/addon/fold/brace-fold.js",
+        "/lesscreator/~/codemirror3/addon/hint/show-hint.js",
+        "/lesscreator/~/codemirror3/addon/hint/javascript-hint.js",
     ];
 
     seajs.use(rqs, function() {

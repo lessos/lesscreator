@@ -21,6 +21,7 @@ $opt = array(
 );
 
 $pagelet = new LessPHP_Pagelet($opt);
+$pagelet->translationFileAdd("zh_CN", LESSCREATOR_DIR ."/i18n/zh_CN.php");
 
 echo $pagelet->render();
 

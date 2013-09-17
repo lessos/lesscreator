@@ -13,18 +13,17 @@
     width: 48px; height: 48px;
 }
 .err-brw .imgs0 {
-    width: 24px; height: 24px;
+    width: 24px; height: 24px; -webkit-filter: grayscale(0.3);
 }
 </style>
-<div class="err-brw border_radius_5">
+<div class="err-brw">
   <div class="">
-    <div class="alert alert-error">
-        This Application are not fully supported in this browser/version</div>
+    <div class="alert alert-error"><?php echo $this->T('browser-reject-desc')?></div>
     
-    <p>Please download the Google Chrome, and Install or Upgrade to the latest version</p>
+    <p><?php echo $this->T('browser-reject-advice-desc')?></p>
     <table>
       <tr>
-        <td><img src="/lesscreator/static/img/browser/chrome.png" class="imgs1" /></td>
+        <td><img src="/lesscreator/~/lessui/img/browser/chrome.png" class="imgs1" /></td>
         <td><strong>Google Chrome</strong></td>
         <td><a href="http://www.google.com/chrome/" target="_blank">http://www.google.com/chrome/</a></td>
       </tr>
@@ -32,16 +31,16 @@
     </table>
     
     <br />
-    <div>We are developing to support the following browsers in the future, pls wait. :-)</div>
+    <div><?php echo $this->T('browser-dev-wait-desc')?> :-)</div>
     <table>
       <tr>
-        <td><img src="/lesscreator/static/img/browser/safari.png" class="imgs0" /></td>
+        <td><img src="/lesscreator/~/lessui/img/browser/safari.png" class="imgs0" /></td>
         <td>
             Apple Safari
             <!--<a href="http://www.apple.com/safari/" target="_blank">http://www.apple.com/safari/</a>-->
         </td>
         <td></td>
-        <td><img src="/lesscreator/static/img/browser/firefox.png" class="imgs0" /></td>
+        <td><img src="/lesscreator/~/lessui/img/browser/firefox.png" class="imgs0" /></td>
         <td>
             Mozilla Firefox
             <!--<a href="http://www.mozilla.org/" target="_blank">http://www.mozilla.org/</a>-->

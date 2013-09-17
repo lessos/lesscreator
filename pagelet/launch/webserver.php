@@ -60,7 +60,6 @@ if ($this->req->apimethod == "launch.web") {
         }
 
         // TODO if !domain then ip:port
-        // 
         $projInst['user'] = $this->req->user;
         $projInst['projid'] = $projInfo['projid'];
         $projInst['projpath'] = $projPath;
