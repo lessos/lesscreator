@@ -6,10 +6,10 @@ $basedir = $this->req->basedir;
 
 <ul class="nav nav-tabs" style="margin: 5px 0;">
   <li>
-    <a href="javascript:_proj_open_recent()">Recent Projects</a>
+    <a href="javascript:_proj_open_recent()"><?php echo $this->T('Recent Projects')?></a>
   </li>
   <li class="active">
-    <a href="#">From Directory</a>
+    <a href="#"><?php echo $this->T('From Directory')?></a>
   </li>
 </ul>
 
@@ -35,7 +35,7 @@ a._proj_open_fs_href_click {
 <script>
 
 if (lessModalPrevId() != null) {
-    lessModalButtonAdd("vzypd5", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+    lessModalButtonAdd("vzypd5", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 }
 
 var _path = '<?php echo "{$basedir}/app";?>';
@@ -50,7 +50,7 @@ function _proj_open_recent()
     if (lessModalPrevId() == lessCryptoMd5("modal"+url)) {
         lessModalPrev();
     } else {
-        lessModalNext(url, "Open Project", null);
+        lessModalNext(url, "<?php echo $this->T('Open Project')?>", null);
     }
 }
 

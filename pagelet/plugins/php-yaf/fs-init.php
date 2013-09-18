@@ -15,14 +15,14 @@ $req = json_decode($req, false);
 try {
     
     if (!isset($req->data->projdir) || strlen($req->data->projdir) < 1) {
-        throw new \Exception('ProjDir can not be null', 400);
+        throw new \Exception(sprintf($this->T('`%s` can not be null'), 'ProjDir'), 400);
     }
     
     $projPath = lesscreator_proj::path($req->data->projdir);
     
     $info = lesscreator_proj::info($req->data->projdir);
     if (!isset($info['projid'])) {
-        throw new \Exception("Project Not Found", 404);
+        throw new \Exception(sprintf($this->T('`%s` Not Found'), $this->T('Project')), 404);
     }
 
 
@@ -54,12 +54,10 @@ try {
         $rs = lesscreator_fs::FsFilePut($lcpj, $str);
         if ($rs->status != 200) {
             throw new \Exception($msg = "Error, ". $rs->message, 400);
-        } else {
-            throw new \Exception("Processing OK", 200);
         }
     }
     
-    throw new \Exception("Processing OK", 200);
+    throw new \Exception($this->T('Successfully Processed'), 200);
     
 } catch (\Exception $e) {
 

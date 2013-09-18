@@ -6,7 +6,7 @@ use LessPHP\Encoding\Json;
 $projPath = lesscreator_proj::path($this->req->proj);
 $projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
@@ -16,7 +16,7 @@ $datasetid = $this->req->id;
 $fsd = $projPath."/data/{$datasetid}.ds.json";
 $rs = lesscreator_fs::FsFileGet($fsd);
 if ($rs->status != 200) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $dataInfo = json_decode($rs->data->body, true);
 
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <script type="text/javascript">
 
-lessModalButtonAdd("o4wn8e", "Close", "lessModalClose()", "");
+lessModalButtonAdd("o4wn8e", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 lessModalButtonAdd("qe7kft", "Confirm and Save", "_data_dataset_set()", "btn-inverse");
 

@@ -3,59 +3,59 @@
 <table class="lc-editor-set-form" width="100%">
 
   <tr class="l">
-    <td width="260px" class="t">Tab Stops</td>
+    <td width="260px" class="t"><?php echo $this->T('Tab Stops')?></td>
     <td>
       <div class="input-prepend">
-        <span class="add-on">Tab width</span>
-        <input class="span1" id="tabSize" type="text" value="4" onchange="_lc_editorset_save('Tab width')">
+        <span class="add-on"><?php echo $this->T('Tab width')?></span>
+        <input class="span1" id="tabSize" type="text" value="4" onchange="_lc_editorset_save('<?php echo $this->T('Tab width')?>')">
       </div>
       <label class="checkbox">
-        <input type="checkbox" id="tabs2spaces" value="1" onchange="_lc_editorset_save('Insert spaces instead of tabs')" />
-       Insert spaces instead of tabs
+        <input type="checkbox" id="tabs2spaces" value="1" onchange="_lc_editorset_save('<?php echo $this->T('Insert spaces instead of tabs')?>')" />
+       <?php echo $this->T('Insert spaces instead of tabs')?>
       </label>
     </td>
   </tr>
   
   <tr class="l">
-    <td class="t">Automatic Indentation</td>
+    <td class="t"><?php echo $this->T('Automatic Indentation')?></td>
     <td>
       <label class="checkbox">
-        <input type="checkbox" id="smartIndent" value="1" onchange="_lc_editorset_save('Enable automatic indentation')" />
-       Enable automatic indentation
+        <input type="checkbox" id="smartIndent" value="1" onchange="_lc_editorset_save('<?php echo $this->T('Enable automatic indentation')?>')" />
+       <?php echo $this->T('Enable automatic indentation')?>
       </label>
     </td>
   </tr>
   
   <tr class="l">
-    <td class="t">Text Wrapping</td>
+    <td class="t"><?php echo $this->T('Text Wrapping')?></td>
     <td>
       <label class="checkbox">
-        <input type="checkbox" id="lineWrapping" value="1" onchange="_lc_editorset_save('Enable text wrapping')" />
-       Enable text wrapping
+        <input type="checkbox" id="lineWrapping" value="1" onchange="_lc_editorset_save('<?php echo $this->T('Enable text wrapping')?>')" />
+       <?php echo $this->T('Enable text wrapping')?>
       </label>
     </td>
   </tr>
 
   <tr class="l">
-    <td class="t">Code Folding</td>
+    <td class="t"><?php echo $this->T('Code Folding')?></td>
     <td>
       <label class="checkbox">
-        <input type="checkbox" id="codeFolding" value="1" onchange="_lc_editorset_save('Enable Code Folding')" />
-       Enable Code Folding
+        <input type="checkbox" id="codeFolding" value="1" onchange="_lc_editorset_save('<?php echo $this->T('Enable Code Folding')?>')" />
+       <?php echo $this->T('Enable Code Folding')?>
       </label>
     </td>
   </tr>
 
   <tr class="l">
-    <td class="t">Code Autocomplete</td>
+    <td class="t"><?php echo $this->T('Code Autocomplete')?></td>
     <td>
-      <label>Press `shift + space` to activate autocompletion</label>
-      <p class="alert alert-info">Currently only support the <strong>Javascript</strong>. <br />Other languages ​​are working to develop, pls wait ...</p>
+      <label><?php echo $this->T('Press `shift + space` to activate autocompletion')?></label>
+      <p class="alert alert-info"><?php echo $this->T('Currently only support the <strong>Javascript</strong>. <br />Other languages ​​are working to develop, pls wait')?></p>
     </td>
   </tr>
 
   <tr class="l">
-    <td class="t">Font Size</td>
+    <td class="t"><?php echo $this->T('Font Size')?></td>
     <td>
       <div class="input-append">
         <input class="span1" id="fontSize" type="text" value="13">
@@ -65,7 +65,7 @@
   </tr>
 
   <tr class="">
-    <td class="t">Color Scheme</td>
+    <td class="t"><?php echo $this->T('Color Scheme')?></td>
     <td>
       <select id="editor_theme" onchange="_lc_editorset_theme(this)">
         <option value="default" selected="">classic</option>
@@ -85,8 +85,8 @@
 
 
 <script>
-lessModalButtonAdd("ytibxk", "Save and Close", "_lc_editorset_close()", "btn-inverse");
-lessModalButtonAdd("bf65gr", "Close", "lessModalClose()", "");
+lessModalButtonAdd("ytibxk", "<?php echo $this->T('Save and Close')?>", "_lc_editorset_close()", "btn-inverse");
+lessModalButtonAdd("bf65gr", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 function _lc_editorset_close()
 {
@@ -127,7 +127,7 @@ function _lc_editorset_save(title)
     if (title.length > 0) {
         title = '"'+title+'"';
     }
-    lessAlert('#x17kwr', 'alert-success', 'Saved successfully '+title);
+    lessAlert('#x17kwr', 'alert-success', '<?php echo $this->T('Successfully Saved')?> '+title);
 }
 
 function _lc_editorset_theme(node)

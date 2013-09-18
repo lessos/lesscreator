@@ -4,7 +4,7 @@ use LessPHP\Encoding\Json;
 
 
 $status = 200;
-$msg    = 'Saved successfully';//'Internal Server Error';
+$msg    = 'Successfully Saved';//'Internal Server Error';
 
 $projPath = lesscreator_proj::path($this->req->proj);
 

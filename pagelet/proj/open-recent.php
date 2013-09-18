@@ -11,7 +11,7 @@ if ($this->req->func == 'del') {
 
     $rs = lesscreator_fs::FsFileGet($pjc);
     if ($rs->status != 200) {
-        die('Not Implemented');
+        die(sprintf($this->T('`%s` not exist'), $pjc));
     }
 
     $pjs = json_decode($rs->data->body, true);
@@ -35,10 +35,10 @@ if ($this->req->func == 'del') {
 ?>
 <ul class="nav nav-tabs" style="margin: 5px 0;">
   <li class="active">
-    <a href="#">Recent Projects</a>
+    <a href="#"><?php echo $this->T('Recent Projects')?></a>
   </li>
   <li>
-    <a href="javascript:_proj_open_fs('', 0)">From Directory</a>
+    <a href="javascript:_proj_open_fs('', 0)"><?php echo $this->T('From Directory')?></a>
   </li>
 </ul>
 
@@ -58,7 +58,7 @@ foreach ($pjs as $projid => $val) {
 
     $rs = lesscreator_fs::FsFileGet($val['path']."/lcproject.json");
     if ($rs->status != 200) {
-        $noinfo = '<font color="red">This project no longer exists!</font>';
+        $noinfo = '<font color="red">'. sprintf($this->T('The `%s` no longer exists'), $this->T('Project')) .'</font>';
     }
 ?>
 <tr id="_proj_<?php echo $projid?>">
@@ -80,7 +80,7 @@ foreach ($pjs as $projid => $val) {
 
 <script type="text/javascript">
 if (lessModalPrevId() != null) {
-    lessModalButtonAdd("jwyztd", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+    lessModalButtonAdd("jwyztd", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 }
 
 function _proj_open_recent_open(path)
@@ -97,7 +97,7 @@ function _proj_open_recent()
     if (lessModalPrevId() == lessCryptoMd5("modal"+url)) {
         lessModalPrev();
     } else {
-        lessModalNext(url, "Open Project", null);
+        lessModalNext(url, "<?php echo $this->T('Open Project')?>", null);
     }
 }
 
@@ -109,7 +109,7 @@ function _proj_open_fs(path, force)
     if (lessModalPrevId() == lessCryptoMd5("modal"+url)) {
         lessModalPrev();
     } else {
-        lessModalNext(url, "Open Project", null);
+        lessModalNext(url, "<?php echo $this->T('Open Project')?>", null);
     }
 }
 </script>

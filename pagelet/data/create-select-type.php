@@ -51,7 +51,7 @@
 
 <script>
 
-lessModalButtonAdd("doo8l6", "Close", "lessModalClose()", "");
+lessModalButtonAdd("doo8l6", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 
 $(".j4soeo").click(function(){

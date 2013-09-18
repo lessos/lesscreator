@@ -3,7 +3,7 @@
 use LessPHP\Encoding\Json;
 
 if (!isset($this->req->proj) || strlen($this->req->proj) < 1) {
-    die('Page Not Found');
+    die($this->T('Page Not Found'));
 }
 
 $projPath = lesscreator_proj::path($this->req->proj);
@@ -13,7 +13,7 @@ $msg    = '';
 
 $info = lesscreator_proj::info($this->req->proj);
 if (!isset($info['projid'])) {
-    die("Page Not Found");
+    die($this->T('Page Not Found'));
 }
 
 $lcpj = "{$projPath}/lcproject.json";
@@ -36,29 +36,29 @@ foreach ($info['runtimes'] as $name => $rt) {
     <h4>PHP runtime environment</h4>
     <br />
     <div id="k3bahm" class="alert alert-info">
-        PHP is a popular general-purpose scripting language that is especially suited to web development.
+        <?php echo $this->T('PHP is a popular general-purpose scripting language that is especially suited to web development')?>
         <br />
-        Fast, flexible and pragmatic, PHP powers everything from your blog to the largest social networking site in the world.
+        <?php echo $this->T('Fast, flexible and pragmatic, PHP powers everything from your blog to the largest social networking site in the world')?>
     </div>
     <ul>
-        <li>version >= 5.4.x</li>
-        <li>web: nginx/php-fpm</li>
-        <li>command: php-cli</li>
+        <li>Version >= 5.4.x</li>
+        <li>Web: nginx/php-fpm</li>
+        <li>Command: php-cli</li>
     </ul>
     <label class="checkbox">
-      <input id="hldp2x" type="checkbox" value="1" <?php echo $enabled_check?> /> Enable PHP
+      <input id="hldp2x" type="checkbox" value="1" <?php echo $enabled_check?> /> <?php echo $this->T('Enable')?> PHP
     </label>
 </td>
 </tr>
 </table>
 <script>
 if (lessModalPrevId() != null) {
-    lessModalButtonAdd("guql6j", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+    lessModalButtonAdd("guql6j", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 }
 
-lessModalButtonAdd("r6d4v9", "Close", "lessModalClose()", "");
+lessModalButtonAdd("r6d4v9", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
-lessModalButtonAdd("mhm701", "Save", "_proj_rt_php_save()", "btn-inverse");
+lessModalButtonAdd("mhm701", "<?php echo $this->T('Save')?>", "_proj_rt_php_save()", "btn-inverse");
 
 function _proj_rt_php_save()
 {
@@ -80,7 +80,7 @@ function _proj_rt_php_save()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#k3bahm", "alert-error", "Error: Service Unavailable");
+                lessAlert("#k3bahm", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 

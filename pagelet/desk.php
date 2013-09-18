@@ -3,7 +3,7 @@
 use LessPHP\User\Session;
 
 if (!Session::IsLogin()) {
-    die("Access denied. <a href='/user'>Login</a>");
+    die($this->T('Access denied') .' <a href="/user">'. $this-T('Login') .'</a>');
 }
 $lcinfo = file_get_contents(LESSCREATOR_DIR ."/lcproject.json");
 $lcinfo = json_decode($lcinfo, true);
@@ -34,12 +34,12 @@ $lcinfo = json_decode($lcinfo, true);
             
             <div class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
                 <i class="icon-folder-open"></i>
-                &nbsp;&nbsp;Project&nbsp;&nbsp;
+                &nbsp;&nbsp;<?php echo $this->T('Project')?>&nbsp;&nbsp;
                 <span class="caret" style="margin-top:8px;"></span>
             </div>
             <ul class="dropdown-menu pull-right text-left">
-                <li><a href="javascript:lcProjNew()">Create Project</a></li>
-                <li><a href="javascript:lcProjOpen()">Open Project</a></li>
+                <li><a href="javascript:lcProjNew()"><?php echo $this->T('Create Project')?></a></li>
+                <li><a href="javascript:lcProjOpen()"><?php echo $this->T('Open Project')?></a></li>
             </ul>
 
         </div>
@@ -60,13 +60,13 @@ $lcinfo = json_decode($lcinfo, true);
                     echo '<li class="divider"></li>';
                 }                
                 ?>                    
-                <li><a href="/user/logout">Logout</a></li>
+                <li><a href="/user/logout"><?php echo $this->T('Logout')?></a></li>
             </ul>                    
         </div>
 
         <a class="btn btn-small btn-inverse" href="http://git.oschina.net/eryx/lesscreator/issues/new" target="_blank">
             <img src="/lesscreator/static/img/proj/bug0-16.png" class="h5c_ico " /> 
-            &nbsp;&nbsp;Report Issue&nbsp;&nbsp;
+            &nbsp;&nbsp;<?php echo $this->T('Report Issue')?>&nbsp;&nbsp;
         </a>
 
     </td>
@@ -178,21 +178,21 @@ $lcinfo = json_decode($lcinfo, true);
     <div class="editor_bar hdev-ws hdev-tabs hcr-pgbar-editor">
         
         <div class="tabitem" onclick="lcEditor.SaveCurrent()">
-            <div class="ctn"><i class="icon-hdd"></i> Save</div>
+            <div class="ctn"><i class="icon-hdd"></i> <?php echo $this->T('Save')?></div>
         </div>
 
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="lcEditor.Search()">
-            <div class="ctn"><i class="icon-search"></i> Search</div>
+            <div class="ctn"><i class="icon-search"></i> <?php echo $this->T('Search')?></div>
         </div>
 
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="lcEditor.Undo()">
-            <div class="ctn"><i class="icon-chevron-left"></i> Undo</div>
+            <div class="ctn"><i class="icon-chevron-left"></i> <?php echo $this->T('Undo')?></div>
         </div>
 
         <div class="tabitem" onclick="lcEditor.Redo()">
-            <div class="ctn"><i class="icon-chevron-right"></i> Redo</div>
+            <div class="ctn"><i class="icon-chevron-right"></i> <?php echo $this->T('Redo')?></div>
         </div>
         
         <!-- <div class="tabitemline"></div>
@@ -209,23 +209,23 @@ $lcinfo = json_decode($lcinfo, true);
         
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="lcEditor.ConfigModal()">
-            <div class="ctn"><i class="icon-cog"></i> Setting</div>
+            <div class="ctn"><i class="icon-cog"></i> <?php echo $this->T('Setting')?></div>
         </div>
     </div>
 
     <div class="lc_editor_searchbar hide form-inline">
         <div class="input-prepend input-append">
             <span class="add-on"><i class="icon-search"></i></span>
-            <input class="input-small" type="text" name="find" value="Find Word" />
-            <button class="btn" onclick="lcEditor.SearchNext()">Search</button>
+            <input class="input-small" type="text" name="find" value="<?php echo $this->T('Find Word')?>" />
+            <button class="btn" onclick="lcEditor.SearchNext()"><?php echo $this->T('Search')?></button>
         </div>
 
-        <label class="inline"> or </label>
+        <label class="inline"> <?php echo $this->T('or')?> </label>
         
         <div class="input-append">
-            <input class="input-small" name="replace" type="text" value="Replace with">
-            <button class="btn" type="button" onclick="lcEditor.SearchReplace(false)">Replace</button>
-            <button class="btn" type="button" onclick="lcEditor.SearchReplace(true)">Replace All</button>
+            <input class="input-small" name="replace" type="text" value="<?php echo $this->T('Replace with')?>">
+            <button class="btn" type="button" onclick="lcEditor.SearchReplace(false)"><?php echo $this->T('Replace')?></button>
+            <button class="btn" type="button" onclick="lcEditor.SearchReplace(true)"><?php echo $this->T('Replace All')?></button>
         </div>
         
         <!-- <label class="checkbox inline">

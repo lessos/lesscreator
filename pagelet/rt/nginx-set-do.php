@@ -10,14 +10,14 @@ $ret = array(
 try {
     
     if (!isset($this->req->proj) || strlen($this->req->proj) < 1) {
-        throw new \Exception('Page Not Found', 404);
+        throw new \Exception($this->T('Page Not Found'), 404);
     }
     
     $projPath = lesscreator_proj::path($this->req->proj);
     
     $info = lesscreator_proj::info($this->req->proj);
     if (!isset($info['projid'])) {
-        throw new \Exception("Page Not Found", 404);
+        throw new \Exception($this->T('Page Not Found'), 404);
     }
 
     $lcpj = "{$projPath}/lcproject.json";
@@ -52,12 +52,12 @@ try {
         if ($rs->status != 200) {
             throw new \Exception($msg = "Error, ". $rs->message, 400);
         } else {
-            throw new \Exception("Processing OK", 200);
+            throw new \Exception($this->T('Successfully Processed'), 200);
         }
     }
 
 
-    throw new \Exception("Processing OK", 200);
+    throw new \Exception($this->T('Successfully Processed'), 200);
     
 } catch (\Exception $e) {
 

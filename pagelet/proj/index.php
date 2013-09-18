@@ -4,13 +4,13 @@ use LessPHP\Encoding\Json;
 
 
 if ($this->req->proj == null) {
-    die('ERROR');
+    die($this->T('Internal Error'));
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 
 $projPath = lesscreator_proj::path($proj);
 if (strlen($projPath) < 1) {
-    die("ERROR");
+    die($this->T('Internal Error'));
 }
 
 $projInfo = lesscreator_proj::info($proj);
@@ -54,12 +54,12 @@ $props_def = lesscreator_service::listAll();
     </span>
     <a href="javascript:lcProjSet()" class="h5c_block pull-right">
       <i class="icon-wrench"></i>
-      Settings
+      <?php echo $this->T('Settings')?>
     </a>
   </div>
 
   <ul class="h5c_navtabs _proj_nav" style="background-color:#f6f7f8;">
-    <li class="active ueg14o_fs"><a href="#proj/fs" class="_proj_tab_href">Files</a></li>
+    <li class="active ueg14o_fs"><a href="#proj/fs" class="_proj_tab_href"><?php echo $this->T('Files')?></a></li>
     <?php
     foreach ($props as $v) {
         if (!isset($props_def[$v])) {
@@ -140,7 +140,7 @@ var _proj_tab_last = lessLocalStorage.Get("tab.fra.urid.w0");
 
 lcData.Query("files", "projdir", sessionStorage.ProjPath, function(ret) {
     
-    console.log("Query files");
+    //console.log("Query files");
 
     if (ret == null) {
         return;
@@ -158,7 +158,7 @@ lcData.Query("files", "projdir", sessionStorage.ProjPath, function(ret) {
 
         if (!_proj_tab_active || _proj_tab_last == ret.value.id) {
             _proj_tab_active = true;
-            console.log("real open:"+ ret.value.filepth);
+            //console.log("real open:"+ ret.value.filepth);
         } else {
             opt.titleonly = true;            
         }

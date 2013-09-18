@@ -62,7 +62,7 @@ foreach ($rs->data as $v) {
 <?php
 }
 if ($dirFound == 0) {
-    echo "<tr><td>No Directory Found</td></tr>";
+    echo "<tr><td>". sprintf($this->T('`%s` Not Found'), $this->('Directory'))."</td></tr>";
 }
 ?>
 </table>
@@ -81,6 +81,6 @@ $('._proj_open_fs_href').click(function() {
     $('._proj_open_fs_href').removeClass('_proj_open_fs_href_click');
     $(this).addClass('_proj_open_fs_href_click');
     
-    lessModalButtonAdd("phtswc", "Open Project", "_proj_open_fs_open()", "pull-left btn-inverse");
+    lessModalButtonAdd("phtswc", "<?php echo $this->T('Open Project')?>", "_proj_open_fs_open()", "pull-left btn-inverse");
 });
 </script>

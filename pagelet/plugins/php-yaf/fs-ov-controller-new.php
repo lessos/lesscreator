@@ -4,7 +4,7 @@ use LessPHP\Util\Directory;
     
 $info = lesscreator_proj::info($this->req->proj);
 if (!isset($info['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $projPath = lesscreator_proj::path($this->req->proj);
 
@@ -18,7 +18,7 @@ if ($this->req->func == "controller-new") {
     try {
 
         if (!preg_match('/^([A-Z]{1})([0-9a-zA-Z]{1,30})$/', $this->req->ctrl_name)) {
-            throw new \Exception("Invalid Name", 400);
+            throw new \Exception(sprintf($this->T('`%s` is not valid'), $this->T('Name'), 400);
         }
 
         $lcf = "{$projPath}/application/controllers/{$this->req->ctrl_name}.php";
@@ -27,11 +27,10 @@ if ($this->req->func == "controller-new") {
         $rs = lesscreator_fs::FsFileGet($lcf);
 
         if ($rs->status == 200) {
-            throw new \Exception("Controller Exists", 500);
+            throw new \Exception(sprintf($this->T('The `%s` already exists, please choose another one'), $this->T('Controller')), 500);
         }
 
-        $str = '
-<?php
+        $str = '<?php
 
 class '.$this->req->ctrl_name.'Controller extends Yaf_Controller_Abstract
 {
@@ -41,10 +40,10 @@ class '.$this->req->ctrl_name.'Controller extends Yaf_Controller_Abstract
         $rs = lesscreator_fs::FsFilePut($lcf, $str);
 
         if ($rs->status != 200) {
-            throw new \Exception("Error Processing Request", 500);
+            throw new \Exception(sprintf($this->T('Cannot write to file `%s`'), $lcf), 500);
         }
 
-        throw new \Exception("OK", 200);
+        throw new \Exception($this->T('Successfully Done'), 200);
         
     } catch (\Exception $e) {
 
@@ -59,13 +58,13 @@ class '.$this->req->ctrl_name.'Controller extends Yaf_Controller_Abstract
 
 <form id="illb99" action="#" method="post">
     <input type="text" name="ctrl_name" value="" class="span3" />
-    <span class="help-inline">The first character must be an uppercase letter, Example: <strong>Hello</strong></span>
+    <span class="help-inline"><?php echo $this->T('The first character must be an uppercase letter') .', '. $this->T('Example')?>: <strong>Hello</strong></span>
 </form>
 
 <script type="text/javascript">
 
-lessModalButtonAdd("xldqgw", "Create", "_php_yaf_controller_new()", "btn-inverse pull-left");
-lessModalButtonAdd("g7yhlm", "Cancel", "lessModalClose()", "pull-left");
+lessModalButtonAdd("xldqgw", "<?php echo $this->T('Create')?>", "_php_yaf_controller_new()", "btn-inverse pull-left");
+lessModalButtonAdd("g7yhlm", "<?php echo $this->T('Cancel')?>", "lessModalClose()", "pull-left");
 
 $("#illb99").submit(function(event) {
 
@@ -92,7 +91,7 @@ function _php_yaf_controller_new()
 
             var obj = JSON.parse(rsp);
             if (obj.status == 200) {
-                hdev_header_alert('success', "OK");
+                hdev_header_alert('success', "<?php echo $this->T('Successfully Done')?>");
             } else {
                 hdev_header_alert('error', obj.message);
             }

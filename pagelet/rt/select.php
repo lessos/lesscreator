@@ -40,7 +40,7 @@
         <td width="100px"><img class="rtlogo" src="/lesscreator/static/img/rt/nginx_200.png" /></td>
         <td >
             <div class="title">WebServer (Nginx)</div>
-            <div class="desc">High Performance http server</div>
+            <div class="desc"><?php echo $this->T('High Performance http server')?></div>
         </td>
         <td align="right">
             <img class="rtset" src="/lesscreator/static/img/for-test/setting2-128.png" />
@@ -69,7 +69,7 @@
     <tr class="line">
         <td width="100px"><img class="rtlogo imggray" src="/lesscreator/static/img/rt/java_200.png" /></td>
         <td >
-            <div class="title">Java <span class="indev">(Upcoming, later supported)</span></div>
+            <div class="title">Java <span class="indev">(<?php echo $this->T('Upcoming, later supported')?>)</span></div>
             <div class="desc">Java Runtime Environment</div>
         </td>
         <td align="right">
@@ -84,7 +84,7 @@
     <tr class="line">
         <td width="100px"><img class="rtlogo imggray" src="/lesscreator/static/img/rt/python_200.png" /></td>
         <td >
-            <div class="title">Python <span class="indev">(Upcoming, later supported)</span></div>
+            <div class="title">Python <span class="indev">(<?php echo $this->T('Upcoming, later supported')?>)</span></div>
             <div class="desc">Python Runtime Environment</div>
         </td>
         <td align="right">
@@ -99,7 +99,7 @@
     <tr class="line">
         <td width="100px"><img class="rtlogo imggray" src="/lesscreator/static/img/rt/go_200.png" /></td>
         <td >
-            <div class="title">Go <span class="indev">(Upcoming, later supported)</span></div>
+            <div class="title">Go <span class="indev">(<?php echo $this->T('Upcoming, later supported')?>)</span></div>
             <div class="desc">Go Runtime Environment</div>
         </td>
         <td align="right">
@@ -114,7 +114,7 @@
     <tr class="line">
         <td width="100px"><img class="rtlogo imggray" src="/lesscreator/static/img/rt/nodejs_200.png" /></td>
         <td >
-            <div class="title">NodeJS <span class="indev">(Upcoming, later supported)</span></div>
+            <div class="title">NodeJS <span class="indev">(<?php echo $this->T('Upcoming, later supported')?>)</span></div>
             <div class="desc">NodeJS Runtime Environment</div>
         </td>
         <td align="right">
@@ -126,10 +126,10 @@
 
 <script>
 if (lessModalPrevId() != null) {
-    lessModalButtonAdd("qc7cbv", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+    lessModalButtonAdd("qc7cbv", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 }
 
-lessModalButtonAdd("y4l8t6", "Close", "lessModalClose()", "");
+lessModalButtonAdd("y4l8t6", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 $(".kyexic").click(function(){
         
@@ -138,10 +138,10 @@ $(".kyexic").click(function(){
     var title = "";
     switch (uri) {
     case "rt/nginx-set":
-        title = "Setting Nginx"
+        title = "<?php echo $this->T('Setting')?> Nginx"
         break;
     case "rt/php-set":
-        title = "Setting PHP";
+        title = "<?php echo $this->T('Setting)?> PHP";
         break;
     default:
         return;

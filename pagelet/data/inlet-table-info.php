@@ -6,7 +6,7 @@ use LessPHP\Encoding\Json;
 $projPath = lesscreator_proj::path($this->req->proj);
 $projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 
 if (!isset($this->req->data) || strlen($this->req->data) == 0) {
@@ -17,7 +17,7 @@ list($datasetid, $tableid) = explode("/", $this->req->data);
 $fsd = $projPath."/data/{$datasetid}.ds.json";
 $rs = lesscreator_fs::FsFileGet($fsd);
 if ($rs->status != 200) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $dataInfo = json_decode($rs->data->body, true);
 if ($projInfo['projid'] != $dataInfo['projid']) {
@@ -28,14 +28,14 @@ if ($projInfo['projid'] != $dataInfo['projid']) {
 $fst = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
 $rs = lesscreator_fs::FsFileGet($fst);
 if ($rs->status != 200) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $tableInfo = json_decode($rs->data->body, true);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!isset($this->req->tablename) || strlen($this->req->tablename) < 1) {
-        die("Bad Request");
+        die($this->T('Bad Request'));
     }
     
     if ($this->req->tablename == $tableInfo['tablename']) {
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <td></td>
         <td>
             <a href="#edit" class="btn c29yan">Edit</a>
-            <input type="submit" class="btn rdqmtg hide" value="Save" />
+            <input type="submit" class="btn rdqmtg hide" value="<?php echo $this->T('Save')?>" />
         </td>
     </tr>
   </table>

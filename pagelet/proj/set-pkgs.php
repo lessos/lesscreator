@@ -6,7 +6,7 @@ use LessPHP\Net\Http;
 
 $info = lesscreator_proj::info($this->req->proj);
 if (!isset($info['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 
 
@@ -35,7 +35,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
                 }
 
                 $ret['data']['status'] = 0;
-                throw new \Exception("OK", 200);
+                throw new \Exception($this->T('Successfully Done'), 200);
             }
         }
 
@@ -46,11 +46,11 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
             "data" => array("projid" => $this->req->projid),
         );
         if ($c->Post(json_encode($req)) != 200) {
-            throw new \Exception("Error Processing Request", 400);
+            throw new \Exception($this->T('Processing Failed'), 400);
         }
         $rs = json_decode($c->getBody(), false);
         if ($rs->status != 200) {
-            throw new \Exception("Error Processing Request", 400);
+            throw new \Exception($this->T('Processing Failed'), 400);
         }
 
 
@@ -96,9 +96,9 @@ $dps = explode(",", $info['depends']);
 
 <thead>
 <tr>
-<th width="160">Name</th>
-<th width="100">Version</th>
-<th>Description</th>
+<th width="160"><?php echo $this->T('Name')?></th>
+<th width="100"><?php echo $this->T('Version')?></th>
+<th><?php echo $this->T('Description')?></th>
 <th width="100"></th>
 </tr>
 </thead>
@@ -116,11 +116,11 @@ $dps = explode(",", $info['depends']);
         }
 
         $cksta = '';
-        $optit = '<i class="icon-plus-sign"></i> Append';
+        $optit = '<i class="icon-plus-sign"></i> '. $this->T('Append');
         $optcla = '';
         if (in_array($v->projid, $dps)) {
             $cksta = '<i class="icon-ok-circle"></i>';
-            $optit = '<i class="icon-remove-sign icon-white"></i> Remove';
+            $optit = '<i class="icon-remove-sign icon-white"></i> '. $this->T('Remove');
             $optcla = 'btn-success';
         }
 
@@ -141,8 +141,8 @@ $dps = explode(",", $info['depends']);
 
 <script>
 
-lessModalButtonAdd("z7tgxo", "Confirm and Save", "_proj_pkg_save()", "btn-inverse");
-lessModalButtonAdd("vkbmpc", "Close", "lessModalClose()", "");
+lessModalButtonAdd("z7tgxo", "<?php echo $this->T('Confirm and Save')?>", "_proj_pkg_save()", "btn-inverse");
+lessModalButtonAdd("vkbmpc", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 $(".m3w0wf").click(function() {
 
@@ -168,23 +168,23 @@ $(".m3w0wf").click(function() {
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#ekjujo", "alert-error", "Error: Service Unavailable");
+                lessAlert("#ekjujo", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
             if (rsj.status == 200) {
 
-                lessAlert("#ekjujo", "alert-success", "OK");
+                lessAlert("#ekjujo", "alert-success", "<?php echo $this->T('Successfully Done')?>");
 
 
                 if (rsj.data.status == 0) {
                     $("#proj-pkg-"+ projid).find("a")
                         .removeClass("btn-success")
-                        .html('<i class="icon-plus-sign"></i> Append');
+                        .html('<i class="icon-plus-sign"></i> <?php echo $this->T('Append')?>');
                 } else {
                     $("#proj-pkg-"+ projid).find("a")
                         .removeClass("btn-success").addClass("btn-success")
-                        .html('<i class="icon-remove-sign icon-white"></i> Remove');
+                        .html('<i class="icon-remove-sign icon-white"></i> <?php echo $this->T('Remove')?>');
                 }
 
                 //$(this).removeClass("Pending");
@@ -192,11 +192,11 @@ $(".m3w0wf").click(function() {
                 //lessModalClose();
 
             } else {
-                lessAlert("#ekjujo", "alert-error", "Error: "+ rsj.message);
+                lessAlert("#ekjujo", "alert-error", rsj.message);
             }
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#ekjujo", "alert-error", "Error: "+ xhr.responseText);
+            lessAlert("#ekjujo", "alert-error", xhr.responseText);
         }
     });
 });
@@ -212,22 +212,22 @@ function _proj_pkg_save()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#ekjujo", "alert-error", "Error: Service Unavailable");
+                lessAlert("#ekjujo", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
             if (rsj.status == 200) {
 
-                lessAlert("#ekjujo", "alert-success", "OK");
+                lessAlert("#ekjujo", "alert-success", "<?php echo $this->T('Successfully Done')?>");
                 _proj_pkgs_refresh();
                 lessModalClose();
 
             } else {
-                lessAlert("#ekjujo", "alert-error", "Error: "+ rsj.message);
+                lessAlert("#ekjujo", "alert-error", rsj.message);
             }
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#ekjujo", "alert-error", "Error: "+ xhr.responseText);
+            lessAlert("#ekjujo", "alert-error", xhr.responseText);
         }
     });
 

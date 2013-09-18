@@ -19,8 +19,8 @@ $path = preg_replace("/\/+/", "/", rtrim("/".$this->req->path, '/'));
 
 <script type="text/javascript">
 
-lessModalButtonAdd("fjbcw8", "Rename", "_fs_file_mov()", "btn-inverse pull-left");
-lessModalButtonAdd("y9e9be", "Cancel", "lessModalClose()", "pull-left");
+lessModalButtonAdd("fjbcw8", "<?php echo $this->T('Rename')?>", "_fs_file_mov()", "btn-inverse pull-left");
+lessModalButtonAdd("y9e9be", "<?php echo $this->T('Cancel')?>", "lessModalClose()", "pull-left");
 
 $(".k2tcrh").focus();
 
@@ -56,7 +56,7 @@ function _fs_file_mov()
             var obj = JSON.parse(rsp);
             if (obj.status == 200) {
                 
-                hdev_header_alert('success', "OK");
+                hdev_header_alert('success', "<?php echo $this->T('Successfully Done')?>");
                 
 
                 var path = pathpre.replace(/(^\/*)|(\/*$)/g, "");
@@ -72,7 +72,7 @@ function _fs_file_mov()
                     path += "/"+ ps[i];
                     p = lessCryptoMd5(path);
                     if (!$("#pt"+p).html() || $("#pt"+p).html().length < 1) {
-                        console.log("load new "+ path);
+                        //console.log("load new "+ path);
                         _fs_tree_dir(path, 1);
                     }
                 }

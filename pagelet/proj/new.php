@@ -29,15 +29,15 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
 
         $rs = lesscreator_fs::FsFileGet($proj_new_json);
         if ($rs->status == 200) {
-            throw new \Exception("Project ID exists", 400);
+            throw new \Exception(sprintf($this->('The `%s` already exists, please choose another one'), 'Project ID'), 400);
         }
 
         if (!strlen($projid)) {
-            throw new \Exception("Project ID cannot be null", 400);
+            throw new \Exception(sprintf($this->T('`%s` can not be null'), 'Project ID'), 400);
         }
 
         if (!strlen($this->req->name)) {
-            throw new \Exception("Display Name cannot be null", 400);
+            throw new \Exception(sprintf($this->T('`%s` can not be null'), $this->T('Display Name')), 400);
         }
 
         $set = lesscreator_env::ProjInfoDef($projid);
@@ -97,25 +97,25 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
   <table width="100%" class="table table-condensed">
     
     <tr class="bordernil">
-      <td width="180px"><strong>Project ID</strong> </td>
+      <td width="180px"><strong><?php echo $this->T('Project ID')?></strong> </td>
       <td>
         <input name="projid" type="text" class="span2" value="<?php echo $projid?>" />
-        <label class="label label-important">Required</label>
-        <label class="help-inline">Unique identifier, similar to the package name</label>
+        <label class="label label-important"><?php echo $this->T('Required')?></label>
+        <label class="help-inline"><?php echo $this->T('Unique identifier, similar to the package name')?></label>
       </td>
     </tr>
 
     <tr>
-      <td><strong>Display Name</strong> </td>
+      <td><strong><?php echo $this->T('Display Name')?></strong> </td>
       <td >
         <input name="name" type="text" class="span2" value="" />
-        <label class="label label-important">Required</label>
-        <label class="help-inline">Example: Hello World</label>
+        <label class="label label-important"><?php echo $this->T('Required')?></label>
+        <label class="help-inline"><?php echo $this->T('Example')?>: Hello World</label>
       </td>
     </tr>
 
     <tr>
-      <td><strong>Group by Application</strong></td>
+      <td><strong><?php echo $this->T('Group by Application')?></strong></td>
       <td class="r0330s">
         <?php
         $ls = lesscreator_env::GroupByAppList();
@@ -129,7 +129,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
     </tr>
 
     <tr>
-      <td><strong>Group by Develop</strong></td>
+      <td><strong><?php echo $this->T('Group by Develop')?></strong></td>
       <td class="r0330s">
         <?php
         $ls = lesscreator_env::GroupByDevList();
@@ -143,7 +143,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
     </tr>
     
     <tr>
-      <td valign="top"><strong>Description</strong></td>
+      <td valign="top"><strong><?php echo $this->T('Description')?></strong></td>
       <td ><textarea name="summary" rows="2" style="width:400px;"></textarea></td>
     </tr>
 
@@ -153,11 +153,11 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
 
 <script>
 if (lessModalPrevId() != null) {
-    lessModalButtonAdd("jwyztd", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+    lessModalButtonAdd("jwyztd", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 }
 
 lessModalButtonAdd("d4ngex", "Confirm and Create", "_proj_new_commit()", "btn-inverse");
-lessModalButtonAdd("p5ke7m", "Close", "lessModalClose()", "");
+lessModalButtonAdd("p5ke7m", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 
 var _proj_new = "";
@@ -173,7 +173,7 @@ function _proj_new_commit()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#m4ph6m", "alert-error", "Error: Service Unavailable");
+                lessAlert("#m4ph6m", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
@@ -181,9 +181,8 @@ function _proj_new_commit()
 
                 _proj_new = rsj.data.proj;
 
-                lessAlert("#m4ph6m", "alert-success", "<p><strong>Well done!</strong> \
-                    You successfully create new project.</p> \
-                    <button class=\"btn btn-success\" onclick=\"_proj_new_goto()\">Open this Project</button>");
+                lessAlert("#m4ph6m", "alert-success", "<p><strong><?php echo $this->T('Successfully Done')?></strong> \
+                    <button class=\"btn btn-success\" onclick=\"_proj_new_goto()\"><?php echo $this->T('Open this Project')?></button>");
 
             } else {
                 lessAlert("#m4ph6m", "alert-error", "Error: "+ rsj.message);

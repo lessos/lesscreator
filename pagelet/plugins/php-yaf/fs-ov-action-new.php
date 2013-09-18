@@ -4,7 +4,7 @@ use LessPHP\Util\Directory;
     
 $info = lesscreator_proj::info($this->req->proj);
 if (!isset($info['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $projPath = lesscreator_proj::path($this->req->proj);
 
@@ -18,7 +18,7 @@ if ($this->req->func == "action-new") {
     try {
 
         if (!preg_match('/^([a-z]{1})([0-9a-zA-Z]{1,30})Action$/', $this->req->func_name)) {
-            throw new \Exception("Invalid Name", 400);
+            throw new \Exception(sprintf($this->T('`%s` is not valid'), $this->T('Function Name')), 400);
         }
 
         $lcf = "{$projPath}/{$this->req->path}";
@@ -27,14 +27,13 @@ if ($this->req->func == "action-new") {
         $rs = lesscreator_fs::FsFileGet($lcf);
 
         if ($rs->status != 200) {
-            throw new \Exception("File Not Found", 404);
+            throw new \Exception(sprintf($this->T('`%s` Not Found'), $this->T('File')), 404);
         }
 
         $cls = $this->req->class;
 
         $match = array(
             "%class\s{$cls}Controller(.*?)\{(.*?)%si",
-
         );
         $replace = array(
             "class {$cls}Controller$1{\n    function {$this->req->func_name}()\n    {\n    }\n\n$2",
@@ -43,10 +42,10 @@ if ($this->req->func == "action-new") {
         $rs = lesscreator_fs::FsFilePut($projPath ."/". $this->req->path, $str);
 
         if ($rs->status != 200) {
-            throw new \Exception("Error Processing Request", 500);
+            throw new \Exception(sprintf($this->T('Cannot write to file `%s`'), $projPath ."/". $this->req->path), 500);
         }
 
-        throw new \Exception("OK", 200);
+        throw new \Exception($this->T('Successfully Done'), 200);
         
     } catch (\Exception $e) {
 
@@ -61,13 +60,13 @@ if ($this->req->func == "action-new") {
 
 <form id="td5kfz" action="#" method="post">
     <input type="text" name="func_name" value="" class="span3" />
-    <span class="help-inline">First character must be a lowercase letter, Example: <strong>helloAction</strong></span>
+    <span class="help-inline"><?php echo $this->T('First character must be a lowercase letter') .', '. $this->T('Example') ?>: <strong>helloAction</strong></span>
 </form>
 
 <script type="text/javascript">
 
-lessModalButtonAdd("xldqgw", "Create", "_php_yaf_action_new()", "btn-inverse pull-left");
-lessModalButtonAdd("g7yhlm", "Cancel", "lessModalClose()", "pull-left");
+lessModalButtonAdd("xldqgw", "<?php echo $this->T('Create')?>", "_php_yaf_action_new()", "btn-inverse pull-left");
+lessModalButtonAdd("g7yhlm", "<?php echo $this->T('Cancel')?>", "lessModalClose()", "pull-left");
 
 $("#td5kfz").submit(function(event) {
 
@@ -97,7 +96,7 @@ function _php_yaf_action_new()
 
             var obj = JSON.parse(rsp);
             if (obj.status == 200) {
-                hdev_header_alert('success', "OK");
+                hdev_header_alert('success', "<?php echo $this->T('Successfully Done')?>");
             } else {
                 hdev_header_alert('error', obj.message);
             }

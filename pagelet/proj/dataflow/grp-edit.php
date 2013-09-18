@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="text" name="name" class="inputfocus" value="<?php echo $json['name']?>" />
     </div>
     <div class="clearhr"></div>
-    <div><input type="submit" value="Save" class="input_button" /></div>
+    <div><input type="submit" value="<?php echo $this->T('Save')?>" class="input_button" /></div>
 </form>
 
 <script type="text/javascript">

@@ -20,7 +20,7 @@
 }
 </style>
 
-<div class="alert alert-info">Create Project from Version Control</div>
+<div class="alert alert-info"><?php echo $this->T('Create Project from Version Control')?></div>
 
 <a class="b9nxc5" href="#proj/fs/vs/git-clone">
 <table>
@@ -28,7 +28,7 @@
         <td width="64px"><img src="/lesscreator/static/img/vs/git.png" /></td>
         <td >
             <div class="title">Git</div>
-            <div class="desc">Clone a project from a Git repository</div>
+            <div class="desc"><?php echo $this->T('Clone a project from a Git repository')?></div>
         </td>
         <td align="right">
             <i class="icon-chevron-right"></i>
@@ -42,8 +42,8 @@
     <tr class="line">
         <td width="64px"><img src="/lesscreator/static/img/vs/svn.png" /></td>
         <td >
-            <div class="title">Subversion ( in Development, Currently unavailable <i class="icon-time"></i> )</div>
-            <div class="desc">Checkout a project from a Subversion repository</div>
+            <div class="title"><?php echo $this->T('Subversion')?> ( in Development, Currently unavailable <i class="icon-time"></i> )</div>
+            <div class="desc"><?php echo $this->T('Checkout a project from a Subversion repository')?></div>
         </td>
         <td align="right">
         </td>
@@ -55,10 +55,10 @@
 <script>
 
 //if (lessModalPrevId() != null) {
-    lessModalButtonAdd("kl09d9", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+    lessModalButtonAdd("kl09d9", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 //}
 
-lessModalButtonAdd("f2eqa7", "Close", "lessModalClose()", "");
+lessModalButtonAdd("f2eqa7", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 $(".b9nxc5").click(function(){
         
@@ -69,7 +69,7 @@ $(".b9nxc5").click(function(){
     switch (href) {
     case "proj/fs/vs/git-clone":
         url += href;
-        title = 'Create Project';
+        title = '<?php echo $this->T('Create Project')?>';
         break;
     default:
         return;

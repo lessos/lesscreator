@@ -3,7 +3,7 @@
 use LessPHP\Encoding\Json;
 
 if (!isset($this->req->proj) || strlen($this->req->proj) < 1) {
-    die('Page Not Found');
+    die($this->T('Page Not Found'));
 }
 
 $projPath = lesscreator_proj::path($this->req->proj);
@@ -13,7 +13,7 @@ $msg    = '';
 
 $info = lesscreator_proj::info($this->req->proj);
 if (!isset($info['projid'])) {
-    die("Page Not Found");
+    die($this->T('Page Not Found'));
 }
 
 $enabled_check = "";
@@ -115,13 +115,13 @@ if ($this->req->apimethod == "ngx_conf.get") {
 <td>
 
     <div id="gix0qn" class="alert alert-info">
-        Nginx is a lightweight, high concurrency, high performance and low memory usage Web server/reverse proxy.
+        <?php echo $this->T('Nginx is a lightweight, high concurrency, high performance and low memory usage Web server/reverse proxy')?>
     </div>
     
     <div class="m484ny">
 
     <label class="checkbox inline">
-      <input id="k4grco" type="checkbox" value="1" onchange="_proj_rt_nginx_onoff_chg()" <?php echo $enabled_check?> /> Enable Nginx
+      <input id="k4grco" type="checkbox" value="1" onchange="_proj_rt_nginx_onoff_chg()" <?php echo $enabled_check?> /> <?php $this->T('Enable')?> Nginx
     </label>
 
     <select id="ngx_conf_mode" class="inline hide" onchange="_proj_rt_nginx_mode_chg(this)">
@@ -144,12 +144,12 @@ if ($this->req->apimethod == "ngx_conf.get") {
 </table>
 <script>
 if (lessModalPrevId() != null) {
-    lessModalButtonAdd("zz9pdf", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+    lessModalButtonAdd("zz9pdf", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 }
 
-lessModalButtonAdd("dsr1a0", "Close", "lessModalClose()", "");
+lessModalButtonAdd("dsr1a0", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
-lessModalButtonAdd("irpqn6", "Save", "_proj_rt_nginx_save()", "btn-inverse");
+lessModalButtonAdd("irpqn6", "<?php echo $this->T('Save')?>", "_proj_rt_nginx_save()", "btn-inverse");
 
 function _proj_rt_nginx_onoff_chg()
 {
@@ -195,7 +195,7 @@ function _proj_rt_nginx_save()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#gix0qn", "alert-error", "Error: Service Unavailable");
+                lessAlert("#gix0qn", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
@@ -231,7 +231,7 @@ function _proj_rt_nginx_conf_load(mode)
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#gix0qn", "alert-error", "Error: Service Unavailable");
+                lessAlert("#gix0qn", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 

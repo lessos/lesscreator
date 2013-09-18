@@ -1,13 +1,13 @@
 <?php
 
 if (strlen($this->req->instanceid) < 1) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 if (strlen($this->req->flowgrpid) < 1) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 if (strlen($this->req->flowactorid) < 1) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 
 $insid = $this->req->instanceid;
@@ -73,7 +73,7 @@ if ($actorInfo['para_mode'] == lesscreator_service::ParaModeServer) {
 
 <script type="text/javascript">
 lessModalButtonAdd("ofzzbg", "Save and Back", "_launch_flow_set_back()", "btn-inverse");
-lessModalButtonAdd("lf5krc", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+lessModalButtonAdd("lf5krc", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 
 function _launch_flow_set_back()
 {

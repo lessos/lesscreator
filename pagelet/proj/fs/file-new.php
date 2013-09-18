@@ -27,8 +27,8 @@ if (isset($this->req->readonly) && $this->req->readonly == 1) {
 
 <script type="text/javascript">
 
-lessModalButtonAdd("k8wf2g", "Create", "_fs_file_new()", "btn-inverse pull-left");
-lessModalButtonAdd("nnjyyb", "Cancel", "lessModalClose()", "pull-left");
+lessModalButtonAdd("k8wf2g", "<?php echo $this->T('Create')?>", "_fs_file_new()", "btn-inverse pull-left");
+lessModalButtonAdd("nnjyyb", "<?php echo $this->T('Cancel')?>", "lessModalClose()", "pull-left");
 
 //$(".hutjzx").focus();
 
@@ -63,7 +63,7 @@ function _fs_file_new()
 
             var obj = JSON.parse(rsp);
             if (obj.status == 200) {
-                hdev_header_alert('success', "OK");
+                hdev_header_alert('success', "<?php echo $this->T('Successfully Done')?>");
             } else {
                 hdev_header_alert('error', obj.message);
             }

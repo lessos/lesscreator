@@ -14,7 +14,7 @@ $fsg = $obj."/{$grpid}.grp.json";
 
 $grp = lesscreator_fs::FsFileGet($fsg);
 if ($grp->status != 200) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $grp = json_decode($grp->data->body, true);
 if (!isset($grp['id'])) {
@@ -24,7 +24,7 @@ if (!isset($grp['id'])) {
 $fsj = $obj."/{$grpid}/{$actorid}.actor.json";
 $rs = lesscreator_fs::FsFileGet($fsj);
 if ($rs->status != 200) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 
 $actorDefault = array(
@@ -218,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <tr>
       <td></td>
-      <td><input type="submit" class="btn btn-primary" value="Save" style="margin: 10px 0;" /></td>
+      <td><input type="submit" class="btn btn-primary" value="<?php echo $this->T('Save')?>" style="margin: 10px 0;" /></td>
     </tr>
   </table>
   

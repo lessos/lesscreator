@@ -4,7 +4,7 @@ use LessPHP\Util\Directory;
     
 $info = lesscreator_proj::info($this->req->proj);
 if (!isset($info['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $projPath = lesscreator_proj::path($this->req->proj);
 
@@ -38,7 +38,7 @@ $projPath = lesscreator_proj::path($this->req->proj);
     <th>Controller</th>
     <th><span class="pull-right">Action</span></th>
     <th>View</th>
-    <th><a class="btn btn-mini pull-right" href="#fs/refresh" onclick="_plugin_yaf_cvlist()"><i class="icon-refresh"></i> Refresh</a></th>
+    <th><a class="btn btn-mini pull-right" href="#fs/refresh" onclick="_plugin_yaf_cvlist()"><i class="icon-refresh"></i> <?php echo $this->T('Refresh')?></a></th>
     </tr>
 </thead>
 <tbody>
@@ -69,14 +69,14 @@ foreach ($fs as $file) {
 
     $pat = array("%(#|;|(//)).*%", "%/\*(?:(?!\*/).)*\*/%s");
     $str = preg_replace($pat, "", $rs->data->body);
-    
+
     $vs2 = array();
     if (preg_match_all('/function(.*?)\s(.*?)Action/', $str, $mat)) {
 
         foreach ($mat[2] as $v) {
 
             echo "<a class='badge badge-info pull-right rr20fx' href='#fs/{$file}/{$v}'>{$v}Action</a>";
-            
+
             if (in_array($v, $vs)) {
                 $vs2[$v] = $v;
             } else {

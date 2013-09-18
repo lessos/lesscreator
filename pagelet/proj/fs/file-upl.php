@@ -11,8 +11,8 @@ $path = $this->req->path;
 
 <script type="text/javascript">
 
-lessModalButtonAdd("zrkyom", "Upload", "_fs_file_upl()", "btn-inverse pull-left");
-lessModalButtonAdd("mqaayo", "Cancel", "lessModalClose()", "pull-left");
+lessModalButtonAdd("zrkyom", "<?php echo $this->T('Upload')?>", "_fs_file_upl()", "btn-inverse pull-left");
+lessModalButtonAdd("mqaayo", "<?php echo $this->T('Cancel')?>", "lessModalClose()", "pull-left");
 
 
 var path = '<?php echo $path?>';
@@ -29,14 +29,14 @@ function _fs_file_upl()
 {
     var files = document.getElementById('attachment').files;
     if (!files.length) {
-        alert('Please select a file!');
+        alert('<?php echo $this->T('Please select a file')?>');
         return;
     }
 
     for (var i = 0, file; file = files[i]; ++i) {
         
         if (file.size > 2 * 1024 * 1024) {
-            hdev_header_alert('error', 'The file is too large to upload');
+            hdev_header_alert('error', "<?php echo $this->T('The file is too large to upload')?>");
             return;
         }
                 
@@ -65,7 +65,7 @@ function _fs_file_upl()
 
                         var obj = JSON.parse(rsp);
                         if (obj.status == 200) {
-                            hdev_header_alert('success', "OK");
+                            hdev_header_alert('success', "<?php echo $this->T('Successfully Done')?>");
                         } else {
                             hdev_header_alert('error', obj.message);
                         }

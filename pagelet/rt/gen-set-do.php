@@ -10,19 +10,19 @@ $ret = array(
 try {
     
     if (!isset($this->req->proj) || strlen($this->req->proj) < 1) {
-        throw new \Exception('Page Not Found', 404);
+        throw new \Exception(sprintf($this->T('`%s` Not Found'), $this->T('Page')), 404);
     }
 
     $projPath = lesscreator_proj::path($this->req->proj);
 
     $info = lesscreator_proj::info($this->req->proj);
     if (!isset($info['projid'])) {
-        throw new \Exception("Page Not Found", 404);
+        throw new \Exception(sprintf($this->T('`%s` Not Found'), $this->T('Page')), 404);
     }
 
     if (!in_array($this->req->runtime, array("nginx", "php", "go", "python", "java"))) {
 
-        throw new \Exception("Runtime({$this->req->runtime}) Not Found", 404);
+        throw new \Exception(sprintf($this->T('Runtime `%s` Not Found'), $this->req->runtime), 404);
     }
 
     $lcpj = "{$projPath}/lcproject.json";
@@ -47,7 +47,7 @@ try {
         }
     }    
 
-    throw new \Exception("Processing OK", 200);
+    throw new \Exception($this->T('Successfully Processed'), 200);
 
 } catch (\Exception $e) {
     

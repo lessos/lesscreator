@@ -82,11 +82,11 @@ try {
         if ($rs->status != 200) {
             throw new \Exception($msg = "Error, ". $rs->message, 400);
         } else {
-            throw new \Exception("Processing OK", 200);
+            throw new \Exception($this->T('Successfully Processed'), 200);
         }
     }
     
-    throw new \Exception("Processing OK", 200);
+    throw new \Exception($this->T('Successfully Processed'), 200);
     
 } catch (\Exception $e) {
 

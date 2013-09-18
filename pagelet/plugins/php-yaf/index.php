@@ -4,7 +4,7 @@ use LessPHP\Util\Directory;
     
 $info = lesscreator_proj::info($this->req->proj);
 if (!isset($info['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $projPath = lesscreator_proj::path($this->req->proj);
 
@@ -23,14 +23,14 @@ if (defined("YAF_VERSION")) {
 <?php
 if (!defined("YAF_VERSION")) {
     die("<div class='alert alert-error' style='margin:5px;'>
-        <h4>Your current system is not installed the PHP-Yaf extension!</h4><br/>
-        Please login system and execute the following command to install ...
+        <h4>".$this->T('Your current system is not installed the PHP-Yaf extension')."</h4><br/>
+        ".$this->T('Please login system and execute the following command to install')."
         <pre style='margin:5px 0;'>
 yum install php54-devel
 pecl install yaf
 echo \"extension=yaf.so\">/etc/php.d/yaf.ini
 service php-fpm restart</pre>
-        TODO: Integrated into the LessFly Engine
+        TODO: ".$this->T('Integrated into the LessFly Engine')."
         </div>");
 }
 ?>
@@ -42,13 +42,13 @@ service php-fpm restart</pre>
 
 <h3>PHP Yaf Framework MVC</h3>
 
-Develop a browser / server-side Web applications based on PHP Yaf Framework<br/><br/>
+<?php echo $this->T('Develop a browser / server-side Web applications based on PHP Yaf Framework')?><br/><br/>
 <p>Site: <a href="http://pecl.php.net/package/yaf" target="_blank">http://pecl.php.net/package/yaf</a></p>
 <p>Source: <a href="https://github.com/laruence/php-yaf" target="_blank">https://github.com/laruence/php-yaf</a></p>
 <p>Install: pecl install yaf</p>
 
 <p style="color:#dc4437;margin-top:15px;font-size:16px;">
-This Wizard will create a default directory structure and initial configuration files. The following files will be overwritten!</p><br/>
+<?php echo $this->T('This Wizard will create a default directory structure and initial configuration files. The following files will be overwritten')?>!</p><br/>
 
 <ul>
 <?php
@@ -64,7 +64,7 @@ if ($fsini->status != 200) {
 ?>
 </ul><br/>
 
-<a class="btn btn-success" href="#php-yaf/start" onclick="_plugin_yaf_mvc_start()">Confirm and Start PHP Yaf Framework MVC layer</a>
+<a class="btn btn-success" href="#php-yaf/start" onclick="_plugin_yaf_mvc_start()"><?php echo $this->T('Confirm and Start PHP Yaf Framework MVC layer')?></a>
 
 </div>
 

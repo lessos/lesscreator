@@ -153,7 +153,7 @@ function _launch_next()
 
     lessModalNext(url, nexttit, null);
 }
-lessModalButtonAdd("lkakhn", "Next", "_launch_next()", "btn-inverse");
+lessModalButtonAdd("lkakhn", "<?php echo $this->T('Next')?>", "_launch_next()", "btn-inverse");
 
 if (instanceid == null && sessionStorage.InsActive) {
     $("input[value="+sessionStorage.InsActive+"]").prop("checked", true);

@@ -1,7 +1,7 @@
 <?php
 
 if (strlen($this->req->instanceid) < 1) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $projInstId = $this->req->instanceid;
 
@@ -119,7 +119,7 @@ echo "</table>";
 
 <script type="text/javascript">
 lessModalButtonAdd("kdqtr8", "Confirm and Next", "_launch_data_next()", "btn-inverse");
-lessModalButtonAdd("qqgn7r", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+lessModalButtonAdd("qqgn7r", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 
 function _launch_data_next()
 {

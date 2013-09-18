@@ -1,12 +1,12 @@
 <?php
 
 if ($this->req->proj == null) {
-    die('ERROR');
+    die($this->T('Internal Error'));
 }
 
 $projPath = lesscreator_proj::path($this->req->proj);
 if (strlen($projPath) < 1) {
-    die("ERROR");
+    die($this->T('Internal Error'));
 }
 
 $grps = array();

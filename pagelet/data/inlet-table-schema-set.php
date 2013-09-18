@@ -6,7 +6,7 @@ use LessPHP\Encoding\Json;
 $projPath = lesscreator_proj::path($this->req->proj);
 $projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 
 if (!isset($this->req->data) || strlen($this->req->data) == 0) {
@@ -17,7 +17,7 @@ list($datasetid, $tableid) = explode("/", $this->req->data);
 $fsd = $projPath."/data/{$datasetid}.ds.json";
 $rs = lesscreator_fs::FsFileGet($fsd);
 if ($rs->status != 200) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $dataInfo = json_decode($rs->data->body, true);
 if ($projInfo['projid'] != $dataInfo['projid']) {
@@ -27,7 +27,7 @@ if ($projInfo['projid'] != $dataInfo['projid']) {
 $fst = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
 $rs = lesscreator_fs::FsFileGet($fst);
 if ($rs->status != 200) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $tableInfo = json_decode($rs->data->body, true);
 
@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </tbody>
 </table>
 
-<input type="submit" class="btn" value="Save" />
+<input type="submit" class="btn" value="<?php echo $this->T('Save')?>" />
 <a href="javascript:_data_field_append()" >New Field</a>
 
 </form>

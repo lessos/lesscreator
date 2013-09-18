@@ -1,19 +1,19 @@
 <?php
 
 if ($this->req->proj == null) {
-    die('ERROR');
+    die($this->T('Internal Error'));
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj,'/'));
 $projPath = lesscreator_proj::path($proj);
 if (strlen($projPath) < 1) {
-    die("ERROR");
+    die($this->T('Internal Error'));
 }
 
 $path = preg_replace("/\/+/", "/", $this->req->path);
 
 $rs = lesscreator_fs::FsFileGet($projPath ."/lcproject.json");
 if ($rs->status != 200) {
-    die('ERROR');
+    die($this->T('Internal Error'));
 }
 
 ?>
@@ -131,27 +131,27 @@ foreach ($ls->data as $f) {
     if ($f->isdir == 1) {
         $lip .= "<div class='rcitem'>
             <div class='rcico'><img src='/lesscreator/static/img/page_white_add.png' align='absmiddle' /></div>
-            <a href='#{$p}' class='rcctn hdev_rcobj_file'>New File</a></div>";
+            <a href='#{$p}' class='rcctn hdev_rcobj_file'>".$this->T('New File')."</a></div>";
         $lip .= "<div class='rcitem'>
             <div class='rcico'><img src='/lesscreator/static/img/folder_add.png' align='absmiddle' /></div>
-            <a href='#{$p}' class='rcctn hdev_rcobj_dir'>New Folder</a></div>";
+            <a href='#{$p}' class='rcctn hdev_rcobj_dir'>".$this->T('New Folder')."</a></div>";
         $lip .= "<div class='rcitem'>
             <div class='rcico'><img src='/lesscreator/static/img/page_white_get.png' align='absmiddle' /></div>
-            <a href='#{$p}' class='rcctn hdev_rcobj_upload'>Upload</a></div>";
+            <a href='#{$p}' class='rcctn hdev_rcobj_upload'>".$this->T('Upload')."</a></div>";
     }
     
     if (strlen($path) != 0 || $fn != 'lcproject.json') {
         
         $lip .= "<div class='rcitem'>
             <div class='rcico'><img src='/lesscreator/static/img/page_white_copy.png' align='absmiddle' /></div>
-            <a href='#{$p}' class='rcctn hdev_rcobj_rename'>Rename</a></div>";
+            <a href='#{$p}' class='rcctn hdev_rcobj_rename'>".$this->T('Rename')."</a></div>";
         
         if (strlen($lip)) {
             $lip .= "<div class=\"rcsepli\"></div>";
         }
         $lip .= "<div class='rcitem'>
             <div class='rcico'><img src='/lesscreator/static/img/delete.png' align='absmiddle' /></div>
-            <a href=\"javascript:_fs_file_del('{$p}');\" onclick=\"return confirm('Are you sure you want to delete?')\" class='rcctn'>Delete</a></div>";
+            <a href=\"javascript:_fs_file_del('{$p}');\" onclick=\"return confirm('".$this->T('Are you sure you want to delete')."')\" class='rcctn'>".$this->T('Delete')."</a></div>";
     }
     
     if (strlen($lip)) {

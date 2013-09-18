@@ -26,8 +26,8 @@
     <tr>
         <td width="64px"><img src="/lesscreator/static/img/proj-example.png" /></td>
         <td >
-            <div class="title">New Project</div>
-            <div class="desc">Start a project in a new directory</div>
+            <div class="title"><?php echo $this->T('New Project')?></div>
+            <div class="desc"><?php echo $this->T('Start a project in a new directory')?></div>
         </td>
         <td align="right">
             <i class="icon-chevron-right"></i>
@@ -41,8 +41,8 @@
     <tr class="line">
         <td width="64px"><img src="/lesscreator/static/img/proj-example.png" /></td>
         <td >
-            <div class="title">Existing Directory</div>
-            <div class="desc">Associate a project with an existing working directory</div>
+            <div class="title"><?php echo $this->T('Existing Directory')?></div>
+            <div class="desc"><?php echo $this->T('Open a project from an existing working directory')?></div>
         </td>
         <td align="right">
             <i class="icon-chevron-right"></i>
@@ -56,8 +56,8 @@
     <tr class="line">
         <td width="64px"><img src="/lesscreator/static/img/proj-example.png" /></td>
         <td >
-            <div class="title">Version Control</div>
-            <div class="desc">Checkout a project from a version control repository</div> 
+            <div class="title"><?php echo $this->T('Version Control')?></div>
+            <div class="desc"><?php echo $this->T('Checkout a project from a version control repository')?></div> 
         </td>
         <td align="right">
             <i class="icon-chevron-right"></i>
@@ -68,7 +68,7 @@
 
 <script>
 
-lessModalButtonAdd("ctw26z", "Close", "lessModalClose()", "");
+lessModalButtonAdd("ctw26z", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 $(".j4soeo").click(function(){
         
@@ -79,15 +79,15 @@ $(".j4soeo").click(function(){
     switch (href) {
     case "proj/new":
         url += href;
-        title = 'Create New Project';
+        title = '<?php echo $this->T('Create New Project')?>';
         break;
     case "proj/open-recent":
         url += href;
-        title = 'Open Project';
+        title = '<?php echo $this->T('Open Project')?>';
         break;
     case "proj/fs/vs/well":
         url += href;
-        title = 'Create Project';
+        title = '<?php echo $this->T('Create Project')?>';
         break;
     default:
         return;

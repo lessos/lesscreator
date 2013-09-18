@@ -37,16 +37,16 @@ try {
     min-height: 100px;
 }
 </style>
-<div id="iei0ne" class="alert alert-info hide">Clone Git Repository</div>
+<div id="iei0ne" class="alert alert-info hide"><?php echo $this->T('Clone Git Repository')?></div>
 
 <pre id="y22xg9"></pre>
 
 
 <script type="text/javascript">
 
-//lessModalButtonAdd("h1rwtp", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+//lessModalButtonAdd("h1rwtp", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 
-lessModalButtonAdd("r3aenq", "Close", "_proj_vs_console_close()", "");
+lessModalButtonAdd("r3aenq", "<?php echo $this->T('Close')?>", "_proj_vs_console_close()", "");
 
 var _proj_vs_sock = null;
 var _proj_vs_wsuri = "ws://"+window.location.hostname+":9531/lesscreator/api/vs-git-clone-ws";
@@ -125,7 +125,7 @@ function _proj_vs_console_open()
         }
 
     } catch(e) {
-        console.log("message open failed: "+ e);
+        //console.log("message open failed: "+ e);
     }
 }
 

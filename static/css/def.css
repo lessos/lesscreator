@@ -147,6 +147,7 @@ textarea {
     line-height: 24px; font-size: 24px;
     color: #444;
     font-family: Helvetica !important;
+    text-shadow: 0px 1px 2px #fff;
 }
 #hdev_header .header_logo .version {
     position: relative; top: 13px; left: 5px;
@@ -433,9 +434,9 @@ textarea {
 .CodeMirror-foldgutter-folded:after {
     content: "\25B8";
 }
-.CodeMirror-lines {
+/* .CodeMirror-lines {
     line-height: 1.3em;
-}
+} */
 
 .activeline {background: #f0fcff !important;}
 

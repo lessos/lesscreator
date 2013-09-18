@@ -118,7 +118,7 @@ if (isset($rs['domains'])) {
 
 <script type="text/javascript">
 lessModalButtonAdd("ogsb1m", "Confirm and Next", "_launch_web_next()", "btn-inverse");
-lessModalButtonAdd("wdmuxh", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+lessModalButtonAdd("wdmuxh", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 
 var domain  = null;
 

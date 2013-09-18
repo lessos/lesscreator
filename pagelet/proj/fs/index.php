@@ -1,13 +1,13 @@
 <?php
 
 if ($this->req->proj == null) {
-    die('ERROR');
+    die($this->T('Internal Error'));
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 $projPath = lesscreator_proj::path($proj);
 
 if (strlen($projPath) < 1) {
-    die("ERROR");
+    die($this->T('Internal Error'));
 }
 
 $ptpath = md5("");
@@ -22,15 +22,15 @@ $ptpath = md5("");
     
     <a href="#proj/fs/file-new" class="navitem" onclick="_proj_fs_nav_olclick(this)">
         <img src="/lesscreator/static/img/page_white_add.png" class="h5c_icon" />
-        New File
+        <?php echo $this->T('New File')?>
     </a>
     <a href="#proj/fs/file-new-dir" class="navitem" onclick="_proj_fs_nav_olclick(this)">
         <img src="/lesscreator/static/img/folder_add.png" class="h5c_icon" />
-        New Folder
+        <?php echo $this->T('New Folder')?>
     </a>
     <a href="#proj/fs/file-upl" class="navitem" onclick="_proj_fs_nav_olclick(this)">
         <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
-        Upload
+        <?php echo $this->T('Upload')?>
     </a>
     <a href="#plugins/php-yaf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
         <img src="/lesscreator/static/img/plugins/php-yaf/yaf-ico-48.png" class="h5c_icon" />
@@ -138,9 +138,9 @@ function _proj_set_refresh()
 
 function _fs_file_new_modal(type, path, file, readonly)
 {
-    var tit = "New File";
+    var tit = "<?php echo $this->T('New File')?>";
     if (type == 'dir') {
-        tit = 'New Folder';
+        tit = "<?php echo $this->T('New Folder')?>";
     }
 
     var url = "/lesscreator/proj/fs/file-new?path="+ path +"&type="+ type;
@@ -161,18 +161,18 @@ function _fs_file_upl_modal(path)
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         // Great success! All the File APIs are supported.
     } else {
-        alert('The File APIs are not fully supported in this browser.');
+        alert("<?php echo $this->T('The File APIs are not fully supported in this browser')?>");
         return;
     }
     
-    var tit = "Upload File From Location";
+    var tit = "<?php echo $this->T('Upload File From Location')?>";
     var url = "/lesscreator/proj/fs/file-upl?path="+ path;
     lessModalOpen(url, 0, 550, 160, tit, null);
 }
 
 function _fs_file_mov_modal(path)
 {
-    var tit = "Rename File/Folder";
+    var tit = "<?php echo $this->T('Rename File/Folder')?>";
     var url = "/lesscreator/proj/fs/file-mov?path="+ path;
     lessModalOpen(url, 0, 550, 160, tit, null);
 }
@@ -279,7 +279,7 @@ function _fs_file_del(path)
 
             var obj = JSON.parse(rsp);
             if (obj.status == 200) {
-                hdev_header_alert('success', "OK");
+                hdev_header_alert('success', "<?php echo $this->T('Successfully Done')?>");
                 $("#ptp"+p).remove();
                 $("#pt"+p).remove();
             } else {

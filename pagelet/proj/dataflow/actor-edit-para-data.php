@@ -1,7 +1,7 @@
 <?php
 
 if ($this->req->proj == null) {
-    die('ERROR');
+    die($this->T('Internal Error'));
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 

@@ -10,7 +10,7 @@ if (!Session::IsLogin()) {
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>lessCreator</title>
+  <title><?php echo $this->T('lessCreator')?></title>
   <script src="/lesscreator/~/lessui/js/sea.js"></script>
   <script src="/lesscreator/~/jquery/jquery-2.0.min.js"></script>
   <script src="/lesscreator/~/lessui/js/BrowserDetect.js"></script>
@@ -24,7 +24,7 @@ if (!Session::IsLogin()) {
   <link href="/lesscreator/~/lessui/css/def.css" rel="stylesheet" />
   <link href="/lesscreator/static/css/def.css" rel="stylesheet" />
 
-  <link href="/lesscreator/static/img/for-test/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+  <link href="/lesscreator/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
 
 </head>
 <body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;">
@@ -57,10 +57,10 @@ if (!Session::IsLogin()) {
 <div class="loadwell">
   <div class="">
     <div id="_load-alert" class="alert alert-success">
-        Initializing System Environment ...</div>    
+        <?php echo $this->T('Initializing System Environment')?> ...</div>    
   </div>
 
-  <div class="load-progress-msg">Loading dependencies ...</div>
+  <div class="load-progress-msg"><?php echo $this->T('Loading dependencies')?> ...</div>
   <div class="load-progress progress progress-success">
     <div class="bar load-progress-num" style="width: 1%"></div>
   </div>
@@ -171,13 +171,13 @@ function _load_sys_config()
                 var rsj = JSON.parse(rsp);
             } catch (e) {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                lessAlert("#_load-alert", "alert-error", "Error: Service Unavailable ("+url+")");
+                lessAlert("#_load-alert", "alert-error", "<?php echo $this->T('Service Unavailable')?> ("+url+")");
                 return;
             }
 
             if (rsj.status == 401) {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                lessAlert("#_load-alert", "alert-error", "Error: Unauthorized, <a href='/user'>try login again</a>");
+                lessAlert("#_load-alert", "alert-error", "<?php echo $this->T('Unauthorized')?>, <a href='/user'><?php echo $this->T('try login again')?></a>");
             } else if (rsj.status == 200) {
 
                 lessSession.Set("basedir", rsj.data.basedir);
@@ -188,7 +188,7 @@ function _load_sys_config()
                     
                     if (!ret) {
                         return lessAlert("#_load-alert", "alert-error", 
-                            "Error: Local database (IndexedDB) initialization failed");
+                            "<?php echo $this->T('Local database (IndexedDB) initialization failed')?>");
                     }
 
                     _load_desk(rsj.data.basedir);
@@ -196,12 +196,12 @@ function _load_sys_config()
 
             } else {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                lessAlert("#_load-alert", "alert-error", "Error: "+ rsj.message);
+                lessAlert("#_load-alert", "alert-error", rsj.message);
             }
         },
         error: function(xhr, textStatus, error) {
             $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-            lessAlert("#_load-alert", "alert-error", "Error: Service Unavailable");
+            lessAlert("#_load-alert", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
         }
     });
 }
@@ -223,7 +223,7 @@ function _load_desk(basedir)
         },
         error: function(xhr, textStatus, error) {
             $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-            lessAlert("#_load-alert", "alert-error", "Initializing System Environment. Error!");
+            lessAlert("#_load-alert", "alert-error", "<?php echo $this->T('Failed on Initializing System Environment')?>");
         }
     });
 }

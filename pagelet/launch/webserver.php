@@ -16,14 +16,14 @@ if ($this->req->apimethod == "launch.web") {
     try {
 
         if (!isset($projInfo['projid'])) {
-            throw new \Exception("Bad Request", 400);
+            throw new \Exception($this->T('Bad Request'), 400);
         }
 
         if (!isset($projInfo['runtimes']['nginx']) 
             || $projInfo['runtimes']['nginx']['status'] == 0
             || !isset($projInfo['runtimes']['nginx']['ngx_conf_mode'])) {
 
-            throw new \Exception("You have not enabled WebServer in Runtimes Settings", 400);
+            throw new \Exception($this->T('You have not enabled WebServer in Runtime Settings'), 400);
         }
 
         $ngx_conf_mode = $projInfo['runtimes']['nginx']['ngx_conf_mode'];
@@ -32,14 +32,14 @@ if ($this->req->apimethod == "launch.web") {
             
             $rs = lesscreator_fs::FsFileGet($projPath ."/misc/nginx/virtual.custom.conf");
             if ($rs->status != 200) {
-                throw new \Exception("Configuration can not found ($projPath/misc/nginx/virtual.custom.conf)", 404);
+                throw new \Exception(sprintf($this->T('`%s` can not found'), "{$projPath}/misc/nginx/virtual.custom.conf"), 404);
             }
             $ngx_conf = $rs->data->body;
 
         } else if (in_array($ngx_conf_mode, array("std", "static", "phpmix"))) {
             $ngx_conf = file_get_contents(LESSCREATOR_DIR."/misc/nginx/virtual.{$ngx_conf_mode}.conf");
         } else {
-            throw new \Exception("You have not enabled WebServer in Runtimes Settings", 400);
+            throw new \Exception($this->T('You have not enabled WebServer in Runtime Settings'), 400);
         }
         
 
@@ -47,7 +47,7 @@ if ($this->req->apimethod == "launch.web") {
         $rs = $kpr->Info();
         $info = json_decode($rs->body, false);
         if (!isset($info->local->id)) {
-            throw new \Exception("System Error", 500);
+            throw new \Exception($this->T('Service Unavailable'), 500);
         }
         $localnodeid = $info->local->id;
 
@@ -72,6 +72,7 @@ if ($this->req->apimethod == "launch.web") {
         $qid = uniqid();
 
         $projInst['rt_ngx_conf'] = $ngx_conf;
+        $projInst['pkgpath'] = $projPath;
         $rs = $kpr->LocalNodeSet("/app/local/setup/{$qid}", json_encode($projInst), 9000);
         //print_r($projInst);
 
@@ -91,7 +92,7 @@ if ($this->req->apimethod == "launch.web") {
                 $ret['web_domain'] = $rs2->web_domain;
                 $ret['web_port']   = $rs2->web_port;
 
-                throw new \Exception("OK", 200);
+                throw new \Exception($this->T('Successfully Done'), 200);
             }
 
             sleep(1);
@@ -109,24 +110,23 @@ if ($this->req->apimethod == "launch.web") {
 }
 
 if (!isset($projInfo['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 
 if (!isset($projInfo['runtimes']['nginx']) 
     || $projInfo['runtimes']['nginx']['status'] == 0) {
 
-    die('<div class="alert alert-error">
-        You have not enabled WebServer in Runtimes Settings. Please first configure Runtimes Environment, then perform the current operation.
-
+    die('<div class="alert alert-error">'.
+        $this->T('You have not enabled WebServer in Runtime Settings') .' '. $this->T('Please first configure Runtimes Environment, then perform the current operation') .'
         <br /><br />
-        <button class="btn" onclick="lessModalClose();lcProjSet();">Goto Setting</button>
+        <button class="btn" onclick="lessModalClose();lcProjSet();">'.$this->T('Goto Setting').'</button>
     </div>');
 }
 
 ?>
 
 <div id="mc0zzp" class="alert alert-info">
-Processing, please wait ...
+<?php echo $this->T('Processing, please wait')?>
 </div>
 
 <script type="text/javascript">
@@ -134,7 +134,7 @@ Processing, please wait ...
 var projid = '<?php echo $projInfo["projid"]?>';
 
 //lessModalButtonAdd("pfz30w", "Confirm and Save", "_proj_pkg_save()", "btn-inverse");
-lessModalButtonAdd("wra50b", "Close", "lessModalClose()", "");
+lessModalButtonAdd("wra50b", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 
 function _proj_launch_webserver_try()
@@ -155,16 +155,16 @@ function _proj_launch_webserver_try()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                return lessAlert("#mc0zzp", "alert-error", "Error: Service Unavailable");
+                return lessAlert("#mc0zzp", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
             }
 
             if (rsj.status == 200) {
                 
                 var rdi = rsj.web_scheme +"://"+ rsj.web_domain +":"+ rsj.web_port +"/"+ projid;
 
-                var msg = "Web Server Configuration successful<br /><br />";
+                var msg = "<?php echo $this->T('Web Server Configuration successful')?><br /><br />";
 
-                msg += "<a href='"+rdi+"' target='_blank' class='btn'> <i class='icon-share-alt'></i> <strong>Open</strong> "+rdi+"</a>";
+                msg += "<a href='"+rdi+"' target='_blank' class='btn'> <i class='icon-share-alt'></i> <strong><?php echo $this->T('Open')?></strong> "+rdi+"</a>";
                 //msg += " -- or -- ";
                 //msg += "<button class='btn' onclick='lessModalClose()'>Close</button>";
 

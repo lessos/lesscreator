@@ -6,7 +6,8 @@ use LessPHP\LessKeeper\Keeper;
 
 if (!isset($this->req->proj)
     || strlen($this->req->proj) < 1) {
-    header("HTTP/1.1 404 Not Found"); die('Page Not Found');
+    header("HTTP/1.1 404 Not Found");
+    die($this->T('Page Not Found'));
 }
 
 $projPath = lesscreator_proj::path($this->req->proj);
@@ -33,7 +34,7 @@ if ($this->req->apimethod == "self.rt.list") {
         }
 
         echo "
-        <a class=\"item border_radius_5\" href=\"#rt/{$name}-set\" onclick=\"_proj_rt_set(this)\" title=\"Click to configuration\">
+        <a class=\"item border_radius_5\" href=\"#rt/{$name}-set\" onclick=\"_proj_rt_set(this)\" title=\"<?php echo $this->T('Click to configuration')?>\">
             <img class=\"rt-ico\" src=\"/lesscreator/static/img/rt/{$name}_200.png\" />
             <label class=\"rt-tit\">{$rts[$name]['title']}</label>
         </a>";
@@ -46,7 +47,7 @@ if ($this->req->apimethod == "self.rt.list") {
         echo '
         <a class="item border_radius_5 gray" href="#rt/select" onclick="_proj_rt_set(this)">
             <img class="newrt-ico" src="/lesscreator/static/img/for-test/setting2-128.png" />
-            <span class="newrt-tit">Add Runtime Environment</span>
+            <span class="newrt-tit">'. $this->T('Add Runtime Environment') .'</span>
             <span class="newrt-desc">PHP, Python, Java, Go ...</span>
         </a>';
     }
@@ -82,7 +83,7 @@ if ($this->req->apimethod == "self.pkg.list") {
     echo '
         <a class="item-set border_radius_5" href="#" onclick="_proj_pkgs_select(this)">
             <img class="newrt-ico" src="/lesscreator/static/img/app-t3-16.png" />
-            <span class="newrt-tit">Add or Remove Projects</span>
+            <span class="newrt-tit">'. $this->T('Add or Remove Projects') .'</span>
         </a>';
     
     die();
@@ -102,11 +103,11 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
         }
 
         if (!isset($info['name']) || strlen($info['name']) < 1) {
-            throw new \Exception("Name can not be null", 400);
+            throw new \Exception(sprintf($this->T('`%s` can not be null'), $this->T('Name')), 400);
         }
 
         if (!isset($info['version']) || strlen($info['version']) < 1) {
-            throw new \Exception("Version can not be null", 400);
+            throw new \Exception(sprintf($this->T('`%s` can not be null'), $this->T('Version')), 400);
         }
 
         if (isset($info['props']) && is_array($info['props'])) {
@@ -226,29 +227,29 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
   <table class="table table-condensed" width="100%">
 
     <tr class="bordernil">
-      <td width="240px"><strong>Project ID</strong></td>
+      <td width="240px"><strong><?php echo $this->T('Project ID')?></strong></td>
       <td><?=$info['projid']?></td>
     </tr>
     <tr>
-      <td><strong>Display Name</strong></td>
+      <td><strong><?php echo $this->T('Display Name')?></strong></td>
       <td>
         <input name="name" class="input-medium" type="text" value="<?=$info['name']?>" />
-        <label class="label label-important">Required</label>
-        <span class="help-inline">Example: <strong>Hello World</strong></span>
+        <label class="label label-important"><?php echo $this->T('Required')?></label>
+        <span class="help-inline"><?php echo $this->T('Example')?>: <strong>Hello World</strong></span>
       </td>
     </tr>
     
     <tr>
-      <td><strong>Version</strong></td>
+      <td><strong><?php echo $this->T('Version')?></strong></td>
       <td>
         <input name="version" class="input-medium" type="text" value="<?=$info['version']?>" /> 
-        <label class="label label-important">Required</label>
-        <span class="help-inline">Example: <strong>1.0.0</strong></span>
+        <label class="label label-important"><?php echo $this->T('Required')?></label>
+        <span class="help-inline"><?php echo $this->T('Example')?>: <strong>1.0.0</strong></span>
       </td>
     </tr>
 
     <tr>
-      <td><strong>Group by Application</strong></td>
+      <td><strong><?php echo $this->T('Group by Application')?></strong></td>
       <td class="r0330s">
         <?php
         $preProps = explode(",", $info['props_app']);
@@ -267,7 +268,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
     </tr>
 
     <tr>
-      <td><strong>Group by Develop</strong></td>
+      <td><strong><?php echo $this->T('Group by Develop')?></strong></td>
       <td class="r0330s">
         <?php
         $preProps = explode(",", $info['props_dev']);
@@ -286,23 +287,23 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
     </tr>
 
     <tr>
-      <td valign="top"><strong>Description</strong></td>
+      <td valign="top"><strong><?php echo $this->T('Description')?></strong></td>
       <td><textarea name="summary" rows="2" style="width:400px;"><?=$info['summary']?></textarea></td>
     </tr>
 
     <tr>
-      <td><strong>Runtime Environment</strong></td>
+      <td><strong><?php echo $this->T('Runtime Environment')?></strong></td>
       <td><div class="rky7cv">Loading</div></td>
     </tr>
 
     <tr>
-      <td><strong>Dependent Projects</strong></td>
+      <td><strong><?php echo $this->T('Dependent Projects')?></strong></td>
       <td><div class="lgjn8r">Loading</div></td>
     </tr>
 
     <tr>
       <td></td>
-      <td><input type="submit" name="submit" value="Save" class="btn btn-inverse" /></td>
+      <td><input type="submit" name="submit" value="<?php echo $this->T('Save')?>" class="btn btn-inverse" /></td>
     </tr>
   </table>
 </form>
@@ -322,12 +323,12 @@ $("#k2948f").submit(function(event) {
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                hdev_header_alert('error', "Error: Service Unavailable");
+                hdev_header_alert('error', "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
             if (rsj.status == 200) {
-                hdev_header_alert('success', "Successfully Updated");
+                hdev_header_alert('success', "<?php echo $this->T('Successfully Updated')?>");
                 //window.scrollTo(0,0);
             } else {
                 hdev_header_alert('error', rsj.message);
@@ -363,13 +364,13 @@ function _proj_rt_set(node)
     var title = "";
     switch (uri) {
     case "rt/select":
-        title = "Add Runtime Environment";
+        title = "<?php echo $this->T('Add Runtime Environment')?>";
         break;
     case "rt/nginx-set":
-        title = "Setting Nginx"
+        title = "<?php echo sprintf($this->T('%s Settings'), 'Nginx')?>"
         break;
     case "rt/php-set":
-        title = "Add Runtime Environment";
+        title = "<?php echo sprintf($this->T('%s Settings'), 'PHP')?>";
         break;
     default:
         return;
@@ -402,7 +403,7 @@ function _proj_pkgs_refresh()
 function _proj_pkgs_select(node)
 {
     var uri = "/lesscreator/proj/set-pkgs?proj="+ lessSession.Get("ProjPath");
-    lessModalOpen(uri, 1, 800, 500, "Select Dependent Projects", null);
+    lessModalOpen(uri, 1, 800, 500, "<?php echo $this->T('Select Dependent Projects')?>", null);
 }
 
 _proj_pkgs_refresh();

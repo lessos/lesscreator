@@ -2,7 +2,7 @@
 $projPath = lesscreator_proj::path($this->req->proj);
 $projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 
 if (!isset($this->req->data) || strlen($this->req->data) == 0) {
@@ -13,14 +13,14 @@ list($datasetid, $tableid) = explode("/", $this->req->data);
 $fsd = $projPath."/data/{$datasetid}.ds.json";
 $rs = lesscreator_fs::FsFileGet($fsd);
 if ($rs->status != 200) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $dataInfo = json_decode($rs->data->body, true);
 
 $fst = $projPath."/data/{$datasetid}.{$tableid}.tbl.json";
 $rs = lesscreator_fs::FsFileGet($fst);
 if ($rs->status != 200) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $tableInfo = json_decode($rs->data->body, true);
 

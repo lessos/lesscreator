@@ -4,13 +4,13 @@ use LessPHP\Encoding\Json;
 
 
 if ($this->req->proj == null) {
-    die('ERROR');
+    die($this->T('Internal Error'));
 }
 $proj = preg_replace("/\/+/", "/", rtrim($this->req->proj, '/'));
 $projPath = lesscreator_proj::path($this->req->proj);
 
 if (strlen($projPath) < 1) {
-    die("ERROR");
+    die($this->T('Internal Error'));
 }
 
 $ptpath = md5("");
@@ -76,7 +76,7 @@ if (count($grps) == 0) {
         <input type="text" size="30" name="name" class="inputname" value="" />
     </div>
     <div class="clearhr"></div>
-    <div><input type="submit" value="Save" class="input_button" /></div>
+    <div><input type="submit" value="<?php echo $this->T('Save')?>" class="input_button" /></div>
     </form>
 </div>
 
@@ -103,7 +103,7 @@ if (count($grps) == 0) {
         <input type="text" size="30" name="name" class="inputname" value="" />
     </div>
     <div class="clearhr"></div>
-    <div><input type="submit" value="Save" class="input_button" /></div>
+    <div><input type="submit" value="<?php echo $this->T('Save')?>" class="input_button" /></div>
     </form>
 </div>
 

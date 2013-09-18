@@ -6,17 +6,17 @@ use LessPHP\Encoding\Json;
 $projPath = lesscreator_proj::path($this->req->proj);
 $projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 
 if (!isset($this->req->id) || strlen($this->req->id) == 0) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $datasetid = $this->req->id;
 $fsd = $projPath."/data/{$datasetid}.ds.json";
 $rs = lesscreator_fs::FsFileGet($fsd);
 if ($rs->status != 200) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 $dataInfo = json_decode($dataInfo->data->body, true);
 
@@ -27,7 +27,7 @@ if ($projInfo['projid'] != $dataInfo['projid']) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!isset($this->req->tableid)) {
-        die("Bad Request");
+        die($this->T('Bad Request'));
     }
     $tableid = $this->req->tableid;
 
@@ -81,7 +81,7 @@ $tableid = LessPHP_Util_String::rand(8, 2);
 
 <script type="text/javascript">
 
-lessModalButtonAdd("d8id3r", "Close", "lessModalClose()", "");
+lessModalButtonAdd("d8id3r", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 lessModalButtonAdd("h6xj1q", "Confirm and Save", "_data_tableid_set()", "btn-inverse");
 

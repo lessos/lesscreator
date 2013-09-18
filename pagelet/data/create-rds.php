@@ -6,7 +6,7 @@ use LessPHP\Encoding\Json;
 $projPath = lesscreator_proj::path($this->req->proj);
 $projInfo = lesscreator_proj::info($this->req->proj);
 if (!isset($projInfo['projid'])) {
-    die("Bad Request");
+    die($this->T('Bad Request'));
 }
 
 if ($this->app->method == 'POST') {
@@ -55,9 +55,9 @@ $datasetid = LessPHP_Util_String::rand(8, 2);
 </form>
 
 <script>
-lessModalButtonAdd("hril76", "Close", "lessModalClose()", "");
+lessModalButtonAdd("hril76", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 lessModalButtonAdd("edmfpf", "Confirm and Commit", "_data_new_rds()", "btn-inverse");
-lessModalButtonAdd("d2jns6", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+lessModalButtonAdd("d2jns6", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 
 function _data_new_rds()
 {

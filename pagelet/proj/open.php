@@ -1,10 +1,10 @@
 
 <ul class="nav nav-tabs" style="margin: 5px 0;">
   <li id="_nav_recent" class="active">
-    <a href="javascript:_proj_open_recent()">Recent Projects</a>
+    <a href="javascript:_proj_open_recent()"><?php echo $this->T('Recent Projects')?></a>
   </li>
   <li id="_nav_fs">
-    <a href="javascript:_proj_fs('', 0)">From Directory</a>
+    <a href="javascript:_proj_fs('', 0)"><?php echo $this->T('From Directory')?></a>
   </li>
 </ul>
 
@@ -29,7 +29,7 @@ foreach ($pjs as $projid => $val) {
 
     $rs = lesscreator_fs::FsFileGet($val['path']."/lcproject.json");
     if ($rs->status != 200) {
-        $noinfo = '<font color="red">This project no longer exists!</font>';
+        $noinfo = '<font color="red">'.$this->T('This project no longer exists').'</font>';
     }
 ?>
 <tr id="_proj_<?php echo $projid?>">
@@ -51,7 +51,7 @@ foreach ($pjs as $projid => $val) {
 
 <script type="text/javascript">
 if (lessModalPrevId() != null) {
-    lessModalButtonAdd("jwyztd", "Back", "lessModalPrev()", "pull-left h5c-marginl0");
+    lessModalButtonAdd("jwyztd", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 }
 
 function _proj_open_recent()
@@ -63,7 +63,7 @@ function _proj_open_recent()
     $('#_proj_open_recent').show();
 
     //lessModalButtonCleanAll();
-    lessModalButtonAdd("p5ke7m", "Close", "lessModalClose()", "");
+    lessModalButtonAdd("p5ke7m", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 }
 
 function _proj_open_recent_open(path)
