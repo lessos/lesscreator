@@ -34,7 +34,7 @@ if ($this->req->apimethod == "self.rt.list") {
         }
 
         echo "
-        <a class=\"item border_radius_5\" href=\"#rt/{$name}-set\" onclick=\"_proj_rt_set(this)\" title=\"<?php echo $this->T('Click to configuration')?>\">
+        <a class=\"item border_radius_5\" href=\"#rt/{$name}-set\" onclick=\"_proj_rt_set(this)\" title=\"". $this->T('Click to configuration') ."\">
             <img class=\"rt-ico\" src=\"/lesscreator/static/img/rt/{$name}_200.png\" />
             <label class=\"rt-tit\">{$rts[$name]['title']}</label>
         </a>";

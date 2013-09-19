@@ -63,6 +63,8 @@ $ptpath = md5("");
 
 <ul class="h5c_navtabs _proj_nav" style="background-color:#f6f7f8;">
     <li class="active ueg14o_fs"><a href="#proj/fs" class="_proj_tab_href"><?php echo $this->T('Files')?></a></li>
+
+    <li class="ueg14o_lessdata"><a href="#plugins/lessdata/index" class="_proj_tab_href"><?php echo $this->T('Database')?></a></li>
     <?php
     foreach ($props as $v) {
         if (!isset($props_def[$v])) {
@@ -171,8 +173,24 @@ if (!sessionStorage.ProjNavLast) {
 //_proj_nav_open(sessionStorage.ProjNavLast);
 
 $('._proj_tab_href').click(function() {
-    url = $(this).attr('href').substr(6);
-    _proj_nav_open(url);
+    
+    var uri = $(this).attr('href').substr(1);
+
+    switch (uri) {
+    case 'plugins/lessdata/index':
+
+        var opt = {
+            'title': '<?php echo sprintf($this->T('%s Settings'), $this->T('Database'))?>',
+            'close':'1',
+            'img': '/lesscreator/static/img/plugins/lessdata/aliyun-rds.png',
+        }
+
+        var url = '/lesscreator/'+ uri +'?proj='+ lessSession.Get("ProjPath");
+
+        h5cTabOpen(url, 'w0', 'html', opt);
+        break;
+    }
+    //_proj_nav_open(url);
 });
 
 

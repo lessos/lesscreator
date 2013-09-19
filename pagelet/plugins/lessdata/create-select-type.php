@@ -110,16 +110,16 @@ $(".j4soeo").click(function(){
         
     var href = $(this).attr('href').substr(1);
 
-    var url = '/lesscreator/data/';
+    var url = '/lesscreator/plugins/lessdata/';
     var title = "";
     switch (href) {
     case "create-aliyun-rds":
-        url += href;
-        title = 'New DataSet - Aliyun RDS';
+        url += 'create-rds';
+        title = '<?php echo $this->T('New DataSet')?> - Aliyun RDS';
         break;
     case "create-mysql":
-        url += href;
-        title = 'New DataSet - MySQL';
+        url += 'create-rds';
+        title = '<?php echo $this->T('New DataSet')?> - MySQL';
         break;
     default:
         return;
