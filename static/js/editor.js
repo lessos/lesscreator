@@ -351,6 +351,8 @@ lcEditor.EntrySave = function(urid, cb)
         }
 
         //console.log("lcEditor.EntrySave 4"+ JSON.stringify(req));
+
+
         
         req.msgreply = cb;
         lcEditor.WebSocketSend(req);
@@ -401,6 +403,9 @@ lcEditor.WebSocketSend = function(req)
                             return;
                         }
 
+                        entry.ctn0_src = entry.ctn1_src;
+                        entry.ctn0_sum = entry.ctn1_sum;
+                        
                         entry.ctn1_src = "";
                         entry.ctn1_sum = "";
 

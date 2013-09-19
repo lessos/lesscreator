@@ -141,7 +141,7 @@ $(".kyexic").click(function(){
         title = "<?php echo $this->T('Setting')?> Nginx"
         break;
     case "rt/php-set":
-        title = "<?php echo $this->T('Setting)?> PHP";
+        title = "<?php echo $this->T('Setting')?> PHP";
         break;
     default:
         return;

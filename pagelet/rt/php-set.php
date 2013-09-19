@@ -36,9 +36,9 @@ foreach ($info['runtimes'] as $name => $rt) {
     <h4>PHP runtime environment</h4>
     <br />
     <div id="k3bahm" class="alert alert-info">
-        <?php echo $this->T('PHP is a popular general-purpose scripting language that is especially suited to web development')?>
+        <?php echo $this->T('rt-php-desc')?>
         <br />
-        <?php echo $this->T('Fast, flexible and pragmatic, PHP powers everything from your blog to the largest social networking site in the world')?>
+        <?php echo $this->T('rt-php-desc2')?>
     </div>
     <ul>
         <li>Version >= 5.4.x</li>
