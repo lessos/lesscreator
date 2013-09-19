@@ -115,13 +115,13 @@ if ($this->req->apimethod == "ngx_conf.get") {
 <td>
 
     <div id="gix0qn" class="alert alert-info">
-        <?php echo $this->T('Nginx is a lightweight, high concurrency, high performance and low memory usage Web server/reverse proxy')?>
+        <?php echo $this->T('rt-nginx-desc')?>
     </div>
     
     <div class="m484ny">
 
     <label class="checkbox inline">
-      <input id="k4grco" type="checkbox" value="1" onchange="_proj_rt_nginx_onoff_chg()" <?php echo $enabled_check?> /> <?php $this->T('Enable')?> Nginx
+      <input id="k4grco" type="checkbox" value="1" onchange="_proj_rt_nginx_onoff_chg()" <?php echo $enabled_check?> /> <?php echo $this->T('Enable')?> Nginx
     </label>
 
     <select id="ngx_conf_mode" class="inline hide" onchange="_proj_rt_nginx_mode_chg(this)">

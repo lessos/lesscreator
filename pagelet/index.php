@@ -140,6 +140,7 @@ function _load_deps()
         "/lesscreator/~/codemirror3/addon/fold/brace-fold.js",
         "/lesscreator/~/codemirror3/addon/hint/show-hint.js",
         "/lesscreator/~/codemirror3/addon/hint/javascript-hint.js",
+        "/lesscreator/~/codemirror3/mode/all.js",
     ];
 
     seajs.use(rqs, function() {
@@ -238,7 +239,7 @@ function _env_init()
     }
 
     $(window).resize(function() {
-        h5cLayoutResize();
+        lcLayoutResize();
     });
 
     var spacecol = 10;
@@ -251,7 +252,7 @@ function _env_init()
             var wrs = e.pageX - p.left - 5;
 
             lessCookie.SetByDay("cfg_lyo_colt_w", wrs / w, 365);
-            h5cLayoutResize();
+            lcLayoutResize();
         });
     });
 
@@ -267,7 +268,7 @@ function _env_init()
                 return;
             }
             lessCookie.SetByDay("config_tablet_roww0", (l - 5), 365);
-            h5cLayoutResize();
+            lcLayoutResize();
         });
     });
     $("#h5c-resize-rowt0").bind('mousedown', function() {
@@ -282,7 +283,7 @@ function _env_init()
                 return;
             }
             lessCookie.SetByDay("config_tablet_rowt0", (l - 5), 365);
-            h5cLayoutResize();
+            lcLayoutResize();
         });
     }); */
 
@@ -298,8 +299,8 @@ function _env_init()
     echo "h5cProjectOpen('{$this->req->proj}');";
     ?>
     
-    h5cLayoutResize();
-    setTimeout(h5cLayoutResize, 3000);
+    lcLayoutResize();
+    setTimeout(lcLayoutResize, 3000);
 
     //seajs.use(["cm_css", "cm_core", "cm_loadmode", "cm_vim", "cm_searchcursor"]);
 }

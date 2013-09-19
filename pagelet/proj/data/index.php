@@ -37,7 +37,7 @@ function _proj_data_tabopen(uri, force)
         url     : uri,
         success : function(data) {
             $("#ig3w6o").html(data);
-            h5cLayoutResize();
+            lcLayoutResize();
         }
     });
 }

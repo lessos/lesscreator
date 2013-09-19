@@ -96,7 +96,7 @@ $lcinfo = json_decode($lcinfo, true);
               </div>
             </div>
 
-            <div id="h5c-tablet-body-t0" class="h5c_tablet_body less_scroll"></div>
+            <div id="h5c-tablet-body-t0" class="less_scroll"></div>
 
           </td>
         </tr>
@@ -140,7 +140,7 @@ $lcinfo = json_decode($lcinfo, true);
             </div>
 
             <div id="h5c-tablet-toolbar-w0" class="hide"></div>
-            <div id="h5c-tablet-body-w0" class="h5c_tablet_body"></div>
+            <div id="h5c-tablet-body-w0" class="h5c_tablet_body less_scroll"></div>
 
           </td>
         </tr>

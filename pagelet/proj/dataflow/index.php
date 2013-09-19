@@ -220,7 +220,7 @@ function _proj_dataflow_tabopen(proj, path, force)
         data: 'proj='+proj+'&path='+path,
         success: function(data) {
             $("#pt"+p).html(data);
-            h5cLayoutResize();
+            lcLayoutResize();
         }
     });
 }

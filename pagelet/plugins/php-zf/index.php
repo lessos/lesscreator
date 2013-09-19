@@ -54,7 +54,7 @@ function _plugin_zf_mvc_start()
         data    : JSON.stringify(req),
         success : function(rsp) {
             //$("#pt"+p).html(data);
-            //h5cLayoutResize();
+            //lcLayoutResize();
             lessAlert("#f79gwj", "alert-success", rsp);
         },
         error   : function(xhr, textStatus, error) {

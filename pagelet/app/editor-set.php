@@ -50,7 +50,7 @@
     <td class="t"><?php echo $this->T('Code Autocomplete')?></td>
     <td>
       <label><?php echo $this->T('Press `shift + space` to activate autocompletion')?></label>
-      <p class="alert alert-info"><?php echo $this->T('Currently only support the <strong>Javascript</strong>. <br />Other languages ​​are working to develop, pls wait')?></p>
+      <p class="alert alert-info"><?php echo $this->T('editor-autocomplete-desc')?></p>
     </td>
   </tr>
 

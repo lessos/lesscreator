@@ -260,7 +260,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
                 $ck = "checked";
             }
             echo "<label class=\"item checkbox\">
-                <input type=\"checkbox\" name=\"props_app[]\" value=\"{$k}\" {$ck}/> {$v}
+                <input type=\"checkbox\" name=\"props_app[]\" value=\"{$k}\" {$ck}/> ". $this->T($v) ."
                 </label>";
         }
         ?>
@@ -279,7 +279,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
                 $ck = "checked";
             }
             echo "<label class=\"item checkbox\">
-                <input type=\"checkbox\" name=\"props_dev[]\" value=\"{$k}\" {$ck}/> {$v}
+                <input type=\"checkbox\" name=\"props_dev[]\" value=\"{$k}\" {$ck}/> ". $this->T($v) ."
                 </label>";       
         }
         ?>

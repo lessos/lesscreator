@@ -12,43 +12,10 @@ if (strlen($projPath) < 1) {
 
 $ptpath = md5("");
 ?>
-<style>
 
-</style>
-
-<div id="lc-navlet-frame-projfs" class="lc_navlet_frame">
-    <div class="lc_navlet_lm">
-        <div class="lc_navlet_navs">
-    
-    <a href="#proj/fs/file-new" class="navitem" onclick="_proj_fs_nav_olclick(this)">
-        <img src="/lesscreator/static/img/page_white_add.png" class="h5c_icon" />
-        <?php echo $this->T('New File')?>
-    </a>
-    <a href="#proj/fs/file-new-dir" class="navitem" onclick="_proj_fs_nav_olclick(this)">
-        <img src="/lesscreator/static/img/folder_add.png" class="h5c_icon" />
-        <?php echo $this->T('New Folder')?>
-    </a>
-    <a href="#proj/fs/file-upl" class="navitem" onclick="_proj_fs_nav_olclick(this)">
-        <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
-        <?php echo $this->T('Upload')?>
-    </a>
-    <a href="#plugins/php-yaf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
-        <img src="/lesscreator/static/img/plugins/php-yaf/yaf-ico-48.png" class="h5c_icon" />
-        PHP Yaf
-    </a>
-    <!-- <a href="#plugins/php-zf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
-        <img src="/lesscreator/static/img/plugins/php-zf/zf-ico-48.png" class="h5c_icon" />
-        Zend Framework
-    </a> -->
-        </div>
-    </div>
-    <div class="lc_navlet_lr">
-        <div class="navitem_more" onclick="lcNavletMore('projfs')"></div>
-    </div>
-</div>
 
 <!--ProjectFilesManager-->
-<div id="pt<?=$ptpath?>" class="hdev-proj-files less_scroll" style="padding-top:5px;"></div>
+<div id="pt<?=$ptpath?>" class="hdev-proj-files" style="padding-top:5px;height:100%;"></div>
 
 <script type="text/javascript">
 
@@ -62,6 +29,7 @@ $(".navitem_more").click(function(event) {
         $(document).unbind('click');
     });
 });
+
 lcNavletRefresh("projfs");
 
 function _proj_fs_nav_hdr(uri)
@@ -186,6 +154,8 @@ function _fs_file_mov_modal(path)
  */
 function _fs_tree_refresh()
 {
+    console.log("_fs_tree_refresh ...");
+
     $(".hdev-proj-tree").bind("contextmenu", function(e) {
         
         h = $(this).find(".hdev-rcmenu").height();
@@ -255,7 +225,7 @@ function _fs_tree_dir(path, force)
         async   : false,
         success : function(data) {
             $("#pt"+p).html(data);
-            h5cLayoutResize();
+            lcLayoutResize();
         }
     });
 }
