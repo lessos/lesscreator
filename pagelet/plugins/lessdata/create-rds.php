@@ -22,7 +22,7 @@ if ($this->app->method == 'POST') {
     $set = array(
         'id'      => $datasetid,
         'name'    => $this->req->datasetname,
-        'type'    => '2',
+        'type'    => $this->req->datasettype,
         'projid'  => $projInfo['projid'],
         'created' => time(),
         'updated' => time(),
@@ -33,11 +33,14 @@ if ($this->app->method == 'POST') {
 }
 
 $datasetid = LessPHP_Util_String::rand(8, 2);
+$datasettype = intval($this->req->datasettype);
+
 ?>
 
 <div id="h5c_dialog_alert"></div>
 
 <form id="o1pj61" action="/lesscreator/plugins/lessdata/create-rds">
+<input type="hidden" name="datasettype" value="<?php echo $datasettype?>" />
 <table width="100%">
   <tr>
     <td width="180px"><strong><?php echo $this->T('DataSet ID')?></strong></td>

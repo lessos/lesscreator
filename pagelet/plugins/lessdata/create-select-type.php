@@ -112,19 +112,22 @@ $(".j4soeo").click(function(){
 
     var url = '/lesscreator/plugins/lessdata/';
     var title = "";
+    var type = 2;
     switch (href) {
     case "create-aliyun-rds":
         url += 'create-rds';
         title = '<?php echo $this->T('New DataSet')?> - Aliyun RDS';
+        type = 3;
         break;
     case "create-mysql":
         url += 'create-rds';
         title = '<?php echo $this->T('New DataSet')?> - MySQL';
+        type = 2;
         break;
     default:
         return;
     }
-    url += '?proj='+ projCurrent;
+    url += '?proj='+ projCurrent +'&datasettype='+ type;
 
     lessModalNext(url, title, null);
 });

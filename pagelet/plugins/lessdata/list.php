@@ -54,16 +54,22 @@ foreach ($rs->data as $v) {
 echo "<table width=\"100%\" class='table-hover'>";
 foreach ($datasets as $k => $v) {
 
+    $img = '/fam3/icons/database.png';
+
     if ($v['type'] == 1) {
         $typename = 'BigTable';
     } else if ($v['type'] == 2) {
-        $typename = $this->T('Relational Database');
+        $typename = $this->T('MySQL Relational Database');
+        $img = '/lesscreator/static/img/plugins/lessdata/mysql.png';
+    } else if ($v['type'] == 3) {
+        $typename = $this->T('Aliyun Relational Database Service');
+        $img = '/lesscreator/static/img/plugins/lessdata/aliyun-rds.png';
     }
 
     echo "<tr>
         <td width='5px'></td>
-        <td width='20px'>
-            <img src='/fam3/icons/database.png' class='h5c_icon' /> 
+        <td width='70px'>
+            <img src='{$img}' class='' width='48' height='48' /> 
         </td>
         <td>
             <a href='#{$k}' class='g2hvtz' title='{$v['name']}'>
