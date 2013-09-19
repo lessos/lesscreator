@@ -136,9 +136,10 @@ function hdev_applist()
 
 function hdev_header_alert(status, alert)
 {
-    $(".hdev-header-alert").text(alert);
-    $(".hdev-header-alert").removeClass("alert-*");
-    $(".hdev-header-alert").addClass(status);
+    //$(".hdev-header-alert").text(alert);
+    //$(".hdev-header-alert").removeClass("alert-*");
+    //$(".hdev-header-alert").addClass(status);
+    $(".hdev-header-alert").removeClass().addClass("hdev-header-alert border_radius_5 hdev_alert "+ status).html(alert).fadeOut(200).fadeIn(200);
 }
 
 

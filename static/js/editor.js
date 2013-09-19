@@ -405,7 +405,7 @@ lcEditor.WebSocketSend = function(req)
 
                         entry.ctn0_src = entry.ctn1_src;
                         entry.ctn0_sum = entry.ctn1_sum;
-                        
+
                         entry.ctn1_src = "";
                         entry.ctn1_sum = "";
 

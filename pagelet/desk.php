@@ -13,17 +13,17 @@ $lcinfo = json_decode($lcinfo, true);
   <tr>
     <td width="10px"></td>
 
-    <td class="header_logo" width="380px">
+    <td class="header_logo" width="350px">
       <img class="lc_icon" src="/lesscreator/static/img/for-test/less-logo-100.png" />
       <span class="title">Creator</span>
       <span class="version"><?php echo $lcinfo['version']?></span>      
     </td>
 
-    <td align="right">
+    <td align="center">
         <div class="hdev-header-alert border_radius_5 hdev_alert"></div>
     </td>
 
-    <td align="right">
+    <td align="right" width="450px">
 
         <a class="btn btn-small" href="#launch" onclick="lcProjLaunch()">
             <i class="icon-play-circle"></i> 
@@ -37,6 +37,7 @@ $lcinfo = json_decode($lcinfo, true);
                 &nbsp;&nbsp;<?php echo $this->T('Project')?>&nbsp;&nbsp;
                 <span class="caret" style="margin-top:8px;"></span>
             </div>
+
             <ul class="dropdown-menu pull-right text-left">
                 <li><a href="javascript:lcProjNew()"><?php echo $this->T('Create Project')?></a></li>
                 <li><a href="javascript:lcProjOpen()"><?php echo $this->T('Open Project')?></a></li>
@@ -45,9 +46,11 @@ $lcinfo = json_decode($lcinfo, true);
         </div>
         
         <div class="btn-group" style="margin-left:0;">
+            
             <div class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
                 <i class="icon-user"></i>&nbsp;&nbsp;<?php echo Session::Instance()->uname?>&nbsp;&nbsp;<b class="caret"></b>
             </div>
+
             <ul class="dropdown-menu pull-right text-left">
                 <?php
                 $menus = Session::NavMenus('ue'); // TODO
@@ -61,7 +64,8 @@ $lcinfo = json_decode($lcinfo, true);
                 }                
                 ?>                    
                 <li><a href="/user/logout"><?php echo $this->T('Logout')?></a></li>
-            </ul>                    
+            </ul>
+
         </div>
 
         <a class="btn btn-small btn-inverse" href="http://git.oschina.net/eryx/lesscreator/issues/new" target="_blank">
