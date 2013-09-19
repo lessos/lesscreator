@@ -15,13 +15,14 @@ if (!Session::IsLogin()) {
   <script src="/lesscreator/~/jquery/jquery-2.0.min.js"></script>
   <script src="/lesscreator/~/lessui/js/BrowserDetect.js"></script>
 
-  <script src="/lesscreator/~/lessui/js/less.js"></script>
+  <script src="/lesscreator/~/lessui/js/lessui.js"></script>
   <script src="/lesscreator/static/js/c.js"></script>
   <script src="/lesscreator/static/js/gen.js"></script>
   <script src="/lesscreator/static/js/editor.js"></script>
+  <script src="/lesscreator/~/codemirror3/lib/codemirror.min.js"></script>
 
   <link href="/lesscreator/~/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="/lesscreator/~/lessui/css/def.css" rel="stylesheet" />
+  <link href="/lesscreator/~/lessui/css/lessui.css" rel="stylesheet" />
   <link href="/lesscreator/static/css/def.css" rel="stylesheet" />
 
   <link href="/lesscreator/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
@@ -68,7 +69,7 @@ if (!Session::IsLogin()) {
 
 </body>
 </html>
-<script src="/lesscreator/~/codemirror3/lib/codemirror.min.js"></script>
+
 
 <script>
 

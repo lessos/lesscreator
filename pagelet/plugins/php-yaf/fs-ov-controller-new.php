@@ -18,7 +18,7 @@ if ($this->req->func == "controller-new") {
     try {
 
         if (!preg_match('/^([A-Z]{1})([0-9a-zA-Z]{1,30})$/', $this->req->ctrl_name)) {
-            throw new \Exception(sprintf($this->T('`%s` is not valid'), $this->T('Name'), 400);
+            throw new \Exception(sprintf($this->T('`%s` is not valid'), $this->T('Name')), 400);
         }
 
         $lcf = "{$projPath}/application/controllers/{$this->req->ctrl_name}.php";
