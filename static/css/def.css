@@ -241,6 +241,7 @@ textarea {
 .hdev-scrollbar {
     overflow: auto;
 }
+/*
 #hdev_layout * ::-webkit-scrollbar {
     width: 8px; height: 8px; background-color: transparent;
 }
@@ -261,7 +262,7 @@ textarea {
 #hdev_layout * ::-webkit-scrollbar-thumb:active {
     background-color: #777;
 }
-
+*/
 #hdev_editor {
     margin: 0; padding: 0;
 }

@@ -240,7 +240,7 @@ function h5cTabSwitch(urid)
 
                     $("#h5c-tablet-toolbar-"+ item.target).empty();
                     $("#h5c-tablet-body-"+ item.target).empty().html(rsp);
-                    h5cLayoutResize();
+                    lcLayoutResize();
                 },
                 error: function(xhr, textStatus, error) {
                     hdev_header_alert('error', xhr.responseText);
@@ -252,7 +252,7 @@ function h5cTabSwitch(urid)
             
             $("#h5c-tablet-toolbar-"+ item.target).empty();
             $("#h5c-tablet-body-"+ item.target).empty().html(item.data);
-            h5cLayoutResize();
+            lcLayoutResize();
         }
         break;
 
@@ -515,11 +515,13 @@ function _lcTabCloseClean(urid)
         h5cTabletFrame[item.target].urid = j;
     }
 
-    h5cLayoutResize();
+    lcLayoutResize();
 }
 
-function h5cLayoutResize()
-{    
+function lcLayoutResize()
+{
+    console.log("lcLayoutResize ...");
+
     var spacecol = 10;
 
     var bh = $('body').height();
@@ -541,6 +543,8 @@ function h5cLayoutResize()
     colw_w = (bw - (3 * spacecol)) - colt_w;
     $('#h5c-lyo-col-t').width(colt_w);
     $('#h5c-lyo-col-w').width(colw_w);
+
+    $('#h5c-lyo-col-t .hdev-proj-files').width(colt_w);
 
     /*
     var roww0 = $('#h5c-tablet-framew0').height();
@@ -573,12 +577,25 @@ function h5cLayoutResize()
         $('.h5c_tablet_body .CodeMirror').height(lo_h - tw0h - bw0h);
     }
 
+    //
     $('#h5c-tablet-tabs-framew0').width(colw_w);
     $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(
         colw_w - $('#h5c-tablet-framew0 .pgtab_more').outerWidth(true));
 
-    var tt0h = $('#h5c-tablet-tabs-framet0').height();
-    $('#h5c-tablet-body-t0').height(lo_h - tt0h);    
+    //
+    var bh = lo_h - $('#h5c-tablet-tabs-framet0').height();
+    $('#h5c-tablet-body-t0').height(bh);
+
+    if ($('#h5c-tablet-body-t0 .lc-tablet-ctn-header').length > 0
+        && $('#h5c-tablet-body-t0 .lc-tablet-ctn-body').length > 0) {
+
+        var chh = $('#h5c-tablet-body-t0 .lc-tablet-ctn-header').height();
+        var cbh = $('#h5c-tablet-body-t0 .lc-tablet-ctn-body').height();
+
+        $('#h5c-tablet-body-t0 .lc-tablet-ctn-body').height(bh - chh);
+        
+        //console.log("lc-tablet-ctn-header: "+ chh);
+    }
 }
 
 
@@ -622,7 +639,7 @@ function h5cProjectOpen(proj)
     lessSession.Set("ProjPath", proj);
     lessLocalStorage.Set(suser +"LastProjPath", proj);
 
-    h5cLayoutResize();
+    lcLayoutResize();
 }
 
 function lcProjOpen()

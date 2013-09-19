@@ -244,16 +244,14 @@ lcEditor.LoadInstance = function(entry)
     });
     $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize+"px"});
 
-    CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
-    CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);
-
-    //CodeMirror.skipTo(opt_line_strto);
+    //CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
+    //CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);
 
     if (lcEditor.ToolTmpl == null) {
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
     }
     $("#h5c-tablet-toolbar-"+ item.target).html(lcEditor.ToolTmpl).show(0, function(){
-        h5cLayoutResize();
+        lcLayoutResize();
     });
 
     if (lessCookie.Get('editor_keymap_vim') == "on") {
@@ -273,8 +271,8 @@ lcEditor.LoadInstance = function(entry)
     }
     
     // TODO
-    h5cLayoutResize();
-    setTimeout(h5cLayoutResize, 100);
+    lcLayoutResize();
+    setTimeout(lcLayoutResize, 100);
 }
 
 lcEditor.Changed = function(urid)
@@ -584,7 +582,7 @@ lcEditor.Close = function(urid)
 //        h5cTabletFrame[item.target].urid = 0;
     }
 
-//    h5cLayoutResize();
+//    lcLayoutResize();
 }
 */
 
@@ -653,7 +651,7 @@ lcEditor.Theme = function(theme)
 
             h5cTabletFrame["w0"].editor.setOption("theme", theme);
 
-            h5cLayoutResize();
+            lcLayoutResize();
         });        
         
         hdev_header_alert('success', 'Change Editor color theme to "'+theme+'"');
@@ -668,7 +666,7 @@ var search_state_marked  = [];
 lcEditor.Search = function()
 {
     $(".lc_editor_searchbar").toggle(0, function(){
-        h5cLayoutResize();
+        lcLayoutResize();
     });
 
     $(".lc_editor_searchbar").find("input").css("color","#999");
