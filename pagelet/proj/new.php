@@ -29,7 +29,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
 
         $rs = lesscreator_fs::FsFileGet($proj_new_json);
         if ($rs->status == 200) {
-            throw new \Exception(sprintf($this->('The `%s` already exists, please choose another one'), 'Project ID'), 400);
+            throw new \Exception(sprintf($this->T('The `%s` already exists, please choose another one'), 'Project ID'), 400);
         }
 
         if (!strlen($projid)) {
@@ -121,7 +121,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
         $ls = lesscreator_env::GroupByAppList();
         foreach ($ls as $k => $v) {
             echo "<label class=\"item checkbox\">
-                <input type=\"checkbox\" name=\"props_app[]\" value=\"{$k}\" /> {$v}
+                <input type=\"checkbox\" name=\"props_app[]\" value=\"{$k}\" /> ".$this->T($v)."
                 </label>";
         }
         ?>
@@ -135,7 +135,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
         $ls = lesscreator_env::GroupByDevList();
         foreach ($ls as $k => $v) {
             echo "<label class=\"item checkbox\">
-                <input type=\"checkbox\" name=\"props_dev[]\" value=\"{$k}\" /> {$v}
+                <input type=\"checkbox\" name=\"props_dev[]\" value=\"{$k}\" /> ".$this->T($v)."
                 </label>";       
         }
         ?>
@@ -156,7 +156,7 @@ if (lessModalPrevId() != null) {
     lessModalButtonAdd("jwyztd", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
 }
 
-lessModalButtonAdd("d4ngex", "Confirm and Create", "_proj_new_commit()", "btn-inverse");
+lessModalButtonAdd("d4ngex", "<?php echo $this->T('Confirm and Create')?>", "_proj_new_commit()", "btn-inverse");
 lessModalButtonAdd("p5ke7m", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 

@@ -24,7 +24,7 @@
 <a class="j4soeo" href="#proj/new">
 <table>
     <tr>
-        <td width="64px"><img src="/lesscreator/static/img/proj-example.png" /></td>
+        <td width="64px"><img src="/lesscreator/static/img/proj/proj-new0.png" /></td>
         <td >
             <div class="title"><?php echo $this->T('New Project')?></div>
             <div class="desc"><?php echo $this->T('Start a project in a new directory')?></div>
@@ -39,7 +39,7 @@
 <a class="j4soeo" href="#proj/open-recent">
 <table>
     <tr class="line">
-        <td width="64px"><img src="/lesscreator/static/img/proj-example.png" /></td>
+        <td width="64px"><img src="/lesscreator/static/img/proj/proj-new1.png" /></td>
         <td >
             <div class="title"><?php echo $this->T('Existing Directory')?></div>
             <div class="desc"><?php echo $this->T('Open a project from an existing working directory')?></div>
@@ -54,7 +54,7 @@
 <a class="j4soeo" href="#proj/fs/vs/well">
 <table>
     <tr class="line">
-        <td width="64px"><img src="/lesscreator/static/img/proj-example.png" /></td>
+        <td width="64px"><img src="/lesscreator/static/img/vs/git-100.png" /></td>
         <td >
             <div class="title"><?php echo $this->T('Version Control')?></div>
             <div class="desc"><?php echo $this->T('Checkout a project from a version control repository')?></div> 

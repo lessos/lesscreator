@@ -62,7 +62,7 @@ foreach ($rs->data as $v) {
 <?php
 }
 if ($dirFound == 0) {
-    echo "<tr><td>". sprintf($this->T('`%s` Not Found'), $this->('Directory'))."</td></tr>";
+    echo "<tr><td>". sprintf($this->T('`%s` Not Found'), $this->T('Directory'))."</td></tr>";
 }
 ?>
 </table>

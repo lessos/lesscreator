@@ -1,5 +1,7 @@
 
-<div id="htowou" class="alert alert-info"><?php echo $this->T('Clone Git Repository')?></div>
+<div id="htowou" class="alert alert-info">
+    <?php echo $this->T('Clone Git Repository')?>
+</div>
 
 
 <table width="100%">
@@ -9,14 +11,16 @@
   </td>
 
   <td>
+    <div class="label label-important"><?php echo $this->T('todo-unstable-desc')?></div>
+
 	<form id="bvszs0" action="/lesscreator/proj/fs/vs/git-clone-do">
-    	<label>><?php echo $this->T('Repository URL')?></label>
+    	<label><?php echo $this->T('Repository URL')?></label>
     	<input type="text" name="git_url" class="swqv89 input input-xxlarge" value="https://github.com/eryx/tips.go.git"/>
     	
     	<label><?php echo $this->T('Project directory name')?></label>
     	<input type="text" name="git_target" class="input input-xxlarge" value="tips.go"/>
 
-    	<label>><?php echo $this->T('Create project as subdirectory of')?></label>
+    	<label><?php echo $this->T('Create project as subdirectory of')?></label>
     	<input type="text" name="git_base" class="input input-xxlarge" readonly="readonly" value=""/>
 	</form>
   </td>

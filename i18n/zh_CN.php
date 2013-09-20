@@ -117,7 +117,7 @@ return array(
     'This project no longer exists' => '该项目已不存在',
     'Unauthorized' => '验证未通过',
     'Undo' => '撤销',
-    'Unique identifier, similar to the package name' => '唯一标识, 类似包(Package)名',
+    'Unique identifier, similar to the package name' => '唯一标识, 类似包名(Package)',
     'Upcoming, later supported' => '开发中，稍后支持',
     'Upload' => '上传',
     'Upload File From Location' => '从本地上传文件',
@@ -170,6 +170,7 @@ return array(
     'Aliyun Open Cache Service' => '阿里云 开放缓存服务 OCS',
     'MySQL Relational Database' => 'MySQL 关系型数据库',
     'todo-wait-desc' => '开发中，稍后支持',
+    'todo-unstable-desc' => '开发中，还不稳定，待优化',
     'Memcache Database' => 'Memcache 缓存数据库',
     'DataSet ID' => '数据集 ID',
     'Name your DataSet' => '为你的数据集起一个名字',
@@ -197,4 +198,5 @@ return array(
     'Database Name' => '数据库名',
     'op-commit-wait-desc' => '你操作已经提交，任务正在处理，请稍等',
     'Account Settings' => '账户设置',
+    'Confirm and Create' => '确认并创建',
 );
