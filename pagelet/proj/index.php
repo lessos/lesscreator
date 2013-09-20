@@ -102,7 +102,7 @@ $ptpath = md5("");
       <img class="" src="/lesscreator/static/img/plugins/php-yaf/yaf-y-48.png" />
     </a>
 
-    <a href="javascript:lcProjLaunch()" class="pjitem pull-right" title="<?php echo $this->T('Run')?>">
+    <a href="javascript:lcProjLaunch('<?php echo $this->T('Launch the Project')?>')" class="pjitem pull-right" title="<?php echo $this->T('Run')?>">
       <img class="" src="/lesscreator/static/img/proj/play-128.png" />
     </a>
 

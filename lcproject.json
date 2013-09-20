@@ -1,7 +1,7 @@
 {
   "projid":"lesscreator",
   "name":"lessCreator",
-  "summary":"lessCreator �ƶ˿���ƽ̨",
+  "summary":"lessCreator 云端开发平台",
   "depends":"bootstrap2,jquery,codemirror3,fam3,LessPHP,lessui",
   "version":"0.2.1.dev.2013-09-20",
   "props_app": "53",

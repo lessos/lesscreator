@@ -667,10 +667,14 @@ function lcProjSet()
 }
 
 var lc_launch_def = null;
-function lcProjLaunch()
+function lcProjLaunch(title)
 {
     if (lc_launch_def == null) {
 
+    }
+
+    if (title == null) {
+        title = "Launch the Project";
     }
 
     //var uri = "/lesscreator/launch/webserver";
@@ -678,8 +682,7 @@ function lcProjLaunch()
     uri += "?proj="+ lessSession.Get("ProjPath");
     uri += "&user="+ lessSession.Get("SessUser"); // TODO access_token
 
-    lessModalOpen(uri, 1, 900, 500,
-            "Launch with Web Server", null);
+    lessModalOpen(uri, 1, 900, 500, title, null);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -13,7 +13,7 @@
     width: 100%;
 }
 .j4soeo > table td {
-    padding: 10px 0;
+    padding: 10px 10px 10px 0;
 }
 .j4soeo tr.line {
     border-top: 1px solid #ccc;

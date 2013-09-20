@@ -199,4 +199,5 @@ return array(
     'op-commit-wait-desc' => '你操作已经提交，任务正在处理，请稍等',
     'Account Settings' => '账户设置',
     'Confirm and Create' => '确认并创建',
+    'Launch the Project' => '运行项目',
 );
