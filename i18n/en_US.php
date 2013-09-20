@@ -10,5 +10,5 @@ return array(
     'rt-php-desc2' => 'PHP is a popular general-purpose scripting language that is especially suited to web development',
     'rt-php-yaf-fsinit-desc' => 'This Wizard will create a default directory structure and initial configuration files. The following files will be overwritten',
     'rt-nginx-desc' => 'Nginx is a lightweight, high concurrency, high performance and low memory usage Web server/reverse proxy',
-    
+    'op-commit-wait-desc' => 'Your operation has been submitted, the task is processing, please wait',
 );

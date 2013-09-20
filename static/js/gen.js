@@ -673,11 +673,12 @@ function lcProjLaunch()
 
     }
 
-    var uri = "/lesscreator/launch/webserver";
+    //var uri = "/lesscreator/launch/webserver";
+    var uri = "/lesscreator/launch/dataset";
     uri += "?proj="+ lessSession.Get("ProjPath");
     uri += "&user="+ lessSession.Get("SessUser"); // TODO access_token
 
-    lessModalOpen(uri, 1, 800, 450,
+    lessModalOpen(uri, 1, 900, 500,
             "Launch with Web Server", null);
 }
 

@@ -60,6 +60,9 @@ if ($this->req->apimethod == "launch.web") {
         }
 
         // TODO if !domain then ip:port
+        if (!isset($projInst['instid'])) {
+            $projInst['instid'] = LessPHP_Util_String::rand(12, 2);
+        }
         $projInst['user'] = $this->req->user;
         $projInst['projid'] = $projInfo['projid'];
         $projInst['projpath'] = $projPath;
