@@ -196,4 +196,5 @@ return array(
     'Host' => '服务器',
     'Database Name' => '数据库名',
     'op-commit-wait-desc' => '你操作已经提交，任务正在处理，请稍等',
+    'Account Settings' => '账户设置',
 );

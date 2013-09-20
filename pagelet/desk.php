@@ -53,16 +53,19 @@ $lcinfo = json_decode($lcinfo, true);
 
             <ul class="dropdown-menu pull-right text-left">
                 <?php
-                $menus = Session::NavMenus('ue'); // TODO
+                /* $menus = Session::NavMenus('ue'); // TODO
                 $prev = false;
                 foreach ($menus as $menu) {
                     echo "<li><a href=\"/{$menu->projid}\">{$menu->name}</a></li>";
                     $prev = true;
-                }                
+                }
                 if ($prev) {
                     echo '<li class="divider"></li>';
-                }                
-                ?>                    
+                }*/
+                ?> 
+                <li><a href="/user"><?php echo $this->T('Account Settings')?></a></li>
+                <li><a href="/lesscreator"><?php echo $this->T('lessCreator')?></a></li>
+                <li class="divider"></li>
                 <li><a href="/user/logout"><?php echo $this->T('Logout')?></a></li>
             </ul>
 

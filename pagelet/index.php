@@ -29,31 +29,6 @@ if (!Session::IsLogin()) {
 
 </head>
 <body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;">
-<style>
-.loadwell {
-    position: absolute;
-    padding: 15px;
-    width: 600px;
-    border: 2px solid #ccc;
-    background-color: #fff;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-}
-.loadwell td {
-    padding: 10px 20px 10px 0;
-}
-.loadwell .imgs1 {
-    width: 48px; height: 48px;
-}
-.loadwell .imgs0 {
-    width: 24px; height: 24px;
-}
-.loadwell .progress {
-    margin: 0;
-}
-</style>
-
 
 <div class="loadwell">
   <div class="">
