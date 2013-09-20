@@ -54,7 +54,7 @@ foreach ($rs->data as $v) {
 echo "<table width=\"100%\" class='table-hover'>";
 foreach ($datasets as $k => $v) {
 
-    $img = '/fam3/icons/database.png';
+    $img = '/lesscreator/~/fam3/icons/database.png';
 
     if ($v['type'] == 1) {
         $typename = 'BigTable';
@@ -79,7 +79,7 @@ foreach ($datasets as $k => $v) {
         </td>
         <td align='right'> 
             <span>
-            <img src='/fam3/icons/table_add.png' class='h5c_icon' /> 
+            <img src='/lesscreator/~/fam3/icons/table_add.png' class='h5c_icon' /> 
             <a href='#{$k}' class='weovcr'>". $this->T('New Table') ."</a>
             </span>
         </td>
@@ -94,13 +94,13 @@ foreach ($datasets as $k => $v) {
         <td></td>
         <td></td>
         <td>
-            <img src='/fam3/icons/database_table.png' class='h5c_icon' /> 
+            <img src='/lesscreator/~/fam3/icons/database_table.png' class='h5c_icon' /> 
             <a href='#{$k}/{$v2['tableid']}' class='p9532p' title='{$v2['tablename']}'>
             {$v2['tablename']}
             </a>
         </td>
         <td align='right'>
-            <img src='/fam3/icons/cog.png' class='h5c_icon' />
+            <img src='/lesscreator/~/fam3/icons/cog.png' class='h5c_icon' />
             <a href='#{$k}/{$v2['tableid']}' class='p9532p' title='{$v2['tablename']}'>". $this->T('Settings') ."</a></td>
         <td></td>
         </tr>";

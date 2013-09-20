@@ -3,11 +3,11 @@
 ?>
 <div class="h5c_tab_subnav" style="border-bottom: 1px solid #ddd;">
     <!-- <a href="javascript:h5cPluginDataOpen()" class="b0hmqb">
-        <img src="/fam3/icons/folder.png" class="h5c_icon" />
+        <img src="/lesscreator/~/fam3/icons/folder.png" class="h5c_icon" />
         Open 
     </a> -->
     <a href="#dataset/new" class="btn h6tnb9" style="margin-left:5px;">
-        <img src="/fam3/icons/database_add.png" class="h5c_icon" />
+        <img src="/lesscreator/~/fam3/icons/database_add.png" class="h5c_icon" />
         <?php echo $this->T('New DataSet')?>
     </a>
 </div>

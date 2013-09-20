@@ -17,7 +17,7 @@ function lcInitSetting()
     }
     lcEditor.Config.theme = theme;
     if (theme != "default") {
-        seajs.use("/codemirror3/theme/"+theme+".css");
+        seajs.use("/lesscreator/~/codemirror3/theme/"+theme+".css");
     }
     
     var keymap_vim = lessCookie.Get('editor_keymap_vim');
