@@ -48,23 +48,69 @@ $props_def = lesscreator_service::listAll();
 
 $ptpath = md5("");
 ?>
+<style>
+.lc-proj-nav {
 
+}
+.lc-proj-nav .pjitem {
+    width: 30px; height: 30px;
+    margin: 2px 5px 0 0;
+    padding: 3px;
+    text-decoration: none;
+    font-size: 12px;
+    background-color: #e5e5e5;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    position: relative;
+    /* box-shadow: 1px 1px 1px #999; */
+}
+.lc-proj-nav .pjitem:hover {
+    background-color: #bed6fc;
+    border: 1px solid #bed6fc;
+    box-shadow: 1px 1px 2px #999;
+}
+.lc-proj-nav .pjitem img {
+    position: relative; left: 1px; top: 1px;
+    width: 28px; height: 28px;
+}
+</style>
 <div class="lc-tablet-ctn-header">
 
-<div style="padding:3px 10px 3px 10px; background-color:#f6f7f8;">
-    <span>
-      <strong><?php echo $projInfo['name']?></strong>
+<div class="lc-proj-nav" style="padding:3px 0px 0px 10px; background-color:#f6f7f8;">
+    <?php
+    // TODO
+    $title = $projInfo['name'];
+    if (strlen($title) < 12) {
+        //
+    } else if (mb_strlen($title, 'utf-8') > 6) {
+        $title = mb_substr($title, 0, 6, 'utf-8'). "...";
+    }
+    ?>
+    <span style="">
+      <strong><?php echo $title?></strong>
     </span>
-    <a href="javascript:lcProjSet()" class="h5c_block pull-right">
-      <i class="icon-wrench"></i>
-      <?php echo $this->T('Settings')?>
+
+    <a href="javascript:lcProjSet()" class="pjitem pull-right" title="<?php echo $this->T('Settings')?>">
+      <img class="" src="/lesscreator/static/img/for-test/setting2-128.png" />
     </a>
+
+    <a href="javascript:_proj_plugins_lessdata()" class="pjitem pull-right" title="<?php echo $this->T('Database')?>">
+      <img class="" src="/lesscreator/static/img/plugins/lessdata/aliyun-rds.png" />
+    </a>
+
+    <a href="javascript:_proj_plugins_phpyaf()" class="pjitem pull-right" title="<?php echo $this->T('Yaf Framework')?>">
+      <img class="" src="/lesscreator/static/img/plugins/php-yaf/yaf-y-48.png" />
+    </a>
+
+    <a href="javascript:lcProjLaunch()" class="pjitem pull-right" title="<?php echo $this->T('Run')?>">
+      <img class="" src="/lesscreator/static/img/proj/play-128.png" />
+    </a>
+
 </div>
 
 <ul class="h5c_navtabs _proj_nav" style="background-color:#f6f7f8;">
     <li class="active ueg14o_fs"><a href="#proj/fs" class="_proj_tab_href"><?php echo $this->T('Files')?></a></li>
 
-    <li class="ueg14o_lessdata"><a href="#plugins/lessdata/index" class="_proj_tab_href"><?php echo $this->T('Database')?></a></li>
     <?php
     foreach ($props as $v) {
         if (!isset($props_def[$v])) {
@@ -99,11 +145,11 @@ $ptpath = md5("");
         <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
         <?php echo $this->T('Upload')?>
     </a>
-    <a href="#plugins/php-yaf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
+    <!-- <a href="#plugins/php-yaf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
         <img src="/lesscreator/static/img/plugins/php-yaf/yaf-ico-48.png" class="h5c_icon" />
         PHP Yaf
     </a>
-    <!-- <a href="#plugins/php-zf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
+    <a href="#plugins/php-zf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
         <img src="/lesscreator/static/img/plugins/php-zf/zf-ico-48.png" class="h5c_icon" />
         Zend Framework
     </a> -->
@@ -171,7 +217,33 @@ if (!sessionStorage.ProjNavLast) {
 }
 
 //_proj_nav_open(sessionStorage.ProjNavLast);
+function _proj_plugins_lessdata()
+{
+    var opt = {
+        'title': '<?php echo sprintf($this->T('%s Settings'), $this->T('Database'))?>',
+        'close':'1',
+        'img': '/lesscreator/static/img/plugins/lessdata/aliyun-rds.png',
+    }
 
+    var url = '/lesscreator/plugins/lessdata/index?proj='+ lessSession.Get("ProjPath");
+
+    h5cTabOpen(url, 'w0', 'html', opt);
+}
+function _proj_plugins_phpyaf()
+{
+    var opt = {
+        'title': 'Yaf Framework',
+        'close':'1',
+        'img': '/lesscreator/static/img/plugins/php-yaf/yaf-s2-48.png',
+    }
+
+    var url = '/lesscreator/plugins/php-yaf/index?proj='+ lessSession.Get("ProjPath");
+
+    h5cTabOpen(url, 'w0', 'html', opt);
+}
+
+
+/*
 $('._proj_tab_href').click(function() {
     
     var uri = $(this).attr('href').substr(1);
@@ -192,7 +264,7 @@ $('._proj_tab_href').click(function() {
     }
     //_proj_nav_open(url);
 });
-
+*/
 
 var _proj_tab_active = false;
 var _proj_tab_last = lessLocalStorage.Get("tab.fra.urid.w0");
@@ -254,7 +326,7 @@ function _proj_fs_nav_hdr(uri)
     case "proj/fs/file-new-dir":
         _fs_file_new_modal("dir", "", "", 0);
         break;
-    case "plugins/php-yaf/index":
+    /* case "plugins/php-yaf/index":
         var opt = {
             'title': 'Yaf Framework',
             'close':'1',
@@ -276,6 +348,7 @@ function _proj_fs_nav_hdr(uri)
 
         h5cTabOpen(url, 'w0', 'html', opt);
         break;
+    */
     }
 }
 function _proj_fs_nav_olclick(node)

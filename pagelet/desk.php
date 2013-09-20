@@ -25,10 +25,10 @@ $lcinfo = json_decode($lcinfo, true);
 
     <td align="right" width="450px">
 
-        <a class="btn btn-small" href="#launch" onclick="lcProjLaunch()">
+        <!-- <a class="btn btn-small" href="#launch" onclick="lcProjLaunch()">
             <i class="icon-play-circle"></i> 
             &nbsp;&nbsp;Launch&nbsp;&nbsp;
-        </a>
+        </a> -->
 
         <div class="btn-group" >
             
