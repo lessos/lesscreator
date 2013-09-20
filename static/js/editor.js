@@ -182,6 +182,16 @@ lcEditor.LoadInstance = function(entry)
         $("#h5c-tablet-toolbar-"+ item.target).empty();
     }
 
+    // styling
+    $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize+"px"});
+
+    if (lcEditor.ToolTmpl == null) {
+        lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
+    }
+    $("#h5c-tablet-toolbar-"+ item.target).html(lcEditor.ToolTmpl).show(0, function(){
+        //lcLayoutResize();
+    });
+
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
     //console.log(entry);
 
@@ -213,8 +223,7 @@ lcEditor.LoadInstance = function(entry)
                 }
             }
         });
-    }
-   
+    }   
 
     h5cTabletFrame[item.target].editor = CodeMirror(
         document.getElementById("h5c-tablet-body-"+ item.target), {
@@ -242,17 +251,9 @@ lcEditor.LoadInstance = function(entry)
             }
         }
     });
-    $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize+"px"});
 
     //CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
     //CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);
-
-    if (lcEditor.ToolTmpl == null) {
-        lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
-    }
-    $("#h5c-tablet-toolbar-"+ item.target).html(lcEditor.ToolTmpl).show(0, function(){
-        lcLayoutResize();
-    });
 
     if (lessCookie.Get('editor_keymap_vim') == "on") {
         h5cTabletFrame[item.target].editor.setOption("keyMap", "vim");

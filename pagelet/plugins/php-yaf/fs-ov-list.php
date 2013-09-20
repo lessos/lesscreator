@@ -43,12 +43,17 @@ $projPath = lesscreator_proj::path($this->req->proj);
 </thead>
 <tbody>
 <?php
-$fs = Directory::listFiles($projPath ."/application/controllers");
-foreach ($fs as $file) {
+//$fs = Directory::listFiles($projPath ."/application/controllers");
+$fs = lesscreator_fs::FsList($projPath ."/application/controllers");
+foreach ($fs->data as $v) {
     
-    $file = trim($file, "/");
-    $rs = lesscreator_fs::FsFileGet($projPath ."/application/controllers/". $file);
 
+    $file = $v->name;
+
+
+    //$file = trim($file, "/");
+    //$rs = lesscreator_fs::FsFileGet($projPath ."/application/controllers/". $file);
+    $rs = lesscreator_fs::FsFileGet($v->path);
     if ($rs->status != 200) {
         continue;
     }

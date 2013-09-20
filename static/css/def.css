@@ -437,9 +437,9 @@ textarea {
 .CodeMirror-foldgutter-folded:after {
     content: "\25B8";
 }
-/* .CodeMirror-lines {
+.CodeMirror-lines {
     line-height: 1.3em;
-} */
+}
 
 .activeline {background: #f0fcff !important;}
 
