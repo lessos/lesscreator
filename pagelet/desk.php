@@ -9,11 +9,11 @@ $lcinfo = file_get_contents(LESSCREATOR_DIR ."/lcproject.json");
 $lcinfo = json_decode($lcinfo, true);
 ?>
 
-<table id="hdev_header" width="100%">
+<table id="hdev_header" width="100%" border="0">
   <tr>
     <td width="10px"></td>
 
-    <td class="header_logo" width="350px">
+    <td class="header_logo" width="300px">
       <img class="lc_icon" src="/lesscreator/static/img/for-test/less-logo-100.png" />
       <span class="title">Creator</span>
       <span class="version"><?php echo $lcinfo['version']?></span>      
@@ -23,16 +23,17 @@ $lcinfo = json_decode($lcinfo, true);
         <div class="hdev-header-alert border_radius_5 hdev_alert"></div>
     </td>
 
-    <td align="right" width="450px">
+    <td align="right" style="">
 
-        <!-- <a class="btn btn-small" href="#launch" onclick="lcProjLaunch()">
+        <!-- <a class="btn " href="#launch" onclick="lcProjLaunch()">
             <i class="icon-play-circle"></i> 
             &nbsp;&nbsp;Launch&nbsp;&nbsp;
         </a> -->
+        
 
         <div class="btn-group" >
             
-            <div class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
+            <div class="btn btn-small dropdown-toggle " data-toggle="dropdown" href="#">
                 <i class="icon-folder-open"></i>
                 &nbsp;&nbsp;<?php echo $this->T('Project')?>&nbsp;&nbsp;
                 <span class="caret" style="margin-top:8px;"></span>
@@ -47,7 +48,7 @@ $lcinfo = json_decode($lcinfo, true);
         
         <div class="btn-group" style="margin-left:0;">
             
-            <div class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
+            <div class="btn btn-small dropdown-toggle " data-toggle="dropdown" href="#">
                 <i class="icon-user"></i>&nbsp;&nbsp;<?php echo Session::Instance()->uname?>&nbsp;&nbsp;<b class="caret"></b>
             </div>
 
@@ -71,9 +72,15 @@ $lcinfo = json_decode($lcinfo, true);
 
         </div>
 
-        <a class="btn btn-small btn-inverse" href="http://git.oschina.net/eryx/lesscreator/issues/new" target="_blank">
+        <a class="btn btn-small  btn-inverse" href="http://git.oschina.net/eryx/lesscreator/issues/new" target="_blank">
             <img src="/lesscreator/static/img/proj/bug0-16.png" class="h5c_ico " /> 
             &nbsp;&nbsp;<?php echo $this->T('Report Issue')?>&nbsp;&nbsp;
+        </a>
+
+        <a href="#" class="btn btn-danger btn-small " type="button">
+            TODO <?php echo $this->T('plugins-desc') ?>: &nbsp;&nbsp;
+            <i class="icon-comment icon-white"></i> <?php echo $this->T('Chat')?> &nbsp;
+            <i class="icon-list icon-white"></i> <?php echo $this->T('Task Manage')?> ...
         </a>
 
     </td>
