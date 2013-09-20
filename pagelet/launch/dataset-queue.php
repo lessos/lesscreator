@@ -160,7 +160,7 @@ try {
 
         if (isset($dbiNow[$ds->projid]) && isset($dbiNow[$ds->projid][$ds->id])) {
             $ds->datainstid = $dbiNow[$ds->projid][$ds->id]->datainstid;
-            $ds->accesspass = $dbiNow[$ds->projid][$ds->id]->accesspass;
+            //$ds->accesspass = $dbiNow[$ds->projid][$ds->id]->accesspass;
 
             $ds->access_pass = $dbiNow[$ds->projid][$ds->id]->access_pass;
             $ds->access_user = $dbiNow[$ds->projid][$ds->id]->access_user;
@@ -171,8 +171,8 @@ try {
             $ds->datainstid = LessPHP_Util_String::rand(12, 2);
         }
 
-        if (strlen($ds->accesspass) < 6) {
-            $ds->accesspass = LessPHP_Util_String::rand(16, 2);
+        if (strlen($ds->access_pass) < 6) {
+            $ds->access_pass = LessPHP_Util_String::rand(16, 2);
         }
         $ds->accessuser = "db-{$user}";
         $ds->accessaddr = "{$sysInfo->local->addr}";

@@ -200,4 +200,5 @@ return array(
     'Account Settings' => '账户设置',
     'Confirm and Create' => '确认并创建',
     'Launch the Project' => '运行项目',
+    'Run and Deply' => '运行和部署',
 );
