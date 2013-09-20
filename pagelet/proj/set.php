@@ -297,7 +297,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
     </tr>
 
     <tr>
-      <td><strong><?php echo $this->T('Dependent Projects')?></strong></td>
+      <td><strong><?php echo $this->T('Dependent Packages')?></strong></td>
       <td><div class="lgjn8r">Loading</div></td>
     </tr>
 
@@ -403,7 +403,7 @@ function _proj_pkgs_refresh()
 function _proj_pkgs_select(node)
 {
     var uri = "/lesscreator/proj/set-pkgs?proj="+ lessSession.Get("ProjPath");
-    lessModalOpen(uri, 1, 800, 500, "<?php echo $this->T('Select Dependent Projects')?>", null);
+    lessModalOpen(uri, 1, 800, 500, "<?php echo $this->T('Select Dependent Packages')?>", null);
 }
 
 _proj_pkgs_refresh();

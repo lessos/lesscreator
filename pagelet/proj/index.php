@@ -48,32 +48,7 @@ $props_def = lesscreator_service::listAll();
 
 $ptpath = md5("");
 ?>
-<style>
-.lc-proj-nav {
 
-}
-.lc-proj-nav .pjitem {
-    width: 30px; height: 30px;
-    margin: 2px 5px 0 0;
-    padding: 3px;
-    text-decoration: none;
-    font-size: 12px;
-    background-color: #e5e5e5;
-    border: 1px solid #e5e5e5;
-    border-radius: 3px;
-    position: relative;
-    /* box-shadow: 1px 1px 1px #999; */
-}
-.lc-proj-nav .pjitem:hover {
-    background-color: #bed6fc;
-    border: 1px solid #bed6fc;
-    box-shadow: 1px 1px 2px #999;
-}
-.lc-proj-nav .pjitem img {
-    position: relative; left: 1px; top: 1px;
-    width: 28px; height: 28px;
-}
-</style>
 <div class="lc-tablet-ctn-header">
 
 <div class="lc-proj-nav" style="padding:3px 0px 0px 10px; background-color:#f6f7f8;">
