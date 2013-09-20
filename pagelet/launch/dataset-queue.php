@@ -174,8 +174,8 @@ try {
         if (strlen($ds->access_pass) < 6) {
             $ds->access_pass = LessPHP_Util_String::rand(16, 2);
         }
-        $ds->accessuser = "db-{$user}";
-        $ds->accessaddr = "{$sysInfo->local->addr}";
+        //$ds->accessuser = "db-{$user}";
+        //$ds->accessaddr = "{$sysInfo->local->addr}";
         
         if (isset($pkgdbins[$ds->id]['host']) 
             && strlen($pkgdbins[$ds->id]['host']) > 0) {
