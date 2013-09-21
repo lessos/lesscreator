@@ -531,7 +531,7 @@ function lcLayoutResize()
     
     var toset = lessCookie.Get('cfg_lyo_colt_w');
     if (toset == 0 || toset == null) {
-        toset = 0.382;
+        toset = 0.1;
     }
 
     var colt_w = (bw - (3 * spacecol)) * toset;
