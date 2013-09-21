@@ -265,4 +265,11 @@ $(".lc_pgtab_more").click(function(event) {
 });
 
 lcEditor.Config.LangEditMode = '<?php echo $this->T('Editor Mode Settings')?>';
+
+    var opt = {
+        'img': '/lesscreator/static/img/app-t3-16.png',
+        'title': 'Quick Start',
+    };
+
+    h5cTabOpen("/lesscreator/app/quick-start?", 'w0', 'html', opt);
 </script>
