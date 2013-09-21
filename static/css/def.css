@@ -1062,5 +1062,5 @@ a.h5c_block:focus {
 }
 
 .lc-editor-editmode img {
-    -webkit-filter: grayscale(1);
+    /* -webkit-filter: grayscale(1); */
 }

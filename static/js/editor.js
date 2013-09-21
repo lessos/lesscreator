@@ -226,6 +226,7 @@ lcEditor.LoadInstance = function(entry)
         });
     }
 
+    $("#h5c-tablet-body-"+ item.target).empty();
     h5cTabletFrame[item.target].editor = CodeMirror(
         document.getElementById("h5c-tablet-body-"+ item.target), {
         value         : src,
