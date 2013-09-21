@@ -13,7 +13,7 @@ function lcInitSetting()
     var theme = lessCookie.Get('editor_theme');
     if (theme == null) {
         lessCookie.SetByDay("editor_theme", "monokai", 365);
-        theme = "default";
+        theme = "monokai";
     }
     lcEditor.Config.theme = theme;
     if (theme != "default") {
