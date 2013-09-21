@@ -248,8 +248,8 @@ lcEditor.LoadInstance = function(entry)
             }},
             "Shift-Space": "autocomplete",
             "Ctrl-S": function() {
+                console.log("ctrl-s: "+ entry.id);
                 lcEditor.EntrySave(entry.id, null);
-                //console.log("ctrl-s"+ entry.id);
             }
         }
     });
@@ -259,7 +259,8 @@ lcEditor.LoadInstance = function(entry)
 
     if (lcEditor.Config.EditMode != null) {
         h5cTabletFrame[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
-        $('.lc-editor-editmode img').attr("src", "/lesscreator/static/img/editor/mode-"+lcEditor.Config.EditMode+"-48.png");
+        $('.lc-editor-editmode img').attr("src", 
+            "/lesscreator/static/img/editor/mode-"+lcEditor.Config.EditMode+"-48.png");
     }
 
     h5cTabletFrame[item.target].editor.on("change", function(cm) {
@@ -354,9 +355,7 @@ lcEditor.EntrySave = function(urid, cb)
             return lcEditor.MessageReplyStatus(cb, 200, null);
         }
 
-        //console.log("lcEditor.EntrySave 4"+ JSON.stringify(req));
-
-
+        console.log("lcEditor.EntrySave Send: "+ urid);
         
         req.msgreply = cb;
         lcEditor.WebSocketSend(req);
@@ -399,7 +398,7 @@ lcEditor.WebSocketSend = function(req)
                 
                 if (obj.status == 200) {
                     
-                    //console.log("onmessage ok"+ obj.data.urid);
+                    console.log("onmessage ok: "+ obj.data.urid);
 
                     lcData.Get("files", obj.data.urid, function(entry) {
                         

@@ -17,7 +17,7 @@ if ($this->req->func == "action-new") {
 
     try {
 
-        if (!preg_match('/^([a-z]{1})([0-9a-zA-Z]{1,30})Action$/', $this->req->func_name)) {
+        if (!preg_match('/^([a-z]{1})([0-9a-zA-Z]{1,50})$/', $this->req->func_name)) {
             throw new \Exception(sprintf($this->T('`%s` is not valid'), $this->T('Function Name')), 400);
         }
 
@@ -36,7 +36,7 @@ if ($this->req->func == "action-new") {
             "%class\s{$cls}Controller(.*?)\{(.*?)%si",
         );
         $replace = array(
-            "class {$cls}Controller$1{\n    function {$this->req->func_name}()\n    {\n    }\n\n$2",
+            "class {$cls}Controller$1{\n    function {$this->req->func_name}Action()\n    {\n    }\n\n$2",
         );
         $str = preg_replace($match, $replace, $rs->data->body);
         $rs = lesscreator_fs::FsFilePut($projPath ."/". $this->req->path, $str);
@@ -59,8 +59,13 @@ if ($this->req->func == "action-new") {
 
 
 <form id="td5kfz" action="#" method="post">
-    <input type="text" name="func_name" value="" class="span3" />
-    <span class="help-inline"><?php echo $this->T('First character must be a lowercase letter') .', '. $this->T('Example') ?>: <strong>helloAction</strong></span>
+    
+    <div class="input-append">
+        <input type="text" name="func_name" value="" class="span2" />
+        <span class="add-on"><strong>Action</strong></span>
+    </div>
+
+    <div><?php echo $this->T('First character must be a lowercase letter') .', '. $this->T('Example') ?>: <strong>hello</div>
 </form>
 
 <script type="text/javascript">
