@@ -198,7 +198,9 @@ function _proj_new_commit()
 
 function _proj_new_goto()
 {
-    window.open("/lesscreator/index?proj="+ _proj_new, "_blank");
+    h5cProjectOpen(_proj_new);
+    lessModalClose();
+    //window.open("/lesscreator/index?proj="+ _proj_new, "_blank");
 }
 
 
