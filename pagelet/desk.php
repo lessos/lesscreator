@@ -263,4 +263,6 @@ $(".lc_pgtab_more").click(function(event) {
         $(document).unbind('click');
     });
 });
+
+lcEditor.Config.LangEditMode = '<?php echo $this->T('Editor Mode Settings')?>';
 </script>

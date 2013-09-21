@@ -12,6 +12,7 @@ lcEditor.Config = {
     'codeFolding'   : false,
     'fontSize'      : 13,
     'EditMode'      : null,
+    'LangEditMode'  : 'Editor Mode Settings',
 };
 lcEditor.MessageReply = function(cb, msg)
 {
@@ -785,5 +786,5 @@ lcEditor.ConfigModal = function()
 lcEditor.ConfigEditMode = function()
 {
     lessModalOpen('/lesscreator/editor/editmode-set', 1, 400, 300, 
-        'Editor Mode Settings', null);
+        lcEditor.Config.LangEditMode, null);
 }
