@@ -210,8 +210,7 @@ lcEditor.LoadInstance = function(entry)
             
             if (opt_line_strto != null) {
                 
-                //console.log("line to"+ opt_line_strto);
-                                
+                //console.log("line to"+ opt_line_strto);                                
                 var crs = cminst.getSearchCursor(opt_line_strto, cminst.getCursor(), null);
                 
                 if (crs.findNext()) {
@@ -225,7 +224,7 @@ lcEditor.LoadInstance = function(entry)
                 }
             }
         });
-    }   
+    }
 
     h5cTabletFrame[item.target].editor = CodeMirror(
         document.getElementById("h5c-tablet-body-"+ item.target), {
