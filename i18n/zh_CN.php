@@ -35,7 +35,7 @@ return array(
     'Dependent Packages' => '依赖的包',
     'Description' => '描述',
     'Database' => '数据库',
-    'plugins-php-yaf-mvc-desc' => '开发一个 浏览器/服务端(B/S)，基于 PHP Yaf Framework 的 Web 应用',
+    'plugins-php-yaf-mvc-desc' => '开发一个 浏览器/服务端(B/S)、基于 PHP Yaf Framework 的 Web 应用',
     'Display Name' => '显示名',
     'Edit' => '编辑',
     'Column Name' => '列名',

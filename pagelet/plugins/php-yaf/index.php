@@ -42,13 +42,13 @@ service php-fpm restart</pre>
 
 <h3>PHP Yaf Framework MVC</h3>
 
-<?php echo $this->T('Develop a browser / server-side Web applications based on PHP Yaf Framework')?><br/><br/>
+<?php echo $this->T('plugins-php-yaf-mvc-desc')?><br/><br/>
 <p>Site: <a href="http://pecl.php.net/package/yaf" target="_blank">http://pecl.php.net/package/yaf</a></p>
 <p>Source: <a href="https://github.com/laruence/php-yaf" target="_blank">https://github.com/laruence/php-yaf</a></p>
 <p>Install: pecl install yaf</p>
 
 <p style="color:#dc4437;margin-top:15px;font-size:16px;">
-<?php echo $this->T('This Wizard will create a default directory structure and initial configuration files. The following files will be overwritten')?>!</p><br/>
+<?php echo $this->T('rt-php-yaf-fsinit-desc')?>!</p><br/>
 
 <ul>
 <?php
@@ -90,6 +90,7 @@ function _plugin_yaf_mvc_start()
         success : function(rsp) {
             _fs_file_new_callback("/");
             $("#jxaebr").hide();
+            _plugin_yaf_cvlist();
         },
         error   : function(xhr, textStatus, error) {
             //
