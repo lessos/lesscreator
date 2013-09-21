@@ -267,6 +267,11 @@ lcData.Query("files", "projdir", sessionStorage.ProjPath, function(ret) {
         }
 
         h5cTabOpen(ret.value.filepth, "w0", "editor", opt);
+
+        if (ret.value.ctn1_sum.length > 10 && ret.value.ctn1_sum != ret.value.ctn0_sum) {
+            $("#pgtab"+ ret.value.id +" .chg").show();
+            $("#pgtab"+ ret.value.id +" .pgtabtitle").addClass("chglight");
+        }
     }
 
     ret.continue();
