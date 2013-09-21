@@ -68,6 +68,9 @@ class lesscreator_fs
                 'sumcheck' => md5($body),
             ),
         );
+        if (isset($_COOKIE['access_token'])) {
+            $req['access_token'] = $_COOKIE['access_token'];
+        }
 
         $cli = self::NetHttp("http://127.0.0.1:9531/lesscreator/api/fs-file-put");
 

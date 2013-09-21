@@ -11,6 +11,7 @@ import (
     "mime"
     "net/http"
     "os"
+    "os/exec"
     "path/filepath"
     "regexp"
     "strings"
@@ -91,7 +92,7 @@ func FsSaveWS(ws *websocket.Conn) {
     }
 }
 
-func FsList(w http.ResponseWriter, r *http.Request) {
+func (this *Api) FsList(w http.ResponseWriter, r *http.Request) {
 
     var rsp struct {
         ApiResponse
@@ -200,7 +201,7 @@ func fsFileMime(v string) string {
     return ctype
 }
 
-func FsFileGet(w http.ResponseWriter, r *http.Request) {
+func (this *Api) FsFileGet(w http.ResponseWriter, r *http.Request) {
 
     var rsp struct {
         ApiResponse
@@ -294,7 +295,7 @@ func fsFileGetRead(path string) (FsFile, int, error) {
     return file, 200, nil
 }
 
-func FsFilePut(w http.ResponseWriter, r *http.Request) {
+func (this *Api) FsFilePut(w http.ResponseWriter, r *http.Request) {
 
     var rsp struct {
         ApiResponse
@@ -331,7 +332,15 @@ func FsFilePut(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    if err := fsFilePutWrite(req.Data); err != nil {
+    sess := this.Session.Instance(req.AccessToken)
+    if sess.Uid == "0" || sess.Uid == "" {
+        rsp.Status = 401
+        rsp.Message = "Unauthorized"
+        return
+    }
+    osuser := "lc" + sess.Uname
+
+    if err := fsFilePutWrite(req.Data, osuser); err != nil {
         rsp.Status = 500
         rsp.Message = err.Error()
         return
@@ -341,7 +350,7 @@ func FsFilePut(w http.ResponseWriter, r *http.Request) {
     rsp.Message = ""
 }
 
-func fsFilePutWrite(file FsFile) error {
+func fsFilePutWrite(file FsFile, osuser string) error {
 
     reg, _ := regexp.Compile("/+")
     path := "/" + strings.Trim(reg.ReplaceAllString(file.Path, "/"), "/")
@@ -349,15 +358,19 @@ func fsFilePutWrite(file FsFile) error {
     dir := filepath.Dir(path)
     if st, err := os.Stat(dir); os.IsNotExist(err) {
 
-        if err = os.MkdirAll(dir, 0750); err != nil {
+        if err = os.MkdirAll(dir, 0755); err != nil {
             return err
+        }
+
+        if err := os.Chmod(dir, 0755); err != nil {
+            //return err
         }
 
     } else if !st.IsDir() {
         return errors.New("Can not create directory, File exists")
     }
 
-    fp, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0750)
+    fp, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0755)
     if err != nil {
         return err
     }
@@ -369,10 +382,18 @@ func fsFilePutWrite(file FsFile) error {
         return err
     }
 
+    if err := os.Chmod(path, 0755); err != nil {
+        //return err
+    }
+
+    if _, err := exec.Command("/bin/chown", "-R", osuser+":"+osuser, dir).Output(); err != nil {
+        //
+    }
+
     return nil
 }
 
-func FsFileNew(w http.ResponseWriter, r *http.Request) {
+func (this *Api) FsFileNew(w http.ResponseWriter, r *http.Request) {
 
     var rsp struct {
         ApiResponse
@@ -412,6 +433,14 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    sess := this.Session.Instance(req.AccessToken)
+    if sess.Uid == "0" || sess.Uid == "" {
+        rsp.Status = 401
+        rsp.Message = "Unauthorized"
+        return
+    }
+    osuser := "lc" + sess.Uname
+
     reg, _ := regexp.Compile("/+")
     path := strings.Trim(reg.ReplaceAllString(req.Data.Path, "/"), "/")
 
@@ -438,6 +467,10 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
 
     if req.Data.Type == "dir" {
         rsp.Status = 200
+
+        if _, err := exec.Command("/bin/chown", "-R", osuser+":"+osuser, pd).Output(); err != nil {
+            //
+        }
         return
     }
 
@@ -457,10 +490,14 @@ func FsFileNew(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    if _, err := exec.Command("/bin/chown", "-R", osuser+":"+osuser, pd).Output(); err != nil {
+        //
+    }
+
     rsp.Status = 200
 }
 
-func FsFileDel(w http.ResponseWriter, r *http.Request) {
+func (this *Api) FsFileDel(w http.ResponseWriter, r *http.Request) {
 
     var rsp struct {
         ApiResponse
@@ -510,7 +547,7 @@ func FsFileDel(w http.ResponseWriter, r *http.Request) {
     rsp.Message = "OK"
 }
 
-func FsFileMov(w http.ResponseWriter, r *http.Request) {
+func (this *Api) FsFileMov(w http.ResponseWriter, r *http.Request) {
 
     var rsp struct {
         ApiResponse
@@ -603,7 +640,7 @@ func FsFileMov(w http.ResponseWriter, r *http.Request) {
     return
 }
 
-func FsFileUpl(w http.ResponseWriter, r *http.Request) {
+func (this *Api) FsFileUpl(w http.ResponseWriter, r *http.Request) {
 
     var rsp struct {
         ApiResponse
