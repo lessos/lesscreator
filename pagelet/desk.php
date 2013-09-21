@@ -110,7 +110,7 @@ $lcinfo = json_decode($lcinfo, true);
               </div>
             </div>
 
-            <div id="h5c-tablet-body-t0" class="less_scroll"></div>
+            <div id="h5c-tablet-body-t0" class=""></div>
 
           </td>
         </tr>

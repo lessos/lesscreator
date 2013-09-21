@@ -540,7 +540,7 @@ function lcLayoutResize()
     $('#h5c-lyo-col-t').width(colt_w);
     $('#h5c-lyo-col-w').width(colw_w);
 
-    $('#h5c-lyo-col-t .hdev-proj-files').width(colt_w);
+    //$('#h5c-lyo-col-t .hdev-proj-files').width(colt_w);
 
     /*
     var roww0 = $('#h5c-tablet-framew0').height();
@@ -580,13 +580,13 @@ function lcLayoutResize()
     //
     var bh = lo_h - $('#h5c-tablet-tabs-framet0').height();
     
-
     if ($('#h5c-tablet-body-t0 .lc-tablet-ctn-header').length > 0
         && $('#h5c-tablet-body-t0 .lc-tablet-ctn-body').length > 0) {
 
-        var chh = $('#h5c-tablet-body-t0 .lc-tablet-ctn-header').height();
-        var cbh = $('#h5c-tablet-body-t0 .lc-tablet-ctn-body').height();
+        $('#h5c-tablet-body-t0 .lc-tablet-ctn-header').width(colt_w);
+        $('#h5c-tablet-body-t0 .lc-tablet-ctn-body').width(colt_w);
 
+        var chh = $('#h5c-tablet-body-t0 .lc-tablet-ctn-header').height();
         $('#h5c-tablet-body-t0 .lc-tablet-ctn-body').height(bh - chh);
         
         //console.log("lc-tablet-ctn-header: "+ chh);

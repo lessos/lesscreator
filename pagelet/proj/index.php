@@ -139,10 +139,9 @@ $ptpath = md5("");
 
 
 <!--ProjectFilesManager-->
-<div id="pt<?=$ptpath?>" 
-    class="hdev-proj-files less_scroll lc-tablet-ctn-body" 
-    style=""></div>
-
+<div class="less_scroll" style="padding:0;margin:0;">
+<div id="pt<?=$ptpath?>" class="hdev-proj-files lc-tablet-ctn-body less_scroll"> </div>
+</div>
 
 <div id="_proj_inlet_body"></div>
 
