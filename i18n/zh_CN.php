@@ -209,4 +209,10 @@ return array(
     'Task Manage' => '任务',
     'BugTracker' => 'Bug跟踪',
     'plugins-desc' => '插件',
+    'Mode' => '模式',
+    'Editor Mode' => '编辑器模式',
+    'Editor Mode Settings' => '编辑器模式设置',
+    'Select one of your favorite editor mode' => '选择一个你喜欢的编辑器模式',
+    'Default' => '默认',
+    'Successfully switched to' => '成功切换到',
 );

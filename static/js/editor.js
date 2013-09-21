@@ -11,6 +11,7 @@ lcEditor.Config = {
     'tabs2spaces'   : true,
     'codeFolding'   : false,
     'fontSize'      : 13,
+    'EditMode'      : null,
 };
 lcEditor.MessageReply = function(cb, msg)
 {
@@ -238,6 +239,7 @@ lcEditor.LoadInstance = function(entry)
         smartIndent   : lcEditor.Config.smartIndent,
         lineWrapping  : lcEditor.Config.lineWrapping,
         foldGutter    : lcEditor.Config.codeFolding,
+        showCursorWhenSelecting : true,
         gutters       : ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
         extraKeys     : {Tab: function(cm) {
             if (lcEditor.Config.tabs2spaces) {
@@ -255,8 +257,9 @@ lcEditor.LoadInstance = function(entry)
     //CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
     //CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);
 
-    if (lessCookie.Get('editor_keymap_vim') == "on") {
-        h5cTabletFrame[item.target].editor.setOption("keyMap", "vim");
+    if (lcEditor.Config.EditMode != null) {
+        h5cTabletFrame[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
+        $('.lc-editor-editmode img').attr("src", "/lesscreator/static/img/editor/mode-"+lcEditor.Config.EditMode+"-48.png");
     }
 
     h5cTabletFrame[item.target].editor.on("change", function(cm) {
@@ -604,18 +607,6 @@ lcEditor.ConfigSet = function(key, val)
         hdev_header_alert("success", msg);
     }
     
-    if (key == "editor_keymap_vim") {
-        if (lessCookie.Get('editor_keymap_vim') == "on") {
-            lessCookie.SetByDay("editor_keymap_vim", "off", 365);
-            h5cTabletFrame["w0"].editor.setOption("keyMap", null);
-        } else {
-            lessCookie.SetByDay("editor_keymap_vim", "on", 365);
-            h5cTabletFrame["w0"].editor.setOption("keyMap", "vim");
-        }
-        msg = "Setting Editor::KeyMap to VIM "+lessCookie.Get('editor_keymap_vim');
-        hdev_header_alert("success", msg);
-    }
-    
     if (key == "editor_search_case") {
         if (lessCookie.Get('editor_search_case') == "on") {
             lessCookie.SetByDay("editor_search_case", "off", 365);
@@ -787,6 +778,12 @@ lcEditor.SearchClean = function()
 
 lcEditor.ConfigModal = function()
 {
-    lessModalOpen('/lesscreator/app/editor-set', 1, 800, 530, 
+    lessModalOpen('/lesscreator/editor/editor-set', 1, 800, 530, 
         'Editor Settings', null);
+}
+
+lcEditor.ConfigEditMode = function()
+{
+    lessModalOpen('/lesscreator/editor/editmode-set', 1, 400, 300, 
+        'Editor Mode Settings', null);
 }

@@ -96,27 +96,23 @@ $(document).ready(function() {
 function _load_deps()
 {
     var rqs = [
-        //"/lesscreator/~/lessui/js/less.js",
         "/lesscreator/~/bootstrap2/js/bootstrap.min.js",
         "/lesscreator/~/codemirror3/lib/codemirror.css",
 
-        //"/lesscreator/static/js/c.js",
-        //"/lesscreator/static/js/gen.js",
-        //"/lesscreator/static/js/editor.js",
-        //"/lesscreator/~/lessui/js/BrowserDetect.js",
-
         "/lesscreator/~/codemirror3/addon/hint/show-hint.css",
 
-        //"/lesscreator/~/codemirror3/lib/codemirror.min.js",
         "/lesscreator/~/codemirror3/addon/mode/loadmode.js",
         "/lesscreator/~/codemirror3/addon/search/searchcursor.js",
         "/lesscreator/~/codemirror3/keymap/vim.js",
+        "/lesscreator/~/codemirror3/keymap/emacs.js",
         "/lesscreator/~/codemirror3/addon/fold/foldcode.js",
         "/lesscreator/~/codemirror3/addon/fold/foldgutter.js",
         "/lesscreator/~/codemirror3/addon/fold/brace-fold.js",
         "/lesscreator/~/codemirror3/addon/hint/show-hint.js",
         "/lesscreator/~/codemirror3/addon/hint/javascript-hint.js",
         "/lesscreator/~/codemirror3/mode/all.js",
+        "/lesscreator/~/codemirror3/addon/dialog/dialog.js",
+        "/lesscreator/~/codemirror3/addon/dialog/dialog.css",
     ];
 
     seajs.use(rqs, function() {

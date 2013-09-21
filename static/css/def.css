@@ -1052,3 +1052,6 @@ a.h5c_block:focus {
     width: 28px; height: 28px;
 }
 
+.lc-editor-editmode img {
+    -webkit-filter: grayscale(1);
+}

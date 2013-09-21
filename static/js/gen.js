@@ -20,15 +20,11 @@ function lcInitSetting()
         seajs.use("/lesscreator/~/codemirror3/theme/"+theme+".css");
     }
     
-    var keymap_vim = lessCookie.Get('editor_keymap_vim');
-    if (keymap_vim == null) {
-        lessCookie.SetByDay("editor_keymap_vim", "off", 365);
-        keymap_vim = 'off';
+    var editor_editmode = lessLocalStorage.Get('editor_editmode');
+    if (editor_editmode == 'vim' || editor_editmode == 'emacs') {
+        lcEditor.Config.EditMode = editor_editmode;
     }
-    if (keymap_vim == 'on') {
-        $("#editor_keymap_vim").prop("checked", true);
-    }
-    
+        
     var search_case = lessCookie.Get('editor_search_case');
     if (search_case == null) {
         lessCookie.SetByDay("editor_search_case", "off", 365);

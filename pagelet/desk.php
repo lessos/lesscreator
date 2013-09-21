@@ -215,12 +215,12 @@ $lcinfo = json_decode($lcinfo, true);
             <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div> -->
 
-        <!-- <div class="tabitemline"></div>
-        <div class="tabitem">
-            <div class="ico"><img src="/lesscreator/static/img/w3_vim.png" align="absmiddle" /></div>
-            <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_keymap_vim')" type="checkbox" id="editor_keymap_vim" name="editor_keymap_vim" value="on" /> VIM Mode</div>
-        </div> -->
-        
+        <div class="tabitemline"></div>
+        <div class="tabitem" onclick="lcEditor.ConfigEditMode()">
+            <div class="ico lc-editor-editmode"><img src="/lesscreator/static/img/editor/mode-win-48.png" class="" ="h5c_icon" /></div>
+            <div class="ctn"><?php echo $this->T('Editor Mode')?></div>
+        </div>
+
         <div class="tabitemline"></div>
         <div class="tabitem" onclick="lcEditor.ConfigModal()">
             <div class="ctn"><i class="icon-cog"></i> <?php echo $this->T('Setting')?></div>
