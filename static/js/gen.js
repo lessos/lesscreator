@@ -223,7 +223,7 @@ function h5cTabSwitch(urid)
 
     switch (item.type) {
     case 'html':
-        if (item.data.length < 1) {
+        if (true || item.data.length < 1) {
             $.ajax({
                 url     : item.url,
                 type    : "GET",
