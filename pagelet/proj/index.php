@@ -248,14 +248,13 @@ var _proj_tab_last = lessLocalStorage.Get("tab.fra.urid.w0");
 lcData.Query("files", "projdir", sessionStorage.ProjPath, function(ret) {
     
     //console.log("Query files");
-
     if (ret == null) {
         return;
     }
     
     var opt = {close: 1};
 
-    if (ret.value.id) {
+    if (ret.value.id && ret.value.projdir == sessionStorage.ProjPath) {        
 
         if (ret.value.icon) {
             opt.img = ret.value.icon;
