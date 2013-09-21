@@ -376,8 +376,8 @@ function _app_install_done()
 }
 
 <?php
-if (count($datasets->data) < 1) {
-    //echo '_app_install_done();';
+if (count($datasets) < 1) {
+    echo 'window.setTimeout(_app_install_done, 300);';
 }
 ?>
 </script>
