@@ -50,7 +50,7 @@ func FsSaveWS(ws *websocket.Conn) {
             ws.Close()
             return
         }
-        fmt.Println("FsSaveWS: ", msg)
+        //fmt.Println("FsSaveWS: ", msg)
 
         var req struct {
             MsgReply string `json:"msgreply"`
@@ -331,6 +331,7 @@ func (this *Api) FsFilePut(w http.ResponseWriter, r *http.Request) {
         rsp.Message = err.Error()
         return
     }
+    //fmt.Println("AAA")
 
     sess := this.Session.Instance(req.AccessToken)
     if sess.Uid == "0" || sess.Uid == "" {
@@ -338,6 +339,7 @@ func (this *Api) FsFilePut(w http.ResponseWriter, r *http.Request) {
         rsp.Message = "Unauthorized"
         return
     }
+    //fmt.Println(sess)
     osuser := "lc" + sess.Uname
 
     if err := fsFilePutWrite(req.Data, osuser); err != nil {
@@ -382,8 +384,12 @@ func fsFilePutWrite(file FsFile, osuser string) error {
         return err
     }
 
-    if err := os.Chmod(path, 0755); err != nil {
-        //return err
+    //if err := os.Chmod(path, 0755); err != nil {
+    //return err
+    //}
+
+    if _, err := exec.Command("/bin/chmod", "-R", "+rx", dir).Output(); err != nil {
+
     }
 
     if _, err := exec.Command("/bin/chown", "-R", osuser+":"+osuser, dir).Output(); err != nil {

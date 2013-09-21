@@ -352,6 +352,9 @@ lcEditor.EntrySave = function(urid, cb)
         } else if (ret.ctn1_src == ret.ctn0_src) {
 
             //console.log("lcEditor.EntrySave 2");
+            $("#pgtab"+ urid +" .chg").hide();
+            $("#pgtab"+ urid +" .pgtabtitle").removeClass("chglight");
+
             return lcEditor.MessageReplyStatus(cb, 200, null);
         }
 

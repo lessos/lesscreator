@@ -36,7 +36,7 @@ try {
         $file = trim($file, "/");
         $str = file_get_contents($tplpath ."/". $file);        
 
-        if ($file == "conf/application.ini") {
+        if ($file == "conf/application.ini" || $file == "application/views/index/index.phtml") {
             $str = str_replace("{{.projid}}", $info['projid'], $str);
         }
 
