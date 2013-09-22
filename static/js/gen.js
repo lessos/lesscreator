@@ -465,7 +465,7 @@ function lcTabClose(urid, force)
 function _lcTabCloseClean(urid)
 {
     var item = h5cTabletPool[urid];
-    console.log(item);
+    //console.log(item);
     if (item == undefined || !item.url) {
         return;
     }
@@ -521,7 +521,7 @@ function _lcTabCloseClean(urid)
 
 function lcLayoutResize()
 {
-    console.log("lcLayoutResize ...");
+    //console.log("lcLayoutResize ...");
 
     var spacecol = 10;
 
@@ -724,7 +724,7 @@ lcData.Init = function(dbname, cb)
     };
 
     req.onerror = function (event) {
-        console.log("IndexedDB error: " + event.target.errorCode);
+        //console.log("IndexedDB error: " + event.target.errorCode);
         cb(true);
     };
 
@@ -793,7 +793,7 @@ lcData.Get = function(tbl, key, cb)
 lcData.Query = function(tbl, column, value, cb)
 {
     if (lcData.db == null) {
-        console.log("lcData is NULL");
+        //console.log("lcData is NULL");
         return;
     }
     var req = lcData.db.transaction([tbl]).objectStore(tbl).index(column).openCursor();

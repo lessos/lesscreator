@@ -415,7 +415,7 @@ function _fs_file_mov_modal(path)
  */
 function _fs_tree_refresh()
 {
-    console.log("_fs_tree_refresh ...");
+    //console.log("_fs_tree_refresh ...");
 
     $(".hdev-proj-tree").bind("contextmenu", function(e) {
         

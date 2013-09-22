@@ -31,12 +31,6 @@ $("#c1qtiv").submit(function(event) {
     _fs_file_mov();
 });
 
-function _fs_file_mov_savecb(msg)
-{
-    console.log("Entry.Save.Ret");
-    console.log(msg.status);
-    console.log(msg.data.urid);
-}
 function _fs_file_mov()
 {
     var pathpre = $("#c1qtiv").find("input[name=pathpre]").val();
@@ -62,7 +56,6 @@ function _fs_file_mov()
     lcEditor.IsSaved(pathPreUrid, function(ret) {
 
         if (!ret) {
-            //lcEditor.EntrySave(pathPreUrid, "_fs_file_mov_savecb");
             lessModalOpen("/lesscreator/editor/changes2save?urid="+ pathPreUrid, 
                 1, 500, 200, '<?php echo $this->T('Save changes before rename')?>', null);
             return;

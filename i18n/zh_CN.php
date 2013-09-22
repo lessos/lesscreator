@@ -216,7 +216,7 @@ return array(
     'Default' => '默认',
     'Successfully switched to' => '成功切换到',
     'Quick Start' => '快速开始',
-    'Auto Initialize Project files' => '初始化项目文件',
+    'Auto Initialize Project files' => '初始文件',
     'Run and Deploy' => '运行部署',
     'quick-start-desc' => '如果您想快速体验 lessCreator, 按以下步骤在 30 秒内创建一个 Web 应用并运行它！',
     'quick-start-desc2' => '注: 本示例基于 PHP Yaf 框架构建，更多示例在后续开发中加入,请稍安勿躁 :)',

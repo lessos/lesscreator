@@ -12,7 +12,7 @@ if (!Session::IsLogin()) {
   <meta charset="utf-8">
   <title><?php echo $this->T('lessCreator')?></title>
   <script src="/lesscreator/~/lessui/js/sea.js"></script>
-  <script src="/lesscreator/~/jquery/jquery-2.0.min.js"></script>
+  <script src="/lesscreator/~/jquery/jquery-1.10.min.js"></script>
   <script src="/lesscreator/~/lessui/js/BrowserDetect.js"></script>
 
   <script src="/lesscreator/~/lessui/js/lessui.js"></script>

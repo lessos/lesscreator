@@ -569,13 +569,11 @@ lcEditor.IsSaved = function(urid, cb)
 {
     lcData.Get("files", urid, function(ret) {
 
-        console.log("isSave");
-        console.log(ret);
         if (ret == undefined) {
             cb(true);
             return;
         }
-        
+
         if (ret.id == urid 
             && ret.ctn1_sum.length > 30 
             && ret.ctn0_sum != ret.ctn1_sum) {
