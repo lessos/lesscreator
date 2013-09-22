@@ -609,7 +609,7 @@ function h5cProjectOpen(proj)
     }
 
     if (!proj) {
-        lessModalOpen("/lesscreator/app/well", 1, 700, 400,
+        lessModalOpen("/lesscreator/app/well", 1, 800, 450,
             "Start a Project from ...", null);
         return;
     }
