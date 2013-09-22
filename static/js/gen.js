@@ -465,6 +465,11 @@ function lcTabClose(urid, force)
 function _lcTabCloseClean(urid)
 {
     var item = h5cTabletPool[urid];
+    console.log(item);
+    if (item == undefined || !item.url) {
+        return;
+    }
+
     var j = 0;
     for (var i in h5cTabletPool) {
 

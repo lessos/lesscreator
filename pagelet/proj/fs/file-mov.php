@@ -1,6 +1,6 @@
 <?php
 
-$path = preg_replace("/\/+/", "/", rtrim("/".$this->req->path, '/'));
+$path = preg_replace("/\/+/", "/", rtrim($this->req->path, '/'));
 
 ?>
 
@@ -31,10 +31,21 @@ $("#c1qtiv").submit(function(event) {
     _fs_file_mov();
 });
 
+function _fs_file_mov_savecb(msg)
+{
+    console.log("Entry.Save.Ret");
+    console.log(msg.status);
+    console.log(msg.data.urid);
+}
 function _fs_file_mov()
 {
     var pathpre = $("#c1qtiv").find("input[name=pathpre]").val();
     var pathnew = $("#c1qtiv").find("input[name=pathnew]").val();
+    if (pathpre == pathnew) {
+        hdev_header_alert('success', "<?php echo $this->T('Successfully Done')?>");
+        return;
+    }
+
     var req = {
         "access_token" : lessCookie.Get("access_token"),
         "data" : {
@@ -42,53 +53,67 @@ function _fs_file_mov()
             "pathpre" : lessSession.Get("ProjPath") +"/"+ pathpre,
         }
     }
-    
-    var refreshpre = pathpre.substring(0, pathpre.lastIndexOf('/'));
-    var refreshnew = pathnew.substring(0, pathnew.lastIndexOf('/'));   
+   
+    //var refreshpre = pathpre.substring(0, pathpre.lastIndexOf('/'));
+    var refreshnew = pathnew.substring(0, pathnew.lastIndexOf('/'));    
 
-    $.ajax({
-        type    : "POST",
-        url     : "/lesscreator/api?func=fs-file-mov",
-        data    : JSON.stringify(req),
-        timeout : 3000,
-        success : function(rsp) {
+    var pathPreUrid = lessCryptoMd5(pathpre);
 
-            var obj = JSON.parse(rsp);
-            if (obj.status == 200) {
-                
-                hdev_header_alert('success', "<?php echo $this->T('Successfully Done')?>");
-                
+    lcEditor.IsSaved(pathPreUrid, function(ret) {
 
-                var path = pathpre.replace(/(^\/*)|(\/*$)/g, "");
-                path = path.replace(/(\/+)/g, "/");
-                var p = lessCryptoMd5(path);
-                $("#ptp"+p).remove();
-                $("#pt"+p).remove();
-                
-                path = "";
-                var ps = refreshnew.replace(/(^\/*)|(\/*$)/g, "").split('/');
-                for (var i in ps) {
-
-                    path += "/"+ ps[i];
-                    p = lessCryptoMd5(path);
-                    if (!$("#pt"+p).html() || $("#pt"+p).html().length < 1) {
-                        //console.log("load new "+ path);
-                        _fs_tree_dir(path, 1);
-                    }
-                }
-
-                _fs_tree_dir(refreshnew, 1);
-
-            } else {
-                hdev_header_alert('error', obj.message);
-            }
-
-            lessModalClose();
-        },
-        error   : function(xhr, textStatus, error) {
-            hdev_header_alert('error', textStatus+' '+xhr.responseText);
+        if (!ret) {
+            //lcEditor.EntrySave(pathPreUrid, "_fs_file_mov_savecb");
+            lessModalOpen("/lesscreator/editor/changes2save?urid="+ pathPreUrid, 
+                1, 500, 200, '<?php echo $this->T('Save changes before rename')?>', null);
+            return;
         }
-    });
+
+        $.ajax({
+            type    : "POST",
+            url     : "/lesscreator/api?func=fs-file-mov",
+            data    : JSON.stringify(req),
+            timeout : 3000,
+            success : function(rsp) {
+    
+                var obj = JSON.parse(rsp);
+    
+                if (obj.status == 200) {
+    
+                    _lcTabCloseClean(pathPreUrid);
+    
+                    hdev_header_alert('success', "<?php echo $this->T('Successfully Done')?>");
+    
+                    var path = pathpre.replace(/(^\/*)|(\/*$)/g, "");
+                    path = path.replace(/(\/+)/g, "/");
+                    var p = lessCryptoMd5(path);
+                    $("#ptp"+p).remove();
+                    $("#pt"+p).remove();
+                    
+                    path = "";
+                    var ps = refreshnew.replace(/(^\/*)|(\/*$)/g, "").split('/');
+                    for (var i in ps) {
+    
+                        path += "/"+ ps[i];
+                        p = lessCryptoMd5(path);
+                        if (!$("#pt"+p).html() || $("#pt"+p).html().length < 1) {
+                            //console.log("load new "+ path);
+                            _fs_tree_dir(path, 1);
+                        }
+                    }
+    
+                    _fs_tree_dir(refreshnew, 1);
+    
+                } else {
+                    hdev_header_alert('error', obj.message);
+                }
+    
+                lessModalClose();
+            },
+            error   : function(xhr, textStatus, error) {
+                hdev_header_alert('error', textStatus+' '+xhr.responseText);
+            }
+        });
+    });    
 }
 
 </script>
