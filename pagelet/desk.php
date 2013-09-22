@@ -77,7 +77,7 @@ $lcinfo = json_decode($lcinfo, true);
             &nbsp;&nbsp;<?php echo $this->T('Report Issue')?>&nbsp;&nbsp;
         </a>
 
-        <a href="#" class="btn btn-danger btn-small " type="button">
+        <a href="#" onclick="_proj_todo_list()" class="btn btn-danger btn-small " type="button">
             TODO <?php echo $this->T('plugins-desc') ?>: &nbsp;&nbsp;
             <i class="icon-comment icon-white"></i> <?php echo $this->T('Chat')?> &nbsp;
             <i class="icon-list icon-white"></i> <?php echo $this->T('Task Manage')?> ...
@@ -264,13 +264,18 @@ $(".lc_pgtab_more").click(function(event) {
     });
 });
 
+function _proj_todo_list()
+{
+    lessModalOpen("/lesscreator/app/todo", 1, 750, 450, 'TODO list', null);
+}
+
 lcEditor.Config.LangEditMode = '<?php echo $this->T('Editor Mode Settings')?>';
 
-    var opt = {
-        'img': '/lesscreator/static/img/app-t3-16.png',
-        'title': 'Quick Start',
-        'close': '1',
-    };
+var opt = {
+    'img': '/lesscreator/static/img/app-t3-16.png',
+    'title': 'Quick Start',
+    'close': '1',
+};
+h5cTabOpen("/lesscreator/app/quick-start?", 'w0', 'html', opt);
 
-    h5cTabOpen("/lesscreator/app/quick-start?", 'w0', 'html', opt);
 </script>

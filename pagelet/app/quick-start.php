@@ -32,8 +32,8 @@
 }
 </style>
 
-<div class="page-header" style="margin:10px;">
-  <h2><?php echo $this->T('Quick Start')?> <small></small></h2>
+<div class="page-header" style="margin:10px;font-size:24px;">
+  <span><?php echo $this->T('Quick Start')?> <small></small></span>
 </div>
 
 <div class="alert alert-info" style="margin:0 10px;font-size:20px;">
@@ -75,7 +75,7 @@
 <td>
 </td>
 <td>
-    <?php echo $this->T('Auto Initialize Project files')?>
+    <?php echo $this->T('Auto Initialize Project files')?> (Yaf)
 </td>
 <td>
 </td>
