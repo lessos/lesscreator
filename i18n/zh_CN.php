@@ -67,6 +67,7 @@ return array(
     'Integrated into the LessFly Engine' => '集成到 LessFly 引擎',
     'Loading dependencies' => '载入依赖项',
     'Local database (IndexedDB) initialization failed' => '本地数据库 (IndexedDB) 初始化失败',
+    'New' => '新建',
     'New File' => '新建文件',
     'New Folder' => '新建目录',
     'New Project' => '新建项目',

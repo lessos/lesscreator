@@ -92,7 +92,7 @@ foreach ($fs->data as $v) {
 
     echo "<a class='badge pull-right rr20fx-new' href='#fs/{$file}/new'>
         <i class='icon-plus-sign icon-white'></i> 
-        New Action
+        ".$this->T('New')." Action
         </a>";
     echo "</td>";
 
@@ -102,7 +102,7 @@ foreach ($fs->data as $v) {
         $k = strtolower(substr($k, 0, 1)) . substr($k, 1);
 
         if ($v == null) {
-            echo "<a class='badge pull-left tyaery-new' href='#fs/{$ctln}/{$k}.phtml'><i class='icon-plus-sign icon-white'></i>  New View</a>";
+            echo "<a class='badge pull-left tyaery-new' href='#fs/{$ctln}/{$k}.phtml'><i class='icon-plus-sign icon-white'></i>  ".$this->T('New')." View</a>";
         } else {
             echo "<a class='badge badge-success pull-left tyaery' href='#fs/{$ctln}/{$v}.phtml'>{$v}.phtml</a>";
         }
@@ -118,7 +118,7 @@ foreach ($fs->data as $v) {
 <td>
     <a class='badge rcifxb-new' href='#fs/new'>
         <i class='icon-plus-sign icon-white'></i> 
-        New Controller
+        <?php echo $this->T('New')?> Controller
     </a>
 </td>
 <td></td>
@@ -132,7 +132,7 @@ foreach ($fs->data as $v) {
 
 $(".rcifxb-new").click(function(event) {
 
-    var tit = "New Controller";
+    var tit = "<?php echo $this->T('New')?> Controller";
     var url = "/lesscreator/plugins/php-yaf/fs-ov-controller-new";
     url += "?proj="+ lessSession.Get("ProjPath");
 
@@ -157,13 +157,13 @@ $(".rr20fx-new").click(function(event) {
     var uri = $(this).attr("href").split("/");
 
 
-    var tit = "New Action";
+    var tit = "<?php echo $this->T('New')?> Action";
     var url = "/lesscreator/plugins/php-yaf/fs-ov-action-new";
     url += "?ctl="+ uri[1];
     url += "&proj="+ lessSession.Get("ProjPath");
 
 
-    lessModalOpen(url, 0, 550, 180, tit, null);
+    lessModalOpen(url, 1, 550, 180, tit, null);
 });
 
 $(".tyaery").click(function(event) {
