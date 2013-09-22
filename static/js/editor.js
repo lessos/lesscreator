@@ -314,7 +314,7 @@ lcEditor.Changed = function(urid)
 
 lcEditor.SaveCurrent = function()
 {
-    lcEditor.Save(h5cTabletFrame["w0"].urid, 1);
+    lcEditor.EntrySave(h5cTabletFrame["w0"].urid, null);
 }
 
 lcEditor.EntrySave = function(urid, cb)
