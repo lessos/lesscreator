@@ -23,9 +23,7 @@ if ($this->req->func == 'del') {
         unset($pjs[$this->req->projid]);
         $pjs = Json::prettyPrint($pjs);
         $rs = lesscreator_fs::FsFilePut($pjc, $pjs);
-        if ($rs->status == 200) {
-            die("OK");
-        } else {
+        if ($rs->status !== 200) {
             die($rs->message);
         }
     }
@@ -111,5 +109,21 @@ function _proj_open_fs(path, force)
     } else {
         lessModalNext(url, "<?php echo $this->T('Open Project')?>", null);
     }
+}
+
+function _proj_open_recent_del(projid)
+{
+    $.ajax({
+        type: "POST",
+        url: '/lesscreator/proj/open-recent?basedir='+ lessSession.Get("basedir"),
+        data: {'func':'del', 'projid':projid},
+        success: function(data) {
+            if (data == "OK") {
+                $("#_proj_"+ projid).remove();
+            } else {
+                alert(data);
+            }
+        }
+    });
 }
 </script>
