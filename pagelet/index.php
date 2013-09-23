@@ -48,7 +48,7 @@ if (!Session::IsLogin()) {
 
 <script>
 
-var _load_sleep = 0;
+var _load_sleep = 50;
 
 function _lc_loadwell_resize()
 {
@@ -121,6 +121,7 @@ function _load_deps()
     });
 }
 
+var _load_desk_once = 0;
 function _load_sys_config()
 {
     $(".load-progress-msg").append("<br />Loading settings ...");
@@ -153,6 +154,11 @@ function _load_sys_config()
                 lessAlert("#_load-alert", "alert-error", "<?php echo $this->T('Unauthorized')?>, <a href='/user'><?php echo $this->T('try login again')?></a>");
             } else if (rsj.status == 200) {
 
+                if (rsj.data.basedir != lessSession.Get("basedir")) {
+                    lessSession.Del("basedir");
+                    lessSession.Del("ProjPath");
+                }
+
                 lessSession.Set("basedir", rsj.data.basedir);
                 lessCookie.Set("basedir", rsj.data.basedir, 0);
                 lessSession.Set("SessUser", rsj.data.user);
@@ -164,6 +170,7 @@ function _load_sys_config()
                             "<?php echo $this->T('Local database (IndexedDB) initialization failed')?>");
                     }
 
+                    _load_desk_once++;
                     _load_desk(rsj.data.basedir);
                 });                             
 
@@ -181,8 +188,11 @@ function _load_sys_config()
 
 function _load_desk(basedir)
 {
+    if (_load_desk_once > 1) {
+        return;
+    }
     $.ajax({
-        url     : "/lesscreator/desk?basedir="+ basedir,
+        url     : "/lesscreator/desk?basedir="+ basedir +"&_="+ Math.random(),
         type    : "GET",
         timeout : 30000,
         success : function(rsp) {
