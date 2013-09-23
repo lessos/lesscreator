@@ -396,7 +396,7 @@ function _fs_file_upl_modal(path)
     
     var tit = "<?php echo $this->T('Upload File From Location')?>";
     var url = "/lesscreator/proj/fs/file-upl?path="+ path;
-    lessModalOpen(url, 0, 550, 160, tit, null);
+    lessModalOpen(url, 0, 600, 400, tit, null);
 }
 
 function _fs_file_mov_modal(path)

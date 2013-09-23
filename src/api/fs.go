@@ -674,7 +674,10 @@ func (this *Api) FsFileUpl(w http.ResponseWriter, r *http.Request) {
 
     var req struct {
         AccessToken string `json:"access_token"`
-        Data        FsFile `json:"data"`
+        Data        struct {
+            FsFile
+            ProjId string `json:"projid"`
+        }   `json:"data"`
     }
     err = utils.JsonDecode(string(body), &req)
     if err != nil {
@@ -682,6 +685,14 @@ func (this *Api) FsFileUpl(w http.ResponseWriter, r *http.Request) {
         rsp.Message = err.Error()
         return
     }
+
+    sess := this.Session.Instance(req.AccessToken)
+    if sess.Uid == "0" || sess.Uid == "" {
+        rsp.Status = 401
+        rsp.Message = "Unauthorized"
+        return
+    }
+    osuser := "lc" + sess.Uname
 
     dataurl := strings.SplitAfter(req.Data.Body, ";base64,")
     if len(dataurl) != 2 {
@@ -700,10 +711,16 @@ func (this *Api) FsFileUpl(w http.ResponseWriter, r *http.Request) {
     reg, _ := regexp.Compile("/+")
     path := "/" + strings.Trim(reg.ReplaceAllString(req.Data.Path, "/"), "/")
 
-    if _, err := os.Stat(path); os.IsExist(err) {
-        rsp.Status = 500
-        rsp.Message = "File is Exists"
-        return
+    ps := strings.Split(path, "/")
+    pd := "/" + strings.Join(ps[0:len(ps)-1], "/")
+
+    if _, err := os.Stat(pd); os.IsNotExist(err) {
+
+        if err = os.MkdirAll(pd, 0755); err != nil {
+            rsp.Message = "Can Not Create Folder /" + pd
+            rsp.Status = 500
+            return
+        }
     }
 
     fp, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0755)
@@ -720,6 +737,16 @@ func (this *Api) FsFileUpl(w http.ResponseWriter, r *http.Request) {
         rsp.Status = 500
         rsp.Message = err.Error()
         return
+    }
+
+    dir := this.Cfg.LessFlyDir + "/spot/" + sess.Uname + "/app/" + req.Data.ProjId
+    //fmt.Println(dir)
+    if _, err := exec.Command("/bin/chmod", "-R", "+rx", dir).Output(); err != nil {
+
+    }
+
+    if _, err := exec.Command("/bin/chown", "-R", osuser+":"+osuser, dir).Output(); err != nil {
+        //
     }
 
     rsp.Status = 200

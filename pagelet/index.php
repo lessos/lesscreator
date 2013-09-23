@@ -76,7 +76,7 @@ $(document).ready(function() {
     var browser = BrowserDetect.browser;
     var version = BrowserDetect.version;
     var OS      = BrowserDetect.OS;
-    if (!(browser == 'Chrome' && version >= 20)) {
+    if (!(browser == 'Chrome' && version >= 22)) { 
         $('body').css({
             width: '100%',
             height: '100%',
