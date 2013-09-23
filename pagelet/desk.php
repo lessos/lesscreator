@@ -35,7 +35,7 @@ $lcinfo = json_decode($lcinfo, true);
             
             <div class="btn btn-small dropdown-toggle " data-toggle="dropdown" href="#">
                 <i class="icon-folder-open"></i>
-                &nbsp;&nbsp;<?php echo $this->T('Project')?>&nbsp;&nbsp;
+                &nbsp;&nbsp;<?php echo $this->T('Project Manage')?>&nbsp;&nbsp;
                 <span class="caret" style="margin-top:8px;"></span>
             </div>
 

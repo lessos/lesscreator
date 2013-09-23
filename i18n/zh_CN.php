@@ -87,6 +87,7 @@ return array(
     'Project ID' => '项目 ID',
     'Project directory name' => '项目目录名',
     'Recent Projects' => '最近的项目',
+    'Project Manage' => '项目管理',
     'Redo' => '重做',
     'Refresh' => '刷新',
     'Remove' => '移除',
