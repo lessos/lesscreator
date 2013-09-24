@@ -120,6 +120,10 @@ $ptpath = md5("");
         <img src="/lesscreator/static/img/page_white_get.png" class="h5c_icon" />
         <?php echo $this->T('Upload')?>
     </a>
+    <a href="#proj/fs/file-upl" class="navitem" onclick="_fs_tree_dir('', 1)">
+        <img src="/lesscreator/static/img/arrow_refresh_small.png" class="h5c_icon" />
+        <?php echo $this->T('Refresh')?>
+    </a>
     <!-- <a href="#plugins/php-yaf/index" class="navitem" onclick="_proj_fs_nav_olclick(this)">
         <img src="/lesscreator/static/img/plugins/php-yaf/yaf-ico-48.png" class="h5c_icon" />
         PHP Yaf
