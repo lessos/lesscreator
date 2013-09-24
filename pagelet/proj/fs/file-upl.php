@@ -114,7 +114,7 @@ _fs_upl_cnt.addEventListener('dragleave', handleDragLeave, false);
 ////////////////////////////////////////////////////////////////////////
 
 //lessModalButtonAdd("zrkyom", "<?php echo $this->T('Upload')?>", "_fs_file_upl()", "btn-inverse pull-left");
-lessModalButtonAdd("mqaayo", "<?php echo $this->T('Cancel')?>", "lessModalClose()", "pull-left");
+lessModalButtonAdd("mqaayo", "<?php echo $this->T('Close')?>", "lessModalClose()", "pull-left btn-inverse");
 
 
 var path = '<?php echo $path?>';
