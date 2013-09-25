@@ -9,13 +9,15 @@ $ret = array(
 
 try {
     
-    if (!isset($this->req->proj) || strlen($this->req->proj) < 1) {
+    $req = file_get_contents("php://input");
+    $req = json_decode($req, false);
+    if (!isset($req->proj) || strlen($req->proj) < 1) {
         throw new \Exception($this->T('Page Not Found'), 404);
     }
     
-    $projPath = lesscreator_proj::path($this->req->proj);
+    $projPath = lesscreator_proj::path($req->proj);
     
-    $info = lesscreator_proj::info($this->req->proj);
+    $info = lesscreator_proj::info($req->proj);
     if (!isset($info['projid'])) {
         throw new \Exception($this->T('Page Not Found'), 404);
     }
@@ -30,20 +32,20 @@ try {
         );
     }
 
-    if ($info['runtimes']['nginx']['status'] != $this->req->status) {
-        $info['runtimes']['nginx']['status'] = intval($this->req->status);
+    if ($info['runtimes']['nginx']['status'] != $req->status) {
+        $info['runtimes']['nginx']['status'] = intval($req->status);
     }
 
-    if (isset($this->req->ngx_conf_mode)
-        && $info['runtimes']['nginx']['ngx_conf_mode'] !== $this->req->ngx_conf_mode) {
-        $info['runtimes']['nginx']['ngx_conf_mode'] = $this->req->ngx_conf_mode;
+    if (isset($req->ngx_conf_mode)
+        && $info['runtimes']['nginx']['ngx_conf_mode'] !== $req->ngx_conf_mode) {
+        $info['runtimes']['nginx']['ngx_conf_mode'] = $req->ngx_conf_mode;
     }
 
     if ($info['runtimes']['nginx']['ngx_conf_mode'] == "custom"
-        && strlen($this->req->ngx_conf) > 10) {
+        && strlen($req->ngx_conf) > 10) {
 
         lesscreator_fs::FsFilePut("{$projPath}/misc/nginx/virtual.custom.conf",
-            $this->req->ngx_conf);
+            $req->ngx_conf);
     }
 
     if (true) {
@@ -55,7 +57,6 @@ try {
             throw new \Exception($this->T('Successfully Processed'), 200);
         }
     }
-
 
     throw new \Exception($this->T('Successfully Processed'), 200);
     

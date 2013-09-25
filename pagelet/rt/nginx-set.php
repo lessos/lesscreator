@@ -168,30 +168,36 @@ function _proj_rt_nginx_onoff_chg()
 
 function _proj_rt_nginx_save()
 {
-    //var url = "/lesscreator/rt/nginx-set-do?";
-    var req = "proj=" + lessSession.Get("ProjPath");
+    var req = {
+        proj: lessSession.Get("ProjPath"),
+        status: 1,
+        ngx_conf: null,
+        ngx_conf_mode: null,
+    }
 
     if ($("#k4grco").is (':checked')) {
 
-        req += "&status=1";
+        req.status = 1;
 
         var mode = $('#ngx_conf_mode option:selected').val(); 
         if (mode == "custom") {
-            req += "&ngx_conf="+ ngxEditor.getValue();
+            req.ngx_conf = ngxEditor.getValue();
         }
 
-        req += "&ngx_conf_mode="+ mode;
+        req.ngx_conf_mode = mode;
 
     } else {
-        req += "&status=0";
+        req.status = 0
     }
+
+
 
     $.ajax({ 
         type    : "POST",
         url     : "/lesscreator/rt/nginx-set-do",
-        data    : req,
+        data    : JSON.stringify(req),
         success : function(rsp) {
-
+            //console.log(rsp);
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
