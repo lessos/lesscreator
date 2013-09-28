@@ -6,6 +6,8 @@ import (
     "fmt"
     "io/ioutil"
     "os"
+    "path"
+    "path/filepath"
     "regexp"
     "strings"
 )
@@ -23,8 +25,12 @@ func NewConfig(prefix, cfgfile string) (Config, error) {
     var cfg Config
 
     if prefix == "" {
-        prefix = "/opt/less/fly/spot/ue/app/lesscreator"
+        if p, err := filepath.Abs(os.Args[0]); err == nil {
+            p, _ = path.Split(p)
+            prefix, _ = filepath.Abs(p + "/..")
+        }
     }
+
     reg, _ := regexp.Compile("/+")
     cfg.Prefix = "/" + strings.Trim(reg.ReplaceAllString(prefix, "/"), "/")
 
