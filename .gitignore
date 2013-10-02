@@ -1,4 +1,5 @@
 
-bin/lesscreator
+bin/lesscreator*
 *~
 static/img/3d/*
+static/js/pyte/

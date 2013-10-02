@@ -1064,3 +1064,21 @@ a.h5c_block:focus {
 .lc-editor-editmode img {
     /* -webkit-filter: grayscale(1); */
 }
+
+.lc-terminal {
+    margin: 0px;
+    padding: 0px;
+    background: #272822;
+    font-family: courier, fixed, "courier new", monospace;
+}
+.lc-terminal .outputrow {
+    margin: 0px;
+    line-height: 16px;
+    font-size: 15px;
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.lc-terminal span {
+    margin:0px; padding: 0px; border: 0px;
+}

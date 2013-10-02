@@ -18,7 +18,7 @@
 
 $(".h6tnb9").click(function(){
     var url = "/lesscreator/plugins/lessdata/create-select-type?proj="+ projCurrent;
-    lessModalOpen(url, 0, 700, 450, '<?php echo $this->T('New DataSet')?>', null);
+    lessModalOpen(url, 1, 700, 450, '<?php echo $this->T('New DataSet')?>', null);
 });
 
 function _proj_data_tabopen(uri, force)

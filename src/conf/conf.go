@@ -15,6 +15,7 @@ import (
 type Config struct {
     Version     string
     Prefix      string
+    RunUser     string
     ApiPort     string `json:"apiport"`
     KeeperAgent string `json:"keeperagent"`
     LessFlyDir  string `json:"lessfly_dir"`

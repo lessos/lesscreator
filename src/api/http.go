@@ -27,8 +27,6 @@ func (this *Api) Serve(port string) {
     //kpr = data.NewKprHttp()
 
     go func() {
-        //http.Handle("/lesscreator/api", websocket.Handler(QueueStatus))
-        http.HandleFunc("/lesscreator/api/user-login", UserLogin)
 
         http.HandleFunc("/lesscreator/api/fs-list", this.FsList)
         http.HandleFunc("/lesscreator/api/fs-file-put", this.FsFilePut)
@@ -44,6 +42,8 @@ func (this *Api) Serve(port string) {
         http.HandleFunc("/lesscreator/api/env-init", this.EnvInit)
         http.HandleFunc("/lesscreator/api/env-pkgsetup", this.EnvPkgSetup)
 
+        http.Handle("/lesscreator/api/terminal-ws", websocket.Handler(this.TerminalWS))
+
         s := &http.Server{
             Addr:    ":" + port,
             Handler: nil,
@@ -57,18 +57,4 @@ func (this *Api) Serve(port string) {
     for {
         time.Sleep(1e9)
     }
-}
-
-func UserLogin(w http.ResponseWriter, r *http.Request) {
-
-    defer func() {
-        r.Body.Close()
-    }()
-
-    goto RSP
-
-RSP:
-    w.Header().Add("Connection", "close")
-
-    return
 }

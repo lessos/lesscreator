@@ -46,8 +46,12 @@ $lcinfo = json_decode($lcinfo, true);
 
         </div>
         
+       
+
         <div class="btn-group" style="margin-left:0;">
             
+            
+
             <div class="btn btn-small dropdown-toggle " data-toggle="dropdown" href="#">
                 <i class="icon-user"></i>&nbsp;&nbsp;<?php echo Session::Instance()->uname?>&nbsp;&nbsp;<b class="caret"></b>
             </div>
@@ -78,10 +82,12 @@ $lcinfo = json_decode($lcinfo, true);
         </a>
 
         <a href="#" onclick="_proj_todo_list()" class="btn btn-danger btn-small " type="button">
-            TODO <?php echo $this->T('plugins-desc') ?>: &nbsp;&nbsp;
-            <i class="icon-comment icon-white"></i> <?php echo $this->T('Chat')?> &nbsp;
-            <i class="icon-list icon-white"></i> <?php echo $this->T('Task Manage')?> ...
+            TODO 
         </a>
+
+         <a href="#" onclick="_proj_webterm()" class="btn btn-danger btn-small " type="button">
+                Terminal 
+            </a>
 
     </td>
 
@@ -162,7 +168,7 @@ $lcinfo = json_decode($lcinfo, true);
         <tr><td height="10px" id="h5c-resize-roww0" class="h5c_resize_row hide"></td></tr>
         
         <tr>
-          <td id="h5c-tablet-framew1" class="hdev-layout-container hide" valign="top">
+          <td id="h5c-tablet-framew1" class="hdev-layout-container" valign="top">
             
             <div id="h5c-tablet-tabs-framew1" class="h5c_tablet_tabs_frame pgtabs_frame">
               <div class="h5c_tablet_tabs_lm">
@@ -268,6 +274,17 @@ function _proj_todo_list()
 {
     lessModalOpen("/lesscreator/app/todo", 1, 750, 450, 'TODO list', null);
 }
+function _proj_webterm()
+{
+    var opt = {
+        //'img': '/lesscreator/static/img/app-t3-16.png',
+        'title': 'Terminal',
+        'close': '1',
+    };
+
+    h5cTabOpen("/lesscreator/term/index?", 'w1', 'html', opt);
+}
+_proj_webterm();
 
 lcEditor.Config.LangEditMode = '<?php echo $this->T('Editor Mode Settings')?>';
 

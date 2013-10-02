@@ -19,7 +19,7 @@ if (!Session::IsLogin()) {
   <script src="/lesscreator/static/js/c.js"></script>
   <script src="/lesscreator/static/js/gen.js"></script>
   <script src="/lesscreator/static/js/editor.js"></script>
-  <script src="/lesscreator/~/codemirror3/lib/codemirror.min.js"></script>
+  <script src="/lesscreator/~/codemirror3/lib/codemirror.js"></script>
 
   <link href="/lesscreator/~/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/lesscreator/~/lessui/css/lessui.css" rel="stylesheet" />
@@ -113,6 +113,8 @@ function _load_deps()
         "/lesscreator/~/codemirror3/mode/all.js",
         "/lesscreator/~/codemirror3/addon/dialog/dialog.js",
         "/lesscreator/~/codemirror3/addon/dialog/dialog.css",
+
+        "/lesscreator/static/js/term.js",
     ];
 
     seajs.use(rqs, function() {
@@ -130,7 +132,7 @@ function _load_sys_config()
         access_token: lessCookie.Get("access_token"),
     }
 
-    var url = "/lesscreator/api?func=env-init";
+    var url = "/lesscreator/api?func=env-init&_="+ Math.random();
     
     $.ajax({
         url     : url,
@@ -227,20 +229,25 @@ function _env_init()
     var spacecol = 10;
 
     $("#h5c-lyo-col-w-ctrl").bind('mousedown', function() {
+        
         $("#hdev_layout").mousemove(function(e) {
 
             var w = $('body').width() - (3 * spacecol);
             var p = $('#h5c-lyo-col-t').position();
             var wrs = e.pageX - p.left - 5;
 
-            lessCookie.SetByDay("cfg_lyo_colt_w", wrs / w, 365);
+            lessLocalStorage.Set("lcLyoLeftW", wrs / w);
+            lessSession.Set("lcLyoLeftW", wrs / w);
+
             lcLayoutResize();
         });
     });
 
-    /* $("#h5c-resize-roww0").bind('mousedown', function() {
+    $("#h5c-resize-roww0").bind('mousedown', function() {
+        
         $("#hdev_layout").mousemove(function(e) {
-            bh = $('body').height();
+            
+            var bh = $('body').height();
             if (e.pageY > bh - 37) {
                 return;
             }
@@ -249,10 +256,18 @@ function _env_init()
             if (l < 0) {
                 return;
             }
+            
             lessCookie.SetByDay("config_tablet_roww0", (l - 5), 365);
+            lessLocalStorage.Set("lcLyoLeftW", wrs / w);
+            lessSession.Set("lcLyoLeftW", wrs / w);
+
             lcLayoutResize();
         });
     });
+
+    
+    
+    /* 
     $("#h5c-resize-rowt0").bind('mousedown', function() {
         $("#hdev_layout").mousemove(function(e) {
             bh = $('body').height();

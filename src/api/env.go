@@ -10,9 +10,6 @@ import (
     "os/exec"
     "os/user"
     "strconv"
-    //"os"
-    //"strings"
-    //"../../deps/lessgo/passport"
 )
 
 type ApiEnvResponse struct {
@@ -167,12 +164,12 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
     osuser := "lc" + sess.Uname
     u, e := user.Lookup(osuser)
     if e != nil {
-        nologin, err := exec.LookPath("bash")
+        defshell, err := exec.LookPath("bash")
         if err != nil {
             return
         }
         if _, err := exec.Command("/usr/sbin/useradd", "-d", userpath,
-            "-s", nologin, osuser).Output(); err != nil {
+            "-s", defshell, osuser).Output(); err != nil {
             return
         }
         u, e = user.Lookup(osuser)
@@ -195,10 +192,19 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
         this.Cfg.LessFlyDir+"/misc/php/user.index.php",
         userpath+"/webpub/index.php").Output(); err != nil {
 
-        return
+        //return
     }
 
-    //fmt.Println(sess.Uid)
+    if _, err := exec.Command("/bin/cp", "-rp",
+        this.Cfg.Prefix+"/misc/bash/bashrc", userpath+"/.bashrc").Output(); err != nil {
+        // TODO
+    }
+    if _, err := exec.Command(this.Cfg.LessFlyDir+"/bin/lessfly-env-filter",
+        "--lessfly_dir="+this.Cfg.LessFlyDir,
+        "--user="+sess.Uname,
+        "--file="+userpath+"/.bashrc").Output(); err != nil {
+        // TODO
+    }
 
     rsp.Data.User = sess.Uname
     rsp.Data.BaseDir = userpath
