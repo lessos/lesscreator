@@ -1795,7 +1795,7 @@ function lc_terminal_start(termid, wsurl)
     }
     
     var redDataInterv = setInterval(function() {
-        console.log("Asdfasd");
+        //console.log("Asdfasd");
         if (newData) {
             redraw()
             newData = false

@@ -339,6 +339,10 @@ lcEditor.EntrySave = function(urid, cb)
             
             var ctn = h5cTabletFrame[item.target].editor.getValue();
             if (ctn == ret.ctn0_src) {
+                
+                $("#pgtab"+ urid +" .chg").hide();
+                $("#pgtab"+ urid +" .pgtabtitle").removeClass("chglight");
+
                 return lcEditor.MessageReplyStatus(cb, 200, null);
             }
 

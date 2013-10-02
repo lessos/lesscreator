@@ -19,7 +19,7 @@ if (!Session::IsLogin()) {
   <script src="/lesscreator/static/js/c.js"></script>
   <script src="/lesscreator/static/js/gen.js"></script>
   <script src="/lesscreator/static/js/editor.js"></script>
-  <script src="/lesscreator/~/codemirror3/lib/codemirror.js"></script>
+  <script src="/lesscreator/~/codemirror3/lib/codemirror.min.js"></script>
 
   <link href="/lesscreator/~/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/lesscreator/~/lessui/css/lessui.css" rel="stylesheet" />
@@ -264,8 +264,6 @@ function _env_init()
             lcLayoutResize();
         });
     });
-
-    
     
     /* 
     $("#h5c-resize-rowt0").bind('mousedown', function() {
