@@ -87,7 +87,7 @@ func redirToWs(fd int, ws *websocket.Conn) {
 
     defer func() {
         if r := recover(); r != nil {
-            fmt.Fprintf(os.Stderr, "Error occured: %s\n", r)
+            //fmt.Fprintf(os.Stderr, "Error occured: %s\n", r)
             runtime.Goexit()
         }
     }()
@@ -96,9 +96,9 @@ func redirToWs(fd int, ws *websocket.Conn) {
     start, end, buflen := 0, 0, 0
     for {
 
-        switch nr, er := syscall.Read(fd, buf[start:]); {
+        switch nr, _ := syscall.Read(fd, buf[start:]); {
         case nr < 0:
-            fmt.Fprintf(os.Stderr, "error reading from websocket %d with code %d\n", fd, er)
+            //fmt.Fprintf(os.Stderr, "error reading from websocket %d with code %d\n", fd, er)
             return
         case nr == 0: // EOF
             return
@@ -114,7 +114,7 @@ func redirToWs(fd int, ws *websocket.Conn) {
                 }
 
                 if buflen-end >= 6 {
-                    fmt.Fprintf(os.Stderr, "Invalid UTF-8 sequence in output")
+                    //fmt.Fprintf(os.Stderr, "Invalid UTF-8 sequence in output")
                     end = nr
                     break
                 }
@@ -126,12 +126,12 @@ func redirToWs(fd int, ws *websocket.Conn) {
 
             nw, ew := ws.Write(buf_clean[:])
             if ew != nil {
-                fmt.Fprintf(os.Stderr, "error writing to websocket with code %s\n", ew)
+                //fmt.Fprintf(os.Stderr, "error writing to websocket with code %s\n", ew)
                 return
             }
 
             if nw != len(buf_clean) {
-                fmt.Fprintf(os.Stderr, "Written %d instead of expected %d\n", nw, end)
+                //fmt.Fprintf(os.Stderr, "Written %d instead of expected %d\n", nw, end)
             }
 
             start = buflen - end
@@ -151,7 +151,7 @@ func redirFromWs(fd int, ws *websocket.Conn, pid int, winsz *C.struct_winsize) {
 
     defer func() {
         if r := recover(); r != nil {
-            fmt.Fprintf(os.Stderr, "Error occured: %s\n", r)
+            //fmt.Fprintf(os.Stderr, "Error occured: %s\n", r)
             syscall.Kill(pid, syscall.SIGHUP)
             runtime.Goexit()
         }
@@ -179,18 +179,18 @@ func redirFromWs(fd int, ws *websocket.Conn, pid int, winsz *C.struct_winsize) {
         switch buf[0] {
         case 'i':
             length := readInt(ws)
-            switch nr, er := io.ReadFull(ws, buf[0:length]); {
+            switch nr, _ := io.ReadFull(ws, buf[0:length]); {
             case nr < 0:
-                fmt.Fprintf(os.Stderr, "error reading from websocket with code %s\n", er)
+                //fmt.Fprintf(os.Stderr, "error reading from websocket with code %s\n", er)
                 return
             case nr == 0: // EOF
-                fmt.Fprintf(os.Stderr, "connection closed, sending SIGHUP to %d\n")
+                //fmt.Fprintf(os.Stderr, "connection closed, sending SIGHUP to %d\n")
                 syscall.Kill(pid, syscall.SIGHUP)
                 return
             case nr > 0:
-                nw, ew := syscall.Write(fd, buf[0:nr])
+                nw, _ := syscall.Write(fd, buf[0:nr])
                 if nw != nr {
-                    fmt.Fprintf(os.Stderr, "error writing to fd = %d with code %d\n", fd, ew)
+                    //fmt.Fprintf(os.Stderr, "error writing to fd = %d with code %d\n", fd, ew)
                     return
                 }
             }
@@ -206,7 +206,7 @@ func redirFromWs(fd int, ws *websocket.Conn, pid int, winsz *C.struct_winsize) {
 
 func (this *Api) TerminalWS(ws *websocket.Conn) {
 
-    fmt.Println("TerminalWS")
+    //fmt.Println("TerminalWS")
 
     var err error
     var rsp TerminalResponse
@@ -261,7 +261,7 @@ func (this *Api) TerminalWS(ws *websocket.Conn) {
         connections--
 
         if r := recover(); r != nil {
-            fmt.Fprintf(os.Stderr, "Error occured: %s\n", r)
+            //fmt.Fprintf(os.Stderr, "Error occured: %s\n", r)
             runtime.Goexit()
         }
     }()
@@ -282,7 +282,7 @@ func (this *Api) TerminalWS(ws *websocket.Conn) {
         bashargs := []string{"bash", "--rcfile", this.Cfg.LessFlyDir + "/spot/" + sess.Uname + "/.bashrc"}
 
         if err != nil {
-            fmt.Fprintf(os.Stderr, "Could not find bash: %s\n", err)
+            //fmt.Fprintf(os.Stderr, "Could not find bash: %s\n", err)
             bashloc = "/bin/sh"
             bashargs = []string{"sh"}
         }
@@ -293,7 +293,7 @@ func (this *Api) TerminalWS(ws *websocket.Conn) {
         panic("unreachable code")
     }
 
-    fmt.Println("Pid is", pid, " ptty number is", pttyno)
+    //fmt.Println("Pid is", pid, " ptty number is", pttyno)
     go redirFromWs(pttyno, ws, pid, winsz)
     go redirToWs(pttyno, ws)
 
