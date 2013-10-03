@@ -260,7 +260,7 @@ func fsFileGetRead(path string) (FsFile, int, error) {
     path = "/" + strings.Trim(reg.ReplaceAllString(path, "/"), "/")
 
     st, err := os.Stat(path)
-    if os.IsNotExist(err) {
+    if err != nil || os.IsNotExist(err) {
         return file, 404, errors.New("File Not Found")
     }
     file.Size = st.Size()

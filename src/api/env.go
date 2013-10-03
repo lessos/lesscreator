@@ -178,7 +178,7 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
     ugid, _ := strconv.Atoi(u.Gid)
     //fmt.Println(userpath)
     // Instance Folder
-    makedir(userpath, uuid, ugid, 0755)
+    makedir(userpath, uuid, ugid, 0750)
     makedir(userpath+"/webpub", uuid, ugid, 0755)
     makedir(userpath+"/conf", uuid, ugid, 0777)
     makedir(userpath+"/data", uuid, ugid, 0777)
