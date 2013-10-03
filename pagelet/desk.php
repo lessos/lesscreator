@@ -85,7 +85,7 @@ $lcinfo = json_decode($lcinfo, true);
             TODO 
         </a>
 
-         <a href="#" onclick="_proj_webterm()" class="btn btn-danger btn-small " type="button">
+         <a href="#" onclick="_proj_webterm(1)" class="btn btn-danger btn-small " type="button">
                 Terminal 
             </a>
 
@@ -168,7 +168,7 @@ $lcinfo = json_decode($lcinfo, true);
         <tr><td height="10px" id="h5c-resize-roww0" class="h5c_resize_row hide"></td></tr>
         
         <tr>
-          <td id="h5c-tablet-framew1" class="hdev-layout-container" valign="top">
+          <td id="h5c-tablet-framew1" class="hdev-layout-container hide" valign="top">
             
             <div id="h5c-tablet-tabs-framew1" class="h5c_tablet_tabs_frame pgtabs_frame">
               <div class="h5c_tablet_tabs_lm">
@@ -274,17 +274,22 @@ function _proj_todo_list()
 {
     lessModalOpen("/lesscreator/app/todo", 1, 750, 450, 'TODO list', null);
 }
-function _proj_webterm()
+function _proj_webterm(force)
 {
+    if (force != 1 && lessLocalStorage.Get("lcWebTerminal0") != 1) {
+        return;
+    }
+
+    $('#h5c-tablet-framew1').show();
     var opt = {
         //'img': '/lesscreator/static/img/app-t3-16.png',
         'title': 'Terminal',
         'close': '1',
     };
 
-    h5cTabOpen("/lesscreator/term/index?", 'w1', 'html', opt);
+    h5cTabOpen("/lesscreator/term/index?", 'w1', 'webterm', opt);
 }
-_proj_webterm();
+_proj_webterm(0);
 
 lcEditor.Config.LangEditMode = '<?php echo $this->T('Editor Mode Settings')?>';
 

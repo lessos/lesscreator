@@ -223,6 +223,7 @@ function h5cTabSwitch(urid)
 
     switch (item.type) {
     case 'html':
+    case 'webterm':
         if (true || item.data.length < 1) {
             $.ajax({
                 url     : item.url,
@@ -422,6 +423,11 @@ function lcTabClose(urid, force)
     switch (item.type) {
     case 'html':
         _lcTabCloseClean(urid);
+        break;
+    case 'webterm':
+        $('#h5c-tablet-framew1').hide();
+        _lcTabCloseClean(urid);
+        lessLocalStorage.Set("lcWebTerminal0", "0");
         break;
     case 'editor':
 
