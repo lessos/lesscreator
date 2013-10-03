@@ -3,7 +3,7 @@
   "name":"lessCreator",
   "summary":"lessCreator \u4e91\u7aef\u5f00\u53d1\u5e73\u53f0",
   "depends":"bootstrap2,jquery,codemirror3,fam3,LessPHP,lessui",
-  "version":"0.2.8.dev.2013-09-25",
+  "version":"0.2.9.dev.2013-10-03",
   "props_app": "53",
   "runtimes":{
     "php":{
