@@ -28,7 +28,7 @@ if (!Session::IsLogin()) {
   <link href="/lesscreator/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
 
 </head>
-<body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;">
+<body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;" onresize="window.resize &amp;&amp; window.scr &amp;&amp; lc_terminal_start.Resize()">
 
 <div class="loadwell">
   <div class="">
@@ -247,19 +247,17 @@ function _env_init()
         
         $("#hdev_layout").mousemove(function(e) {
             
-            var bh = $('body').height();
-            if (e.pageY > bh - 37) {
-                return;
+            var h = $('#hdev_layout').height() - spacecol;
+            var p = $('#h5c-tablet-framew0').position();
+            var hrs = e.pageY - p.top - 5;
+           
+            if (hrs < 0) {
+                hrs = 0;
             }
-            p = $('#h5c-tablet-framew0').position();
-            l = e.pageY - p.top;
-            if (l < 0) {
-                return;
-            }
-            
-            lessCookie.SetByDay("config_tablet_roww0", (l - 5), 365);
-            lessLocalStorage.Set("lcLyoLeftW", wrs / w);
-            lessSession.Set("lcLyoLeftW", wrs / w);
+            //console.log(h +"/"+ hrs);
+
+            lessLocalStorage.Set("lcLyoCtn0H", hrs / h);
+            lessSession.Set("lcLyoCtn0H", hrs / h);
 
             lcLayoutResize();
         });

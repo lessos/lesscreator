@@ -536,6 +536,8 @@ function lcLayoutResize()
     }
     if (toset == 0 || toset == null) {
         toset = 0.1;
+        lessLocalStorage.Set("lcLyoLeftW", toset);
+        lessSession.Set("lcLyoLeftW", toset);
     }
 
     var left_w = (bw - (3 * spacecol)) * toset;
@@ -581,27 +583,44 @@ function lcLayoutResize()
 
         $('#h5c-resize-roww0').show();
 
-        toset = lessSession.Get('lcLyoCtnH');
+        toset = lessSession.Get('lcLyoCtn0H');
         if (toset == 0 || toset == null) {
-            toset = lessLocalStorage.Get('lcLyoCtnH');
+            toset = lessLocalStorage.Get('lcLyoCtn0H');
         }
         if (toset == 0 || toset == null) {
             toset = 0.7;
-        }
-
-        var ctn0_h = toset * (lyo_h - 10);
-        $('#h5c-tablet-body-w0').height(ctn0_h - ctn0_tab_h - ctn0_tool_h);  
-        if ($('.h5c_tablet_body .CodeMirror').length) {
-            $('.h5c_tablet_body .CodeMirror').width(ctn_w);
-            $('.h5c_tablet_body .CodeMirror').height(ctn0_h - ctn0_tab_h - ctn0_tool_h);
+            lessLocalStorage.Set("lcLyoCtn0H", toset);
+            lessSession.Set("lcLyoCtn0H", toset);
         }
 
         var ctn1_tab_h = $('#h5c-tablet-tabs-framew1').height();
-        var ctn1_h = (1 - toset) * (lyo_h - 10);
+
+        var ctn0_h = toset * (lyo_h - 10);
+        if ((ctn0_h + ctn1_tab_h + 10) > lyo_h) {
+            ctn0_h = lyo_h - ctn1_tab_h - 10;   
+        }
+        var ctn0b_h = ctn0_h - ctn0_tab_h - ctn0_tool_h;
+        if (ctn0b_h < 0) {
+            ctn0b_h = 0;
+            ctn0_h = ctn0_tab_h;
+        } 
+        $('#h5c-tablet-body-w0').height(ctn0b_h);  
+        if ($('.h5c_tablet_body .CodeMirror').length) {
+            $('.h5c_tablet_body .CodeMirror').width(ctn_w);
+            $('.h5c_tablet_body .CodeMirror').height(ctn0b_h);
+        }
         
-        $('#h5c-tablet-body-w1').height(ctn1_h - ctn1_tab_h);
-        $('#lc-terminal').height(ctn1_h - ctn1_tab_h);
-        $('#lc-terminal').width(ctn_w);
+        var ctn1_h = lyo_h - ctn0_h - 10;
+        var ctn1b_h = ctn1_h - ctn1_tab_h;
+        if (ctn1b_h < 0) {
+            ctn1b_h = 0;
+        }
+        $('#h5c-tablet-body-w1').height(ctn1b_h);
+        if (document.getElementById("lc-terminal")) {
+            $('#lc-terminal').height(ctn1b_h);
+            $('#lc-terminal').width(ctn_w);
+            lc_terminal_start.Resize();
+        }
 
     } else {
 

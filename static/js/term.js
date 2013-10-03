@@ -1628,7 +1628,8 @@ window.LessTerminal = (function() {
 })();
 
 var lc_terminal_keymap_opened = false;
-
+var lc_terminal_scr = null;
+var lc_terminal_ws = null;
 function lc_terminal_start(termid, wsurl)
 {
     "use strict";
@@ -1712,15 +1713,15 @@ function lc_terminal_start(termid, wsurl)
         scrollOffset = Math.min(0, Math.max(-screen.history.length, scrollOffset));
         newData = true;
     }
-    
-    var resize = function(scr, ws, initonly)
+
+    var _resize = function(scr, ws, initonly)
     {
-        var colsrows = window_cols_rows()
-        var rows = []
+        var colsrows = window_cols_rows();
+        var rows = [];
         for(var i = 0; i < colsrows[1]; i++) {
             rows.push("<div id='row" + i + "' class='outputrow'>&nbsp;</div>")
         }
-        //document.getElementById('screen').innerHTML = rows.join("\n");
+
         domobj.innerHTML = rows.join("\n");
         if (!initonly) {
             scr.resize(colsrows[1], colsrows[0])
@@ -1735,34 +1736,34 @@ function lc_terminal_start(termid, wsurl)
     var newData = false;
     var scrollOffset = 0;
     var stream = new Stream();
-    var scr = new Screen(colsrows[0], colsrows[1]);
-    stream.attach(scr);
+    lc_terminal_scr = new Screen(colsrows[0], colsrows[1]);
+    stream.attach(lc_terminal_scr);
 
     domobj.addEventListener('mousewheel', function (e) {
         var delta = e.wheelDeltaY || e.wheelDelta;
-        handle_scroll(scr, -delta);
+        handle_scroll(lc_terminal_scr, -delta);
     });
 
     domobj.addEventListener('MozMousePixelScroll', function (e) {
         if (!e.VERTICAL_AXIS) return;
-        handle_scroll(scr, e.detail);
+        handle_scroll(lc_terminal_scr, e.detail);
     });
 
-    var ws = new WebSocket(wsurl, "term");
+    lc_terminal_ws = new WebSocket(wsurl, "term");
 
-    ws.onopen = function() {
+    lc_terminal_ws.onopen = function() {
         var req = {
             "access_token": lessCookie.Get("access_token"),
         }
-        ws.send(JSON.stringify(req))
-        ws.send(indent(colsrows[0], 8))
-        ws.send(indent(colsrows[1], 8))
+        lc_terminal_ws.send(JSON.stringify(req))
+        lc_terminal_ws.send(indent(colsrows[0], 8))
+        lc_terminal_ws.send(indent(colsrows[1], 8))
     }
-    ws.onmessage = function(ev) {
+    lc_terminal_ws.onmessage = function(ev) {
         stream.feed(ev.data)
         newData = true
     }
-    ws.onclose = function() {
+    lc_terminal_ws.onclose = function() {
         stream.feed("Connection closed\n")
         newData = true
 
@@ -1785,12 +1786,12 @@ function lc_terminal_start(termid, wsurl)
     
     function send_cmd(val) {
         //console.log("send_cmd:"+ val);
-        ws.send('i' + indent(string_utf8_len(val + ''), 8) + val)
+        lc_terminal_ws.send('i' + indent(string_utf8_len(val + ''), 8) + val)
     }
     
     function redraw() {
-        for (var i = 0; i < scr.lines; i++) {
-            redraw_line(scr, i);
+        for (var i = 0; i < lc_terminal_scr.lines; i++) {
+            redraw_line(lc_terminal_scr, i);
         }
     }
     
@@ -1802,7 +1803,6 @@ function lc_terminal_start(termid, wsurl)
         }
     }, 16);
     
-    resize(scr, ws, true);
 
     var uiCheckInterv = setInterval(function() {
         
@@ -1810,14 +1810,24 @@ function lc_terminal_start(termid, wsurl)
             return;
         }
 
-        ws.close();
+        lc_terminal_ws.close();
         
         clearInterval(redDataInterv);
         clearInterval(uiCheckInterv);
 
     }, 3000);
-}
 
+    lc_terminal_start.Resize = function()
+    {
+        if (!document.getElementById(termid)) {
+            return;
+        }
+
+        _resize(lc_terminal_scr, lc_terminal_ws);
+    }
+
+    _resize(lc_terminal_scr, lc_terminal_ws, true);
+}
 
 /*
 function get_line_html(chars, line)
