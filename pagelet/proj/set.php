@@ -372,6 +372,9 @@ function _proj_rt_set(node)
     case "rt/php-set":
         title = "<?php echo sprintf($this->T('%s Settings'), 'PHP')?>";
         break;
+    case "rt/go-set":
+        title = "<?php echo sprintf($this->T('%s Settings'), 'Go')?>";
+        break;
     default:
         return;
     }

@@ -62,7 +62,7 @@ foreach ($ls->data as $f) {
     $p = trim("{$path}/$fn", '/');
     $p = preg_replace("/\/+/", "/", $p);
     $pdiv = md5($p);
-    
+    //echo $fm;
     //$p = urlencode($p);
     if ($f->isdir == 1) {
         
@@ -79,6 +79,7 @@ foreach ($ls->data as $f) {
         $href   = "javascript:_fs_tree_dir('{$p}', 0)";
         
     } else if (substr($fm, 0, 4) == "text"
+        || substr($fn, -4) == ".tpl"
         || substr($fm, 0, 23) == "application/x-httpd-php"
         || $fm == "application/javascript"
         || $fm == "application/x-empty"
@@ -100,7 +101,8 @@ foreach ($ls->data as $f) {
         } else if (substr($fn, -5) == '.html' 
             || substr($fn, -4) == '.htm' 
             || substr($fn, -6) == '.phtml'
-            || substr($fn, -6) == '.xhtml') {
+            || substr($fn, -6) == '.xhtml'
+            || substr($fn, -4) == '.tpl') {
             $fmi = 'page_white_world';
         } else if (substr($fn, -3) == '.sh' || $fm == 'text/x-shellscript') {
             $fmi = 'application_osx_terminal';

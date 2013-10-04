@@ -64,6 +64,21 @@
 </table>
 </a>
 
+<a class="kyexic" href="#rt/go-set">
+<table>
+    <tr class="line">
+        <td width="100px"><img class="rtlogo" src="/lesscreator/static/img/rt/go_200.png" /></td>
+        <td >
+            <div class="title">Go <span class="indev"></span></div>
+            <div class="desc">Go Runtime Environment</div>
+        </td>
+        <td align="right">
+            <img class="rtset imggray" src="/lesscreator/static/img/for-test/setting2-128.png" />
+        </td>
+    </tr>
+</table>
+</a>
+
 <a class="kyexic" href="#rt/java-set">
 <table>
     <tr class="line">
@@ -86,21 +101,6 @@
         <td >
             <div class="title">Python <span class="indev">(<?php echo $this->T('Upcoming, later supported')?>)</span></div>
             <div class="desc">Python Runtime Environment</div>
-        </td>
-        <td align="right">
-            <img class="rtset imggray" src="/lesscreator/static/img/for-test/setting2-128.png" />
-        </td>
-    </tr>
-</table>
-</a>
-
-<a class="kyexic" href="#rt/go-set">
-<table>
-    <tr class="line">
-        <td width="100px"><img class="rtlogo imggray" src="/lesscreator/static/img/rt/go_200.png" /></td>
-        <td >
-            <div class="title">Go <span class="indev">(<?php echo $this->T('Upcoming, later supported')?>)</span></div>
-            <div class="desc">Go Runtime Environment</div>
         </td>
         <td align="right">
             <img class="rtset imggray" src="/lesscreator/static/img/for-test/setting2-128.png" />
@@ -141,6 +141,9 @@ $(".kyexic").click(function(){
         title = "<?php echo $this->T('Setting')?> Nginx"
         break;
     case "rt/php-set":
+        title = "<?php echo $this->T('Setting')?> PHP";
+        break;
+    case "rt/go-set":
         title = "<?php echo $this->T('Setting')?> PHP";
         break;
     default:
