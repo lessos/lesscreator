@@ -73,7 +73,7 @@
             <div class="desc">Go Runtime Environment</div>
         </td>
         <td align="right">
-            <img class="rtset imggray" src="/lesscreator/static/img/for-test/setting2-128.png" />
+            <img class="rtset" src="/lesscreator/static/img/for-test/setting2-128.png" />
         </td>
     </tr>
 </table>

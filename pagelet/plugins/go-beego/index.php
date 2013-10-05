@@ -43,7 +43,7 @@ if ($fsini->status != 200) {
 ?>
 </ul><br/>
 
-<a class="btn btn-success" href="#go-beego/start" onclick="_plugin_yaf_mvc_start()"><?php echo $this->T('Confirm and Start Beego Framework MVC layer')?></a>
+<a class="btn btn-success" href="#go-beego/start" onclick="_plugin_go_beego_start()"><?php echo $this->T('Confirm and Start Beego Framework MVC layer')?></a>
 
 </div>
 
@@ -51,7 +51,7 @@ if ($fsini->status != 200) {
 
 <script type="text/javascript">
 
-function _plugin_yaf_mvc_start()
+function _plugin_go_beego_start()
 {
 	var req = {
         "access_token" : lessCookie.Get("access_token"),
@@ -69,7 +69,7 @@ function _plugin_yaf_mvc_start()
         success : function(rsp) {
             _fs_file_new_callback("/");
             $("#jxaebr").hide();
-            _plugin_yaf_cvlist();
+            _plugin_go_beego_cvlist();
         },
         error   : function(xhr, textStatus, error) {
             //
@@ -77,7 +77,7 @@ function _plugin_yaf_mvc_start()
     });
 }
 
-function _plugin_yaf_cvlist()
+function _plugin_go_beego_cvlist()
 {
     var uri = '/lesscreator/plugins/go-beego/fs-ov-list?_='+ Math.random();
     uri += "&proj="+ lessSession.Get("ProjPath");
@@ -98,7 +98,7 @@ function _plugin_yaf_cvlist()
 if ($fsini->status != 200) {
     echo '$("#jxaebr").show();';
 } else {
-    echo "_plugin_yaf_cvlist();";
+    echo "_plugin_go_beego_cvlist();";
 }
 ?>
 

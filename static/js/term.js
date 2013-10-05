@@ -1630,14 +1630,13 @@ window.LessTerminal = (function() {
 var lc_terminal_keymap_opened = false;
 var lc_terminal_scr = null;
 var lc_terminal_ws = null;
-function lc_terminal_start(termid, wsurl)
+function lc_terminal_conn(termid, wsurl)
 {
     "use strict";
     var domobj = document.getElementById(termid);    
 
     var window_cols_rows = function()
     {
-
         var winW = 630, winH = 460;
         if (domobj && domobj.offsetWidth) {
             winW = domobj.offsetWidth;
@@ -1788,6 +1787,11 @@ function lc_terminal_start(termid, wsurl)
         //console.log("send_cmd:"+ val);
         lc_terminal_ws.send('i' + indent(string_utf8_len(val + ''), 8) + val)
     }
+
+    lc_terminal_conn.SendCmd = function(val)
+    {
+        send_cmd(val);
+    }
     
     function redraw() {
         for (var i = 0; i < lc_terminal_scr.lines; i++) {
@@ -1817,13 +1821,25 @@ function lc_terminal_start(termid, wsurl)
 
     }, 3000);
 
-    lc_terminal_start.Resize = function()
+    lc_terminal_conn.Resize = function()
     {
         if (!document.getElementById(termid)) {
             return;
         }
 
         _resize(lc_terminal_scr, lc_terminal_ws);
+    }
+
+    lc_terminal_conn.IsOk = function() {
+        if (!document.getElementById(termid)) {
+            return false;
+        }
+
+        if (lc_terminal_ws == null) {
+            return false;
+        }
+
+        return true;
     }
 
     _resize(lc_terminal_scr, lc_terminal_ws, true);

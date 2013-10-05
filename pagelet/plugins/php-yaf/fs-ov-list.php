@@ -136,7 +136,7 @@ $(".rcifxb-new").click(function(event) {
     var url = "/lesscreator/plugins/php-yaf/fs-ov-controller-new";
     url += "?proj="+ lessSession.Get("ProjPath");
 
-    lessModalOpen(url, 0, 550, 180, tit, null);
+    lessModalOpen(url, 1, 550, 180, tit, null);
 });
 
 $(".rr20fx").click(function(event) {

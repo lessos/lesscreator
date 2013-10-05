@@ -625,7 +625,7 @@ function lcLayoutResize()
         if (document.getElementById("lc-terminal")) {
             $('#lc-terminal').height(ctn1b_h);
             $('#lc-terminal').width(ctn_w);
-            lc_terminal_start.Resize();
+            lc_terminal_conn.Resize();
         }
 
     } else {

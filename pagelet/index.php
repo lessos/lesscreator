@@ -28,8 +28,8 @@ if (!Session::IsLogin()) {
   <link href="/lesscreator/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
 
 </head>
-<body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;" onresize="window.resize &amp;&amp; window.scr &amp;&amp; lc_terminal_start.Resize()">
-
+<!--<body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;" onresize="window.resize &amp;&amp; window.scr &amp;&amp; lc_terminal_conn.Resize()">-->
+<body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;">
 <div class="loadwell">
   <div class="">
     <div id="_load-alert" class="alert alert-success">

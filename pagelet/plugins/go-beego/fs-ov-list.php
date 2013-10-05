@@ -38,7 +38,7 @@ $projPath = lesscreator_proj::path($this->req->proj);
     <th>Controller</th>
     <th><span class="pull-right">Action</span></th>
     <th>View</th>
-    <th><a class="btn btn-mini pull-right" href="#fs/refresh" onclick="_plugin_yaf_cvlist()"><i class="icon-refresh"></i> <?php echo $this->T('Refresh')?></a></th>
+    <th><a class="btn btn-mini pull-right" href="#fs/refresh" onclick="_plugin_go_beego_cvlist()"><i class="icon-refresh"></i> <?php echo $this->T('Refresh')?></a></th>
     </tr>
 </thead>
 <tbody>
@@ -46,7 +46,7 @@ $projPath = lesscreator_proj::path($this->req->proj);
 //$fs = Directory::listFiles($projPath ."/application/controllers");
 
 $rs2 = lesscreator_fs::FsList($projPath ."/views/");
-    
+
 $vs = array();
 foreach ($rs2->data as $v) {
     $ns = strtolower(strstr($v->name, '.', true));
@@ -54,81 +54,95 @@ foreach ($rs2->data as $v) {
 }
 
 $fs = lesscreator_fs::FsList($projPath ."/controllers");
+
+$trs = array();
+
 foreach ($fs->data as $v) {
-    
 
     $file = $v->name;
 
-
-    //$file = trim($file, "/");
-    //$rs = lesscreator_fs::FsFileGet($projPath ."/application/controllers/". $file);
     $rs = lesscreator_fs::FsFileGet($v->path);
     if ($rs->status != 200) {
         continue;
     }
 
-    echo "<tr>";
-    echo "<td><a class=\"badge badge-important rr20fx\" href='#fs/{$file}/'>$file</a></td>";
-    
-    echo "<td>";
+    $trs[$file] = array();
 
     $pat = array("%(#|;|(//)).*%", "%/\*(?:(?!\*/).)*\*/%s");
     $str = preg_replace($pat, "", $rs->data->body);
 
     $str = str_replace("\n", "NNN", $str);
-    $vs2 = array();
-    if (preg_match_all('/\*(.*?)Controller(.*?)\ (Get|Post|Put|Delete)\((.*?)\}/', $str, $mat)) {
-        //this.TplNames = "index.tpl"
-        //echo "<pre>";
-        //echo __LINE__;
-        //print_r($mat);
-        //echo "</pre>";
-        //(.*?)\{(.*?)this.TplNames(.*?)\"(.*?)\"NNN/
+
+    if (preg_match_all('/type\s+(.*?)Controller\s+struct\s+\{/', $str, $mat)) {
+        
+        foreach ($mat[1] as $v) {
+            if (!isset($trs[$file][$v])) {
+                $trs[$file][$v] = array();
+            }
+        }
+    }
+
+   
+    if (preg_match_all('/\*(.*?)Controller(.*?)\ (Get|Post|Put|Delete|Head|Patch|Options|Finish)\((.*?)\}/', $str, $mat)) {
+
         foreach ($mat[3] as $k => $v) {
 
-            echo "<a class='badge badge-info pull-right rr20fx' href='#fs/{$file}/{$v}'>{$v}()</a>";
+            $ctrl = $mat[1][$k];
 
-            $vs2[$v] = null;
+            if (!isset($trs[$file][$ctrl])) {
+                $trs[$file][$ctrl] = array();
+            }
+
+            $trs[$file][$ctrl][$v] = null;
             
             if (isset($mat[4][$k]) && preg_match('/this.TplNames(.*?)\"(.*?)\"NNN/', $mat[4][$k], $mat2)) {
 
-                //echo "<pre>";
-                //print_r($mat2);
-                //print_r($vs);
-                //echo "</pre>";
                 if (in_array($mat2[2], $vs)) {
-                    $vs2[$v] = $mat2[2];
+                    $trs[$file][$ctrl][$v] = $mat2[2];
                 }
             }
 
         }
     }
-
-    echo "<a class='badge pull-right rr20fx-new' href='#fs/{$file}/new'>
-        <i class='icon-plus-sign icon-white'></i> 
-        ".$this->T('New')." Action
-        </a>";
-    echo "</td>";
-
-    echo "<td>";
-    foreach ($vs2 as $k => $v) {
-
-        $k = strtolower(substr($k, 0, 1)) . substr($k, 1);
-
-        if ($v == null) {
-            echo "<a class='badge pull-left tyaery-new' href='#fs/views/{$k}'><i class='icon-plus-sign icon-white'></i>  ".$this->T('New')." View</a>";
-        } else {
-            echo "<a class='badge badge-success pull-left tyaery' href='#fs/views/{$v}'>{$v}</a>";
-        }
-    }
-    echo "</td>";
-    echo "<td></td>";
-    echo "</tr>";
-
-    //echo $file;
 }
 ?>
 <tr>
+
+<?php
+foreach ($trs as $file => $v) {
+
+    foreach ($v as $ctrl => $v2) {
+        echo "<tr>";
+        echo "<td><a class=\"badge badge-important rr20fx\" href='#fs/{$file}/{$ctrl}Controller'>{$ctrl}Controller ({$file})</a></td>";
+    
+        $actions = "";
+        $views = "";
+        foreach ($v2 as $action => $view) {
+            
+            $actions .= "<a class='badge badge-info pull-right rr20fx' href='#fs/{$file}/{$ctrl}Controller/{$action}'>{$action}()</a>";
+
+            if ($view == null) {
+                $views .= "<a class='badge pull-left tyaery-new' href='#fs/views/".strtolower($ctrl)."-".strtolower($action).".tpl'><i class='icon-plus-sign icon-white'></i>  ".$this->T('New')." View</a>";
+            } else {
+                $views .= "<a class='badge badge-success pull-left tyaery' href='#fs/views/{$view}'>{$view}</a>";
+            }
+        }
+
+        echo "<td>{$actions}";
+        echo "<a class='badge pull-right rr20fx-new' href='#fs/{$file}/{$ctrl}/new'>
+        <i class='icon-plus-sign icon-white'></i> 
+        ".$this->T('New')." Action
+        </a>";
+        echo "</td>";
+
+        echo "<td>{$views}</td>";
+        
+        echo "<td></td>";
+        echo "</tr>";
+    }
+}
+?>
+
 <td>
     <a class='badge rcifxb-new' href='#fs/new'>
         <i class='icon-plus-sign icon-white'></i> 
@@ -150,7 +164,7 @@ $(".rcifxb-new").click(function(event) {
     var url = "/lesscreator/plugins/go-beego/fs-ov-controller-new";
     url += "?proj="+ lessSession.Get("ProjPath");
 
-    lessModalOpen(url, 0, 550, 180, tit, null);
+    lessModalOpen(url, 1, 550, 180, tit, null);
 });
 
 $(".rr20fx").click(function(event) {
@@ -158,25 +172,27 @@ $(".rr20fx").click(function(event) {
     var uri = $(this).attr("href").split("/");
 
     var opt = {
-        "img": "/lesscreator/static/img/page_white_php.png",
+        "img": "/lesscreator/static/img/ht-page_white_golang.png",
         "close": "1",
         "editor_strto": uri[2],
     }
-
-    h5cTabOpen('application/controllers/'+ uri[1],'w0','editor', opt);
+    
+    if (uri.length == 4) {
+        opt.editor_strto = uri[2] +') '+ uri[3];
+    }
+    //console.log(opt);
+    h5cTabOpen('controllers/'+ uri[1],'w0','editor', opt);
 });
 
 $(".rr20fx-new").click(function(event) {
 
     var uri = $(this).attr("href").split("/");
 
-
     var tit = "<?php echo $this->T('New')?> Action";
     var url = "/lesscreator/plugins/go-beego/fs-ov-action-new";
-    url += "?ctl="+ uri[1];
+    url += "?file="+uri[1]+"&ctl="+ uri[2];
     url += "&proj="+ lessSession.Get("ProjPath");
-
-
+    //console.log(url);
     lessModalOpen(url, 1, 550, 180, tit, null);
 });
 
@@ -189,14 +205,14 @@ $(".tyaery").click(function(event) {
         "close": "1",
     }
 
-    h5cTabOpen('application/views/'+ uri[1] +"/"+ uri[2],'w0','editor', opt);
+    h5cTabOpen('views/'+ uri[2],'w0','editor', opt);
 });
 
 $(".tyaery-new").click(function(event) {
 
     var uri = $(this).attr("href").split("/");
-
-    _fs_file_new_modal("file", "/application/views/"+ uri[1], uri[2], 1);
+    //console.log(uri);
+    _fs_file_new_modal("file", "/views/", uri[2], 1);
 });
 
 

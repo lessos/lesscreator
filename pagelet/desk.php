@@ -291,6 +291,10 @@ function _proj_webterm(force)
 }
 _proj_webterm(0);
 
+setTimeout(function() {
+    //lc_terminal_conn.SendCmd("ping hooto.com\r\n");
+}, 3000);
+
 lcEditor.Config.LangEditMode = '<?php echo $this->T('Editor Mode Settings')?>';
 
 var opt = {

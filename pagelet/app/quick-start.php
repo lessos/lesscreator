@@ -1,15 +1,16 @@
 <style>
 
 .dcrhlv .itembox {
-    padding: 20px;
+    padding: 5px;
     text-decoration: none;
     font-size: 12px;
     background-color: #e5e5e5;
     border: 1px solid #e5e5e5;
     border-radius: 5px;
+    margin: 0 ;
 }
 .dcrhlv .title {
-    margin: 0; padding: 2px 0; font-weight: bold; font-size: 16px; line-height: 100%; color: #333333;
+    margin: 0; padding: 2px 0; font-weight: bold; font-size: 12px; line-height: 100%; color: #333333;
 }
 .dcrhlv .desc {
     margin: 0; padding: 0; color: #999999; line-height: 100%;
@@ -24,11 +25,11 @@
 }
 .dcrhlv .itembox img {
     position: relative; left: 1px; top: 1px; margin:0;
-    width: 80px; height: 80px;
+    width: 40px; height: 40px;
 }
 .dcrhlv .itembox2 {
     position: relative; left: 1px; top: 1px;
-    width: 40px; height: 40px;
+    width: 20px; height: 20px;
 }
 </style>
 
@@ -48,26 +49,34 @@
     <div onclick="lcProjNew()" ="#" class="itembox">
        <img src="/lesscreator/static/img/proj/proj-new0.png" />
     </div>
+    <?php echo $this->T('New Project')?><br/>
 </td>
 <td>
     <img class="itembox2" src="/lesscreator/static/img/proj/arrow-right-64.png" />
 </td>
 <td>
     <div onclick="_proj_quickstart_phpyaf()" class="itembox">
-    <img src="/lesscreator/static/img/plugins/php-yaf/yaf-y-128.png" />
+    <img src="/lesscreator/static/img/plugins/php-yaf/yaf-y-48.png" />
     </div>
+    <?php echo $this->T('Auto Initialize Project files')?> (Yaf)
+    <div onclick="_proj_quickstart_beego()" class="itembox">
+    <img src="/lesscreator/static/img/plugins/go-beego/beego-ico-48.png" />
+    </div>
+    <?php echo $this->T('Auto Initialize Project files')?> (Beego)
 </td>
-<td>
+<td valign="middle">
     <img class="itembox2" src="/lesscreator/static/img/proj/arrow-right-64.png" />
 </td>
 <td>
     <div onclick="_proj_quickstart_launch()" class="itembox">
     <img src="/lesscreator/static/img/proj/play-128.png" />
     </div>
+    <?php echo $this->T('Run and Deploy')?>
+</td>
 </td>
 
 </tr>
-
+<!--
 <tr>
 <td align="left">
     <?php echo $this->T('New Project')?><br/>
@@ -84,6 +93,9 @@
 </td>
 
 </tr>
+-->
+
+
 </table>
 </div>
 
@@ -98,7 +110,7 @@ function _proj_quickstart_phpyaf()
     }
 
     var opt = {
-        'title': 'Yaf Framework',
+        'title': 'Yaf Framework (PHP)',
         'close':'1',
         'img': '/lesscreator/static/img/plugins/php-yaf/yaf-s2-48.png',
     }
@@ -107,7 +119,23 @@ function _proj_quickstart_phpyaf()
 
     h5cTabOpen(url, 'w0', 'html', opt);
 }
+function _proj_quickstart_beego()
+{
+    if (!projCurrent) {
+        alert('<?php echo $this->T('New Project First')?>');
+        return;
+    }
 
+    var opt = {
+        'title': 'Beego Framework (Go)',
+        'close':'1',
+        'img': '/lesscreator/static/img/plugins/go-beego/beego-ico-48.png',
+    }
+
+    var url = '/lesscreator/plugins/go-beego/index?proj='+ lessSession.Get("ProjPath");
+
+    h5cTabOpen(url, 'w0', 'html', opt);
+}
 function _proj_quickstart_launch()
 {
     if (!projCurrent) {
