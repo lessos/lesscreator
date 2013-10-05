@@ -215,7 +215,7 @@ lcEditor.LoadInstance = function(entry)
                 
                 if (crs.findNext()) {
                 
-                    var lineto = crs.from().line + 2;
+                    var lineto = crs.from().line + 3;
                     if (lineto > cminst.lineCount()) {
                         lineto = cminst.lineCount() - 1;
                     }
@@ -348,6 +348,9 @@ lcEditor.EntrySave = function(urid, cb)
 
             req.data.body = ctn;
             req.data.sumcheck = lessCryptoMd5(ctn);
+        } else if (ret.ctn1_sum.length < 30) {
+            
+            return lcEditor.MessageReplyStatus(cb, 200, null);
 
         } else if (ret.ctn1_src != ret.ctn0_src) {
 
