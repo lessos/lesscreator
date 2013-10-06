@@ -80,6 +80,27 @@ class lesscreator_fs
         return $ret;
     }
 
+    public static function FsFileExists($file)
+    {
+        $req = array(
+            'data' => array('path' => $file),
+        );
+
+        $cli = self::NetHttp("http://127.0.0.1:9531/lesscreator/api/fs-file-exists");
+
+        $ret = $cli->Post(json_encode($req));
+        if ($ret != 200 && $ret != 404) {
+            return false;
+        }
+
+        $ret = json_decode($cli->getBody(), false);
+        if (!isset($ret->status) || $ret->status == 404) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static function FsFilePut($path, $body)
     {
         $req = array(

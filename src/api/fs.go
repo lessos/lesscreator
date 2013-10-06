@@ -266,6 +266,57 @@ func (this *Api) FsFileGet(w http.ResponseWriter, r *http.Request) {
     rsp.Status = status
 }
 
+func (this *Api) FsFileExists(w http.ResponseWriter, r *http.Request) {
+
+    var rsp struct {
+        ApiResponse
+        Data FsFile `json:"data"`
+    }
+
+    defer func() {
+
+        if rsp.Status == 0 {
+            rsp.Status = 500
+            rsp.Message = "Internal Server Error"
+        }
+
+        if rspj, err := utils.JsonEncode(rsp); err == nil {
+            io.WriteString(w, rspj)
+        }
+        r.Body.Close()
+    }()
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
+        return
+    }
+
+    var req struct {
+        AccessToken string `json:"access_token"`
+        Data        FsFile `json:"data"`
+    }
+    err = utils.JsonDecode(string(body), &req)
+    if err != nil {
+        rsp.Status = 500
+        rsp.Message = err.Error()
+        return
+    }
+
+    reg, _ := regexp.Compile("/+")
+    path := "/" + strings.Trim(reg.ReplaceAllString(req.Data.Path, "/"), "/")
+
+    _, err = os.Stat(path)
+    if err != nil || os.IsNotExist(err) {
+        rsp.Status = 404
+        rsp.Message = "File Not Found"
+    } else {
+        rsp.Status = 200
+        rsp.Message = ""
+    }
+}
+
 func fsFileGetRead(path string) (FsFile, int, error) {
 
     var file FsFile
@@ -280,7 +331,7 @@ func fsFileGetRead(path string) (FsFile, int, error) {
     }
     file.Size = st.Size()
 
-    if st.Size() > (2 * 1024 * 1024) {
+    if st.Size() > (21 * 1024 * 1024) {
         return file, 413, errors.New("File size is too large") // Request Entity Too Large
     }
 
