@@ -45,10 +45,14 @@ $projPath = lesscreator_proj::path($this->req->proj);
 <?php
 //$fs = Directory::listFiles($projPath ."/application/controllers");
 
-$rs2 = lesscreator_fs::FsList($projPath ."/views/");
-
+$rs2 = lesscreator_fs::FsListAll($projPath ."/views/");
 $vs = array();
 foreach ($rs2->data as $v) {
+    
+    if ($v->isdir == 1) {
+        continue;
+    }
+
     $ns = strtolower(strstr($v->name, '.', true));
     $vs[] = $v->name;
 }
@@ -109,6 +113,7 @@ foreach ($fs->data as $v) {
 <tr>
 
 <?php
+
 foreach ($trs as $file => $v) {
 
     foreach ($v as $ctrl => $v2) {
@@ -198,21 +203,21 @@ $(".rr20fx-new").click(function(event) {
 
 $(".tyaery").click(function(event) {
 
-    var uri = $(this).attr("href").split("/");
+    var uri = $(this).attr("href").substr(4);
 
     var opt = {
         "img": "/lesscreator/static/img/page_white_world.png",
         "close": "1",
     }
-
-    h5cTabOpen('views/'+ uri[2],'w0','editor', opt);
+    //console.log(uri);
+    h5cTabOpen(uri,'w0','editor', opt);
 });
 
 $(".tyaery-new").click(function(event) {
 
     var uri = $(this).attr("href").split("/");
     //console.log(uri);
-    _fs_file_new_modal("file", "/views/", uri[2], 1);
+    _fs_file_new_modal("file", "/views/", uri[2], 0);
 });
 
 
