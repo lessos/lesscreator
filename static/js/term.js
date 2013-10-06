@@ -1383,7 +1383,7 @@ Term.prototype.open = function (termid) {
         if (!el) return;
         cursor_is_visible = !cursor_is_visible;
         el.style.backgroundColor = cursor_is_visible ? 'grey' : '';
-    }, 1000);
+    }, 500);
 };
 Term.prototype.stopEventHandler = function() {
 
@@ -1398,6 +1398,7 @@ Term.prototype.stopEventHandler = function() {
 
     lc_terminal_keymap_opened = false;
     clearInterval(blinkInterv);
+    blinkInterv = null;
 }
 
 function keyDownHandler(ev) {
