@@ -20,7 +20,28 @@ class lesscreator_fs
     public static function FsList($path)
     {
         $req = array(
-            'data' => $path,
+            'data' => array('path' => $path, 'subdir' => false),
+        );
+
+        $cli = self::NetHttp("http://127.0.0.1:9531/lesscreator/api/fs-list");
+
+        $ret = $cli->Post(json_encode($req));
+        if ($ret != 200) {
+            return false;
+        }
+
+        $ret = json_decode($cli->getBody(), false);
+        if (!isset($ret->status)) {
+            return false;
+        }
+
+        return $ret;
+    }
+    
+    public static function FsListAll($path)
+    {
+        $req = array(
+            'data' => array('path' => $path, 'subdir' => true)
         );
 
         $cli = self::NetHttp("http://127.0.0.1:9531/lesscreator/api/fs-list");

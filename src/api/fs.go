@@ -121,7 +121,10 @@ func (this *Api) FsList(w http.ResponseWriter, r *http.Request) {
 
     var req struct {
         AccessToken string `json:"access_token"`
-        Data        string `json:"data"`
+        Data        struct {
+            Path   string `json:"path"`
+            Subdir bool   `json:"subdir"`
+        }   `json:"data"`
     }
     err = utils.JsonDecode(string(body), &req)
     if err != nil {
@@ -131,20 +134,32 @@ func (this *Api) FsList(w http.ResponseWriter, r *http.Request) {
     }
 
     reg, _ := regexp.Compile("/+")
-    req.Data = "/" + strings.Trim(reg.ReplaceAllString(req.Data, "/"), "/")
-    if !strings.Contains(req.Data, "*") {
-        req.Data += "/*"
+    req.Data.Path = "/" + strings.Trim(reg.ReplaceAllString(req.Data.Path, "/"), "/")
+
+    rsp.Data = dirlist(req.Data.Path, "", req.Data.Subdir)
+
+    rsp.Status = 200
+}
+
+func dirlist(path, ppath string, subdir bool) []FsFile {
+
+    var ret []FsFile
+
+    globpath := path
+    if !strings.Contains(globpath, "*") {
+        globpath += "/*"
     }
-    //fmt.Println(req.Data)
 
-    // req.Data =
+    rs, err := filepath.Glob(globpath)
 
-    rs, err := filepath.Glob(req.Data)
     if err != nil {
-        rsp.Status = 500
-        rsp.Message = err.Error()
-        return
+        return ret
     }
+
+    if len(ppath) > 0 {
+        ppath += "/"
+    }
+
     for _, v := range rs {
 
         var file FsFile
@@ -155,24 +170,24 @@ func (this *Api) FsList(w http.ResponseWriter, r *http.Request) {
             continue
         }
 
-        file.Name = st.Name()
+        file.Name = ppath + st.Name()
         file.Size = st.Size()
         file.IsDir = st.IsDir()
         file.ModTime = st.ModTime().Format("2006-01-02T15:04:05Z07:00")
-        //file.Mode = uint32(st.Mode())
-        //fmt.Println(fmt.Sprintf("%o", st.Mode()), st.Name())
 
         if !st.IsDir() {
             file.Mime = fsFileMime(v)
+        } else if subdir {
+            subret := dirlist(path+"/"+st.Name(), ppath+st.Name(), subdir)
+            for _, v := range subret {
+                ret = append(ret, v)
+            }
         }
 
-        rsp.Data = append(rsp.Data, file)
+        ret = append(ret, file)
     }
 
-    //fmt.Println(rsp)
-    //rsp.Data = file
-
-    rsp.Status = 200
+    return ret
 }
 
 func fsFileMime(v string) string {
