@@ -227,7 +227,7 @@ return array(
     'Auto Initialize Project files' => '初始文件',
     'Run and Deploy' => '运行部署',
     'quick-start-desc' => '如果您想快速体验 lessCreator, 按以下步骤快速创建一个 Web 应用，并运行它！',
-    'quick-start-desc2' => '注: 本示例基于 PHP Yaf 框架构建，更多示例在后续开发中加入,请稍安勿躁 :)',
+    'quick-start-desc2' => '注: 本示例基于 PHP Yaf 和 Go beego 框架构建，更多示例在后续开发中加入,请稍安勿躁 :)',
     'New Project First' => '请先创建一个项目',
     'Save changes before rename' => '重命名前请先保存修改内容',
     'Drag and Drop your files or folders to here' => '将你的文件或目录拖到这个区域里 ~',

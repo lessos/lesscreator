@@ -58,11 +58,11 @@
     <div onclick="_proj_quickstart_phpyaf()" class="itembox">
     <img src="/lesscreator/static/img/plugins/php-yaf/yaf-y-48.png" />
     </div>
-    <?php echo $this->T('Auto Initialize Project files')?> (Yaf)
+    <?php echo $this->T('Auto Initialize Project files')?> (PHP Yaf Framework)
     <div onclick="_proj_quickstart_beego()" class="itembox">
     <img src="/lesscreator/static/img/plugins/go-beego/beego-ico-48.png" />
     </div>
-    <?php echo $this->T('Auto Initialize Project files')?> (Beego)
+    <?php echo $this->T('Auto Initialize Project files')?> (Go Beego Framework)
 </td>
 <td valign="middle">
     <img class="itembox2" src="/lesscreator/static/img/proj/arrow-right-64.png" />
