@@ -1378,6 +1378,9 @@ Term.prototype.open = function (termid) {
 	document.addEventListener("keydown", keyDownHandler, false);
 	document.addEventListener("keypress", keyPressHandler, false);
 
+    if (blinkInterv != null) {
+        return;
+    }
     blinkInterv = setInterval(function() {
         var el = document.getElementById('cursor');
         if (!el) return;

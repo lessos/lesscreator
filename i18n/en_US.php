@@ -15,4 +15,5 @@ return array(
     
     'rt-nginx-desc' => 'Nginx is a lightweight, high concurrency, high performance and low memory usage Web server/reverse proxy',
     'op-commit-wait-desc' => 'Your operation has been submitted, the task is processing, please wait',
+    'beego-install-desc' => 'Depending on your network, the installation process will take up 2 to 15 minutes',
 );

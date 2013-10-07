@@ -138,6 +138,9 @@ return array(
     '`%s` not exist' => '`%s` 不存在',
     '`%s` can not be null' => '`%s` 不能为空',
     'The `%s` already exists, please choose another one' => '`%s` 已存在，请另选其它',
+    'The `%s` is not yet installed' => '`%s` 还没有安装',
+    'Install Now' => '立即安装',
+    'beego-install-desc' => '根据你的网络状况，安装过程会持续 2 ～ 15分钟',
     'lessCreator' => 'lessCreator',
     'or' => '或',
     'try login again' => '尝试重新登录',
@@ -232,4 +235,5 @@ return array(
     'The target of Upload directory' => '上传文件的目标目录',
     'Project site' => '项目网站',
     'Project source' => '项目源码',
+    '`%s` starting up, please wait' => '`%s` 启动中, 请稍等',
 );

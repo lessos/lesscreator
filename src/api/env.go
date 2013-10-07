@@ -5,6 +5,8 @@ import (
     "fmt"
     "io"
     "io/ioutil"
+    "math/rand"
+    "net"
     "net/http"
     "os"
     "os/exec"
@@ -58,7 +60,7 @@ func (this *Api) EnvPkgSetup(w http.ResponseWriter, r *http.Request) {
         rsp.Message = "Unauthorized"
         return
     }
-    fmt.Println(sess)
+    //fmt.Println(sess)
 
     // User ID
     osuser := "lc" + sess.Uname
@@ -115,6 +117,45 @@ func (this *Api) EnvPkgSetup(w http.ResponseWriter, r *http.Request) {
 
     rsp.Status = 200
     rsp.Message = ""
+}
+
+func (this *Api) EnvNetPort(w http.ResponseWriter, r *http.Request) {
+
+    var rsp struct {
+        ApiResponse
+        Data struct {
+            Port string `json:"port"`
+        }   `json:"data"`
+    }
+
+    defer func() {
+        //fmt.Println(rsp)
+        if rspj, err := utils.JsonEncode(rsp); err == nil {
+            io.WriteString(w, rspj)
+        }
+        r.Body.Close()
+    }()
+
+    try := 100
+    for {
+
+        if try < 0 {
+            rsp.Status = 500
+            return
+        }
+        iport := 30000 + rand.Intn(30000)
+
+        port := strconv.Itoa(iport)
+        ln, err := net.Listen("tcp", ":"+port)
+        if err == nil {
+            ln.Close()
+            rsp.Status = 200
+            rsp.Data.Port = port
+            return
+        }
+
+        try--
+    }
 }
 
 func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {

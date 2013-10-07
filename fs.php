@@ -128,4 +128,21 @@ class lesscreator_fs
 
         return $ret;
     }
+
+    public static function EnvNetPort()
+    {
+        $cli = self::NetHttp("http://127.0.0.1:9531/lesscreator/api/env-netport");
+
+        $ret = $cli->Post(json_encode($req));
+        if ($ret != 200 && $ret != 404) {
+            return false;
+        }
+
+        $ret = json_decode($cli->getBody(), false);
+        if (isset($ret->status) && $ret->status == 200) {
+            return $ret->data->port;
+        }
+
+        return true;
+    }
 }

@@ -2,6 +2,7 @@
 
 use LessPHP\LessKeeper\Keeper;
 use LessPHP\Net\Http;
+use LessPHP\User\Session;
 
 $kpr = new Keeper();
 
@@ -12,13 +13,15 @@ $pkgdps = array();
 $pkgals = array();
 $pkgins = array();
 
+$uname = Session::Instance()->uname;
+
 try {
     
     // User
-    if (!$this->req->user) {
+    if (!$uname) {
         throw new \Exception(sprintf($this->T('`%s` can not be null'), $this->T('Username')));
     }
-    $user = strtolower($this->req->user);
+    $user = strtolower($uname);
     if (!preg_match('/^([0-9a-z]{2,20})$/', $user)) {
         throw new \Exception(sprintf($this->T('`%s` is not valid'), $this->T('Username')));
     }
@@ -27,6 +30,16 @@ try {
     $projInfo = lesscreator_proj::info($this->req->proj);
     if (!isset($projInfo['projid'])) {
         throw new \Exception($this->T('Bad Request'));
+    }
+
+    $lc_plugins = array();
+    if (isset($projInfo['lc_plugins'])) {
+        $lc_plugins = explode(",", $projInfo['lc_plugins']);
+    }
+    if (in_array("go.beego", $lc_plugins)) {
+        $next_uri = 'go_beego';
+    } else {
+        $next_uri = "webserver";
     }
 
     //
@@ -47,7 +60,7 @@ try {
     if (!isset($projInst['instid'])) {
     
         $projInst['instid'] = LessPHP_Util_String::rand(12, 2);
-        $projInst['user'] = $this->req->user;
+        $projInst['user'] = $uname;
         $projInst['projid'] = $projInfo['projid'];
         $projInst['projpath'] = $projPath;
         $projInst['status'] = 9;
@@ -177,6 +190,8 @@ if (strlen($msg) > 1) {
     echo '<script>lessModalButtonAdd("yyixb9", "'.$this->T('Close').'", "lessModalClose()", "pull-lefts");</script>';
     return;
 }
+
+        
 
 ?>
 
@@ -369,7 +384,7 @@ function _app_install_done()
         return;
     }
     
-    var uri = "/lesscreator/launch/webserver?";
+    var uri = "/lesscreator/launch/<?php echo $next_uri?>?";
     uri += "proj="+ lessSession.Get("ProjPath");
 
     lessModalNext(uri, "<?php echo $this->T('Setting WebServer')?>", null);

@@ -42,6 +42,7 @@ func (this *Api) Serve(port string) {
 
         http.HandleFunc("/lesscreator/api/env-init", this.EnvInit)
         http.HandleFunc("/lesscreator/api/env-pkgsetup", this.EnvPkgSetup)
+        http.HandleFunc("/lesscreator/api/env-netport", this.EnvNetPort)
 
         http.Handle("/lesscreator/api/terminal-ws", websocket.Handler(this.TerminalWS))
 

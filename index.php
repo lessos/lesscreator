@@ -4,6 +4,15 @@ defined('SYSROOT_DIR') or define('SYSROOT_DIR', realpath('/../..'));
 defined('PROJROOT_DIR') or define('PROJROOT_DIR', realpath(__DIR__ . "/.."));
 define('LESSCREATOR_DIR', realpath(__DIR__));
 
+if (isset($_REQUEST['basedir']) && strlen($_REQUEST['basedir'])) {
+    $basedir = $_REQUEST['basedir'];
+} else {
+    $basedir = $_COOKIE['basedir'];
+}
+$basedir = rtrim(preg_replace("/\/\/+/", "/", $basedir), '/');
+defined('LESSFLY_USERDIR') or define('LESSFLY_USERDIR', $basedir);
+
+
 if (!in_array(PROJROOT_DIR, explode(':', get_include_path()))) {
     set_include_path(PROJROOT_DIR . PATH_SEPARATOR . get_include_path());
 }

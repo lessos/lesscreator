@@ -744,11 +744,28 @@ function lcProjLaunch(title)
     }
 
     //var uri = "/lesscreator/launch/webserver";
-    var uri = "/lesscreator/launch/dataset";
+    //var uri = "/lesscreator/launch/dataset";
+    var uri = "/lesscreator/launch/index";
     uri += "?proj="+ lessSession.Get("ProjPath");
     uri += "&user="+ lessSession.Get("SessUser"); // TODO access_token
 
     lessModalOpen(uri, 1, 900, 500, title, null);
+}
+
+function lcWebTerminal(force)
+{
+    if (force != 1 && lessLocalStorage.Get("lcWebTerminal0") != 1) {
+        return;
+    }
+
+    $('#h5c-tablet-framew1').show();
+    var opt = {
+        //'img': '/lesscreator/static/img/app-t3-16.png',
+        'title': 'Terminal',
+        'close': '1',
+    };
+
+    h5cTabOpen("/lesscreator/term/index?", 'w1', 'webterm', opt);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

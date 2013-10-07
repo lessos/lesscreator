@@ -20,11 +20,13 @@ try {
     
     $projPath = lesscreator_proj::path($req->data->projdir);
     
-    $info = lesscreator_proj::info($req->data->projdir);
-    if (!isset($info['projid'])) {
+    $projInfo = lesscreator_proj::info($req->data->projdir);
+    if (!isset($projInfo['projid'])) {
         throw new \Exception(sprintf($this->T('`%s` Not Found'), $this->T('Project')), 404);
     }
 
+
+    $projInfoSave = false;
 
     $lcpj = "{$projPath}/lcproject.json";
     $lcpj = preg_replace(array("/\.+/", "/\/+/"), array(".", "/"), $lcpj);
@@ -37,26 +39,41 @@ try {
         $str = file_get_contents($tplpath ."/". $file);        
 
         //if ($file == "conf/application.ini" || $file == "application/views/index/index.phtml") {
-        //    $str = str_replace("{{.projid}}", $info['projid'], $str);
+        //    $str = str_replace("{{.projid}}", $projInfo['projid'], $str);
         //}
 
         lesscreator_fs::FsFilePut("{$projPath}/{$file}", $str);
     }
 
-    if (!isset($info['runtimes']['nginx']) 
-        || $info['runtimes']['nginx']['ngx_conf_mode'] != "custom"
-        || $info['runtimes']['nginx']['status'] != 1) {
+    if (!isset($projInfo['lc_plugins'])) {
+        $projInfo['lc_plugins'];
+    }
+    $lc_plugins = explode(",", $projInfo['lc_plugins']);
+    if (!in_array("go.beego", $lc_plugins)) {
+        $lc_plugins[] = "go.beego";
+        $projInfo['lc_plugins'] = trim(implode(",", $lc_plugins), ",");
+        $projInfoSave = true;
+    }
 
-        $info['runtimes']['nginx']['status'] = 1;
-        $info['runtimes']['nginx']['ngx_conf_mode'] = "custom";
+    if (!isset($projInfo['runtimes']['nginx']) 
+        || $projInfo['runtimes']['nginx']['ngx_conf_mode'] != "custom"
+        || $projInfo['runtimes']['nginx']['status'] != 1) {
+
+        $projInfo['runtimes']['nginx']['status'] = 1;
+        $projInfo['runtimes']['nginx']['ngx_conf_mode'] = "custom";
         
-        $str = Json::prettyPrint($info);
+        $projInfoSave = true;    
+    }
+
+    if ($projInfoSave) {
+
+        $str = Json::prettyPrint($projInfo);
         $rs = lesscreator_fs::FsFilePut($lcpj, $str);
         if ($rs->status != 200) {
             throw new \Exception($msg = "Error, ". $rs->message, 400);
         }
     }
-    
+
     throw new \Exception($this->T('Successfully Processed'), 200);
     
 } catch (\Exception $e) {
