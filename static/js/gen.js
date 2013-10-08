@@ -527,7 +527,7 @@ function _lcTabCloseClean(urid)
 
 function lcLayoutResize()
 {
-    //console.log("lcLayoutResize ...");
+    console.log("lcLayoutResize ...");
 
     var spacecol = 10;
 
@@ -621,10 +621,11 @@ function lcLayoutResize()
         if (ctn1b_h < 0) {
             ctn1b_h = 0;
         }
+        $('#h5c-tablet-body-w1').width(ctn_w);
         $('#h5c-tablet-body-w1').height(ctn1b_h);
         if (document.getElementById("lc-terminal")) {
             $('#lc-terminal').height(ctn1b_h);
-            $('#lc-terminal').width(ctn_w);
+            $('#lc-terminal').width(ctn_w - 16);
             lc_terminal_conn.Resize();
         }
 

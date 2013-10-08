@@ -1706,7 +1706,9 @@ function lc_terminal_conn(termid, wsurl)
         var chars = line >= 0 ? screen[line] : screen.history[screen.history.length + line];
         var line_html = get_line_html(chars, line);
     
-        if (!drawn_lines[drawn_line] || drawn_lines[drawn_line] != line_html) el.innerHTML = line_html;
+        if (el && (!drawn_lines[drawn_line] || drawn_lines[drawn_line] != line_html)) {
+            el.innerHTML = line_html;
+        }
         drawn_lines[drawn_line] = line_html;
     }
     

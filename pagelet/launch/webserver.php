@@ -153,7 +153,7 @@ function _proj_launch_webserver_try()
         timeout : 30000,
         success : function(rsp) {
             
-            console.log(rsp);
+            //console.log(rsp);
 
             try {
                 var rsj = JSON.parse(rsp);
@@ -162,7 +162,7 @@ function _proj_launch_webserver_try()
             }
 
             if (rsj.status == 200) {
-                console.log(rsj);
+                //console.log(rsj);
                 var rdi = rsj.web_scheme +"://"+ rsj.web_domain +":"+ rsj.web_port +"/"+ projid;
 
                 var msg = "<?php echo $this->T('Web Server Configuration successful')?><br /><br />";
