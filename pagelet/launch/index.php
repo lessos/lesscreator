@@ -70,20 +70,19 @@ try {
         $script = "_launth_beego_run();\n";
         throw new \Exception(sprintf($this->T('`%s` starting up, please wait'), 'Beego'));
     }
+    
+    $script = "_launch_next_dataset();\n";
+    
+    throw new \Exception($this->T('Processing, please wait'));
 
 } catch (\Exception $e) {
     
     $msg = $e->getMessage();
-
-    //if ($e->getCode() == 9001) {
-    //    echo '<div class="alert alert-error">'.$msg.'</div>';
-    //    die();
-    //}
 }
 
 ?>
 
-<div id="mc0zzp" class="alert alert-info">
+<div id="kdj3iv" class="alert alert-info">
 <?php echo $msg?>
 </div>
 
@@ -91,8 +90,7 @@ try {
 
 var projid = '<?php echo $projInfo["projid"]?>';
 
-//lessModalButtonAdd("pfz30w", "Confirm and Save", "_proj_pkg_save()", "btn-inverse");
-lessModalButtonAdd("wra50b", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
+lessModalButtonAdd("fpntcr", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 lcWebTerminal(1);
 
@@ -140,49 +138,5 @@ function _launch_next_dataset()
     lessModalNext(uri, "<?php echo $this->T('Run and Deply')?>", null);
 }
 
-function _proj_launch_start_try()
-{
-    var url = "/lesscreator/launch/dataset";
-    url += "?apimethod=launch.web";
-    url += "&proj="+ lessSession.Get("ProjPath");
-    url += "&user="+ lessSession.Get("SessUser");
-
-    $.ajax({
-        url     : url,
-        type    : "GET",
-        timeout : 30000,
-        success : function(rsp) {
-            
-            //console.log(rsp);
-
-            try {
-                var rsj = JSON.parse(rsp);
-            } catch (e) {
-                return lessAlert("#mc0zzp", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
-            }
-
-            if (rsj.status == 200) {
-                
-                var rdi = rsj.web_scheme +"://"+ rsj.web_domain +":"+ rsj.web_port +"/"+ projid;
-
-                var msg = "<?php echo $this->T('Web Server Configuration successful')?><br /><br />";
-
-                msg += "<a href='"+rdi+"' target='_blank' class='btn'> <i class='icon-share-alt'></i> <strong><?php echo $this->T('Open')?></strong> "+rdi+"</a>";
-                //msg += " -- or -- ";
-                //msg += "<button class='btn' onclick='lessModalClose()'>Close</button>";
-
-                lessAlert("#mc0zzp", "alert-success", msg);
-
-            } else {
-                lessAlert("#mc0zzp", "alert-error", "Error: "+ rsj.message);
-            }
-        },
-        error: function(xhr, textStatus, error) {
-            lessAlert("#mc0zzp", "alert-error", "Error: "+ xhr.responseText);
-        }
-    });
-}
-
 <?php echo $script?>
-//_proj_launch_start_try();
 </script>
