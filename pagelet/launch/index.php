@@ -20,7 +20,7 @@ if (isset($projInfo['lc_plugins'])) {
 }
 
 $msg = $this->T('Processing, please wait');
-$script = "_launch_next_dataset()";
+$script = "";
 
 try {
 
@@ -75,10 +75,10 @@ try {
     
     $msg = $e->getMessage();
 
-    if ($e->getCode() == 9001) {
-        echo '<div class="alert alert-error">'.$msg.'</div>';
-        die();
-    }
+    //if ($e->getCode() == 9001) {
+    //    echo '<div class="alert alert-error">'.$msg.'</div>';
+    //    die();
+    //}
 }
 
 ?>

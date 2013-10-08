@@ -11,7 +11,7 @@ $projInfo = lesscreator_proj::info($this->req->proj);
 $kpr = new Keeper();
 $msg = null;
 
-$openurl = "http://". $_SERVER['SERVER_ADDR'];
+$openurl = "http://". $_SERVER['HTTP_HOST'];
 
 try {
 
