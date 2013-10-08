@@ -46,7 +46,9 @@ $lcinfo = json_decode($lcinfo, true);
 
         </div>
         
-       
+        <a href="#" onclick="_lc_nav_terminal()" class="btn  btn-small " type="button"><img src="/lesscreator/static/img/application_osx_terminal.png" class="h5c_ico " /> 
+            <?php echo $this->T('Terminal')?> 
+        </a>
 
         <div class="btn-group" style="margin-left:0;">
             
@@ -85,9 +87,7 @@ $lcinfo = json_decode($lcinfo, true);
             TODO 
         </a>
 
-         <a href="#" onclick="lcWebTerminal(1)" class="btn btn-danger btn-small " type="button">
-                Terminal 
-            </a>
+         
 
     </td>
 
@@ -275,6 +275,22 @@ function _proj_todo_list()
     lessModalOpen("/lesscreator/app/todo", 1, 750, 450, 'TODO list', null);
 }
 
+function _lc_nav_terminal()
+{
+    var domobj = document.getElementById("lc-terminal");
+    if (!domobj) {
+        lcWebTerminal(1);
+        return;
+    }
+
+    if (!lc_terminal_conn.IsOk()) {
+        lcWebTerminal(1);
+    } else if (lc_terminal_conn.IsOk()) {
+        lc_terminal_conn.CloseAll();
+        var urid = lessCryptoMd5("/lesscreator/term/index?");
+        lcTabClose(urid, 1);
+    }
+}
 lcWebTerminal(0);
 
 setTimeout(function() {

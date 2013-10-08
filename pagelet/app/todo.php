@@ -34,7 +34,6 @@ $lcinfo = json_decode($lcinfo, true);
 <ul>
     <li>沙盒、容器: 基于 LXC 轻量级运行环境</li>
     <li>运行环境与主流框架集成: golang, node.js, java, python</li>
-    <li>Web Terminal: 全功能的基于浏览器的终端</li>
     <li>集群管理、部署、监控</li>
 </ul>
 </div>

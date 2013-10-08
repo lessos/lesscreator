@@ -1846,6 +1846,11 @@ function lc_terminal_conn(termid, wsurl)
         return true;
     }
 
+    lc_terminal_conn.CloseAll = function() {
+        term.stopEventHandler();
+        lc_terminal_ws.close();
+    }
+
     _resize(lc_terminal_scr, lc_terminal_ws, true);
 }
 
