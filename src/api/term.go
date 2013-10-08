@@ -252,10 +252,10 @@ func (this *Api) TerminalWS(ws *websocket.Conn) {
     }
     uuid, _ := strconv.Atoi(u.Uid)
     ugid, _ := strconv.Atoi(u.Gid)
-    syscall.Setgid(ugid)
-    syscall.Setuid(uuid)
-    syscall.Chdir(this.Cfg.Prefix + "/" + sess.Uname)
-
+    /* syscall.Setgid(ugid)
+       syscall.Setuid(uuid)
+       syscall.Chdir(this.Cfg.Prefix + "/" + sess.Uname)
+    */
     connections++
     defer func() {
         connections--
@@ -287,8 +287,10 @@ func (this *Api) TerminalWS(ws *websocket.Conn) {
             bashargs = []string{"sh"}
         }
 
+        syscall.Setgid(ugid)
+        syscall.Setuid(uuid)
         syscall.Chdir(this.Cfg.LessFlyDir + "/spot/" + sess.Uname)
-        syscall.Chroot(this.Cfg.Prefix + "/" + sess.Uname)
+        syscall.Chroot(this.Cfg.LessFlyDir + "/spot/" + sess.Uname)
         syscall.Exec(bashloc, bashargs, os.Environ())
         panic("unreachable code")
     }
