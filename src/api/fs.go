@@ -331,7 +331,7 @@ func fsFileGetRead(path string) (FsFile, int, error) {
     }
     file.Size = st.Size()
 
-    if st.Size() > (21 * 1024 * 1024) {
+    if st.Size() > (2 * 1024 * 1024) {
         return file, 413, errors.New("File size is too large") // Request Entity Too Large
     }
 

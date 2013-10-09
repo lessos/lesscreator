@@ -1,12 +1,11 @@
 package api
 
 import (
+    lutils "../../deps/lessgo/utils"
     "../utils"
     "fmt"
     "io"
     "io/ioutil"
-    "math/rand"
-    "net"
     "net/http"
     "os"
     "os/exec"
@@ -136,26 +135,14 @@ func (this *Api) EnvNetPort(w http.ResponseWriter, r *http.Request) {
         r.Body.Close()
     }()
 
-    try := 100
-    for {
-
-        if try < 0 {
-            rsp.Status = 500
-            return
-        }
-        iport := 30000 + rand.Intn(30000)
-
-        port := strconv.Itoa(iport)
-        ln, err := net.Listen("tcp", ":"+port)
-        if err == nil {
-            ln.Close()
-            rsp.Status = 200
-            rsp.Data.Port = port
-            return
-        }
-
-        try--
+    err, _, port := lutils.NetFreePort(30000, 65000)
+    if err != nil {
+        rsp.Status = 500
+        return
     }
+
+    rsp.Status = 200
+    rsp.Data.Port = port
 }
 
 func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
