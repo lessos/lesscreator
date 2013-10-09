@@ -133,7 +133,7 @@ class lesscreator_fs
     {
         $cli = self::NetHttp("http://127.0.0.1:9531/lesscreator/api/env-netport");
 
-        $ret = $cli->Post(json_encode($req));
+        $ret = $cli->Get();
         if ($ret != 200 && $ret != 404) {
             return false;
         }
