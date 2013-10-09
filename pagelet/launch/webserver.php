@@ -9,6 +9,46 @@ $projInfo = lesscreator_proj::info($this->req->proj);
 
 $kpr = new Keeper();
 
+if ($this->req->apimethod == "launch.web.status") {
+    
+    $ret = array("status" => 200, "message" => null);
+
+    try {
+
+        $rs = $kpr->Info();
+        $info = json_decode($rs->body, false);
+        if (!isset($info->local->id)) {
+            throw new \Exception($this->T('Service Unavailable'), 500);
+        }
+        $localnodeid = $info->local->id;
+
+        $kvPath = "/app/local/{$localnodeid}/u/{$this->req->user}/inst/{$projInfo['projid']}";
+
+        $rs = $kpr->NodeGet($kvPath);
+
+        $rs = json_decode($rs->body, false);
+
+        if ($rs->status == 1) {
+
+            $rs2 = $kpr->NodeGet("/app/local/{$localnodeid}/u/{$this->req->user}/conf/base");
+            $rs2 = json_decode($rs2->body, false);
+            $ret['web_scheme'] = $rs2->web_scheme;
+            $ret['web_domain'] = $rs2->web_domain;
+            $ret['web_port']   = $rs2->web_port;
+
+            throw new \Exception($this->T('Successfully Done'), 200);
+        }
+
+        throw new \Exception($this->T('Pending'), 202);
+
+    } catch (\Exception $e) {
+        $ret['status']  = $e->getCode();
+        $ret['message'] = $e->getMessage();
+    }
+
+    die(json_encode($ret));
+}
+
 if ($this->req->apimethod == "launch.web") {
 
     $ret = array("status" => 200, "message" => null);
@@ -41,7 +81,6 @@ if ($this->req->apimethod == "launch.web") {
         } else {
             throw new \Exception($this->T('You have not enabled WebServer in Runtime Settings'), 400);
         }
-        
 
         //
         $rs = $kpr->Info();
@@ -52,11 +91,11 @@ if ($this->req->apimethod == "launch.web") {
         $localnodeid = $info->local->id;
 
         //
-        $projInst = array();
         $kvPath = "/app/local/{$localnodeid}/u/{$this->req->user}/inst/{$projInfo['projid']}";
-        $rs = $kpr->NodeGet($kvPath);
-        if (isset($rs->body->projid)) {
-            $projInst = json_decode($rs->body, true);
+        $projInst = $kpr->NodeGet($kvPath);
+        $projInst = json_decode($projInst->body, true);
+        if (!isset($projInst['projid'])) {
+            $projInst = array();
         }
 
         // TODO if !domain then ip:port
@@ -79,30 +118,18 @@ if ($this->req->apimethod == "launch.web") {
         $rs = $kpr->LocalNodeSet("/app/local/setup/{$qid}", json_encode($projInst), 9000);
         //print_r($projInst);
 
-        for ($i = 0; $i < 5; $i++) {
-
-            $rs = $kpr->NodeGet($kvPath);
-
-            //echo $rs->body."<br/>";
-
-            $rs = json_decode($rs->body, false);
-
-            if ($rs->status == 1) {
-
-                $rs2 = $kpr->NodeGet("/app/local/{$localnodeid}/u/{$this->req->user}/conf/base");
-                $rs2 = json_decode($rs2->body, false);
-                $ret['web_scheme'] = $rs2->web_scheme;
-                $ret['web_domain'] = $rs2->web_domain;
-                $ret['web_port']   = $rs2->web_port;
-
-                throw new \Exception($this->T('Successfully Done'), 200);
-            }
-
-            sleep(1);
+        $baseInfo = $kpr->NodeGet("/app/local/{$localnodeid}/u/{$this->req->user}/conf/base");
+        $baseInfo = json_decode($baseInfo->body, true);
+        if (!is_array($baseInfo)) {
+            $baseInfo = array();
         }
+        // if (!isset($baseInfo['web_port']))
+        $baseInfo['web_port'] = intval(lesscreator_fs::EnvNetPort());
 
-        throw new \Exception("Timeout", 500);
-        
+        //print_r($baseInfo);
+        $kpr->NodeSet("/app/local/{$localnodeid}/u/{$this->req->user}/conf/base", json_encode($baseInfo));
+
+        throw new \Exception("Accepted", 202);        
 
     } catch (\Exception $e) {
         $ret['status']  = $e->getCode();
@@ -153,7 +180,47 @@ function _proj_launch_webserver_try()
         timeout : 30000,
         success : function(rsp) {
             
-            //console.log(rsp);
+            try {
+                var rsj = JSON.parse(rsp);
+            } catch (e) {
+                return lessAlert("#mc0zzp", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+            }
+
+            if (rsj.status == 202) {
+                
+                setTimeout(_proj_launch_webserver_try_status, 1000);
+
+            } else {
+                lessAlert("#mc0zzp", "alert-error", "Error: "+ rsj.message);
+            }
+        },
+        error: function(xhr, textStatus, error) {
+            lessAlert("#mc0zzp", "alert-error", "Error: "+ xhr.responseText);
+        }
+    });
+}
+
+_proj_launch_webserver_try();
+
+var _proj_launch_webserver_try_num = 10;
+
+function _proj_launch_webserver_try_status()
+{
+    if (_proj_launch_webserver_try_num < 0) {
+        lessAlert("#mc0zzp", "alert-error", "Error: Timeout");
+        return;
+    }
+
+    var url = "/lesscreator/launch/webserver";
+    url += "?apimethod=launch.web.status";
+    url += "&proj="+ lessSession.Get("ProjPath");
+    url += "&user="+ lessSession.Get("SessUser");
+
+    $.ajax({
+        url     : url,
+        type    : "GET",
+        timeout : 30000,
+        success : function(rsp) {
 
             try {
                 var rsj = JSON.parse(rsp);
@@ -173,15 +240,16 @@ function _proj_launch_webserver_try()
 
                 lessAlert("#mc0zzp", "alert-success", msg);
 
-            } else {
-                lessAlert("#mc0zzp", "alert-error", "Error: "+ rsj.message);
+            } else if (rsj.status == 202) {
+                setTimeout(_proj_launch_webserver_try_status, 1000);
             }
         },
         error: function(xhr, textStatus, error) {
             lessAlert("#mc0zzp", "alert-error", "Error: "+ xhr.responseText);
         }
     });
+
+    _proj_launch_webserver_try_num--;
 }
 
-_proj_launch_webserver_try();
 </script>
