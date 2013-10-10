@@ -5,7 +5,9 @@ use LessPHP\User\Session;
 if (!Session::IsLogin()) {
     header('Location: /user');
 }
-
+$lcinfo = file_get_contents(LESSCREATOR_DIR ."/lcproject.json");
+$lcinfo = json_decode($lcinfo, true);
+//print_r($lcinfo);
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,15 +17,15 @@ if (!Session::IsLogin()) {
   <script src="/lesscreator/~/jquery/jquery-1.10.min.js"></script>
   <script src="/lesscreator/~/lessui/js/BrowserDetect.js"></script>
 
-  <script src="/lesscreator/~/lessui/js/lessui.js"></script>
-  <script src="/lesscreator/static/js/c.js"></script>
-  <script src="/lesscreator/static/js/gen.js"></script>
-  <script src="/lesscreator/static/js/editor.js"></script>
+  <script src="/lesscreator/~/lessui/js/lessui.js?v=<?php echo $lcinfo['version']?>"></script>
+  <script src="/lesscreator/static/js/c.js?v=<?php echo $lcinfo['version']?>"></script>
+  <script src="/lesscreator/static/js/gen.js?v=<?php echo $lcinfo['version']?>"></script>
+  <script src="/lesscreator/static/js/editor.js?v=<?php echo $lcinfo['version']?>"></script>
   <script src="/lesscreator/~/codemirror3/lib/codemirror.min.js"></script>
 
   <link href="/lesscreator/~/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="/lesscreator/~/lessui/css/lessui.css" rel="stylesheet" />
-  <link href="/lesscreator/static/css/def.css" rel="stylesheet" />
+  <link href="/lesscreator/~/lessui/css/lessui.css?v=<?php echo $lcinfo['version']?>" rel="stylesheet" />
+  <link href="/lesscreator/static/css/def.css?v=<?php echo $lcinfo['version']?>" rel="stylesheet" />
 
   <link href="/lesscreator/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
 
@@ -114,7 +116,7 @@ function _load_deps()
         "/lesscreator/~/codemirror3/addon/dialog/dialog.js",
         "/lesscreator/~/codemirror3/addon/dialog/dialog.css",
 
-        "/lesscreator/static/js/term.js",
+        "/lesscreator/static/js/term.js?v=<?php echo $lcinfo['version']?>",
     ];
 
     seajs.use(rqs, function() {
