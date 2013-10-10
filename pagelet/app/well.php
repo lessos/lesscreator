@@ -104,6 +104,6 @@ function _data_create_resize()
     $("#_data_create_body").height(fp.top - bp.top);
 }
 //_data_create_resize();
-
+lcWebTerminal(1);
 
 </script>
