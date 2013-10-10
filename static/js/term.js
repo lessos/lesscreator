@@ -1177,7 +1177,7 @@ Stream.prototype = {
         try {
             this.handlers[this.state](ch)
         } catch (e) {
-            window.console && console.log(e);
+            // DEBUG window.console && console.log(e);
             /* python code:
             except TypeError:
                 pass

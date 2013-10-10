@@ -525,9 +525,32 @@ function _lcTabCloseClean(urid)
     lcLayoutResize();
 }
 
+var lcLayoutWebTermPos = null;
+var lcLayoutWebTermInterv = null;
+function lcLayoutWebTermSizeFix()
+{
+    //console.log("lcLayoutWebTermSizeFix:"+ lcLayoutWebTermPos);
+
+    if (!document.getElementById("lc-terminal")) {
+        clearInterval(lcLayoutWebTermInterv);
+        lcLayoutWebTermPos = null;
+        //console.log("lcLayoutWebTermSizeFix closed");
+        return;
+    }
+
+    var pnew = JSON.stringify($("#lc-terminal").position());
+    if (lcLayoutWebTermPos == pnew) {
+        return;
+    }
+
+    //console.log("term size changed");
+    lcLayoutWebTermPos = pnew;
+    lcLayoutResize();
+}
+
 function lcLayoutResize()
 {
-    console.log("lcLayoutResize ...");
+    //console.log("lcLayoutResize ...");
 
     var spacecol = 10;
 

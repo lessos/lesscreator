@@ -295,8 +295,6 @@ function _env_init()
     lcLayoutResize();
     setTimeout(lcLayoutResize, 3000);
 
-    //setInterval(lcLayoutResize, 3000);
-
     //seajs.use(["cm_css", "cm_core", "cm_loadmode", "cm_vim", "cm_searchcursor"]);
 }
 </script>

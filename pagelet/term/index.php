@@ -10,4 +10,5 @@
 
 lc_terminal_conn('lc-terminal', 'ws://' + window.location.hostname + ':9531/lesscreator/api/terminal-ws');
 lessLocalStorage.Set("lcWebTerminal0", "1");
+lcLayoutWebTermInterv = setInterval(lcLayoutWebTermSizeFix, 1000);
 </script>
