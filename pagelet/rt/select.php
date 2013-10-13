@@ -79,6 +79,21 @@
 </table>
 </a>
 
+<a class="kyexic" href="#rt/nodejs-set">
+<table>
+    <tr class="line">
+        <td width="100px"><img class="rtlogo" src="/lesscreator/static/img/rt/nodejs_200.png" /></td>
+        <td >
+            <div class="title">NodeJS <span class="indev"></span></div>
+            <div class="desc">NodeJS Runtime Environment</div>
+        </td>
+        <td align="right">
+            <img class="rtset" src="/lesscreator/static/img/for-test/setting2-128.png" />
+        </td>
+    </tr>
+</table>
+</a>
+
 <a class="kyexic" href="#rt/java-set">
 <table>
     <tr class="line">
@@ -109,21 +124,6 @@
 </table>
 </a>
 
-<a class="kyexic" href="#rt/nodejs-set">
-<table>
-    <tr class="line">
-        <td width="100px"><img class="rtlogo imggray" src="/lesscreator/static/img/rt/nodejs_200.png" /></td>
-        <td >
-            <div class="title">NodeJS <span class="indev">(<?php echo $this->T('Upcoming, later supported')?>)</span></div>
-            <div class="desc">NodeJS Runtime Environment</div>
-        </td>
-        <td align="right">
-            <img class="rtset imggray" src="/lesscreator/static/img/for-test/setting2-128.png" />
-        </td>
-    </tr>
-</table>
-</a>
-
 <script>
 if (lessModalPrevId() != null) {
     lessModalButtonAdd("qc7cbv", "<?php echo $this->T('Back')?>", "lessModalPrev()", "pull-left h5c-marginl0");
@@ -144,7 +144,10 @@ $(".kyexic").click(function(){
         title = "<?php echo $this->T('Setting')?> PHP";
         break;
     case "rt/go-set":
-        title = "<?php echo $this->T('Setting')?> PHP";
+        title = "<?php echo $this->T('Setting')?> Go";
+        break;
+    case "rt/nodejs-set":
+        title = "<?php echo $this->T('Setting')?> NodeJS";
         break;
     default:
         return;

@@ -10,6 +10,8 @@ return array(
     'rt-php-desc2' => 'PHP is a popular general-purpose scripting language that is especially suited to web development',
     'rt-go-desc' => 'Go is an open source programming environment that makes it easy to build simple, reliable, and efficient software',
     'rt-go-desc2' => 'in lessCreator environment, you can use the WebTerminal debug Go. Its default path is ~/runtime/gopath',
+    'rt-nodejs-desc' => 'Node.js is a platform built on Chrome\'s JavaScript runtime for easily building fast, scalable network applications',
+    'rt-nodejs-desc2' => 'in lessCreator environment, you can use the WebTerminal debug NodeJS. Its default path is ~/runtime/nodejs',
     'rt-quickstart-fsinit-desc' => 'This Wizard will create a default directory structure and initial configuration files. The following files will be overwritten',
     'plugins-go-beego-mvc-desc' => 'Beego is an open-source framework to quickly build and develop Go web applications',
     

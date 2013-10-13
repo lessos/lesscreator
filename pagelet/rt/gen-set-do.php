@@ -20,8 +20,8 @@ try {
         throw new \Exception(sprintf($this->T('`%s` Not Found'), $this->T('Page')), 404);
     }
 
-    if (!in_array($this->req->runtime, array("nginx", "php", "go", "python", "java"))) {
-
+    $rts = lesscreator_env::RuntimesList();
+    if (!isset($rts[$this->req->runtime])) {
         throw new \Exception(sprintf($this->T('Runtime `%s` Not Found'), $this->req->runtime), 404);
     }
 

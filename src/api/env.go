@@ -234,6 +234,17 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
         // TODO
     }
 
+    if _, err := exec.Command("/bin/cp", "-rp",
+        this.Cfg.Prefix+"/misc/nodejs/npmrc", userpath+"/.npmrc").Output(); err != nil {
+        // TODO
+    }
+    if _, err := exec.Command(this.Cfg.LessFlyDir+"/bin/lessfly-env-filter",
+        "--lessfly_dir="+this.Cfg.LessFlyDir,
+        "--user="+sess.Uname,
+        "--file="+userpath+"/.npmrc").Output(); err != nil {
+        // TODO
+    }
+
     rsp.Data.User = sess.Uname
     rsp.Data.BaseDir = userpath
     rsp.Status = 200

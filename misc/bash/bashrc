@@ -10,7 +10,10 @@ export HOME={{.lessfly_userdir}}
 export GOROOT={{.lessfly_dir}}/rt/go/go11
 export GOPATH={{.lessfly_userdir}}/runtime/gopath
 export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
+
+export NODEJSROOT={{.lessfly_dir}}/rt/nodejs/v0.10
+
+export PATH=$PATH:$GOPATH/bin:$GOROOT/bin:$NODEJSROOT/bin
 
 cd ~
 

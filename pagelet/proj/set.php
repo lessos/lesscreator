@@ -375,6 +375,9 @@ function _proj_rt_set(node)
     case "rt/go-set":
         title = "<?php echo sprintf($this->T('%s Settings'), 'Go')?>";
         break;
+    case "rt/nodejs-set":
+        title = "<?php echo sprintf($this->T('%s Settings'), 'NodeJS')?>";
+        break;
     default:
         return;
     }

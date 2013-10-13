@@ -25,6 +25,9 @@ class lesscreator_env
             'go' => array(
                 'title' => 'Go',
             ),
+            'nodejs' => array(
+                'title' => 'NodeJS',
+            ),
             'python' => array(
                 'title' => 'Python',
             ),

@@ -56,6 +56,8 @@ return array(
     'rt-php-desc' => '快速,灵活,实用. PHP 可以实现从个人博客到世界大型社交网络站点的搭建',
     'rt-go-desc' => 'Go 是一个开源的编程环境，可以很容易地建立简单，可靠，高效的软件',
     'rt-go-desc2' => 'lessCreator 环境中，你可以使用内置的 WebTerminal 操作 go. 它的默认路径是 <strong>~/runtime/gopath</strong>',
+    'rt-nodejs-desc' => 'NodeJS 是一个基于 Chrome JavaScript 引擎，快速构建极速、易扩展网络应用的平台',
+    'rt-nodejs-desc2' => 'lessCreator 环境中，你可以使用内置的 WebTerminal 操作 NodeJS. 它的默认路径是 <strong>~/runtime/nodejs</strong>',
     'File' => '文件',
     'Files' => '文件',
     'Find Word' => '查找文字',
