@@ -127,7 +127,7 @@ function _launth_beego_run()
         
         _launch_next_dataset();
 
-    }, 1000);
+    }, 3000);
 }
 
 function _launch_next_dataset()
