@@ -208,6 +208,24 @@ function h5cTabSwitch(urid)
         return;
     }
 
+    if (h5cTabletFrame[item.target].editor != null) {
+        
+        var prevEditorScrollInfo = h5cTabletFrame[item.target].editor.getScrollInfo();
+            
+        lcData.Get("files", h5cTabletFrame[item.target].urid, function(prevEntry) {
+
+            if (!prevEntry) {
+                return;
+            }
+            
+            prevEntry.scrlef = prevEditorScrollInfo.left;
+            prevEntry.scrtop = prevEditorScrollInfo.top;
+            lcData.Put("files", prevEntry, function() {
+                // TODO
+            });
+        });
+    }
+
     if (h5cTabletFrame[item.target].urid != urid) {
         //lcEditor.Save(lcEditor.urid, 1);
         h5cTabletFrame[item.target].urid = 0;
