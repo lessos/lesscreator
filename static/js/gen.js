@@ -211,15 +211,19 @@ function h5cTabSwitch(urid)
     if (h5cTabletFrame[item.target].editor != null) {
         
         var prevEditorScrollInfo = h5cTabletFrame[item.target].editor.getScrollInfo();
-            
+        var prevEditorCursorInfo = h5cTabletFrame[item.target].editor.getCursor();
+
         lcData.Get("files", h5cTabletFrame[item.target].urid, function(prevEntry) {
 
             if (!prevEntry) {
                 return;
             }
-            
+
             prevEntry.scrlef = prevEditorScrollInfo.left;
             prevEntry.scrtop = prevEditorScrollInfo.top;
+            prevEntry.curlin = prevEditorCursorInfo.line;
+            prevEntry.curch  = prevEditorCursorInfo.ch;
+
             lcData.Put("files", prevEntry, function() {
                 // TODO
             });

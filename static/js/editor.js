@@ -13,7 +13,15 @@ lcEditor.Config = {
     'fontSize'      : 13,
     'EditMode'      : null,
     'LangEditMode'  : 'Editor Mode Settings',
+    'TmpEditorZone' : 'w0',
+    'TmpScrollLeft' : 0,
+    'TmpScrollTop'  : 0,
+    'TmpCursorLine' : 0,
+    'TmpCursorCh'   : 0,
+    'TmpLine2Str'   : null,
 };
+lcEditor.isInited = false;
+
 lcEditor.MessageReply = function(cb, msg)
 {
     if (cb != null && cb.length > 0) {
@@ -197,21 +205,27 @@ lcEditor.LoadInstance = function(entry)
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
     //console.log(entry);
 
-    var opt_line_strto = null;
+    lcEditor.Config.TmpLine2Str = null;
     if (item.editor_strto && item.editor_strto.length > 1) {
-        //console.log("editor_strto "+ item.editor_strto);
-        opt_line_strto = item.editor_strto;
+        lcEditor.Config.TmpLine2Str = item.editor_strto;
         h5cTabletPool[entry.id].editor_strto = null;
     }
 
-    if (h5cTabletFrame[item.target].editor == null) {
+    lcEditor.Config.TmpScrollLeft = isNaN(entry.scrlef) ? 0 : parseInt(entry.scrlef);
+    lcEditor.Config.TmpScrollTop  = isNaN(entry.scrtop) ? 0 : parseInt(entry.scrtop);
+    lcEditor.Config.TmpCursorLine = isNaN(entry.curlin) ? 0 : parseInt(entry.curlin);
+    lcEditor.Config.TmpCursorCH   = isNaN(entry.curch) ? 0 : parseInt(entry.curch);
+
+    if (!lcEditor.isInited) {
         
         CodeMirror.defineInitHook(function(cminst) {
-            
-            if (opt_line_strto != null) {
+    
+            lcLayoutResize();
+
+            if (lcEditor.Config.TmpLine2Str != null) {
                 
-                //console.log("line to"+ opt_line_strto);                                
-                var crs = cminst.getSearchCursor(opt_line_strto, cminst.getCursor(), null);
+                //console.log("line to"+ lcEditor.Config.TmpLine2Str);
+                var crs = cminst.getSearchCursor(lcEditor.Config.TmpLine2Str, cminst.getCursor(), null);
                 
                 if (crs.findNext()) {
                 
@@ -223,12 +237,20 @@ lcEditor.LoadInstance = function(entry)
                     cminst.scrollIntoView({line: lineto, ch: 0});
                 }
             }
-        });
-    }
 
-    CodeMirror.defineInitHook(function(cminst) {
-        cminst.scrollTo(entry.scrlef, entry.scrtop);
-    });
+            if (lcEditor.Config.TmpScrollLeft > 0 || lcEditor.Config.TmpScrollTop > 0) {
+                cminst.scrollTo(lcEditor.Config.TmpScrollLeft, lcEditor.Config.TmpScrollTop);
+            }
+
+            if (lcEditor.Config.TmpCursorLine > 0 || lcEditor.Config.TmpCursorCH > 0) {
+                cminst.focus();
+                cminst.setCursor(lcEditor.Config.TmpCursorLine, lcEditor.Config.TmpCursorCH);
+            }
+        });
+        
+        lcEditor.isInited = true;
+    }
+    
 
     $("#h5c-tablet-body-"+ item.target).empty();
     h5cTabletFrame[item.target].editor = CodeMirror(
@@ -279,11 +301,10 @@ lcEditor.LoadInstance = function(entry)
     CodeMirror.commands.autocomplete = function(cm) {
         CodeMirror.showHint(cm, CodeMirror.hint.javascript);
     }
-    
-    // TODO
-    lcLayoutResize();
-    setTimeout(lcLayoutResize, 100);
+
+    setTimeout(lcLayoutResize, 200);
 }
+
 
 lcEditor.Changed = function(urid)
 {
@@ -473,108 +494,7 @@ lcEditor.WebSocketSend = function(req)
         lcEditor.WebSocket.send(JSON.stringify(req));
     }
 }
-/*
-lcEditor.Save = function(urid, force)
-{
-    //console.log("lcEditor.Save:"+ urid);
 
-    if (!h5cTabletPool[urid]) {
-        //console.log("lcEditor.Save, h5cTabletPool return");
-        return;
-    }
-    var item = h5cTabletPool[urid];
-    //console.log(item);
-    if (urid != h5cTabletFrame[item.target].urid) {
-        //console.log("lcEditor.Save, h5cTabletFrame return");
-        return;
-    }
-
-    var hash = lessCryptoMd5(h5cTabletFrame[item.target].editor.getValue());
-    if (hash == item.hash) {
-        //console.log("Nothing change, skip ~");
-        $("#pgtab"+ urid +" .chg").hide();
-        $("#pgtab"+ urid +" .pgtabtitle").removeClass("chglight");
-        return;
-    }
-    //console.log()
-
-    var req = {
-        data : {
-            urid     : urid,
-            path     : sessionStorage.ProjPath +"/"+ item.url,
-            body     : h5cTabletFrame[item.target].editor.getValue(),
-            sumcheck : hash,
-        }
-    }
-
-    if (lcEditor.WebSocket == null) {
-
-        if (!("WebSocket" in window)) {
-            hdev_header_alert('error', 'WebSocket Open Failed');
-            return;
-        }
-
-        try {
-
-            lcEditor.WebSocket = new WebSocket(lcEditor.SaveAPI);
-
-            lcEditor.WebSocket.onopen = function() {
-                //console.log("connected to " + wsuri);
-                lcEditor.WebSocket.send(JSON.stringify(req));
-            }
-
-            lcEditor.WebSocket.onclose = function(e) {
-                //console.log("connection closed (" + e.code + ")");
-                lcEditor.WebSocket = null;
-            }
-
-            lcEditor.WebSocket.onmessage = function(e) {
-
-                var obj = JSON.parse(e.data);
-                //console.log("onmessage ...");
-                if (obj.status == 200) {
-                    
-                    //console.log("onmessage ok"+ obj.data.urid);
-
-                    var entry = {
-                        id      : obj.data.urid,
-                        //projdir : lessSession.Get("ProjPath"),
-                        //filepth : item.url,
-                        ctn1_src: "",
-                        ctn1_sum: "",
-                    }
-
-                    lcData.Put("files", entry, function(ret) {
-
-                        $("#pgtab"+ obj.data.urid +" .chg").hide();
-                        $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
-
-                        hdev_header_alert('success', "OK");
-                    });
-
-                    //h5cTabletPool[urid].hash = obj.sumcheck;
-
-                } else {
-                    //console.log("onmessage errot");
-                    hdev_header_alert('error', obj.message);
-                }
-
-                //if ($("#vtknd6").length == 0) {
-                //    lcEditor.WebSocket.close();
-                //}
-            }
-
-        } catch(e) {
-            //console.log("message open failed: "+ e);
-            return;
-        }
-
-    } else {
-        //console.log(JSON.stringify(req));
-        lcEditor.WebSocket.send(JSON.stringify(req));
-    }
-}
-*/
 
 lcEditor.IsSaved = function(urid, cb)
 {
@@ -595,24 +515,6 @@ lcEditor.IsSaved = function(urid, cb)
     });
 }
 
-/* 
-lcEditor.Close = function(urid)
-{
-    var item = h5cTabletPool[urid];
-
-    lcEditor.Save(urid, 1);
-
-    if (urid == h5cTabletFrame[item.target].urid) {
-        
-//        h5cTabletFrame[item.target].empty();
-//        //$('#src'+urid).remove();
-//        h5cTabletFrame[item.target].editor = null;
-//        h5cTabletFrame[item.target].urid = 0;
-    }
-
-//    lcLayoutResize();
-}
-*/
 
 lcEditor.ConfigSet = function(key, val)
 {
