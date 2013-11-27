@@ -199,8 +199,8 @@ lcEditor.LoadInstance = function(entry)
     if (lcEditor.ToolTmpl == null) {
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
     }
-    $("#h5c-tablet-toolbar-"+ item.target).html(lcEditor.ToolTmpl).show(0, function(){
-        //lcLayoutResize();
+    $("#h5c-tablet-toolbar-"+ item.target).html(lcEditor.ToolTmpl).show(0, function() {
+        lcLayoutResize();
     });
 
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
