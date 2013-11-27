@@ -20,18 +20,19 @@ $lcinfo = json_decode($lcinfo, true);
   <script src="/lesscreator/~/lessui/js/lessui.js?v=<?php echo $lcinfo['version']?>"></script>
   <script src="/lesscreator/static/js/c.js?v=<?php echo $lcinfo['version']?>"></script>
   <script src="/lesscreator/static/js/gen.js?v=<?php echo $lcinfo['version']?>"></script>
+  <script src="/lesscreator/static/js/genx.js?v=<?php echo $lcinfo['version']?>"></script>
   <script src="/lesscreator/static/js/editor.js?v=<?php echo $lcinfo['version']?>"></script>
   <script src="/lesscreator/~/codemirror3/lib/codemirror.min.js"></script>
 
   <link href="/lesscreator/~/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/lesscreator/~/lessui/css/lessui.css?v=<?php echo $lcinfo['version']?>" rel="stylesheet" />
   <link href="/lesscreator/static/css/def.css?v=<?php echo $lcinfo['version']?>" rel="stylesheet" />
+  <link href="/lesscreator/static/css/defx.css?v=<?php echo $lcinfo['version']?>" rel="stylesheet" />
 
   <link href="/lesscreator/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
 
 </head>
-<!--<body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;" onresize="window.resize &amp;&amp; window.scr &amp;&amp; lc_terminal_conn.Resize()">-->
-<body style="background:#D8DCE0 url(/lesscreator/static/img/body.png) repeat-x;">
+<body>
 <div class="loadwell">
   <div class="">
     <div id="_load-alert" class="alert alert-success">
@@ -235,8 +236,13 @@ function _env_init()
         $("#hdev_layout").mousemove(function(e) {
 
             var w = $('body').width() - (3 * spacecol);
-            var p = $('#h5c-lyo-col-t').position();
+            //var p = $('#h5c-lyo-col-t').position();
+            var p = $('#lcx-start-lyo').position();
             var wrs = e.pageX - p.left - 5;
+
+            if (w * (1 - (wrs / w)) < 400) {
+                return;
+            }
 
             lessLocalStorage.Set("lcLyoLeftW", wrs / w);
             lessSession.Set("lcLyoLeftW", wrs / w);

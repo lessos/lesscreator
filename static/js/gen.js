@@ -592,14 +592,15 @@ function lcLayoutResize()
     }
 
     var left_w = (bw - (3 * spacecol)) * toset;
-    if (left_w < 300) {
-        left_w = 300;
-    } else if ((left_w + 300) > bw) {
-        left_w = bw - 300;
+    if (left_w < 200) {
+        left_w = 200;
+    } else if ((left_w + 200) > bw) {
+        left_w = bw - 200;
     }
     var ctn_w = (bw - (3 * spacecol)) - left_w;
-    $('#h5c-lyo-col-t').width(left_w);
-    $('#h5c-lyo-col-w').width(ctn_w);
+    // TODEL $('#h5c-lyo-col-t').width(left_w);
+    $("#lc-proj-start").width(left_w);
+    //$('#h5c-lyo-col-w').width(ctn_w);
 
     //$('#h5c-lyo-col-t .hdev-proj-files').width(left_w);
 
@@ -690,8 +691,14 @@ function lcLayoutResize()
     $('#h5c-tablet-tabs-framew0').width(ctn_w);
     $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(ctn_w - 20);
 
-    // lefabar
-    var left0_h = lyo_h - $('#h5c-tablet-tabs-framet0').height();
+    // project start box
+    $("#lcx-start-lyo").width(left_w);
+    var sf_p = $("#lcx-start-fstree").position();
+    if (sf_p) {
+        $("#lcx-start-fstree").width(left_w);
+        $("#lcx-start-fstree").height(lyo_h - (sf_p.top - lyo_p.top));
+    }
+    /* var left0_h = lyo_h - $('#h5c-tablet-tabs-framet0').height();
     
     if ($('#h5c-tablet-body-t0 .lc-tablet-ctn-header').length > 0
         && $('#h5c-tablet-body-t0 .lc-tablet-ctn-body').length > 0) {
@@ -706,6 +713,7 @@ function lcLayoutResize()
     } else {
         $('#h5c-tablet-body-t0').height(left0_h);
     }
+    */
 
     // TODO rightbar
 }
@@ -744,7 +752,22 @@ function h5cProjectOpen(proj)
         'title': 'Project',
     };
 
-    h5cTabOpen("/lesscreator/proj/index?"+ uri, 't0', 'html', opt);
+    //h5cTabOpen("/lesscreator/proj/index?"+ uri, 't0', 'html', opt);
+
+    //$("#lc-proj-start").load("/lesscreator/proj/start?"+ uri);
+    $.ajax({
+        url     : "/lesscreator/proj/start?"+ uri,
+        type    : "GET",
+        timeout : 30000,
+        success : function(rsp) {
+            //console.log("ASDFASDf");
+            $("#lcx-start-lyo").empty().html(rsp);
+        },
+        error: function(xhr, textStatus, error) {
+            //
+        }
+    });
+
     
     projCurrent = proj;
     

@@ -19,7 +19,7 @@ html, body {height: 100%;}
 
 body {
     font-family: Helvetica, Arial, "Liberation Sans", sans-serif;
-    font-size: 14px; line-height:160%; background-color: #fbfbfb; color: #111;
+    font-size: 14px; line-height:160%; background-color: #eaedf2; color: #111;
     word-break: break-all;
     word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
     display: block;
@@ -28,12 +28,7 @@ body {
 
 /** common */
 a {text-decoration: none;}
-/* a:link {color: #08C;}
-a:visited {color: #08C;}
-a:hover {color: #d54e21;}
-a:active {color: #004a9c; text-decoration: none;}
-a.anoline {text-decoration: none;};
-*/
+
 .alignleft {text-align: left;}
 .aligncenter {text-align: center;}
 
@@ -131,7 +126,7 @@ textarea {
 }
 
 #hdev_header {
-    width: 100%; height: 50px; 
+    width: 100%; height: 60px; 
     color: #333;
 }
 #hdev_header .header_logo {
@@ -141,14 +136,15 @@ textarea {
 #hdev_header .header_logo img {
     position: relative;
     top: 0; left: 0;
-    width: 40px; height: 20px;
+    width: 50px; height: 25px;
 }
 #hdev_header .header_logo .title {
     position: relative; top: 3px; left: 0;
-    line-height: 26px; font-size: 26px;
-    color: #444;
+    line-height: 1em; font-size: 30px;
+    /* color: #3598db; light-blut */
+    color: #323a45;
     font-family: Helvetica !important;
-    text-shadow: 0px 1px 2px #fff;
+    /* text-shadow: 0px 1px 2px #fff; */
 }
 #hdev_header .header_logo .version {
     position: relative; 
@@ -240,7 +236,7 @@ textarea {
 }
 
 .hdev-layout-container {
-    box-shadow: 1px 1px 3px #999;
+    box-shadow: 0px 0px 1px #999;
     background-color: #fff;
     z-index: -100;
 }
@@ -248,28 +244,7 @@ textarea {
 .hdev-scrollbar {
     overflow: auto;
 }
-/*
-#hdev_layout * ::-webkit-scrollbar {
-    width: 8px; height: 8px; background-color: transparent;
-}
-#hdev_layout * ::-webkit-scrollbar-corner {
-    background-color: transparent;
-}
-#hdev_layout * ::-webkit-scrollbar-button:start:decrement,
-#hdev_layout * ::-webkit-scrollbar-button:end:increment {
-    display: none;
-}
-#hdev_layout * ::-webkit-scrollbar-thumb:vertical,
-#hdev_layout * ::-webkit-scrollbar-thumb:horizontal {
-    background-color: #999;
-}
-#hdev_layout * ::-webkit-scrollbar-thumb:hover {
-    background-color: #888;
-}
-#hdev_layout * ::-webkit-scrollbar-thumb:active {
-    background-color: #777;
-}
-*/
+
 #hdev_editor {
     margin: 0; padding: 0;
 }
@@ -454,18 +429,28 @@ textarea {
 .CodeMirror-lines {
     line-height: 1.3em;
 }
-
-.activeline {background: #f0fcff !important;}
-
-.hdev-proj-section {
-    background-color: #f6f7f8;
-    font-size: 13px; line-height: 130%;
-    
-    height: 23px; overflow: hidden;
+.CodeMirror *::-webkit-scrollbar {
+    width: 10px; height: 10px; background-color: transparent;
+    background-color: #ccc;
 }
-.hdev-proj-section .title {
-    font-weight: bold;
+.CodeMirror *::-webkit-scrollbar-corner {
+    background-color: transparent;
 }
+.CodeMirror *::-webkit-scrollbar-button:start:decrement,
+.CodeMirror *::-webkit-scrollbar-button:end:increment {
+    display: none;
+}
+.CodeMirror *::-webkit-scrollbar-thumb:vertical,
+.CodeMirror *::-webkit-scrollbar-thumb:horizontal {
+    background-color: #999;
+}
+.CodeMirror *::-webkit-scrollbar-thumb:hover {
+    background-color: #666;
+}
+.CodeMirror *::-webkit-scrollbar-thumb:active {
+    background-color: #444;
+}
+
 
 .hdev-tabs-nav {
     background-color: #e7e8ea; height: 23px; 
@@ -705,7 +690,7 @@ textarea {
 }
 .h5c_resize_col {
     cursor: col-resize;
-    background: url(/lesscreator/static/img/handle-v.png) 3px 50% no-repeat;
+    background: url(/lesscreator/static/img/handle-v.png) 4px 50% no-repeat;
 }
 
 

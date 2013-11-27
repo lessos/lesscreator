@@ -1,0 +1,133 @@
+
+.lcx-start-head {
+    background-color: #323a45;
+    width: 100%;
+    min-height: 30px;
+    color: #f5f5f5;
+    position: relative;
+    overflow: auto;
+}
+.lcx-start-head .lcx-start-label {
+    padding: 10px 0 5px 10px;
+    font-size: 0.6em;
+    line-height: 1em;
+    float: left;
+}
+.lcx-start-head .lcx-start-title {
+    padding: 0 50px 10px 10px;
+    font-size: 1.4em;
+    line-height: 1em;
+    font-family: Helvetica !important;
+    clear: left;
+    float: left;
+}
+.lcx-start-head .slcx-start-right {
+    clear: right;
+    float: right;
+}
+
+
+.lcx-start-nav {
+    background-color: #8397ad;
+    width: 100%;
+    color: #f5f5f5;
+    position: relative;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    text-align: center;
+}
+.lcx-start-nav:after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+
+.lcx-start-nav a {
+    color: #f5f5f5;
+    text-decoration: none;
+}
+.lcx-start-nav ul {
+    margin: 0;
+}
+.lcx-start-navbtn {
+    /* border: 1px solid rgba(255,0,0,0); */
+    border-radius: 2px;
+    width: 32px; height: 32px;
+    overflow-x: hidden;
+    float: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: -webkit-flex;
+    display: flex;
+}
+.lcx-start-navbtn:hover {
+    background-color: #91a6bc;
+    text-decoration: none;
+}
+
+.lcx-start-navbtn:hover > .lcx-start-submenu {
+    display: block;
+}
+.lcx-start-submenu {
+    position: absolute;
+    top: 32px; left: 0px;
+    display: none;
+    float: left;
+    background-color: #91a6bc;
+    min-width: 160px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    text-align: left;
+    margin: 0; padding: 3px;
+}
+.lcx-start-submenu a {
+    display: block;
+}
+.lcx-start-submenu li {
+    padding: 3px 5px;
+}
+.lcx-start-submenu li:hover {
+    background-color: #323a45;
+    border-radius: 3px;
+}
+.lcx-start-submenu li a {
+    display: block;
+}
+
+
+
+.lcx-start-ico {
+    margin: auto;
+}
+
+#lcx-start-fstree {
+    clear: both;
+    margin: 0; padding: 0;
+    background-color: #fff;
+    width: 100%;
+    min-height: 30px;
+    color: #4a5a6a;
+}
+
+.lcx-start-hbtn {
+    padding: 5px; width: 30px; height: 30px;
+    position: absolute;
+    top: 50%; right: 10px;
+    margin-top: -15px;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+.lcx-start-hbtn img {
+    width: 20px; height: 20px; margin: 0; padding: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+.lcx-start-hbtn:hover {
+    background-color: #8397ad;
+}
+
+

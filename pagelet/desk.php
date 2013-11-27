@@ -100,48 +100,11 @@ $lcinfo = json_decode($lcinfo, true);
     <!--
     http://www.daqianduan.com/jquery-drag/
     -->
+    
     <td width="10px"></td>
-   
-    <td id="h5c-lyo-col-t" valign="top">
-      <table width="100%" height="100%">
-        <tr>
-          <td id="h5c-tablet-framet0" class="hdev-layout-container" valign="top">
-            
-            <div id="h5c-tablet-tabs-framet0" class="h5c_tablet_tabs_frame ">
-              <div class="h5c_tablet_tabs_lm">
-                <div id="h5c-tablet-tabs-t0" class="h5c_tablet_tabs"></div>
-              </div>
-              <div class="h5c_tablet_tabs_lr">
-                <div class="pgtab_more" onclick="h5cTabletMore('t0')"></div>
-              </div>
-            </div>
 
-            <div id="h5c-tablet-body-t0" class=""></div>
-
-          </td>
-        </tr>
-
-        <tr><td height="10px" id="h5c-resize-rowt0" class="h5c_resize_row hide"></td></tr>
-        
-        <tr>
-          <td id="h5c-tablet-framet1" class="hdev-layout-container hide" valign="top">
-            
-            <div id="h5c-tablet-tabs-framet1" class="h5c_tablet_tabs_frame pgtabs_frame">
-              <div class="h5c_tablet_tabs_lm">
-                <div id="h5c-tablet-tabs-t1" class="h5c_tablet_tabs"></div>
-              </div>
-              <div class="h5c_tablet_tabs_lr">
-              </div>
-            </div>
-
-            <div id="h5c-tablet-body-t1" class="h5c_tablet_body less_scroll"></div>
-
-          </td>
-        </tr>
-      
-      </table>
-    </td>
-
+    <td id="lcx-start-lyo" valign="top"></td>
+  
     <!-- column blank 2 -->
     <td width="10px" id="h5c-lyo-col-w-ctrl" class="h5c_resize_col"></td>
     
