@@ -19,6 +19,7 @@ lcEditor.Config = {
     'TmpCursorLine' : 0,
     'TmpCursorCh'   : 0,
     'TmpLine2Str'   : null,
+    'TmpUrid'       : null,
 };
 lcEditor.isInited = false;
 
@@ -215,6 +216,7 @@ lcEditor.LoadInstance = function(entry)
     lcEditor.Config.TmpScrollTop  = isNaN(entry.scrtop) ? 0 : parseInt(entry.scrtop);
     lcEditor.Config.TmpCursorLine = isNaN(entry.curlin) ? 0 : parseInt(entry.curlin);
     lcEditor.Config.TmpCursorCH   = isNaN(entry.curch) ? 0 : parseInt(entry.curch);
+    lcEditor.Config.TmpUrid       = entry.id;
 
     if (!lcEditor.isInited) {
         
@@ -513,6 +515,33 @@ lcEditor.IsSaved = function(urid, cb)
             cb(true);
         }
     });
+}
+
+
+lcEditor.HookOnBeforeUnload = function()
+{
+    if (h5cTabletFrame["w0"].editor != null 
+        && h5cTabletFrame["w0"].urid == lcEditor.Config.TmpUrid) {
+        
+        var prevEditorScrollInfo = h5cTabletFrame["w0"].editor.getScrollInfo();
+        var prevEditorCursorInfo = h5cTabletFrame["w0"].editor.getCursor();
+
+        lcData.Get("files", h5cTabletFrame["w0"].urid, function(prevEntry) {
+
+            if (!prevEntry) {
+                return;
+            }
+
+            prevEntry.scrlef = prevEditorScrollInfo.left;
+            prevEntry.scrtop = prevEditorScrollInfo.top;
+            prevEntry.curlin = prevEditorCursorInfo.line;
+            prevEntry.curch  = prevEditorCursorInfo.ch;
+
+            lcData.Put("files", prevEntry, function() {
+                // TODO
+            });
+        });
+    }
 }
 
 

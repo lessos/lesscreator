@@ -221,6 +221,7 @@ function _env_init()
     lcInitSetting();
 
     window.onbeforeunload = function() {
+        lcEditor.HookOnBeforeUnload();
         //lessLocalStorage.Set(lessSession.Get("SessUser") +".lastproj", proj);
         //return "Leave the page and lose your changes?";
     }
