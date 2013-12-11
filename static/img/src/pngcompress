@@ -1,0 +1,8 @@
+#!/bin/bash
+
+files=`find $1 -name "*.png" |xargs`
+for file in $files; do
+    echo ${file}
+    optipng -o7 ${file}
+done
+
