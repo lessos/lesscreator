@@ -23,7 +23,7 @@ body {
     word-break: break-all;
     word-wrap: break-word; /* fix for long text breaking sidebar float in IE */
     display: block;
-    min-width: 1200px; min-height: 500px;
+    min-width: 1000px; min-height: 500px;
 }
 
 /** common */
