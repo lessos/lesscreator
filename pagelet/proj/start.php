@@ -56,14 +56,6 @@ if (strlen($title) < 20) {
 }
 ?>
 
-<div class="lcx-start-head">
-    <div class="lcx-start-label">Project</div>
-    <div class="lcx-start-title"><?php echo $title?></div>
-    <a href="javascript:lcProjSet()" class="lcx-start-right lcx-start-hbtn" title="<?php echo $this->T('Settings')?>">
-        <img class="" src="/lesscreator/static/img/for-test/sets-light-48.png" />
-    </a>
-</div>
-
 <div class="lcx-start-nav">
     
     <ul>
@@ -125,9 +117,9 @@ $(document).click(function(event) {
     // Mark the last active project path
     //  will be used in launch the enter project after user signed
     //  or recover the status after browser crashed
-    var suser = lessSession.Get("SessUser");
-    if (lessLocalStorage.Get(suser +"LastProjPath") != sessionStorage.ProjPath) {
-        lessLocalStorage.Set(suser +"LastProjPath") = sessionStorage.ProjPath;
+    var uname = lessSession.Get("SessUser");
+    if (lessLocalStorage.Get(uname +"LastProjPath") != sessionStorage.ProjPath) {
+        lessLocalStorage.Set(uname +"LastProjPath") = sessionStorage.ProjPath;
     }
 });
 

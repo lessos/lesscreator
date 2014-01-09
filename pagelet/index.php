@@ -5,11 +5,14 @@ use LessPHP\User\Session;
 if (!Session::IsLogin()) {
     header('Location: /user');
 }
+
 $lcinfo = file_get_contents(LESSCREATOR_DIR ."/lcproject.json");
 $lcinfo = json_decode($lcinfo, true);
+
+//setcookie("runtime_mode", 'dev', time()+36000000000, '/');
 //print_r($lcinfo);
 ?><!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app>
 <head>
   <meta charset="utf-8">
   <title><?php echo $this->T('lessCreator')?></title>
@@ -23,16 +26,28 @@ $lcinfo = json_decode($lcinfo, true);
   <script src="/lesscreator/static/js/genx.js?v=<?php echo $lcinfo['version']?>"></script>
   <script src="/lesscreator/static/js/editor.js?v=<?php echo $lcinfo['version']?>"></script>
   <script src="/lesscreator/~/codemirror3/lib/codemirror.min.js"></script>
+  <script src="/lesscreator/static/js/angular.min.js"></script>
 
   <link href="/lesscreator/~/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="/lesscreator/~/lessui/css/lessui.css?v=<?php echo $lcinfo['version']?>" rel="stylesheet" />
-  <link href="/lesscreator/static/css/def.css?v=<?php echo $lcinfo['version']?>" rel="stylesheet" />
-  <link href="/lesscreator/static/css/defx.css?v=<?php echo $lcinfo['version']?>" rel="stylesheet" />
+  
+  <?php
+  if (isset($_COOKIE['runtime_mode']) && $_COOKIE['runtime_mode'] == "dev") {
+    echo '<link href="/lesscreator/~/lessui/less/lessui.less" rel="stylesheet/less" />';
+    echo '<link href="/lesscreator/static/less/defx.less" rel="stylesheet/less" />';
+    echo '<script src="/lessui/less/less.min.js"></script>';
+  } else {
+    echo "<link href=\"/lesscreator/~/lessui/css/lessui.min.css?v={$lcinfo['version']}\" rel=\"stylesheet\" />";
+    echo "<link href=\"/lesscreator/static/css/defx.css?v={$lcinfo['version']}\" rel=\"stylesheet\" />";
+  }
+  ?>  
 
-  <link href="/lesscreator/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+  <link href="/lesscreator/static/css/def.css?v=<?php echo $lcinfo['version']?>" rel="stylesheet" />
+  <link href="/lesscreator/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
 </head>
 <body>
+
+
 <div class="loadwell">
   <div class="">
     <div id="_load-alert" class="alert alert-success">
@@ -44,6 +59,7 @@ $lcinfo = json_decode($lcinfo, true);
     <div class="bar load-progress-num" style="width: 1%"></div>
   </div>
 </div>
+
 
 </body>
 </html>
@@ -196,8 +212,9 @@ function _load_desk(basedir)
     if (_load_desk_once > 1) {
         return;
     }
+
     $.ajax({
-        url     : "/lesscreator/desk?basedir="+ basedir +"&_="+ Math.random(),
+        url     : "/lesscreator/desk-design?basedir="+ basedir +"&_="+ Math.random(),
         type    : "GET",
         timeout : 30000,
         success : function(rsp) {
@@ -263,7 +280,6 @@ function _env_init()
             if (hrs < 0) {
                 hrs = 0;
             }
-            //console.log(h +"/"+ hrs);
 
             lessLocalStorage.Set("lcLyoCtn0H", hrs / h);
             lessSession.Set("lcLyoCtn0H", hrs / h);
@@ -272,30 +288,11 @@ function _env_init()
         });
     });
     
-    /* 
-    $("#h5c-resize-rowt0").bind('mousedown', function() {
-        $("#hdev_layout").mousemove(function(e) {
-            bh = $('body').height();
-            if (e.pageY > bh - 37) {
-                return;
-            }
-            p = $('#h5c-tablet-framet0').position();
-            l = e.pageY - p.top;
-            if (l < 0) {
-                return;
-            }
-            lessCookie.SetByDay("config_tablet_rowt0", (l - 5), 365);
-            lcLayoutResize();
-        });
-    }); */
 
     $(document).bind('selectstart',function() {return false;});
     $(document).bind('mouseup', function() {
         $("#hdev_layout").unbind('mousemove');
-        $("#h5loc_ly_content").unbind('mousemove');
     });
-
-    //hdev_init_setting();
 
     <?php
     echo "h5cProjectOpen('{$this->req->proj}');";
@@ -304,6 +301,5 @@ function _env_init()
     lcLayoutResize();
     setTimeout(lcLayoutResize, 3000);
 
-    //seajs.use(["cm_css", "cm_core", "cm_loadmode", "cm_vim", "cm_searchcursor"]);
 }
 </script>

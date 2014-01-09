@@ -1,9 +1,30 @@
+
+
 <?php
 // http://zouyesheng.com/angular.html
+
+$lcinfo = file_get_contents(LESSCREATOR_DIR ."/lcproject.json");
+$lcinfo = json_decode($lcinfo, true);
 ?>
 
 <script type="text/javascript">
 //angular.bootstrap(document.documentElement);
+
+$("#lcx-start-entry").hover(function() {
+    
+    $("#lcx-start-entry").fadeOut(150);
+    $(".lcx-start-well").show(150);
+
+}, function() {
+    //$("#lcx-start-entry").fadeIn(150);
+    //$(".lcx-start-well").hide(150);
+});
+
+$(".lcx-start-well").click(function() {
+    $("#lcx-start-entry").fadeIn(300);
+    $(".lcx-start-well").hide(300);
+});
+
 </script>
 
 <table class="lcx-header">
@@ -11,8 +32,90 @@
     <td width="10px"></td>
 
     <td width="60px" align="left">
-      <div class="lcx-logo">
-        <img class="icon" src="/lesscreator/static/img/gen/pen0-48.png" />
+
+        <div id="lcx-start-entry">
+            <div>
+                <img class="lse-logo" src="/lesscreator/static/img/gen/pen0-48.png" />
+            </div>
+        </div>
+
+        <div class="lcx-start-well">
+
+            <div class="lc-head">
+                <div class="lc-logo"><img src="/lesscreator/static/img/gen/pen0-48.png" /></div>
+                <div class="lc-title">Project <em><?php echo $lcinfo['version']?></em></div>
+            </div>
+
+            <div class="lc-line"></div>
+            
+            <div class="lc-body less-tile-area">
+
+                <div class="less-tile-group x4">
+
+                    <div class="ltg-title ">
+                        <?php echo $this->T('Project')?>
+                    </div>
+                    
+                    <div class="less-tile flatui-bg-peter-river" onclick="lcProjNew()">
+                        <div class="lt-content icon">
+                            <img src="/lesscreator/static/img/gen/pen0-48.png">
+                        </div>
+                        <div class="lt-status">
+                            <div class="lts-name"><?php echo $this->T('New Project')?></div>
+                        </div>
+                    </div>
+
+                    <div class="less-tile flatui-bg-nephritis" onclick="lcProjOpen()">
+                        <div class="lt-content icon">
+                            <img src="/lesscreator/static/img/gen/pen0-48.png">
+                        </div>
+                        <div class="lt-status">
+                            <div class="lts-name"><?php echo $this->T('Open Project')?></div>
+                        </div>
+                    </div>
+
+                    <a class="less-tile flatui-bg-alizarin" 
+                        href="http://git.oschina.net/eryx/lesscreator/issues/new" target="_blank">
+                        <div class="lt-content icon">
+                            <div class="lcx-icon-bug lcx-icon-white"></div>
+                        </div>
+                        <div class="lt-status">
+                            <div class="lts-name"><?php echo $this->T('Report Issue')?></div>
+                        </div>
+                    </a>
+
+                    <a class="less-tile flatui-bg-amethyst" 
+                        href="http://www.lesscompute.com" target="_blank">
+                        <div class="lt-content icon">
+                            <div class="lcx-icon-help lcx-icon-white"></div>
+                        </div>
+                        <div class="lt-status">
+                            <div class="lts-name"><?php echo $this->T('Help')?></div>
+                        </div>
+                    </a>
+                </div>
+
+                <!--
+                <div class="less-tile-group x3">
+
+                    <div class="ltg-title ">
+                        <?php echo $this->T('Recent Projects')?>
+                    </div>
+
+                    <div class="less-tile w3 h2 flatui-bg-amethyst">
+                        <div class="lt-content icon">
+                            <img src="/lesscreator/static/img/gen/pen0-48.png">
+                        </div>
+                        <div class="lt-status">
+                            <div class="lts-name">New Project</div>
+                        </div>
+                    </div>
+
+                </div>
+                -->
+           
+            </div>
+
       </div>      
     </td>
 
@@ -89,23 +192,6 @@
 
     <td align="right" style="">
        
-
-        <div class="btn-group" >
-            
-            <div class="btn btn-small dropdown-toggle " data-toggle="dropdown" href="#">
-                <i class="icon-folder-open"></i>
-                &nbsp;&nbsp;<?php echo $this->T('Project Manage')?>&nbsp;&nbsp;
-                <span class="caret" style="margin-top:8px;"></span>
-            </div>
-
-            <ul class="dropdown-menu pull-right text-left">
-                <li><a href="javascript:lcProjNew()"><?php echo $this->T('Create Project')?></a></li>
-                <li><a href="javascript:lcProjOpen()"><?php echo $this->T('Open Project')?></a></li>
-            </ul>
-
-        </div>
-        
-
         <div class="btn-group" style="margin-left:0;">
             
 
@@ -148,7 +234,7 @@
     
     <td width="10px"></td>
 
-    <td id="lcx-start-lyo" valign="top"></td>
+    <td id="lcx-proj-box" valign="top"></td>
   
     <!-- column blank 2 -->
     <td width="10px" id="h5c-lyo-col-w-ctrl" class="h5c_resize_col"></td>
@@ -266,6 +352,13 @@
 </div>
 
 <script>
+
+$("#lcx-start-entry").fadeOut(150);
+$(".lcx-start-well").show(150);
+
+//$(body).css({
+//    "-webkit-filter": blur(2px) contrast(0.4) brightness(1.4)
+//});
 
 var opt = {
     'img': '/lesscreator/static/img/app-t3-16.png',

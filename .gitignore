@@ -1,5 +1,8 @@
 
 bin/lesscreator*
 *~
+static/img/*
 static/img/3d/*
 static/js/pyte/
+static/js/angular*
+
