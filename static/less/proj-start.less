@@ -1,0 +1,67 @@
+
+@lcx-start-well-head-height: 50px;
+
+
+#lcx-start-entry {
+    
+    position: relative;
+    width: 50px; height: 50px;
+    background-color: #4385f6;
+
+    img.lse-logo {
+        width: 40px; height: 40px;
+        position: absolute;
+        top: 50%; left: 50%;
+        margin: -20px 0 0 -20px;
+    }
+}
+
+
+.lcx-start-well {
+
+    //border: rgba(67, 133, 246, 0.9) solid 5px;
+    //background-color: rgba(67, 133, 246, 0.9);
+    background-color: fade(#7f8c8d, 95%);
+    z-index: 10;
+    position: absolute; left: 10px; top: 10px;
+    text-align: left;
+    color: #fff;
+    padding: 10px;
+
+    .lc-head {
+        position: relative; top: 0; left: 0;
+        margin: 0; padding: 0;
+        height: @lcx-start-well-head-height; width: 100%;
+
+        .lc-logo {
+            position: relative;
+            width: @lcx-start-well-head-height;
+            height: @lcx-start-well-head-height;
+        }
+
+        .lc-logo img {
+            width: 40px; height: 40px;
+            position: absolute;
+            top: 50%; left: 50%;
+            margin: -20px 0 0 -20px;
+        }
+
+        .lc-title {
+            position: absolute;
+            left: @lcx-start-well-head-height + 10px; top: 50%;
+            margin-top: -11px;
+            //font-size: 28px;
+            //line-height: 28px;
+            font: bold 22px/22px arial,sans-serif;
+        }
+        .lc-title em {
+            font-size: 10px;
+            color: #ccc;
+        }
+    }
+
+    .lc-line {
+        border-bottom: 1px solid #ccc;
+        margin: 10px 0 10px 0;
+    }
+}

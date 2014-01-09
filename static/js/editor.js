@@ -194,7 +194,7 @@ lcEditor.LoadInstance = function(entry)
     }
 
     // styling
-    $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize+"px"});
+    $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize +"px"});
 
     if (lcEditor.ToolTmpl == null) {
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
@@ -215,7 +215,7 @@ lcEditor.LoadInstance = function(entry)
     lcEditor.Config.TmpScrollLeft = isNaN(entry.scrlef) ? 0 : parseInt(entry.scrlef);
     lcEditor.Config.TmpScrollTop  = isNaN(entry.scrtop) ? 0 : parseInt(entry.scrtop);
     lcEditor.Config.TmpCursorLine = isNaN(entry.curlin) ? 0 : parseInt(entry.curlin);
-    lcEditor.Config.TmpCursorCH   = isNaN(entry.curch) ? 0 : parseInt(entry.curch);
+    lcEditor.Config.TmpCursorCH   = isNaN(entry.curch)  ? 0 : parseInt(entry.curch);
     lcEditor.Config.TmpUrid       = entry.id;
 
     if (!lcEditor.isInited) {
@@ -255,6 +255,7 @@ lcEditor.LoadInstance = function(entry)
     
 
     $("#h5c-tablet-body-"+ item.target).empty();
+
     h5cTabletFrame[item.target].editor = CodeMirror(
         document.getElementById("h5c-tablet-body-"+ item.target), {
         value         : src,
@@ -277,7 +278,7 @@ lcEditor.LoadInstance = function(entry)
             }},
             "Shift-Space": "autocomplete",
             "Ctrl-S": function() {
-                console.log("ctrl-s: "+ entry.id);
+                //console.log("ctrl-s: "+ entry.id);
                 lcEditor.EntrySave(entry.id, null);
             }
         }

@@ -1,3 +1,8 @@
+@import "variables.less";
+
+@import "icons.less";
+@import "proj-start.less";
+
 .lcx-hnav-projinfo {
     position: relative;
     float: left;
@@ -35,7 +40,7 @@
     top: 50%; left: 50%;
     margin: -12px 0 0 -12px;
     background-repeat: no-repeat;
-    background-image: url("/lesscreator/static/img/gen/set2-24.png");
+    background-image: url("@{url-img}/gen/set2-24.png");
     background-position: -24px 0;
 }
 .lcx-hnav-projinfo > .lcx-set:hover {
@@ -71,7 +76,7 @@
     margin: 0;
 }
 .lcx-start-navbtn {
-    /* border: 1px solid rgba(255,0,0,0); */
+    // border: 1px solid rgba(255,0,0,0);
     border-radius: 2px;
     width: 32px; height: 32px;
     overflow-x: hidden;
@@ -162,10 +167,6 @@
     position: relative;
 }
 
-
-
-
-
 .lcx-hdr-box {
     position: absolute; top: 0;
     margin-top: 10px; height: 40px;
@@ -218,24 +219,27 @@
 
 
 .lcx-ico-play {
-    background-image: url("/lesscreator/static/img/base/play-32.png");
+    background-image: url("@{url-img}/base/play-32.png");
 }
 .lcx-ico-plugin {
-    background-image: url("/lesscreator/static/img/base/plugin-32.png");
+    background-image: url("@{url-img}/base/plugin-32.png");
 }
 .lcx-ico-term {
-    background-image: url("/lesscreator/static/img/base/term-32.png");
+    background-image: url("@{url-img}/base/term-32.png");
 }
 .lcx-ico-set2 {
-    background-image: url("/lesscreator/static/img/base/set2-32.png");
+    background-image: url("@{url-img}/base/set2-32.png");
 }
 .lcx-ico-set3 {
-    background-image: url("/lesscreator/static/img/base/set3-32.png");
+    background-image: url("@{url-img}/base/set3-32.png");
 }
 .lcx-ico-user {
-    background-image: url("/lesscreator/static/img/base/user-32.png");
+    background-image: url("@{url-img}/base/user-32.png");
 }
 
+.lcx-ico-bug {
+    background-image: url("@{url-img}/base/bug-32.png");
+}
 
 .lcx-usernav {
     margin-top: 10px;

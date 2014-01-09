@@ -7,7 +7,7 @@
 //  imagemagick
 //  optipng
 
-$opt = getopt("s:l:L:b:gf");
+$opt = getopt("s:l:L:b:gfm");
 
 $size = isset($opt['s']) ? intval($opt['s']) : die("NO -s size\n"); 
 if ($size < 16) {
@@ -44,6 +44,8 @@ if (in_array('all', $lyrs)) {
     }
 }
 
+sort($lyrs);
+
 foreach ($lyrs as $lyr) {
 
     if ($lyr == "all" || strlen($lyr) < 2) {
@@ -56,7 +58,7 @@ foreach ($lyrs as $lyr) {
         $outfile = $lyr;
     }
     
-    $outfile = $dir ."/../x/{$outfile}-{$size}.png";
+    $outfile = $dir ."/../tmp/{$outfile}-{$size}.png";
     if (file_exists($outfile)) {
         continue;
     }
@@ -88,4 +90,43 @@ foreach ($lyrs as $lyr) {
 
     echo "\t$lyr DONE\n";
 }
+
+// merge?
+if (!isset($opt['m'])) {
+    die(0);
+}
+
+foreach ($lyrs as $lyr) {
+    
+    if (!in_array($lyr . "-white", $lyrs)) {
+        continue;
+    }
+    
+    if (substr($lyr, 0, 4) == "ico-") {
+        $lyr = substr($lyr, 4);
+    }
+    
+    $outfile0 = $dir ."/../tmp/merge/{$lyr}-{$size}.png";
+    if (file_exists($outfile0)) {
+        continue;
+    }
+    
+    $outfile1 = $dir ."/../tmp/{$lyr}-{$size}.png";
+    if (!file_exists($outfile1)) {
+        continue;
+    }
+    
+    $outfile2 = $dir ."/../tmp/{$lyr}-white-{$size}.png";
+    if (!file_exists($outfile2)) {
+        continue;
+    }
+    
+    $cmd = "convert +append $outfile1 $outfile2 $outfile0";
+    shell_exec($cmd);
+    
+    $cmd = "optipng -o7 $outfile0";
+    shell_exec($cmd);
+}
+
+
 
