@@ -1,12 +1,13 @@
 
 @lcx-start-well-head-height: 50px;
-
+@lcx-start-well-close-size: 30px;
 
 #lcx-start-entry {
     
     position: relative;
     width: 50px; height: 50px;
     background-color: #4385f6;
+    cursor: pointer;
 
     img.lse-logo {
         width: 40px; height: 40px;
@@ -19,9 +20,7 @@
 
 .lcx-start-well {
 
-    //border: rgba(67, 133, 246, 0.9) solid 5px;
-    //background-color: rgba(67, 133, 246, 0.9);
-    background-color: fade(#7f8c8d, 95%);
+    background-color: fade(#1a1a1a, 90%);
     z-index: 10;
     position: absolute; left: 10px; top: 10px;
     text-align: left;
@@ -29,6 +28,7 @@
     padding: 10px;
 
     .lc-head {
+
         position: relative; top: 0; left: 0;
         margin: 0; padding: 0;
         height: @lcx-start-well-head-height; width: 100%;
@@ -50,13 +50,32 @@
             position: absolute;
             left: @lcx-start-well-head-height + 10px; top: 50%;
             margin-top: -11px;
-            //font-size: 28px;
-            //line-height: 28px;
             font: bold 22px/22px arial,sans-serif;
         }
+
         .lc-title em {
             font-size: 10px;
             color: #ccc;
+        }
+
+        .lc-close {
+            width: @lcx-start-well-close-size;
+            height: @lcx-start-well-close-size;
+            border-radius: @lcx-start-well-close-size;
+            display: block;
+            position: absolute;
+            right: @lcx-start-well-head-height / 2 - 10; top: 50%;
+            margin-top: -@lcx-start-well-close-size / 2;
+            font-size: @lcx-start-well-close-size;
+            line-height: 1em;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .lc-close:hover {
+            cursor: pointer;
+            background: #fff;
+            color: #000;
         }
     }
 

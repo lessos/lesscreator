@@ -10,16 +10,14 @@ $lcinfo = json_decode($lcinfo, true);
 <script type="text/javascript">
 //angular.bootstrap(document.documentElement);
 
-$("#lcx-start-entry").hover(function() {
-    
+$("#lcx-start-entry").click(function() {
     $("#lcx-start-entry").fadeOut(150);
     $(".lcx-start-well").show(150);
-
-}, function() {
-    //$("#lcx-start-entry").fadeIn(150);
-    //$(".lcx-start-well").hide(150);
 });
-
+$("#lcx-start-entry").hover(function() {  
+    $("#lcx-start-entry").fadeOut(150);
+    $(".lcx-start-well").show(150);
+});
 $(".lcx-start-well").click(function() {
     $("#lcx-start-entry").fadeIn(300);
     $(".lcx-start-well").hide(300);
@@ -39,11 +37,12 @@ $(".lcx-start-well").click(function() {
             </div>
         </div>
 
-        <div class="lcx-start-well">
+        <div class="lcx-start-well hide">
 
             <div class="lc-head">
                 <div class="lc-logo"><img src="/lesscreator/static/img/gen/pen0-48.png" /></div>
                 <div class="lc-title">Project <em><?php echo $lcinfo['version']?></em></div>
+                <div class="lc-close">&times;</div>
             </div>
 
             <div class="lc-line"></div>
