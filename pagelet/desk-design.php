@@ -29,18 +29,18 @@ $(".lcx-start-well").click(function() {
   <tr>
     <td width="10px"></td>
 
-    <td width="60px" align="left">
+    <td width="70px" align="left">
 
         <div id="lcx-start-entry">
             <div>
-                <img class="lse-logo" src="/lesscreator/static/img/gen/pen0-48.png" />
+                <img class="lse-logo" src="/lesscreator/static/img/gen/creator-white-96.png" />
             </div>
         </div>
 
         <div class="lcx-start-well hide">
 
             <div class="lc-head">
-                <div class="lc-logo"><img src="/lesscreator/static/img/gen/pen0-48.png" /></div>
+                <div class="lc-logo"><img src="/lesscreator/static/img/gen/creator-white-96.png" /></div>
                 <div class="lc-title">Project <em><?php echo $lcinfo['version']?></em></div>
                 <div class="lc-close">&times;</div>
             </div>
