@@ -29,11 +29,14 @@ $(".lcx-start-well").click(function() {
   <tr>
     <td width="10px"></td>
 
-    <td width="70px" align="left">
+    <td width="60px" align="left">
 
         <div id="lcx-start-entry">
             <div>
                 <img class="lse-logo" src="/lesscreator/static/img/gen/creator-white-96.png" />
+            </div>
+            <div>
+                <img class="lse-logo-ar" src="/lesscreator/static/img/gen/arrow-right-white-32.png" />
             </div>
         </div>
 
@@ -352,9 +355,8 @@ $(".lcx-start-well").click(function() {
 
 <script>
 
-$("#lcx-start-entry").fadeOut(150);
-$(".lcx-start-well").show(150);
-
+//$("#lcx-start-entry").fadeOut(150);
+//$(".lcx-start-well").show(150);
 //$(body).css({
 //    "-webkit-filter": blur(2px) contrast(0.4) brightness(1.4)
 //});
