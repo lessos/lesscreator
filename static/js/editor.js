@@ -284,7 +284,7 @@ lcEditor.LoadInstance = function(entry)
         }
     });
 
-    //CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
+    //CodeMirror.modeURL = "/codemirror3/3.21.0/mode/%N/%N.js";
     //CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);
 
     if (lcEditor.Config.EditMode != null) {
@@ -592,7 +592,7 @@ lcEditor.Theme = function(theme)
 {
     if (h5cTabletFrame["w0"].editor) {
 
-        seajs.use("/codemirror3/theme/"+theme+".css", function(){
+        seajs.use("/codemirror3/3.21.0/theme/"+theme+".min.css", function(){
             
             lcEditor.Config.theme = theme;
             lessCookie.SetByDay("editor_theme", theme, 365);

@@ -17,7 +17,7 @@ function lcInitSetting()
     }
     lcEditor.Config.theme = theme;
     if (theme != "default") {
-        seajs.use("/lesscreator/~/codemirror3/theme/"+theme+".css");
+        seajs.use("/lesscreator/~/codemirror3/3.21.0/theme/"+theme+".css");
     }
     
     var editor_editmode = lessLocalStorage.Get('editor_editmode');
@@ -521,6 +521,8 @@ function lcLayoutWebTermSizeFix()
         return;
     }
 
+    var obj = JSON.parse(rsp);
+    
     var pnew = JSON.stringify($("#lc-terminal").position());
     if (lcLayoutWebTermPos == pnew) {
         return;

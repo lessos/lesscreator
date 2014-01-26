@@ -12,7 +12,7 @@ $lcinfo = json_decode($lcinfo, true);
 //setcookie("runtime_mode", 'dev', time()+36000000000, '/');
 //print_r($lcinfo);
 ?><!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title><?php echo $this->T('lessCreator')?></title>
@@ -25,8 +25,7 @@ $lcinfo = json_decode($lcinfo, true);
   <script src="/lesscreator/static/js/gen.js?v=<?php echo $lcinfo['version']?>"></script>
   <script src="/lesscreator/static/js/genx.js?v=<?php echo $lcinfo['version']?>"></script>
   <script src="/lesscreator/static/js/editor.js?v=<?php echo $lcinfo['version']?>"></script>
-  <script src="/lesscreator/~/codemirror3/lib/codemirror.min.js"></script>
-  <script src="/lesscreator/static/js/angular.min.js"></script>
+  <script src="/lesscreator/~/codemirror3/3.21.0/codemirror.min.js"></script>
 
   <link href="/lesscreator/~/bootstrap2/css/bootstrap.min.css" rel="stylesheet" />
   
@@ -66,6 +65,7 @@ $lcinfo = json_decode($lcinfo, true);
 
 
 <script>
+
 
 var _load_sleep = 50;
 
@@ -116,22 +116,22 @@ function _load_deps()
 {
     var rqs = [
         "/lesscreator/~/bootstrap2/js/bootstrap.min.js",
-        "/lesscreator/~/codemirror3/lib/codemirror.css",
+        "/lesscreator/~/codemirror3/3.21.0/codemirror.min.css",
 
-        "/lesscreator/~/codemirror3/addon/hint/show-hint.css",
+        "/lesscreator/~/codemirror3/3.21.0/addon/hint/show-hint.min.css",
 
-        "/lesscreator/~/codemirror3/addon/mode/loadmode.js",
-        "/lesscreator/~/codemirror3/addon/search/searchcursor.js",
-        "/lesscreator/~/codemirror3/keymap/vim.js",
-        "/lesscreator/~/codemirror3/keymap/emacs.js",
-        "/lesscreator/~/codemirror3/addon/fold/foldcode.js",
-        "/lesscreator/~/codemirror3/addon/fold/foldgutter.js",
-        "/lesscreator/~/codemirror3/addon/fold/brace-fold.js",
-        "/lesscreator/~/codemirror3/addon/hint/show-hint.js",
-        "/lesscreator/~/codemirror3/addon/hint/javascript-hint.js",
-        "/lesscreator/~/codemirror3/mode/all.js",
-        "/lesscreator/~/codemirror3/addon/dialog/dialog.js",
-        "/lesscreator/~/codemirror3/addon/dialog/dialog.css",
+        "/lesscreator/~/codemirror3/3.21.0/addon/mode/loadmode.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/addon/search/searchcursor.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/keymap/vim.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/keymap/emacs.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/addon/fold/foldcode.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/addon/fold/foldgutter.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/addon/fold/brace-fold.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/addon/hint/show-hint.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/addon/hint/javascript-hint.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/mode/all.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/addon/dialog/dialog.min.js",
+        "/lesscreator/~/codemirror3/3.21.0/addon/dialog/dialog.min.css",
 
         "/lesscreator/static/js/term.js?v=<?php echo $lcinfo['version']?>",
     ];
@@ -192,6 +192,7 @@ function _load_sys_config()
                     }
 
                     _load_desk_once++;
+
                     _load_desk(rsj.data.basedir);
                 });                             
 
@@ -232,6 +233,7 @@ function _load_desk(basedir)
         }
     });
 }
+
 
 function _env_init()
 {   

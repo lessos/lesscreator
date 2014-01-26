@@ -24,6 +24,77 @@
 }
 
 
+.lcx-proj-navbox {
+
+    position: absolute; top: 0;
+    margin-top: 10px; height: 40px;
+
+    div:first-child {
+        margin-left: 0;
+    }
+
+    > * {
+        display: inline-block;
+    }
+
+    .lpn-pinfo {
+        
+        background-color: #8397ad;
+        min-width: 140px;
+        max-width: 200px;
+        height: 40px;
+        overflow: hidden;
+        color: #fff;
+        
+        .lpnp-label {
+            position: absolute;
+            font-size: 9px; line-height: 9px;
+            top: 5px; left: 5px;
+        }
+        
+        .lpnp-title {
+            position: absolute;
+            bottom: 3px; left: 5px; right: 5px;
+            font-size: 16px; line-height: 20px;
+            font-family: Helvetica !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; 
+        }
+    }
+
+    ul.lpn-group {
+
+        margin-left: 1px;
+        margin: 0; padding: 0;
+        height: 40px;
+        overflow: hidden;
+        text-align: center;
+        position: relative;
+
+        li {
+            display: inline-block;
+            list-style-type: none;
+            width: 40px; height: 40px;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+            background-color: fade(#8397ad, 100%);
+            float: left;
+            margin-left: 1px;
+        }
+        
+        li:hover {
+            cursor: pointer;
+            background-color: fade(#8397ad, 50%);
+        }
+        li:first-child {
+            margin-left: 10px;
+        }
+    }
+}
+
+
 .lcx-start-well {
 
     background-color: fade(#1a1a1a, 90%);

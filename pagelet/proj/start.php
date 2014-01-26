@@ -483,4 +483,20 @@ function _fs_file_del(path)
 _fs_tree_dir('', 1);
 //_proj_set_refresh();
 //_fs_tree_dir('', 1);
+
+$.ajax({
+    url     : "/lesscreator/api/proj/start?proj="+ lessSession.Get("ProjPath"),
+    type    : "GET",
+    timeout : 10000,
+    success : function(rsp) {
+        
+        var rsj = JSON.parse(rsp);        
+        if (rsj.status != 200) {
+            return;
+        }
+
+        lessPagelet.Render(rsj.data, "proj/navstart.tpl", "lcbind-proj-navstart");
+    }
+});
+
 </script>

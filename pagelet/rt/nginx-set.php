@@ -266,7 +266,7 @@ function _proj_rt_nginx_conf_load(mode)
                 readOnly      : readOnly,
             });
 
-            CodeMirror.modeURL = "/codemirror3/mode/%N/%N.js";
+            CodeMirror.modeURL = "/codemirror3/3.21.0/mode/%N/%N.min.js";
             CodeMirror.autoLoadMode(ngxEditor, "nginx");
         },
         error: function(xhr, textStatus, error) {

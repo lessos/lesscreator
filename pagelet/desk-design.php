@@ -1,30 +1,8 @@
 
-
 <?php
-// http://zouyesheng.com/angular.html
-
 $lcinfo = file_get_contents(LESSCREATOR_DIR ."/lcproject.json");
 $lcinfo = json_decode($lcinfo, true);
 ?>
-
-<script type="text/javascript">
-//angular.bootstrap(document.documentElement);
-
-$("#lcx-start-entry").click(function() {
-    $("#lcx-start-entry").fadeOut(150);
-    $(".lcx-start-well").show(150);
-});
-$("#lcx-start-entry").hover(function() {  
-    $("#lcx-start-entry").fadeOut(150);
-    $(".lcx-start-well").show(150);
-});
-$(".lcx-start-well").click(function() {
-    $("#lcx-start-entry").fadeIn(300);
-    $(".lcx-start-well").hide(300);
-});
-
-</script>
-
 <table class="lcx-header">
   <tr>
     <td width="10px"></td>
@@ -36,7 +14,7 @@ $(".lcx-start-well").click(function() {
                 <img class="lse-logo" src="/lesscreator/static/img/gen/creator-white-96.png" />
             </div>
             <div>
-                <img class="lse-logo-ar" src="/lesscreator/static/img/gen/arrow-right-white-32.png" />
+                <img class="lse-logo-ar" src="/lesscreator/static/img/gen/arrow-b2-white-32.png" />
             </div>
         </div>
 
@@ -44,7 +22,7 @@ $(".lcx-start-well").click(function() {
 
             <div class="lc-head">
                 <div class="lc-logo"><img src="/lesscreator/static/img/gen/creator-white-96.png" /></div>
-                <div class="lc-title">Project <em><?php echo $lcinfo['version']?></em></div>
+                <div class="lc-title">Project <em id="lcbind-lc-version"><?php echo $lcinfo['version']?></em></div>
                 <div class="lc-close">&times;</div>
             </div>
 
@@ -118,54 +96,12 @@ $(".lcx-start-well").click(function() {
            
             </div>
 
-      </div>      
+      </div>
     </td>
 
     <td align="left">
-      <div class="lcx-hdr-box">
-        
-        <div id="lcx-hnav-projinfo" class="lcx-hnav-projinfo">
-            <div class="lcx-label">Project</div>
-            <div class="lcx-title">Demo</div>
-            <a class="lcx-set" href="javascript:lcProjSet()" 
-                title="<?php echo $this->T('Settings')?>">
-                <i class="lcx-ico"></i>
-            </a>
-        </div>
-
-        <ul class="lcx-topnav">
-        <li>
-          <a href="javascript:lcProjLaunch('<?php echo $this->T('Run and Deply')?>')" title="<?php echo $this->T('Run')?>">
-            <i class="lcx-ico-play"></i>
-          </a>          
-        </li>
-        
-        <li>
-          <a onclick="_lc_nav_terminal()" title="<?php echo $this->T('Terminal')?> ">
-            <i class="lcx-ico-term"></i>
-          </a>
-        </li>
-        </ul>
-
-      </div>
+        <div id="lcbind-proj-navstart" class="lcx-proj-navbox"></div>
     </td>
-    
-    <!--<td align="left">
-      <ul class="lcx-topnav">
-        <li>
-          <a href="javascript:lcProjLaunch('<?php echo $this->T('Run and Deply')?>')" title="<?php echo $this->T('Run')?>">
-            <i class="lcx-ico-play"></i>
-          </a>          
-        </li>
-        
-        <li>
-          <a onclick="_lc_nav_terminal()" title="<?php echo $this->T('Terminal')?> ">
-            <i class="lcx-ico-term"></i>
-          </a>
-        </li>
-
-      </ul>
-    </td>-->
 
     <td align="right">
       <div class="lcx-usernav">
@@ -355,6 +291,19 @@ $(".lcx-start-well").click(function() {
 
 <script>
 
+$("#lcx-start-entry").click(function() {
+    $("#lcx-start-entry").fadeOut(150);
+    $(".lcx-start-well").show(150);
+});
+$("#lcx-start-entry").hover(function() {  
+    $("#lcx-start-entry").fadeOut(150);
+    $(".lcx-start-well").show(150);
+});
+$(".lcx-start-well").click(function() {
+    $("#lcx-start-entry").fadeIn(300);
+    $(".lcx-start-well").hide(300);
+});
+
 //$("#lcx-start-entry").fadeOut(150);
 //$(".lcx-start-well").show(150);
 //$(body).css({
@@ -385,5 +334,7 @@ function _lc_nav_terminal()
     }
 }
 lcWebTerminal(0);
+
+
 
 </script>

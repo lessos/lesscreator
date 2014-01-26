@@ -8,6 +8,8 @@ echo "GO"
 find ./src -name "*.go" |xargs cat|grep -v ^$|wc -l
 echo "CSS"
 find ./static -name "*.css" |xargs cat|grep -v ^$|wc -l
+echo "LESS"
+find ./static -name "*.less" |xargs cat|grep -v ^$|wc -l
 echo "JS"
 find ./static -name "*.js" |xargs cat|grep -v ^$|wc -l
 echo "PHP"
