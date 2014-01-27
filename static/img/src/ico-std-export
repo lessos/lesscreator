@@ -1,0 +1,148 @@
+#!/usr/bin/php
+
+<?php
+
+// depends
+//  xcftool
+//  imagemagick
+//  optipng
+
+$opt = getopt("s:l:L:b:c:gf");
+
+$size = isset($opt['s']) ? intval($opt['s']) : 32;
+if ($size < 16 || $size > 1024) {
+    die("InValid -s size\n");
+}
+
+$full = isset($opt['f']) ? true : false;
+$bgrd = isset($opt['g']) ? true : false;
+if ($bgrd) {
+    $full = true;
+}
+
+$bdrs = isset($opt['b']) ? str_replace(" ", "", $opt['b']) : null;
+$bdrs = strlen($bdrs) > 1 ? explode(",", $bdrs) : array();
+
+$lyrs = isset($opt['l']) ? str_replace(" ", "", $opt['l']) : "all";
+$lyrs = explode(",", $lyrs);
+
+$colors = isset($opt['c']) ? str_replace(array(" ", "#"), "", $opt['c']) : "000,fff";
+$colors = explode(",", $colors);
+foreach ($colors as $color) {
+    if (!strlen($color)) {
+        die();
+    }
+}
+
+$dir = __DIR__;
+
+if (in_array('all', $lyrs)) {
+
+    $cmd = "xcfinfo {$dir}/ico-std.xcf";
+    $op = explode("\n", trim(shell_exec($cmd)));
+    foreach ($op as $v) {
+
+        if (!preg_match("/Normal\ +ico\-(.*?)$/", $v, $mat)) {
+            continue;
+        }
+
+        if (!in_array("ico-". $mat[1], $lyrs)) {
+            $lyrs[] = "ico-". $mat[1];
+        }
+    }
+}
+
+sort($lyrs);
+
+foreach ($lyrs as $lyr) {
+
+    if ($lyr == "all" || strlen($lyr) < 2) {
+        continue;
+    }
+
+    echo "\n{$lyr}\n";
+
+    if (substr($lyr, 0, 4) == "ico-") {
+        $outfile = substr($lyr, 4);
+    } else {
+        $outfile = $lyr;
+    }
+
+    $outfile = $dir ."/../tmp/{$outfile}-{$size}.png";
+    if (file_exists($outfile)) {
+        echo "\tICON SKIP\n";
+        continue;
+    }
+
+
+    if ($bgrd && substr($lyr, 0, 4) == "ico-") {
+        if (substr($lyr, -6) == "-white") {
+            $lyr .= " bg-o-white";
+        } else {
+            $lyr .= " bg-o";
+        }
+    }
+
+    if (count($bdrs) > 0) {
+        $lyr .= " ". implode(" ", $bdrs);
+    }
+
+    if ($full) {
+        $cmd = "xcf2png -o {$outfile} {$dir}/ico-std.xcf {$lyr}";
+    } else {
+        //$cmd = "xcf2png -O 64,64 -S 896x896 -o {$outfile} {$dir}/ico-std.xcf {$lyr}";
+        $cmd = "xcf2png -O 0,0 -S 1024x1024 -o {$outfile} {$dir}/ico-std.xcf {$lyr}";
+    }
+    shell_exec($cmd);
+
+    if (count($colors) > 1) {
+        $cmd = "convert {$outfile} -colorspace Gray {$outfile}";
+        shell_exec($cmd);
+    }
+
+    if (file_exists("merge.png")) {
+        @unlink("merge.png");
+    }
+
+
+    $width = 0;
+    foreach ($colors as $color) {
+
+        if (count($colors) < 2 && in_array($color, array("000", "00000"))) {
+
+            copy($outfile, "merge.png");
+
+        } else {
+
+            $colorize = "80%";
+            if (in_array($color, array("fff", "ffffff"))) {
+                $colorize = "95%";
+            }
+            $cmd = "convert {$outfile} -fill '#{$color}' -colorize {$colorize} tmp.png";
+            shell_exec($cmd);
+
+
+            if (!file_exists("merge.png")) {
+                rename("tmp.png", "merge.png");
+            } else {
+                $cmd = "convert +append merge.png tmp.png merge.png";
+                shell_exec($cmd);
+            }
+        }
+
+        $width += $size;
+    }
+
+    $cmd = "convert -resize {$width}x{$size} merge.png {$outfile}";
+    shell_exec($cmd);
+
+    $cmd = "optipng -o7 $outfile";
+    shell_exec($cmd);
+
+    echo "\tDONE\n";
+}
+
+
+@unlink("tmp.png");
+@unlink("merge.png");
+

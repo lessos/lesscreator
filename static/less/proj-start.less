@@ -26,15 +26,16 @@
 
 .lcx-proj-navbox {
 
-    position: absolute; top: 0;
-    margin-top: 10px; height: 40px;
-
-    div:first-child {
-        margin-left: 0;
-    }
+    position: absolute;
+    top: 0;
+    margin-top: 10px;
+    height: 40px;
 
     > * {
         display: inline-block;
+        padding: 0;
+        height: 40px;
+        position: relative;
     }
 
     .lpn-pinfo {
@@ -55,8 +56,11 @@
         
         .lpnp-title {
             position: absolute;
-            bottom: 3px; left: 5px; right: 5px;
-            font-size: 16px; line-height: 1.2em;
+            bottom: 3px;
+            left: 5px;
+            right: 5px;
+            font-size: 16px;
+            line-height: 1.2em;
             font-family: Helvetica !important;
             white-space: nowrap;
             overflow: hidden;
@@ -64,10 +68,14 @@
         }
     }
 
+    ul:first-child {
+        margin-left: 0;
+    }
+
     ul.lpn-group {
 
-        margin-left: 1px;
-        margin: 0; padding: 0;
+        margin: 0 0 0 10px;
+        padding: 0;
         height: 40px;
         overflow: hidden;
         text-align: center;
@@ -88,9 +96,13 @@
         li:hover {
             cursor: pointer;
             background-color: fade(#8397ad, 50%);
+            .lcx-ico-std {
+                background-position: 0 0;
+            }
         }
+
         li:first-child {
-            margin-left: 10px;
+            margin-left: 0;
         }
     }
 }

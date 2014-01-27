@@ -36,23 +36,28 @@ try {
         'ico'   => 'std/set2-32.png',
     );
     $rsp['data']['menus'][] = array(
+        'fn'    => '#',
+        'title' => $this->T('Packages'),
+        'ico'   => 'std/gift2-32.png',
+    );
+    $rsp['data']['menus'][] = array(
         'fn'    => 'lcProjLaunch(\'Run and Deply\')',
         'title' => $this->T('Run and Deply'),
         'ico'   => 'std/play-32.png',
     );
-    $rsp['data']['menus'][] = array(
+
+    // Extension
+    $rsp['data']['exts'][] = array(
         'fn'    => '_lc_nav_terminal()',
         'title' => $this->T('Terminal'),
         'ico'   => 'std/term-32.png',
     );
-
-    // Extension
-    $rsp['data']['menus'][] = array(
+    $rsp['data']['exts'][] = array(
         'fn'    => '_proj_plugins_lessdata()',
         'title' => $this->T('Database'),
         'ico'   => 'std/ext-db2-32.png',
     );
-    $rsp['data']['menus'][] = array(
+    $rsp['data']['exts'][] = array(
         'fn'    => '_proj_plugins_phpyaf()',
         'title' => $this->T('Yaf Framework'),
         'ico'   => 'std/ext-yaf-32.png',
