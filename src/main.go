@@ -1,55 +1,68 @@
 package main
 
 import (
-    "../deps/lessgo/keeper"
-    "../deps/lessgo/passport"
-    "./api"
-    "./conf"
-    "flag"
-    "fmt"
-    "log"
-    "os"
-    "os/user"
-    "time"
+	"../deps/lessgo/logger"
+	"../deps/lessgo/pagelet"
+
+	"./conf"
+	"./store"
+	"flag"
+	"fmt"
+	"os"
+	"runtime"
+	"strconv"
+	"time"
 )
 
-const VERSION string = "1.0.0"
-
-var cfg conf.Config
-var apiserv api.Api
-var kpr keeper.Keeper
-var ses passport.Session
+import (
+	c_api "./api"
+	c_ui "./ui/controllers"
+)
 
 var flagPrefix = flag.String("prefix", "", "the prefix folder path")
-var flagConfig = flag.String("config", "", "the config file path")
+
+func init() {
+	// Environment variable initialization
+	runtime.GOMAXPROCS(runtime.NumCPU())
+}
 
 func main() {
+	//
+	flag.Parse()
+	if err := conf.Initialize(*flagPrefix); err != nil {
+		fmt.Println("conf.Initialize error: %v", err)
+		os.Exit(1)
+	}
 
-    var err error
+	//
+	if err := store.Initialize(); err != nil {
+		logger.Printf("fatal", "store.Initialize error: %v", err)
+		os.Exit(1)
+	}
 
-    if u, err := user.Current(); err != nil || u.Uid != "0" {
-        log.Fatal("Permission Denied : must be run as root")
-    }
+	pagelet.Config.UrlBasePath = "lesscreator"
+	pagelet.Config.HttpPort, _ = strconv.Atoi(conf.Config.ApiPort)
+	pagelet.Config.LessIdsServiceUrl = conf.Config.LessIdsUrl
 
-    //
-    flag.Parse()
-    if cfg, err = conf.NewConfig(*flagPrefix, *flagConfig); err != nil {
-        fmt.Println(err)
-        os.Exit(1)
-    }
-    cfg.Version = VERSION
+	//
+	pagelet.Config.I18n(conf.Config.Prefix + "/src/i18n/en.json")
+	pagelet.Config.I18n(conf.Config.Prefix + "/src/i18n/zh_CN.json")
 
-    kpr, _ = keeper.NewKeeper(cfg.KeeperAgent)
+	//
+	pagelet.Config.RouteAppend("v1", "/:controller/:action")
+	pagelet.RegisterController("v1", (*c_api.Index)(nil))
 
-    ses, _ = passport.NewSession(kpr)
+	//
+	pagelet.Config.RouteStaticAppend("default", "/~", conf.Config.Prefix+"/static")
+	pagelet.Config.RouteAppend("default", "/:controller/:action")
+	pagelet.Config.ViewPath("default", conf.Config.Prefix+"/src/ui/views")
+	pagelet.RegisterController("default", (*c_ui.Index)(nil))
+	pagelet.RegisterController("default", (*c_ui.Error)(nil))
 
-    apiserv.Kpr = kpr
-    apiserv.Session = ses
-    apiserv.Cfg = cfg
+	//
+	pagelet.Run()
 
-    go apiserv.Serve(cfg.ApiPort)
-
-    for {
-        time.Sleep(3e9)
-    }
+	for {
+		time.Sleep(3e9)
+	}
 }

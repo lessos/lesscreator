@@ -227,13 +227,13 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
   <table class="table table-condensed" width="100%">
 
     <tr class="bordernil">
-      <td width="240px"><strong><?php echo $this->T('Project ID')?></strong></td>
+      <td width="180px"><strong><?php echo $this->T('Project ID')?></strong></td>
       <td><?=$info['projid']?></td>
     </tr>
     <tr>
       <td><strong><?php echo $this->T('Display Name')?></strong></td>
       <td>
-        <input name="name" class="input-medium" type="text" value="<?=$info['name']?>" />
+        <input name="name" class="input-large" type="text" value="<?=$info['name']?>" />
         <label class="label label-important"><?php echo $this->T('Required')?></label>
         <span class="help-inline"><?php echo $this->T('Example')?>: <strong>Hello World</strong></span>
       </td>
@@ -242,10 +242,15 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
     <tr>
       <td><strong><?php echo $this->T('Version')?></strong></td>
       <td>
-        <input name="version" class="input-medium" type="text" value="<?=$info['version']?>" /> 
+        <input name="version" class="input-large" type="text" value="<?=$info['version']?>" /> 
         <label class="label label-important"><?php echo $this->T('Required')?></label>
         <span class="help-inline"><?php echo $this->T('Example')?>: <strong>1.0.0</strong></span>
       </td>
+    </tr>
+
+    <tr>
+      <td valign="top"><strong><?php echo $this->T('Description')?></strong></td>
+      <td><textarea name="summary" rows="2" style="width:400px;"><?=$info['summary']?></textarea></td>
     </tr>
 
     <tr>
@@ -284,11 +289,6 @@ if (in_array($_SERVER['REQUEST_METHOD'], array('POST', 'PUT'))) {
         }
         ?>
       </td>
-    </tr>
-
-    <tr>
-      <td valign="top"><strong><?php echo $this->T('Description')?></strong></td>
-      <td><textarea name="summary" rows="2" style="width:400px;"><?=$info['summary']?></textarea></td>
     </tr>
 
     <tr>

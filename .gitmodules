@@ -7,3 +7,6 @@
 [submodule "deps/pty"]
 	path = deps/pty
 	url = https://github.com/kr/pty.git
+[submodule "static/lessui"]
+	path = static/lessui
+	url = git@github.com:eryx/lessui.git

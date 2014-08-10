@@ -1,49 +1,29 @@
-.lcx-hnav-projinfo {
-    position: relative;
-    float: left;
-    background-color: #8397ad;
-    min-width: 140px; max-width: 200px; height: 40px;
-    margin-left: 10px;
-    overflow: hidden;
-    color: #fff;
+@import "variables.less";
+
+@import "icons.less";
+@import "nav.less";
+@import "proj-start.less";
+@import "nav-user.less";
+
+body {
+    background-color: #eee;
+    /*background-repeat: repeat;*/
+    background-image: url("@{url-img}/gen/grid-hexagons.png"), linear-gradient(10deg, #222, #999);
+    /*background-image: url("@{url-img}/gen/grid-hexagons.png"), radial-gradient(circle, #ccc, #666);*/
 }
-.lcx-hnav-projinfo > .lcx-label {
+
+.lcx-loadwell {
     position: absolute;
-    font-size: 8px; line-height: 8px;
-    top: 5px; left: 5px;
+    width: 600px;
+    border: 2px solid #ccc;
+    background-color: #fff;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 15px;
 }
-.lcx-hnav-projinfo > .lcx-title {
-    position: absolute;
-    bottom: 3px; left: 5px;
-    font-size: 20px; line-height: 20px;
-    font-family: Helvetica !important;
-}
-.lcx-hnav-projinfo > .lcx-set {
-    width: 32px; height: 32px;
-    position: absolute;
-    top: 50%; right: 5px;
-    margin-top: -16px;
-    text-align: center;
-    overflow: hidden;
-}
-.lcx-hnav-projinfo > .lcx-set > .lcx-ico {
-    position: absolute;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    top: 50%; left: 50%;
-    margin: -12px 0 0 -12px;
-    background-repeat: no-repeat;
-    background-image: url("/lesscreator/static/img/gen/set2-24.png");
-    background-position: -24px 0;
-}
-.lcx-hnav-projinfo > .lcx-set:hover {
-    background: #fff;
-    border-radius: 3px;
-}
-.lcx-hnav-projinfo > .lcx-set:hover > .lcx-ico {
-    background-position: 0 0;
+.lcx-loadwell .load-progress {
+    margin-bottom: 0;
 }
 
 .lcx-start-nav {
@@ -71,7 +51,7 @@
     margin: 0;
 }
 .lcx-start-navbtn {
-    /* border: 1px solid rgba(255,0,0,0); */
+    // border: 1px solid rgba(255,0,0,0);
     border-radius: 2px;
     width: 32px; height: 32px;
     overflow-x: hidden;
@@ -159,21 +139,11 @@
 
 .lcx-header {
     width: 100%;
+    height: 50px;
     position: relative;
+    //background-color: fade(#fff, 10%);
 }
 
-
-
-
-
-.lcx-hdr-box {
-    position: absolute; top: 0;
-    margin-top: 10px; height: 40px;
-}
-
-.lcx-hdr-box div:first-child {
-    margin-left: 0;
-}
 
 .lcx-topnav {
     position: relative;
@@ -206,45 +176,41 @@
     background-position: 0 0;
 }
 .lcx-topnav > li:hover [class^="lcx-ico-"],
-.lcx-topnav > li:hover [class*=" lcx-ico-"],
-.lcx-usernav:hover [class^="lcx-ico-"],
-.lcx-usernav:hover [class*=" lcx-ico-"] {
+.lcx-topnav > li:hover [class*=" lcx-ico-"] {
     background-position: -32px 0;
 }
 [class^="lcx-icowhite"],
 [class*=" lcx-icowhite"] {
     background-position: -32px 0;
 }
-
+[class^="lcx-icogray"],
+[class*=" lcx-icogray"] {
+    background-position: 0 0;
+}
 
 .lcx-ico-play {
-    background-image: url("/lesscreator/static/img/base/play-32.png");
+    background-image: url("@{url-img}/base/play-32.png");
 }
 .lcx-ico-plugin {
-    background-image: url("/lesscreator/static/img/base/plugin-32.png");
+    background-image: url("@{url-img}/base/plugin-32.png");
 }
 .lcx-ico-term {
-    background-image: url("/lesscreator/static/img/base/term-32.png");
+    background-image: url("@{url-img}/base/term-32.png");
 }
 .lcx-ico-set2 {
-    background-image: url("/lesscreator/static/img/base/set2-32.png");
+    background-image: url("@{url-img}/base/set2-32.png");
 }
 .lcx-ico-set3 {
-    background-image: url("/lesscreator/static/img/base/set3-32.png");
+    background-image: url("@{url-img}/base/set3-32.png");
 }
 .lcx-ico-user {
-    background-image: url("/lesscreator/static/img/base/user-32.png");
+    background-image: url("@{url-img}/base/user-32.png");
 }
 
-
-.lcx-usernav {
-    margin-top: 10px;
-    width: 40px; height: 40px;
-    overflow: hidden;
-    text-align: center;
-    position: relative;
+.lcx-ico-bug {
+    background-image: url("@{url-img}/base/bug-32.png");
 }
-.lcx-usernav:hover {
-    background-color: #323a45;
-    cursor: pointer;
+
+.lcx-lay-colbg {
+    background-color: fade(#000, 10%);
 }

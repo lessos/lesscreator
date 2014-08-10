@@ -1,8 +1,15 @@
 
 bin/lesscreator*
 *~
-static/img/*
-static/img/3d/*
-static/js/pyte/
-static/js/angular*
+
+static/lesscreator/img/*
+static/lesscreator/img/3d/*
+static/lesscreator/js/pyte/
+static/lesscreator/js/angular*
+static/codemirror
+static/jquery
+static/twitter-bootstrap
+
+src/gokeeper.go
+deps/fsnotify
 

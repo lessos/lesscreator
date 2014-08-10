@@ -2,9 +2,9 @@
 
 use LessPHP\User\Session;
 
-if (!Session::IsLogin()) {
-    header('Location: /user');
-}
+// if (!Session::IsLogin()) {
+//     header('Location: /user');
+// }
 
 $lcinfo = file_get_contents(LESSCREATOR_DIR ."/lcproject.json");
 $lcinfo = json_decode($lcinfo, true);

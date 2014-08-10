@@ -44,6 +44,7 @@ class lesscreator_env
             '61' => 'Web Backend Library, Framework',
             '70' => 'System Library',
             '71' => 'System Server, Service',
+            '72' => 'Runtime',
         );
     }
     

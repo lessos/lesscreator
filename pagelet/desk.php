@@ -2,9 +2,9 @@
 
 use LessPHP\User\Session;
 
-if (!Session::IsLogin()) {
-    die($this->T('Access denied') .' <a href="/user">'. $this-T('Login') .'</a>');
-}
+// if (!Session::IsLogin()) {
+//     die($this->T('Access denied') .' <a href="/user">'. $this-T('Login') .'</a>');
+// }
 $lcinfo = file_get_contents(LESSCREATOR_DIR ."/lcproject.json");
 $lcinfo = json_decode($lcinfo, true);
 ?>
