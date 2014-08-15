@@ -9,6 +9,7 @@ static/lesscreator/js/angular*
 static/codemirror
 static/jquery
 static/twitter-bootstrap
+static/lesscreator/js/eventproxy.js
 
 src/gokeeper.go
 deps/fsnotify

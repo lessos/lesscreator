@@ -1,0 +1,22 @@
+
+### Cookie
+
+	access_token
+	access_userkey
+
+### Local Session
+
+	access_userkey
+	boxid
+	hostid
+	box_hostaddr
+
+	proj_current
+	proj_current_name
+
+### Local Storage
+
+	{ukey}_proj_current
+
+### Local IndexDB
+	

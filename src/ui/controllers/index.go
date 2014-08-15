@@ -23,6 +23,14 @@ func (c Index) IndexAction() {
 		return
 	}
 
+	ck := &http.Cookie{
+		Name:    "access_userkey",
+		Value:   session.Uuid,
+		Path:    "/",
+		Expires: session.Expired.UTC(),
+	}
+	http.SetCookie(c.Response.Out, ck)
+
 	//
 	if c.Params.Get("access_token") != "" {
 
@@ -39,7 +47,7 @@ func (c Index) IndexAction() {
 		return
 	}
 
-	// c.ViewData["access_token"] = session.AccessToken
+	//
 	c.ViewData["lessfly_api"] = conf.Config.LessFlyApi
 }
 

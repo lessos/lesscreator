@@ -32,7 +32,7 @@
                         {{T . "Project"}}
                     </div>
                     
-                    <div class="less-tile flatui-bg-peter-river" onclick="lcProjNew()">
+                    <div class="less-tile flatui-bg-peter-river" onclick="lcProject.Open()">
                         <div class="lt-content icon">
                             <img src="/lesscreator/~/lesscreator/img/gen/pen0-48.png">
                         </div>
@@ -96,27 +96,23 @@
     </td>
 
     <td align="left">
+        
         <div id="lcbind-box-nav" class="lcx-nav-grp">
 
             <div class="lcx-nav-item">
                 <div class="lni-label">Box</div>
-                <div class="lni-title" id="box-state-msg">Connecting</div>
+                <div class="lni-title" id="nav-box-state-msg">Connecting</div>
             </div>
 
-<ul class="lpn-group" style="margin-left: 1px;">
-    <li class="lpng-core">
-        <a href="javascript:fn" title="it.menus[i].title">
-            <i class="lcx-ico-std lcx-icowhite" style="background-image:url(/lesscreator/static/img/?"></i>
-        </a>
-    </li>
-    <li class="lpng-core">
-        <a href="javascript:fn" title="it.menus[i].title">
-            <i class="lcx-ico-std lcx-icowhite" style="background-image:url(/lesscreator/static/img/?"></i>
-        </a>
-    </li>
-</ul>
-
         </div>
+
+        <div id="lcbind-proj-nav" class="lcx-nav-grp hide">
+            <div class="lcx-nav-item">
+                <div class="lni-label">Project</div>
+                <div class="lni-title" id="nav-proj-name">Connecting</div>
+            </div>
+        </div>
+
         <div id="lcbind-proj-navstart" class="lcx-proj-navbox"></div>
     </td>
 
@@ -205,8 +201,9 @@
     
     <td width="10px"></td>
 
-    <td id="lcx-proj-box" class="lcx-lay-colbg" valign="top" width="280px"></td>
-  
+    <!-- <td id="lcx-proj-box" class="lcx-lay-colbg" valign="top" width="280px"></td> -->
+    <td id="lcbind-proj-filenav" class="lcx-lay-colbg" valign="top" width="220px"></td>
+
     <!-- column blank 2 -->
     <td width="10px" id="h5c-lyo-col-w-ctrl" class="h5c_resize_col"></td>
     

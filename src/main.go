@@ -54,10 +54,12 @@ func main() {
 
 	//
 	pagelet.Config.RouteStaticAppend("default", "/~", conf.Config.Prefix+"/static")
+	pagelet.Config.RouteStaticAppend("default", "/-", conf.Config.Prefix+"/src/ui/views")
 	pagelet.Config.RouteAppend("default", "/:controller/:action")
 	pagelet.Config.ViewPath("default", conf.Config.Prefix+"/src/ui/views")
 	pagelet.RegisterController("default", (*c_ui.Index)(nil))
 	pagelet.RegisterController("default", (*c_ui.Error)(nil))
+	pagelet.RegisterController("default", (*c_ui.Project)(nil))
 
 	//
 	pagelet.Run()

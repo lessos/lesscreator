@@ -26,7 +26,7 @@ function lcBoot()
         }
 
         rqs = [
-            "~/lessui/js/lessui.js?v={{.version}}",
+            "~/lessui/js/lessui.js?v={{.version}}&_="+ Math.random(),
             "~/lesscreator/js/c.js?v={{.version}}",
             "~/lesscreator/js/gen.js?v={{.version}}",
             "~/lesscreator/js/genx.js?v={{.version}}",
@@ -51,7 +51,7 @@ function lcBoot()
     });
 
     document.oncontextmenu = function() {
-        return false;
+        // return false;
     }
 }
 
@@ -79,7 +79,10 @@ function lcLoadDeps() {
         });
 
         var rqs = [
+            // "~/lesscreator/js/eventproxy.js",
+
             "~/lesscreator/js/box.js?_="+ Math.random(),
+            "~/lesscreator/js/project.js?_="+ Math.random(),
 
             // "~/twitter-bootstrap/2.3.2/js/bootstrap.min.js",
             "~/codemirror/3.21.0/codemirror.min.css",
@@ -118,8 +121,12 @@ function lcLoadDeps() {
 
 function lcBoxList()
 {
+    if (lessCookie.Get("access_userkey") == null) {
+        return;
+    }
+    lessSession.Set("access_userkey", lessCookie.Get("access_userkey"));
 
-    if (lessSession.Get("boxid") != "") {
+    if (lessSession.Get("boxid") != null) {
         lcBodyLoader("index/desk");
         return;
     }
@@ -226,24 +233,24 @@ function lcxLayoutResize()
 
     $("#hdev_layout").width(bw);
     
-    // var toset = lessSession.Get('lcLyoLeftW');
-    // if (toset == 0 || toset == null) {   
-    //     toset = lessLocalStorage.Get('lcLyoLeftW');
-    // }
-    // if (toset == 0 || toset == null) {
-    //     toset = 0.1;
-    //     lessLocalStorage.Set("lcLyoLeftW", toset);
-    //     lessSession.Set("lcLyoLeftW", toset);
-    // }
+    var toset = lessSession.Get('lcLyoLeftW');
+    if (toset == 0 || toset == null) {   
+        toset = lessLocalStorage.Get('lcLyoLeftW');
+    }
+    if (toset == 0 || toset == null) {
+        toset = 0.1;
+        lessLocalStorage.Set("lcLyoLeftW", toset);
+        lessSession.Set("lcLyoLeftW", toset);
+    }
 
-    // var left_w = (bw - (3 * spacecol)) * toset;
-    // if (left_w < 200) {
-    //     left_w = 200;
-    // } else if (left_w > 600) {
-    //     left_w = 600;
-    // } else if ((left_w + 200) > bw) {
-    //     left_w = bw - 200;
-    // }
+    var left_w = (bw - (3 * spacecol)) * toset;
+    if (left_w < 200) {
+        left_w = 200;
+    } else if (left_w > 600) {
+        left_w = 600;
+    } else if ((left_w + 200) > bw) {
+        left_w = bw - 200;
+    }
     // var ctn_w = (bw - (3 * spacecol)) - left_w;
     // $("#lc-proj-start").width(left_w);
 
@@ -320,12 +327,12 @@ function lcxLayoutResize()
     // $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(ctn_w - 20);
 
     // // project start box
-    // $("#lcx-proj-box").width(left_w);
-    // var sf_p = $("#lcx-start-fstree").position();
-    // if (sf_p) {
-    //     $("#lcx-start-fstree").width(left_w);
-    //     $("#lcx-start-fstree").height(lyo_h - (sf_p.top - lyo_p.top));
-    // }
+    $("#lcbind-proj-filenav").width(left_w);
+    var sf_p = $("#lcbind-fsnav-fstree").position();
+    if (sf_p) {
+        $("#lcbind-fsnav-fstree").width(left_w);
+        $("#lcbind-fsnav-fstree").height(lyo_h - (sf_p.top - lyo_p.top));
+    }
 
     // TODO rightbar
 }
