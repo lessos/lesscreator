@@ -157,8 +157,18 @@ lcProject.Open = function(proj)
     BoxFs.Get(req);
 }
 
-lcProject.FsTreeLoad = function(path)
+lcProject.FsTreeLoad = function(path, ukn)
 {
+    var ptdid = lessCryptoMd5(path);
+    if (path == lessSession.Get("proj_current")) {
+        ptdid = "root";
+    }
+
+    if (ptdid != "root" && document.getElementById("fstd"+ ptdid)) {
+        $("#fstd"+ ptdid).remove();
+        return;
+    }
+
     var req = {
         path: path,// lessSession.Get("proj_current"),
     }
@@ -173,12 +183,18 @@ lcProject.FsTreeLoad = function(path)
                 // TODO
             }
 
+            var fspath = rs.path +"/"+ ls[i].name;
+            ls[i].path = fspath.replace(/\/+/g, "/");
+            ls[i].fsid = lessCryptoMd5(ls[i].path);
+
+            ls[i].fstype = "none";
+
             var ico = "page_white";
 
-            if (ls[i].isdir) {
+            if (ls[i].isdir !== undefined && ls[i].isdir == true) {
             
                 ico = "folder";
-                ls[i].href = "javascript:_fs_tree_dir('', 0)";
+                ls[i].fstype = "dir";
 
             } else if (ls[i].mime.substring(0, 4) == "text"
                 || ls[i].name.slice(-4) == ".tpl"
@@ -221,26 +237,25 @@ lcProject.FsTreeLoad = function(path)
                     ) {
                     ico = "page_white_code";
                 }
-            
-                ls[i].href = "javascript:h5cTabOpen('{$p}','w0','editor',{'img':'{$fmi}', 'close':'1'})";
+
+                // ls[i].href = "javascript:h5cTabOpen('{$p}','w0','editor',{'img':'{$fmi}', 'close':'1'})";
+                
+                ls[i].fstype = "text";
 
             } else if (ls[i].mime.slice(-5) == "image") {
                 ico = "page_white_picture";
             }
 
             ls[i].ico = ico;
-
-            var fspath = rs.path +"/"+ ls[i].name;
-            ls[i].path = fspath.replace(/\/+/g, "/");
-            
-            ls[i].fsid = lessCryptoMd5(ls[i].path);
-
-            if (ls[i].isdir === undefined) {
-                ls[i].isdir = false;
-            }
         }
 
-        lessTemplate.RenderFromId("ptroot", "lcx-filenav-tree-tpl", ls);
+        if (document.getElementById("fstd"+ ptdid) == null) {
+            $("#ptp"+ ptdid).after("<div id=\"fstd"+ptdid+"\" style=\"padding-left:20px;\"></div>");
+        } else {
+            // TODO
+        }
+
+        lessTemplate.RenderFromId("fstd"+ ptdid, "lcx-filenav-tree-tpl", ls);
         
         setTimeout(function() {
             lcProject.FsTreeEventRefresh();
@@ -256,10 +271,11 @@ lcProject.FsTreeLoad = function(path)
     BoxFs.List(req);
 }
 
+var _fsItemPath = "";
 lcProject.FsTreeEventRefresh = function()
 {
     // console.log("lcProject.FsTreeEventRefresh");
-
+    $(".lcx-fsitem").unbind();
     $(".lcx-fsitem").bind("contextmenu", function(e) {
 
         var h = $("#lcbind-fsnav-rcm").height();
@@ -281,52 +297,68 @@ lcProject.FsTreeEventRefresh = function()
             left: l +'px'
         }).show(10);
 
-        //
-        var path = $(this).attr("lc-fspath");
-        var isdir = $(this).attr("lc-fsdir");
+        _fsItemPath = $(this).attr("lc-fspath");
         
-        if (isdir == "true") {
+        var fstype = $(this).attr("lc-fstype");
+        if (fstype == "dir") {
             $(".fsrcm-isdir").show();
         } else {
             $(".fsrcm-isdir").hide();
         }
 
-        //    
-        $(".lcbind-fsrcm-item").click(function() {
-            // console.log($(this));
-
-            var action = $(this).attr("lc-fsnav");
-            // var ppath = path.slice(0, path.lastIndexOf("/"));
-            // var fname = path.slice(path.lastIndexOf("/") + 1);
-            // console.log("right click: "+ action);
-            switch (action) {
-            case "new-file":
-                lcProjectFs.FileNew("file", path, "");
-                break;
-            case "new-dir":
-                lcProjectFs.FileNew("dir", path, "");
-                break;
-            case "upload":
-                // _fs_file_upl_modal(path);
-                break;
-            case "rename":
-                lcProjectFs.FileRename(path);
-                break;
-            case "file-del":
-                lcProjectFs.FileDel(path);
-                break;
-            default:
-                //
-            }
-
-            $("#lcbind-fsnav-rcm").hide();
-        });
-        
-        $(document).click(function() {
-            $("#lcbind-fsnav-rcm").hide();
-        });
-    
         return false;
+    });
+    $(".lcx-fsitem").bind("click", function() {
+    
+        var fstype = $(this).attr("lc-fstype");
+        var fspath = $(this).attr("lc-fspath");
+    
+        switch (fstype) {
+        case "dir":
+            lcProject.FsTreeLoad(fspath, 0);
+            break;
+        case "text":
+
+            break;
+        default:
+            //
+        }
+    });
+
+    // 
+    $(".lcbind-fsrcm-item").unbind(); 
+    $(".lcbind-fsrcm-item").bind("click", function() {
+
+        var action = $(this).attr("lc-fsnav");
+
+        // var ppath = path.slice(0, path.lastIndexOf("/"));
+        // var fname = path.slice(path.lastIndexOf("/") + 1);
+        // console.log("right click: "+ action);
+        switch (action) {
+        case "new-file":
+            lcProjectFs.FileNew("file", _fsItemPath, "");
+            break;
+        case "new-dir":
+            lcProjectFs.FileNew("dir", _fsItemPath, "");
+            break;
+        case "upload":
+            lcProjectFs.FileUpload(_fsItemPath);
+            break;
+        case "rename":
+            lcProjectFs.FileRename(_fsItemPath);
+            break;
+        case "file-del":
+            lcProjectFs.FileDel(_fsItemPath);
+            break;
+        default:
+            break;
+        }
+
+        $("#lcbind-fsnav-rcm").hide();
+    });
+    
+    $(document).click(function() {
+        $("#lcbind-fsnav-rcm").hide();
     });
 }
 
@@ -392,7 +424,7 @@ lcProjectFs.FileNewSave = function(formid)
             //     _plugin_yaf_cvlist();
             // }
 
-            lcProject.FsTreeLoad(path);
+            // lcProject.FsTreeLoad(path);
             lessModal.Close();
         },
         error: function(status, message) {
@@ -404,10 +436,125 @@ lcProjectFs.FileNewSave = function(formid)
     return false;
 }
 
+// html5 file uploader
+var _fsUploadRequestId = "";
+var _fsUploadAreaId    = "";
+var _fsUploadBind      = null;
+
+function _fsUploadTraverseTree(reqid, item, path)
+{
+    path = path || "";
+  
+    if (item.isFile) {
+    
+        // Get file
+        item.file(function(file) {
+            
+            //console.log("File:", path + file.name);
+            if (file.size > 10 * 1024 * 1024) {
+                $("#"+ reqid +" .state").show().append("<div>"+ path +" Failed: File is too large to upload</div>");
+                return;
+            }
+
+            _fsUploadCommit(reqid, file);
+        });
+
+    } else if (item.isDirectory) {
+        // Get folder contents
+        var dirReader = item.createReader();
+        dirReader.readEntries(function(entries) {
+            for (var i = 0; i < entries.length; i++) {
+                _fsUploadTraverseTree(reqid, entries[i], path + item.name + "/");
+            }
+        });
+    }
+}
+
+function _fsUploadHanderDragEnter(evt)
+{
+    this.setAttribute('style', 'border-style:dashed;');
+}
+
+function _fsUploadHanderDragLeave(evt)
+{
+    this.setAttribute('style', '');
+}
+
+function _fsUploadHanderDragOver(evt)
+{
+    evt.stopPropagation();
+    evt.preventDefault();
+}
+
+function _fsUploadCommit(reqid, file)
+{
+    var reader = new FileReader();
+    
+    reader.onload = (function(file) {  
+        
+        return function(e) {
+            
+            if (e.target.readyState != FileReader.DONE) {
+                return;
+            }
+
+            var ppath = $("#"+ reqid +" :input[name=path]").val();
+            // console.log("upload path: "+ ppath);
+
+            BoxFs.Post({
+                path    : ppath +"/"+ file.name,
+                size    : file.size,
+                data    : e.target.result,
+                encode  : "base64",
+                success : function(rsp) {
+
+                    $("#"+ reqid +" .state").show().append("<div>"+ file.name +" OK</div>");
+
+                    // console.log(rsp);
+                    // hdev_header_alert('success', "{{T . "Successfully Done"}}");
+
+                    // if (typeof _plugin_yaf_cvlist == 'function') {
+                    //     _plugin_yaf_cvlist();
+                    // }
+
+                    // lcProject.FsTreeLoad(ppath);
+                    // lessModal.Close();
+                },
+                error: function(status, message) {
+
+                    $("#"+ reqid +" .state").show().append("<div>"+ file.name +" Failed</div>");
+                    console.log(status, message);
+                    // hdev_header_alert('error', textStatus+' '+xhr.responseText);
+                }
+            });
+        };
+
+    })(file); 
+    
+    reader.readAsDataURL(file);
+}
+
+function _fsUploadHander(evt)
+{            
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    var items = evt.dataTransfer.items;
+    for (var i = 0; i < items.length; i++) {
+        // webkitGetAsEntry is where the magic happens
+        var item = items[i].webkitGetAsEntry();
+        if (item) {
+            _fsUploadTraverseTree(_fsUploadRequestId, item);
+        }
+    }
+}
+
 lcProjectFs.FileUpload = function(path)
 {
     if (path === undefined || path === null) {
         path = lessSession.Get("proj_current");
+        // alert("Path can not be null"); // TODO
+        // return;
     }
 
     // Check for the various File API support.
@@ -418,10 +565,66 @@ lcProjectFs.FileUpload = function(path)
         return;
     }
 
-    var tit = "Upload File From Location";
-    var url = "/lesscreator/fs/file-upl?path="+ path;
-    lessModalOpen(url, 0, 600, 400, tit, null);
+    var reqid  = Math.random().toString(36).slice(2);
+    var areaid = Math.random().toString(36).slice(2);
+
+    // console.log("ids 1: "+ reqid +", "+ areaid);
+
+    var req = {
+        header_title : "Upload File From Location",
+        position     : "cursor",
+        width        : 600,
+        height       : 400,
+        tplid        : "lcbind-fstpl-fileupload",
+        data         : {
+            areaid   : areaid,
+            reqid    : reqid,
+            path     : path
+        },
+        buttons      : [
+            // {
+            //     onclick : "lcProjectFs.FileUploadSave(\""+ reqid +"\",\""+ areaid +"\")",
+            //     title   : "Commit",
+            //     style   : "btn-inverse"
+            // },
+            {
+                onclick : "lessModal.Close()",
+                title   : "Close"
+            }
+        ]
+    }
+
+    req.success = function() {    
+
+        _fsUploadRequestId = reqid;
+
+        // console.log("ids: "+ _fsUploadRequestId +", "+ areaid);
+
+        if (_fsUploadBind != null) {
+
+            _fsUploadBind.removeEventListener('dragenter', _fsUploadHanderDragEnter, false);
+            _fsUploadBind.removeEventListener('dragover', _fsUploadHanderDragOver, false);
+            _fsUploadBind.removeEventListener('drop', _fsUploadHander, false);
+            _fsUploadBind.removeEventListener('dragleave', _fsUploadHanderDragLeave, false);
+
+            _fsUploadBind = null;
+        }
+
+        // console.log("id:"+ areaid);
+
+        _fsUploadBind = document.getElementById(areaid);
+
+        // console.log(_fsUploadBind);
+
+        _fsUploadBind.addEventListener('dragenter', _fsUploadHanderDragEnter, false);
+        _fsUploadBind.addEventListener('dragover', _fsUploadHanderDragOver, false);
+        _fsUploadBind.addEventListener('drop', _fsUploadHander, false);
+        _fsUploadBind.addEventListener('dragleave', _fsUploadHanderDragLeave, false);
+    }
+
+    lessModal.Open(req);
 }
+
 
 lcProjectFs.FileRename = function(path)
 {

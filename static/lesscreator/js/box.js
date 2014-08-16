@@ -21,7 +21,7 @@ function lcBoxRefresh()
     var url = lessfly_api + "/box/entry";
     url += "?access_token="+ lessCookie.Get("access_token");
     url += "&boxid="+ lessSession.Get("boxid");
-    // console.log("box refresh:"+ url);
+    console.log("box refresh:"+ url);
 
     $.ajax({
         url     : url,
@@ -128,11 +128,16 @@ var BoxFs = {
             return;
         }
 
+        if (options.encode === undefined) {
+            options.encode = "text";
+        }
+
         var req = {
             access_token : lessCookie.Get("access_token"),
             data : {
                 path   : options.path,
                 body   : options.data,
+                encode : options.encode,
                 hostid : lessSession.Get("hostid"),
                 boxid  : lessSession.Get("boxid")
             }
