@@ -200,7 +200,7 @@ lcEditor.LoadInstance = function(entry)
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
     }
     $("#h5c-tablet-toolbar-"+ item.target).html(lcEditor.ToolTmpl).show(0, function() {
-        lcLayoutResize();
+        lcLayout.Resize();
     });
 
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
@@ -222,7 +222,7 @@ lcEditor.LoadInstance = function(entry)
         
         CodeMirror.defineInitHook(function(cminst) {
     
-            lcLayoutResize();
+            lcLayout.Resize();
 
             if (lcEditor.Config.TmpLine2Str != null) {
                 
@@ -305,7 +305,7 @@ lcEditor.LoadInstance = function(entry)
         CodeMirror.showHint(cm, CodeMirror.hint.javascript);
     }
 
-    setTimeout(lcLayoutResize, 200);
+    setTimeout(lcLayout.Resize, 200);
 }
 
 
@@ -599,7 +599,7 @@ lcEditor.Theme = function(theme)
 
             h5cTabletFrame["w0"].editor.setOption("theme", theme);
 
-            lcLayoutResize();
+            lcLayout.Resize();
         });        
         
         hdev_header_alert('success', 'Change Editor color theme to "'+theme+'"');
@@ -614,7 +614,7 @@ var search_state_marked  = [];
 lcEditor.Search = function()
 {
     $(".lc_editor_searchbar").toggle(0, function(){
-        lcLayoutResize();
+        lcLayout.Resize();
     });
 
     $(".lc_editor_searchbar").find("input").css("color","#999");

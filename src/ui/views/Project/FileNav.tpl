@@ -49,11 +49,11 @@
 <!--- TPL: File Item -->
 <div id="lcx-filenav-tree-tpl" class="hide">
 {[~it :v]}
-<div id="ptp{[=v.fsid]}" class="lcx-fsitem" lc-fspath="{[=v.path]}" lc-fstype="{[=v.fstype]}">
+<div id="ptp{[=v.fsid]}" class="lcx-fsitem" 
+  lc-fspath="{[=v.path]}" lc-fstype="{[=v.fstype]}" lc-fsico="{[=v.ico]}">
     <img src="/lesscreator/~/lesscreator/img/{[=v.ico]}.png" align="absmiddle">
     <a href="#" class="anoline">{[=v.name]}</a>
 </div>
-<!-- <div id="fstd{[=v.fsid]}" style="padding-left:20px;"></div> -->
 {[~]}
 </div>
 

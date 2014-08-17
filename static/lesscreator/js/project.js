@@ -82,7 +82,7 @@ lcProject.Open = function(proj)
 
     if (!proj) {
         // TODO
-        lessModalOpen("/lesscreator/project/open-nav", 1, 800, 450, "Start a Project from ...", null);
+        lessModalOpen(lc.base + "project/open-nav", 1, 800, 450, "Start a Project from ...", null);
         return;
     }
 
@@ -95,7 +95,7 @@ lcProject.Open = function(proj)
 
     // if (projCurrent != proj) {
     //     if (projCurrent.split("/").pop(-1) != proj.split("/").pop(-1)) {
-    //         window.open("/lesscreator/index?"+ uri, '_blank');
+    //         window.open(lc.base + "index?"+ uri, '_blank');
     //     }
     //     return;
     // }
@@ -128,6 +128,7 @@ lcProject.Open = function(proj)
             return
         }
 
+        lessSession.Set("proj_id", pinfo.projid);
         lessSession.Set("proj_current_name", pinfo.name);
         lessSession.Set("proj_current", proj);
         lessLocalStorage.Set(ukey +"_proj_current", proj);
@@ -136,7 +137,7 @@ lcProject.Open = function(proj)
         $("#lcbind-proj-nav").show(100);
 
         $.ajax({
-            url     : "/lesscreator/project/file-nav?_="+ Math.random(),
+            url     : lc.base + "project/file-nav?_="+ Math.random(),
             type    : "GET",
             timeout : 10000,
             success : function(rsp) {
@@ -144,8 +145,17 @@ lcProject.Open = function(proj)
                 $("#lcbind-proj-filenav").empty().html(rsp);
 
                 setTimeout(function() {
-                    lcxLayoutResize();
+                    
                     lcProject.FsTreeLoad(proj);
+
+                    lcLayout.ColumnSet({id: "lcbind-proj-filenav",
+                        hook: lcProjectFs.LayoutResize
+                    });
+
+                    setTimeout(function() {
+                        lcLayout.Resize();
+                    }, 10);
+
                 }, 10);
             },
             error: function(xhr, textStatus, error) {
@@ -259,7 +269,7 @@ lcProject.FsTreeLoad = function(path, ukn)
         
         setTimeout(function() {
             lcProject.FsTreeEventRefresh();
-            lcxLayoutResize();
+            lcLayout.Resize();
             $("#nav-proj-name").text(lessSession.Get("proj_current_name"));
         }, 10);
     }
@@ -274,6 +284,14 @@ lcProject.FsTreeLoad = function(path, ukn)
 var _fsItemPath = "";
 lcProject.FsTreeEventRefresh = function()
 {
+    // if ($("#lclay-col"+ 1).length < 1) {
+    //     $("#lcbind-laycol").before("<td width=\"10px\" class=\"lclay-col-resize\"></td>\
+    //         <td id=\"lclay-col"+ 1 +"\" class=\"lcx-lay-colbg\">"+1+"</td>");
+    
+    //     $("#lcbind-laycol").before("<td width=\"10px\" class=\"lclay-col-resize\"></td>\
+    //         <td id=\"lclay-col"+ 2 +"\" class=\"lcx-lay-colbg\">"+2+"</td>");
+    // }
+
     // console.log("lcProject.FsTreeEventRefresh");
     $(".lcx-fsitem").unbind();
     $(".lcx-fsitem").bind("contextmenu", function(e) {
@@ -312,13 +330,20 @@ lcProject.FsTreeEventRefresh = function()
     
         var fstype = $(this).attr("lc-fstype");
         var fspath = $(this).attr("lc-fspath");
+        var fsicon = $(this).attr("lc-fsico")
     
         switch (fstype) {
         case "dir":
             lcProject.FsTreeLoad(fspath, 0);
             break;
         case "text":
-
+            lcTab.TabOpen({
+                uri    : fspath,
+                target : "0",
+                type   : "html", // editor
+                icon   : fsicon,
+                close  : true
+            });
             break;
         default:
             //
@@ -363,6 +388,17 @@ lcProject.FsTreeEventRefresh = function()
 }
 
 var lcProjectFs = {}
+
+lcProjectFs.LayoutResize = function(options)
+{
+    var fsp = $("#lcbind-fsnav-fstree").position();
+    if (fsp) {
+        // $(".lcx-fsnav").width((lcLayout.width * options.width / 100));
+        // console.log((lcLayout.width * options.width / 100));
+        $("#lcbind-fsnav-fstree").width((lcLayout.width * options.width / 100));
+        $("#lcbind-fsnav-fstree").height(lcLayout.height - (fsp.top - lcLayout.postop));
+    }
+}
 
 lcProjectFs.FileNew = function(type, path, file)
 {

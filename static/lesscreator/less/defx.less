@@ -11,6 +11,11 @@ body {
     /*background-repeat: repeat;*/
     background-image: url("@{url-img}/gen/grid-hexagons.png"), linear-gradient(10deg, #222, #999);
     /*background-image: url("@{url-img}/gen/grid-hexagons.png"), radial-gradient(circle, #ccc, #666);*/
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .lcx-loadwell {
@@ -28,8 +33,52 @@ body {
 }
 
 
+#lcx_halert {
+    margin: 0;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    min-width: 300px;
+    max-width: 600px;
+    height: 20px;
+}
+#lcx_halert.success {
+    background-color: #DFF0D8;
+    color: #468847;
+    // border: 1px solid #D6E9C6;
+}
+#lcx_halert.error {
+    background-color: #f2DEDE; 
+    color: #B94A48; 
+    // border: 1px solid #EED3D7;
+}
+#lcx_halert.notice {
+    background-color: #ffffe0; 
+    color: #C09853; 
+    // border: 1px solid #FBEED5;
+}
+#lcx_halert.info {
+    background-color: #D9EDF7; 
+    color: #3A87AD; 
+    // border: 1px solid #BCE8F1;
+}
+#lcx_halert span {
+    margin-left: 20px;
+}
 
 
+.lclay-col-resize {
+    cursor: col-resize;
+    // background: url(/lesscreator/~/lesscreator/img/handle-v.png) 4px 50% no-repeat;
+}
+// #lcbind-col-rsline {
+//     position: absolute;
+//     width: 4px;
+//     background-color: fade(#fff, 50%); 
+//     z-index: 100;
+//     display: none;
+// }
 
 #lcx-start-fstree {
     clear: both;
@@ -145,4 +194,6 @@ body {
 
 .lcx-lay-colbg {
     background-color: fade(#000, 10%);
+    vertical-align: top;
 }
+

@@ -239,7 +239,7 @@ function h5cTabSwitch(urid)
 
                     $("#h5c-tablet-toolbar-"+ item.target).empty();
                     $("#h5c-tablet-body-"+ item.target).empty().html(rsp);
-                    lcLayoutResize();
+                    lcLayout.Resize();
                 },
                 error: function(xhr, textStatus, error) {
                     hdev_header_alert('error', xhr.responseText);
@@ -251,7 +251,7 @@ function h5cTabSwitch(urid)
             
             $("#h5c-tablet-toolbar-"+ item.target).empty();
             $("#h5c-tablet-body-"+ item.target).empty().html(item.data);
-            lcLayoutResize();
+            lcLayout.Resize();
         }
         break;
 
@@ -508,7 +508,7 @@ function _lcTabCloseClean(urid)
         h5cTabletFrame[item.target].urid = j;
     }
 
-    lcLayoutResize();
+    lcLayout.Resize();
 }
 
 var lcLayoutWebTermPos = null;
@@ -529,10 +529,10 @@ function lcLayoutWebTermSizeFix()
     }
 
     lcLayoutWebTermPos = pnew;
-    lcLayoutResize();
+    lcLayout.Resize();
 }
 
-function lcLayoutResize()
+function lcLayout.Resize()
 {
     var spacecol = 10;
 
@@ -680,7 +680,7 @@ function h5cProjectOpen(proj)
         timeout : 30000,
         success : function(rsp) {
             $("#lcx-proj-box").empty().html(rsp);
-            lcLayoutResize();
+            lcLayout.Resize();
         },
         error: function(xhr, textStatus, error) {
             //

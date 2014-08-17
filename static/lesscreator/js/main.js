@@ -1,7 +1,11 @@
-function lcBoot()
+var lc = {
+    base : "/lesscreator/"
+}
+
+lc.Boot = function()
 {
     seajs.config({
-        base: "/lesscreator/",
+        base: lc.base,
     });
 
     var rqs = [
@@ -17,11 +21,11 @@ function lcBoot()
         // if (!((browser == 'Chrome' && version >= 20)
         //     || (browser == 'Firefox' && version >= 3.6)
         //     || (browser == 'Safari' && version >= 5.0 && OS == 'Mac'))) {
-        //     $('#body-content').load('/lesscreator/error/browser');
+        //     $('#body-content').load(lc.base + "error/browser");
         //     return;
         // }
         if (!(browser == 'Chrome' && version >= 22)) { 
-            $('body').load('/lesscreator/error/browser');
+            $('body').load(lc.base + "error/browser");
             return;
         }
 
@@ -83,6 +87,7 @@ function lcLoadDeps() {
 
             "~/lesscreator/js/box.js?_="+ Math.random(),
             "~/lesscreator/js/project.js?_="+ Math.random(),
+            "~/lesscreator/js/tablet.js?_="+ Math.random(),
 
             // "~/twitter-bootstrap/2.3.2/js/bootstrap.min.js",
             "~/codemirror/3.21.0/codemirror.min.css",
@@ -102,7 +107,7 @@ function lcLoadDeps() {
             "~/codemirror/3.21.0/addon/dialog/dialog.min.js",
             "~/codemirror/3.21.0/addon/dialog/dialog.min.css",
 
-            "/lesscreator/static/js/term.js?v={{.version}}",
+            "~/lesscreator/js/term.js?v={{.version}}",
         ];
 
         seajs.use(rqs, function() {
@@ -111,7 +116,6 @@ function lcLoadDeps() {
             
             // $(".load-progress-num").css({"width": "90%"});
             // $(".load-progress-msg").append("OK<br />Connecting lessOS Cloud Engine to get your boxes ... ");
-
             lcBoxList();
             // setTimeout(_load_sys_config, _load_sleep);
             // setTimeout(_load_box_config, _load_sleep);
@@ -135,7 +139,7 @@ function lcBoxList()
     url += "access_token="+ lessCookie.Get("access_token");
     url += "&project=lesscreator";
 
-    lessModalOpen("/lesscreator/index/box-list", 1, 660, 400, "Boxes", null);
+    lessModalOpen(lc.base + "index/box-list", 1, 660, 400, "Boxes", null);
 
     return;
 
@@ -181,7 +185,7 @@ function lcAjax(obj, url, cb)
     url += Math.random();
     //console.log("req: lesscreator/"+ url);
     $.ajax({
-        url     : "/lesscreator/"+ url,
+        url     : lc.base + ""+ url,
         type    : "GET",
         timeout : 30000,
         success : function(rsp) {
@@ -208,7 +212,7 @@ function lcBodyLoader(uri)
 
     if (uri == "index/desk") {
         $(window).resize(function() {
-            lcxLayoutResize();
+            lcLayout.Resize();
         });
     }
 }
@@ -223,9 +227,299 @@ function lcWorkLoader(uri)
     lcAjax("#work-content", uri);
 }
 
+function lcHeaderAlert(status, alert)
+{
+    $("#lcx_halert").removeClass().addClass(status).html(alert).fadeOut(200).fadeIn(200);
+}
+
+var lcLayout = {
+    init   : false,
+    colsep : 0,
+    width  : 0,
+    height : 0,
+    postop : 0,
+    cols   : [
+        {
+            id     : "lcbind-proj-filenav",
+            width  : 15,
+            minWidth : 220
+        },
+        {
+            id     : "lclay-colmain",
+            width  : 85
+        }
+    ]
+}
+
+lcLayout.Init = function()
+{
+    if (this.init) {
+        return;
+    }
+
+    for (var i in this.cols) {
+        
+        var wl = lessLocalStorage.Get(lessSession.Get("proj_id") +"_laysize_"+ this.cols[i].id);
+        
+        if (wl !== undefined && parseInt(wl) > 0) {
+            this.cols[i].width = parseInt(wl);
+        } else {
+
+            var ws = lessSession.Get("laysize_"+ this.cols[i].id);
+            if (ws !== undefined && parseInt(ws) > 0) {
+                this.cols[i].width = parseInt(ws);
+            }
+        }
+    }
+}
+
+lcLayout.BindRefresh = function()
+{
+    $(".lclay-col-resize").bind("mousedown", function(e) {
+        
+        var layid = $(this).attr("lc-layid");
+
+        // console.log("lclay-col-resize mousedown: "+ layid);
+
+        var leftLayId = "", rightLayId = "";
+        var leftIndexId = 0, rightIndexId = 1;
+        var leftWidth = 0, rightWidth = 0;
+        var leftMinWidth = 0, rightMinWidth = 0;
+        for (var i in lcLayout.cols) {
+            
+            rightLayId = lcLayout.cols[i].id;
+            rightWidth = lcLayout.cols[i].width;
+            rightMinWidth = 100 * 200 / lcLayout.width;
+            rightIndexId = i;
+            if (lcLayout.cols[i].minWidth !== undefined) {
+                rightMinWidth = 100 * lcLayout.cols[i].minWidth / lcLayout.width;
+            }
+
+            if (rightLayId == layid) {
+                break;
+            }
+
+            leftLayId = rightLayId;
+            leftWidth = rightWidth;
+            leftMinWidth = rightMinWidth;
+            leftIndexId = rightIndexId;
+        }
+
+        var leftStart = $("#"+ leftLayId).position().left;
+
+        // $("#lcbind-col-rsline").remove();
+        // $("body").append("<div id='lcbind-col-rsline'></div>");
+        // $("#lcbind-col-rsline").css({
+        //     height : lcLayout.height,
+        //     left   : e.pageX,
+        //     bottom : 10
+        // }).show();
+
+        var posLast = e.pageX;
+
+        $("#lcbind-layout").bind("mousemove", function(e) {
+            
+            // console.log("lcbind-layout mousemove: "+ e.pageX);
+            
+            // $("#lcbind-col-rsline").css({left: e.pageX});
+
+            if (Math.abs(posLast - e.pageX) < 4) {
+                return;
+            }
+            posLast = e.pageX;
+
+            var leftWidthNew = 100 * (e.pageX - 5 - leftStart) / lcLayout.width;
+            // var fixWidthRate = leftWidthNew - leftWidth;
+            var rightWidthNew = rightWidth - leftWidthNew + leftWidth;
+            
+            if (leftWidthNew <= leftMinWidth || rightWidthNew <= rightMinWidth) {
+                return;
+            }
+
+            lcLayout.cols[leftIndexId].width = leftWidthNew;
+            lcLayout.cols[rightIndexId].width = rightWidthNew;
+
+            lessLocalStorage.Set(lessSession.Get("proj_id") +"_laysize_"+ leftLayId, leftWidthNew);
+            lessSession.Set("laysize_"+ leftLayId, leftWidthNew);
+            lessLocalStorage.Set(lessSession.Get("proj_id") +"_laysize_"+ rightLayId, rightWidthNew);
+            lessSession.Set("laysize_"+ rightLayId, rightWidthNew);
+
+            setTimeout(function() {
+                lcLayout.Resize();
+            }, 0);
+        });
+    });
+
+    $(document).bind('mouseup', function() {
+
+        $("#lcbind-layout").unbind("mousemove");
+        // $("#lcbind-col-rsline").remove();
+        
+        lcLayout.Resize();
+
+        setTimeout(function() {
+            lcLayout.Resize();
+        }, 10);
+    });
+
+
+    // for (var i in this.cols) {
+
+    //     $("#"+ this.cols[i].id +"-sep").bind('mousedown', function() {
+        
+    //     $("#hdev_layout").mousemove(function(e) {
+
+    //         var w = $('body').width() - (3 * spacecol);
+    //         //var p = $('#h5c-lyo-col-t').position();
+    //         var p = $('#lcx-start-lyo').position();
+    //         var wrs = e.pageX - p.left - 5;
+
+    //         if (w * (1 - (wrs / w)) < 400) {
+    //             return;
+    //         }
+
+    //         lessLocalStorage.Set("lcLyoLeftW", wrs / w);
+    //         lessSession.Set("lcLyoLeftW", wrs / w);
+
+    //         lcLayout.Resize();
+    //     });
+    // });
+    // }
+}
+
+lcLayout.ColumnSet = function(options)
+{
+    options = options || {};
+
+    if (typeof options.success !== "function") {
+        options.success = function(){};
+    }
+        
+    if (typeof options.error !== "function") {
+        options.error = function(){};
+    }
+
+    if (options.id === undefined) {
+        options.error(400, "ID can not be null");
+        return;
+    }
+
+    var exist = false;
+    for (var i in this.cols) {
+        if (this.cols[i].id == options.id) {
+            exist = true;
+
+            if (options.hook !== undefined && options.hook != this.cols[i].hook) {
+                this.cols[i].hook = options.hook;
+            }
+        }
+    }
+
+    if (!exist) {
+        
+        colSet = {
+            id     : options.id, // Math.random().toString(36).slice(2),
+            width  : 15
+        }
+
+        if (options.width !== undefined) {
+            colSet.width = options.width;
+        }
+
+        if (options.minWidth !== undefined) {
+            colSet.minWidth = options.minWidth;
+        }
+
+        this.cols.push(colSet);
+
+        lcLayout.BindRefresh();
+    }
+}
+
+lcLayout.Resize = function()
+{
+    this.Init();
+
+    var colSep = 10;
+    
+    //
+    var bodyHeight = $("body").height();
+    var bodyWidth = $("body").width();
+    if (bodyWidth != this.width) {
+        this.width = bodyWidth;
+        $("#lcbind-layout").width(this.width);
+    }
+
+    //
+    var lyo_p = $("#lcbind-layout").position();
+    var lyo_h = bodyHeight - lyo_p.top - colSep;
+    this.postop = lyo_p.top;
+    if (lyo_h < 400) {
+        lyo_h = 400;
+    }
+    if (lyo_h != this.height) {
+        this.height = lyo_h;
+        $("#lcbind-layout").height(this.height);
+    }
+
+    //
+    var colSep1 = 100 * (colSep / this.width);
+    if (colSep1 != this.colsep) {
+        this.colsep = colSep1;
+        $(".lclay-colsep").width(this.colsep +"%");
+    }
+    // console.log("colSep1: "+ colSep1);
+
+    //
+    // console.log("this.cols.length: "+ this.cols.length)
+    var colSepAll = (this.cols.length + 1) * colSep1;
+
+    var rangeUsed = 0.0;
+    for (var i in this.cols) {
+
+        if (this.cols[i].minWidth !== undefined) {
+            if ((this.cols[i].width * this.width / 100) < this.cols[i].minWidth) {
+                this.cols[i].width = 100 * ((this.cols[i].minWidth + 50) / this.width);
+            }
+        }
+
+        if (this.cols[i].width < 10) {
+            this.cols[i].width = 15;
+        } else if (this.cols[i].width > 90) {
+            this.cols[i].width = 80;
+        }        
+
+        rangeUsed += this.cols[i].width;
+    }
+    // console.log("rangeUsed: "+ rangeUsed);
+    // for (var i in this.cols) {
+    //     console.log("2 id: "+ this.cols[i].id +", width: "+ this.cols[i].width); 
+    // }
+
+    var fixRate = (100 - colSepAll) / 100;
+    var fixRateSpace = rangeUsed / 100;
+    
+    for (var i in this.cols) {
+        this.cols[i].width = (this.cols[i].width / fixRateSpace) * fixRate;
+        
+        $("#"+ this.cols[i].id).width(this.cols[i].width + "%");
+
+        if (typeof this.cols[i].hook === "function") {
+            this.cols[i].hook(this.cols[i]);
+        }
+    }
+
+    // for (var i in this.cols) {
+    //     console.log("3 id: "+ this.cols[i].id +", width: "+ this.cols[i].width); 
+    // }
+}
 
 function lcxLayoutResize()
 {
+    alert("lcxLayoutResize");
+    return;
+    // console.log(lcLayout.cols);
+
     var spacecol = 10;
 
     var bh = $('body').height();

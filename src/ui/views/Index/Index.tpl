@@ -14,7 +14,7 @@
 
   <script type="text/javascript">
     var lessfly_api = "{{.lessfly_api}}";
-    window.onload = lcBoot;
+    window.onload = lc.Boot;
   </script>
 </head>
 <body>
@@ -244,7 +244,7 @@ function _env_init()
     }
 
     $(window).resize(function() {
-        lcLayoutResize();
+        lcLayout.Resize();
     });
 
     var spacecol = 10;
@@ -265,7 +265,7 @@ function _env_init()
             lessLocalStorage.Set("lcLyoLeftW", wrs / w);
             lessSession.Set("lcLyoLeftW", wrs / w);
 
-            lcLayoutResize();
+            lcLayout.Resize();
         });
     });
 
@@ -284,7 +284,7 @@ function _env_init()
             lessLocalStorage.Set("lcLyoCtn0H", hrs / h);
             lessSession.Set("lcLyoCtn0H", hrs / h);
 
-            lcLayoutResize();
+            lcLayout.Resize();
         });
     });
     
@@ -296,7 +296,7 @@ function _env_init()
 
     h5cProjectOpen('{{.proj}}');
         
-    lcLayoutResize();
-    setTimeout(lcLayoutResize, 3000);
+    lcLayout.Resize();
+    setTimeout(lcLayout.Resize, 3000);
 }
 </script>

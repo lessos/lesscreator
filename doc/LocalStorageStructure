@@ -11,6 +11,7 @@
 	hostid
 	box_hostaddr
 
+	proj_id
 	proj_current
 	proj_current_name
 

@@ -113,9 +113,13 @@
             </div>
         </div>
 
+        <div class="lcx-nav-grp">
+            <div id="lcx_halert" class="success hide"></div>
+        </div>
+
         <div id="lcbind-proj-navstart" class="lcx-proj-navbox"></div>
     </td>
-
+    
     <td align="right">      
       {{if .nav_user}}
       <div id="lcx-nav-user-box">
@@ -193,19 +197,20 @@
 </table>
 -->
 
-<table id="hdev_layout" border="0" cellpadding="0" cellspacing="0" class="">
+<table id="lcbind-layout" border="0" cellpadding="0" cellspacing="0" class="">
   <tr>
     <!--
     http://www.daqianduan.com/jquery-drag/
     -->
-    
-    <td width="10px"></td>
-
+    <td id="lcbind-proj-filenav-sep" width="10px" class="lclay-colsep"></td>
+    <td id="lcbind-proj-filenav" class="lcx-lay-colbg" width="220px"></td>
     <!-- <td id="lcx-proj-box" class="lcx-lay-colbg" valign="top" width="280px"></td> -->
-    <td id="lcbind-proj-filenav" class="lcx-lay-colbg" valign="top" width="220px"></td>
+
+    <td width="10px" class="lclay-colsep lclay-col-resize" lc-layid="lclay-colmain"></td>
+    <td id="lclay-colmain" class="lcx-lay-colbg">0</td>
 
     <!-- column blank 2 -->
-    <td width="10px" id="h5c-lyo-col-w-ctrl" class="h5c_resize_col"></td>
+    <!-- <td width="10px" id="h5c-lyo-col-w-ctrl" class="h5c_resize_col"></td>
     
     <td id="h5c-lyo-col-w" valign="top" class="lcx-lay-colbg">
       <table width="100%" height="100%">
@@ -246,9 +251,9 @@
         </tr>
       
       </table>
-    </td>
+    </td> -->
 
-    <td width="10px"></td>
+    <td width="10px" id="lcbind-laycol"></td>
 
   </tr>
 </table>
@@ -319,6 +324,27 @@
     </div>
 </div>
 
+<div id="lclay-col-tpl" class="hide">
+  <table width="100%" height="100%">
+    <tr>
+      <td id="" class="hdev-layout-container hide" valign="top">
+        
+        <div id="lclay-col{[=it.columnid]}" class="h5c_tablet_tabs_frame">
+          <div class="h5c_tablet_tabs_lm">
+            <div id="layout-column{[=it.columnid]}" class="h5c_tablet_tabs"></div>
+          </div>
+          <div class="h5c_tablet_tabs_lr">
+            <div class="pgtab_more lc_pgtab_more" href="#w0"></div>
+          </div>
+        </div>
+
+        <div id="h5c-tablet-toolbar-w0" class="hide"></div>
+        <div id="h5c-tablet-body-w0" class="h5c_tablet_body less_scroll"></div>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <script>
 
 $("#lcx-nav-user-box").hover(
@@ -382,8 +408,10 @@ function _lc_nav_terminal()
 // lcWebTerminal(0);
 
 
-lcxLayoutResize();
-setTimeout(lcxLayoutResize, 3000)
+lcLayout.Resize();
+lcLayout.BindRefresh();
+
+// setTimeout(lcLayout.Resize, 3000)
 lcBoxRefresh();
 
 </script>
