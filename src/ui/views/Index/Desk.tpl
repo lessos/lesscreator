@@ -202,12 +202,12 @@
     <!--
     http://www.daqianduan.com/jquery-drag/
     -->
-    <td id="lcbind-proj-filenav-sep" width="10px" class="lclay-colsep"></td>
+    <td width="10px" class="lclay-colsep"></td>
     <td id="lcbind-proj-filenav" class="lcx-lay-colbg" width="220px"></td>
     <!-- <td id="lcx-proj-box" class="lcx-lay-colbg" valign="top" width="280px"></td> -->
 
     <td width="10px" class="lclay-colsep lclay-col-resize" lc-layid="lclay-colmain"></td>
-    <td id="lclay-colmain" class="lcx-lay-colbg">0</td>
+    <td id="lclay-colmain" class="lcx-lay-colbg"></div></td>
 
     <!-- column blank 2 -->
     <!-- <td width="10px" id="h5c-lyo-col-w-ctrl" class="h5c_resize_col"></td>
@@ -324,22 +324,22 @@
     </div>
 </div>
 
-<div id="lclay-col-tpl" class="hide">
-  <table width="100%" height="100%">
+<div id="lctab-tpl" class="hide">
+  <table id="lctab-box{[=it.tabid]}" class="lctab-box" width="100%" height="100%">
     <tr>
-      <td id="" class="hdev-layout-container hide" valign="top">
-        
-        <div id="lclay-col{[=it.columnid]}" class="h5c_tablet_tabs_frame">
-          <div class="h5c_tablet_tabs_lm">
-            <div id="layout-column{[=it.columnid]}" class="h5c_tablet_tabs"></div>
+      <td class="" valign="top">
+
+        <div id="lctab-nav{[=it.tabid]}" class="lctab-nav">
+          <div class="lctab-navm">
+            <div id="lctab-navtabs{[=it.tabid]}" class="lctab-navs"></div>
           </div>
-          <div class="h5c_tablet_tabs_lr">
-            <div class="pgtab_more lc_pgtab_more" href="#w0"></div>
+          <div class="lctab-navr">
+            <div class="pgtab_more lc_pgtab_more" href="#{[=it.tabid]}"></div>
           </div>
         </div>
 
-        <div id="h5c-tablet-toolbar-w0" class="hide"></div>
-        <div id="h5c-tablet-body-w0" class="h5c_tablet_body less_scroll"></div>
+        <div id="lctab-bar{[=it.tabid]}" class="lctab-bar"></div>
+        <div id="lctab-body{[=it.tabid]}" class="lctab-body less_scroll"></div>
       </td>
     </tr>
   </table>

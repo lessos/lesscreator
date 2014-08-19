@@ -5,6 +5,7 @@
 @import "project.less";
 @import "nav-user.less";
 @import "fs.less";
+@import "tab.less";
 
 body {
     background-color: #eee;
@@ -33,6 +34,9 @@ body {
 }
 
 
+@lc-halert-success: fade(#468847, 80%);
+@lc-halert-success-bg: fade(#DFF0D8, 80%);
+
 #lcx_halert {
     margin: 0;
     padding: 10px;
@@ -44,8 +48,8 @@ body {
     height: 20px;
 }
 #lcx_halert.success {
-    background-color: #DFF0D8;
-    color: #468847;
+    background-color: @lc-halert-success-bg;
+    color: @lc-halert-success;
     // border: 1px solid #D6E9C6;
 }
 #lcx_halert.error {

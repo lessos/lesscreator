@@ -13,7 +13,7 @@ lcEditor.Config = {
     'fontSize'      : 13,
     'EditMode'      : null,
     'LangEditMode'  : 'Editor Mode Settings',
-    'TmpEditorZone' : 'w0',
+    // 'TmpEditorZone' : 'w0',
     'TmpScrollLeft' : 0,
     'TmpScrollTop'  : 0,
     'TmpCursorLine' : 0,
@@ -22,6 +22,7 @@ lcEditor.Config = {
     'TmpUrid'       : null,
 };
 lcEditor.isInited = false;
+lcEditor.TabDefault = "lctab-default";
 
 lcEditor.MessageReply = function(cb, msg)
 {
@@ -36,23 +37,26 @@ lcEditor.MessageReplyStatus = function(cb, status, message)
 
 lcEditor.TabletOpen = function(urid, callback)
 {
-    //console.log("lcEditor.TabletOpen: "+ urid);
-    var item = h5cTabletPool[urid];
-    if (h5cTabletFrame[item.target].urid == urid) {
+    // console.log("lcEditor.TabletOpen 1: "+ urid);
+    var item = lcTab.pool[urid];
+    if (lcTab.frame[item.target].urid == urid) {
         callback(true);
     }
 
-    //console.log("TabletOpen:"+ urid);
+    // console.log("lcEditor.TabletOpen 2: "+ urid);
+    // console.log(item);
 
     lcData.Get("files", urid, function(ret) {
+
+        // console.log("lcData.Get.files");
 
         if (ret && urid == ret.id
             && ((ret.ctn1_sum && ret.ctn1_sum.length > 30)
                 || (ret.ctn0_sum && ret.ctn0_sum.length > 30))) {
 
-            //h5cTabletPool[urid].data = ret.ctn1_src;
-            //h5cTabletPool[urid].hash = lessCryptoMd5(ret.ctn1_src);
-                
+            //lcTab.pool[urid].data = ret.ctn1_src;
+            //lcTab.pool[urid].hash = lessCryptoMd5(ret.ctn1_src);
+            // console.log(ret);
             lcEditor.LoadInstance(ret);
             callback(true);
             return;
@@ -62,85 +66,136 @@ lcEditor.TabletOpen = function(urid, callback)
         //$("#src"+urid).remove(); // Force remove
 
         //var t = '<textarea id="src'+urid+'" class="displaynone"></textarea>';
-        //$("#h5c-tablet-body-"+ item.target).prepend(t);
+        //$("#lctab-body"+ item.target).prepend(t);
+
+        // var req = {
+        //     "access_token" : lessCookie.Get("access_token"), 
+        //     "data" : {
+        //         "path" : lessSession.Get("ProjPath") +"/"+ item.url
+        //     }
+        // }
 
         var req = {
-            "access_token" : lessCookie.Get("access_token"), 
-            "data" : {
-                "path" : lessSession.Get("ProjPath") +"/"+ item.url
-            }
+            path : item.url
         }
-        $.ajax({
-            url     : '/lesscreator/api?func=fs-file-get&_='+ Math.random(),
-            type    : "POST",
-            timeout : 30000,
-            data    : JSON.stringify(req),
-            success : function(rsp) {
 
-                try {
-                    var obj = JSON.parse(rsp);
-                } catch (e) {
-                    //lessAlert("#_load-alert", "alert-error", "Error: Service Unavailable ("+url+")");
-                    // TODO
-                    callback(false);
-                    return;
-                }
+        req.error = function(status, message) {
+            console.log("error 964: "+ status +", "+ message);
+            callback(false);
+        }
 
-                if (obj.status == 200) {
-                    
-                    //$('#src'+urid).text(obj.data.body);
-                    
-                    //h5cTabletPool[urid].data = obj.data.body;
-                    
-                    //h5cTabletPool[urid].hash = lessCryptoMd5(obj.data.body);
+        req.success = function(file) {
 
-                    var entry = {
-                        id       : urid,
-                        projdir  : lessSession.Get("ProjPath"),
-                        filepth  : item.url,
-                        ctn0_src : obj.data.body,
-                        ctn0_sum : lessCryptoMd5(obj.data.body),
-                        ctn1_src : "",
-                        ctn1_sum : "",
-                        mime     : obj.data.mime,
-                    }
-                    if (item.img) {
-                        entry.icon = item.img;
-                    }
+            console.log("success 964:");
+            console.log(file);
 
-                    lcData.Put("files", entry, function(ret) {
-                        if (ret) {
-                            
-                            $("#h5c-tablet-toolbar-"+ item.target).empty();
-                            $("#h5c-tablet-body-"+ item.target).empty();
-
-                            //h5cTabletPool[urid].mime = obj.data.mime;
-                            lcEditor.LoadInstance(entry);
-                            hdev_header_alert('success', "OK");
-                            callback(true);
-                        } else {
-                            // TODO
-                            hdev_header_alert('error', "Can not write to IndexedDB");
-                            callback(false);
-                        }
-                    });
-                
-                } else {
-                    hdev_header_alert('error', obj.message);
-                    callback(false);
-                }
-            },
-            error: function(xhr, textStatus, error) {
-                hdev_header_alert('error', xhr.responseText);
-                callback(false);
+            var entry = {
+                id       : urid,
+                projdir  : lessSession.Get("proj_current"),
+                filepth  : item.url,
+                ctn0_src : file.body,
+                ctn0_sum : lessCryptoMd5(file.body),
+                ctn1_src : "",
+                ctn1_sum : "",
+                mime     : file.mime,
             }
-        });
+            if (item.icon) {
+                entry.icon = item.icon;
+            }
+
+            lcData.Put("files", entry, function(ret) {
+                
+                if (ret) {
+                    // $("#lctab-bar"+ item.target).empty();
+                    $("#lctab-body"+ item.target).empty();
+
+                    //lcTab.pool[urid].mime = obj.data.mime;
+                    lcEditor.LoadInstance(entry);
+                    lcHeaderAlert('success', "OK");
+                    callback(true);
+                } else {
+                    // TODO
+                    lcHeaderAlert('error', "Can not write to IndexedDB");
+                    callback(false);
+                }
+            });
+
+            callback(true);
+        }
+
+        BoxFs.Get(req);
+
+        // $.ajax({
+        //     url     : '/lesscreator/api?func=fs-file-get&_='+ Math.random(),
+        //     type    : "POST",
+        //     timeout : 30000,
+        //     data    : JSON.stringify(req),
+        //     success : function(rsp) {
+
+        //         try {
+        //             var obj = JSON.parse(rsp);
+        //         } catch (e) {
+        //             //lessAlert("#_load-alert", "alert-error", "Error: Service Unavailable ("+url+")");
+        //             // TODO
+        //             callback(false);
+        //             return;
+        //         }
+
+        //         if (obj.status == 200) {
+                    
+        //             //$('#src'+urid).text(obj.data.body);
+                    
+        //             //lcTab.pool[urid].data = obj.data.body;
+                    
+        //             //lcTab.pool[urid].hash = lessCryptoMd5(obj.data.body);
+
+        //             var entry = {
+        //                 id       : urid,
+        //                 projdir  : lessSession.Get("ProjPath"),
+        //                 filepth  : item.url,
+        //                 ctn0_src : obj.data.body,
+        //                 ctn0_sum : lessCryptoMd5(obj.data.body),
+        //                 ctn1_src : "",
+        //                 ctn1_sum : "",
+        //                 mime     : obj.data.mime,
+        //             }
+        //             if (item.icon) {
+        //                 entry.icon = item.icon;
+        //             }
+
+        //             lcData.Put("files", entry, function(ret) {
+        //                 if (ret) {
+                            
+        //                     $("#lctab-bar"+ item.target).empty();
+        //                     $("#lctab-body"+ item.target).empty();
+
+        //                     //lcTab.pool[urid].mime = obj.data.mime;
+        //                     lcEditor.LoadInstance(entry);
+        //                     lcHeaderAlert('success', "OK");
+        //                     callback(true);
+        //                 } else {
+        //                     // TODO
+        //                     lcHeaderAlert('error', "Can not write to IndexedDB");
+        //                     callback(false);
+        //                 }
+        //             });
+                
+        //         } else {
+        //             lcHeaderAlert('error', obj.message);
+        //             callback(false);
+        //         }
+        //     },
+        //     error: function(xhr, textStatus, error) {
+        //         lcHeaderAlert('error', xhr.responseText);
+        //         callback(false);
+        //     }
+        // });
     });
 }
 
 lcEditor.LoadInstance = function(entry)
 {
-    var item = h5cTabletPool[entry.id];
+    var item = lcTab.pool[entry.id];
 
     var ext = item.url.split('.').pop();
     switch(ext) {
@@ -186,11 +241,11 @@ lcEditor.LoadInstance = function(entry)
         break;
     }
 
-    //h5cTabletFrame[item.target].urid = entry.id;
+    //lcTab.frame[item.target].urid = entry.id;
 
-    if (h5cTabletFrame[item.target].editor != null) {        
-        $("#h5c-tablet-body-"+ item.target).empty();
-        $("#h5c-tablet-toolbar-"+ item.target).empty();
+    if (lcTab.frame[item.target].editor != null) {        
+        $("#lctab-body"+ item.target).empty();
+        $("#lctab-bar"+ item.target).empty();
     }
 
     // styling
@@ -199,9 +254,10 @@ lcEditor.LoadInstance = function(entry)
     if (lcEditor.ToolTmpl == null) {
         lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
     }
-    $("#h5c-tablet-toolbar-"+ item.target).html(lcEditor.ToolTmpl).show(0, function() {
-        lcLayout.Resize();
-    });
+    // TODO
+    // $("#lctab-bar"+ item.target).html(lcEditor.ToolTmpl).show(0, function() {
+    //     lcLayout.Resize();
+    // });
 
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
     //console.log(entry);
@@ -209,7 +265,7 @@ lcEditor.LoadInstance = function(entry)
     lcEditor.Config.TmpLine2Str = null;
     if (item.editor_strto && item.editor_strto.length > 1) {
         lcEditor.Config.TmpLine2Str = item.editor_strto;
-        h5cTabletPool[entry.id].editor_strto = null;
+        lcTab.pool[entry.id].editor_strto = null;
     }
 
     lcEditor.Config.TmpScrollLeft = isNaN(entry.scrlef) ? 0 : parseInt(entry.scrlef);
@@ -254,10 +310,11 @@ lcEditor.LoadInstance = function(entry)
     }
     
 
-    $("#h5c-tablet-body-"+ item.target).empty();
+    $("#lctab-body"+ item.target).empty();
 
-    h5cTabletFrame[item.target].editor = CodeMirror(
-        document.getElementById("h5c-tablet-body-"+ item.target), {
+    lcTab.frame[item.target].editor = CodeMirror(
+        document.getElementById("lctab-body"+ item.target), {
+        
         value         : src,
         lineNumbers   : true,
         matchBrackets : true,
@@ -269,31 +326,33 @@ lcEditor.LoadInstance = function(entry)
         smartIndent   : lcEditor.Config.smartIndent,
         lineWrapping  : lcEditor.Config.lineWrapping,
         foldGutter    : lcEditor.Config.codeFolding,
-        showCursorWhenSelecting : true,
         gutters       : ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-        extraKeys     : {Tab: function(cm) {
-            if (lcEditor.Config.tabs2spaces) {
-                var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-                cm.replaceSelection(spaces, "end", "+input");
-            }},
-            "Shift-Space": "autocomplete",
-            "Ctrl-S": function() {
+        showCursorWhenSelecting : true,
+        extraKeys     : {
+            Tab : function(cm) {
+                if (lcEditor.Config.tabs2spaces) {
+                    var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+                    cm.replaceSelection(spaces, "end", "+input");
+                }
+            },
+            "Shift-Space" : "autocomplete",
+            "Ctrl-S" : function() {
                 //console.log("ctrl-s: "+ entry.id);
                 lcEditor.EntrySave(entry.id, null);
             }
         }
     });
 
-    //CodeMirror.modeURL = "/codemirror3/3.21.0/mode/%N/%N.js";
-    //CodeMirror.autoLoadMode(h5cTabletFrame[item.target].editor, mode);
+    //CodeMirror.modeURL = "/codemirror/3.21.0/mode/%N/%N.js";
+    //CodeMirror.autoLoadMode(lcTab.frame[item.target].editor, mode);
 
     if (lcEditor.Config.EditMode != null) {
-        h5cTabletFrame[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
+        lcTab.frame[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
         $('.lc-editor-editmode img').attr("src", 
-            "/lesscreator/static/img/editor/mode-"+lcEditor.Config.EditMode+"-48.png");
+            "/lesscreator/~/lesscreator/img/editor/mode-"+lcEditor.Config.EditMode+"-48.png");
     }
 
-    h5cTabletFrame[item.target].editor.on("change", function(cm) {
+    lcTab.frame[item.target].editor.on("change", function(cm) {
         lcEditor.Changed(entry.id);
     });
 
@@ -313,12 +372,12 @@ lcEditor.Changed = function(urid)
 {
     //console.log("lcEditor.Changed:"+ urid);
 
-    if (!h5cTabletPool[urid]) {
+    if (!lcTab.pool[urid]) {
         return;
     }
-    var item = h5cTabletPool[urid];
+    var item = lcTab.pool[urid];
 
-    if (urid != h5cTabletFrame[item.target].urid) {
+    if (urid != lcTab.frame[item.target].urid) {
         return;
     }
 
@@ -328,8 +387,8 @@ lcEditor.Changed = function(urid)
             return;
         }
 
-        entry.ctn1_src = h5cTabletFrame[item.target].editor.getValue();
-        entry.ctn1_sum = lessCryptoMd5(h5cTabletFrame[item.target].editor.getValue());
+        entry.ctn1_src = lcTab.frame[item.target].editor.getValue();
+        entry.ctn1_sum = lessCryptoMd5(lcTab.frame[item.target].editor.getValue());
 
         lcData.Put("files", entry, function(ret) {
             // TODO
@@ -342,7 +401,7 @@ lcEditor.Changed = function(urid)
 
 lcEditor.SaveCurrent = function()
 {
-    lcEditor.EntrySave(h5cTabletFrame["w0"].urid, null);
+    lcEditor.EntrySave(lcTab.frame[lcEditor.TabDefault].urid, null);
 }
 
 lcEditor.EntrySave = function(urid, cb)
@@ -362,10 +421,10 @@ lcEditor.EntrySave = function(urid, cb)
             }
         }
 
-        var item = h5cTabletPool[urid];
-        if (urid == h5cTabletFrame[item.target].urid) {
+        var item = lcTab.pool[urid];
+        if (urid == lcTab.frame[item.target].urid) {
             
-            var ctn = h5cTabletFrame[item.target].editor.getValue();
+            var ctn = lcTab.frame[item.target].editor.getValue();
             if (ctn == ret.ctn0_src) {
                 
                 $("#pgtab"+ urid +" .chg").hide();
@@ -410,7 +469,7 @@ lcEditor.WebSocketSend = function(req)
         //console.log("lcEditor.WebSocket == null");
 
         if (!("WebSocket" in window)) {
-            hdev_header_alert('error', 'WebSocket Open Failed');
+            lcHeaderAlert('error', 'WebSocket Open Failed');
             return;
         }
 
@@ -464,7 +523,7 @@ lcEditor.WebSocketSend = function(req)
                             $("#pgtab"+ obj.data.urid +" .chg").hide();
                             $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
 
-                            hdev_header_alert('success', "OK");
+                            lcHeaderAlert('success', "OK");
 
                             lcEditor.MessageReply(obj.msgreply, obj);
 
@@ -472,11 +531,11 @@ lcEditor.WebSocketSend = function(req)
                         });
                     });
 
-                    //h5cTabletPool[urid].hash = obj.sumcheck;
+                    //lcTab.pool[urid].hash = obj.sumcheck;
 
                 } else {
                     //console.log("onmessage errot");
-                    hdev_header_alert('error', obj.message);
+                    lcHeaderAlert('error', obj.message);
 
                     lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
                 }
@@ -521,13 +580,13 @@ lcEditor.IsSaved = function(urid, cb)
 
 lcEditor.HookOnBeforeUnload = function()
 {
-    if (h5cTabletFrame["w0"].editor != null 
-        && h5cTabletFrame["w0"].urid == lcEditor.Config.TmpUrid) {
+    if (lcTab.frame[lcEditor.TabDefault].editor != null 
+        && lcTab.frame[lcEditor.TabDefault].urid == lcEditor.Config.TmpUrid) {
         
-        var prevEditorScrollInfo = h5cTabletFrame["w0"].editor.getScrollInfo();
-        var prevEditorCursorInfo = h5cTabletFrame["w0"].editor.getCursor();
+        var prevEditorScrollInfo = lcTab.frame[lcEditor.TabDefault].editor.getScrollInfo();
+        var prevEditorCursorInfo = lcTab.frame[lcEditor.TabDefault].editor.getCursor();
 
-        lcData.Get("files", h5cTabletFrame["w0"].urid, function(prevEntry) {
+        lcData.Get("files", lcTab.frame[lcEditor.TabDefault].urid, function(prevEntry) {
 
             if (!prevEntry) {
                 return;
@@ -555,7 +614,7 @@ lcEditor.ConfigSet = function(key, val)
             lessCookie.SetByDay("editor_autosave", "on", 365);
         }
         msg = "Setting Editor::AutoSave to "+lessCookie.Get('editor_autosave');
-        hdev_header_alert("success", msg);
+        lcHeaderAlert("success", msg);
     }
     
     if (key == "editor_search_case") {
@@ -565,44 +624,45 @@ lcEditor.ConfigSet = function(key, val)
             lessCookie.SetByDay("editor_search_case", "on", 365);
         }
         msg = "Setting Editor::Search Match case "+lessCookie.Get('editor_search_case');
-        hdev_header_alert("success", msg);
+        lcHeaderAlert("success", msg);
         lcEditor.SearchClean();
     }
 }
 
 lcEditor.Undo = function()
 {
-    if (!h5cTabletFrame["w0"].editor) {
+    if (!lcTab.frame[lcEditor.TabDefault].editor) {
         return;
     }
 
-    h5cTabletFrame["w0"].editor.undo();
+    lcTab.frame[lcEditor.TabDefault].editor.undo();
 }
 
 lcEditor.Redo = function()
 {
-    if (!h5cTabletFrame["w0"].editor) {
+    if (!lcTab.frame[lcEditor.TabDefault].editor) {
         return;
     }
     
-    h5cTabletFrame["w0"].editor.redo();
+    lcTab.frame[lcEditor.TabDefault].editor.redo();
 }
 
 lcEditor.Theme = function(theme)
 {
-    if (h5cTabletFrame["w0"].editor) {
+    if (lcTab.frame[lcEditor.TabDefault].editor) {
 
-        seajs.use("/codemirror3/3.21.0/theme/"+theme+".min.css", function(){
+        console.log("~/codemirror/3.21.0/theme/"+ theme +".min.css");
+        seajs.use("~/codemirror/3.21.0/theme/"+ theme +".min.css", function() {
             
             lcEditor.Config.theme = theme;
             lessCookie.SetByDay("editor_theme", theme, 365);
 
-            h5cTabletFrame["w0"].editor.setOption("theme", theme);
+            lcTab.frame[lcEditor.TabDefault].editor.setOption("theme", theme);
 
             lcLayout.Resize();
         });        
         
-        hdev_header_alert('success', 'Change Editor color theme to "'+theme+'"');
+        lcHeaderAlert('success', 'Change Editor color theme to "'+ theme +'"');
     }
 }
 
@@ -641,9 +701,9 @@ lcEditor.SearchNext = function(rev)
     if (search_state_query != query) {
         lcEditor.SearchClean();
         
-        for (var cursor = h5cTabletFrame["w0"].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
+        for (var cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
 
-            search_state_marked.push(h5cTabletFrame["w0"].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
+            search_state_marked.push(lcTab.frame[lcEditor.TabDefault].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
             
             search_state_posFrom = cursor.from();
             search_state_posTo = cursor.to();
@@ -652,22 +712,22 @@ lcEditor.SearchNext = function(rev)
         search_state_query = query;
     }
     
-    var cursor = h5cTabletFrame["w0"].editor.getSearchCursor(
+    var cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(
         search_state_query, 
         rev ? search_state_posFrom : search_state_posTo,
         matchcase);
     
     if (!cursor.find(rev)) {
-        cursor = h5cTabletFrame["w0"].editor.getSearchCursor(
+        cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(
             search_state_query, 
-            rev ? {line: h5cTabletFrame["w0"].editor.lineCount() - 1} : {line: 0, ch: 0},
+            rev ? {line: lcTab.frame[lcEditor.TabDefault].editor.lineCount() - 1} : {line: 0, ch: 0},
             matchcase);
         if (!cursor.find(rev)) {
             return;
         }
     }
     
-    h5cTabletFrame["w0"].editor.setSelection(cursor.from(), cursor.to());
+    lcTab.frame[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
     search_state_posFrom = cursor.from(); 
     search_state_posTo = cursor.to();
 }
@@ -687,9 +747,9 @@ lcEditor.SearchReplace = function(all)
     
     if (all) {
 
-        for (var cursor = h5cTabletFrame["w0"].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
+        for (var cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
             if (typeof search_state_query != "string") {
-                var match = h5cTabletFrame["w0"].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
+                var match = lcTab.frame[lcEditor.TabDefault].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
                 cursor.replace(text.replace(/\$(\d)/, function(w, i) {return match[i];}));
             } else {
                 cursor.replace(text);
@@ -698,16 +758,16 @@ lcEditor.SearchReplace = function(all)
 
     } else {
           
-        var cursor = h5cTabletFrame["w0"].editor.getSearchCursor(search_state_query, h5cTabletFrame["w0"].editor.getCursor(), matchcase);
+        var cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, lcTab.frame[lcEditor.TabDefault].editor.getCursor(), matchcase);
 
         var start = cursor.from(), match;
         if (!(match = cursor.findNext())) {
-            cursor = h5cTabletFrame["w0"].editor.getSearchCursor(search_state_query, null, matchcase);
+            cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase);
             if (!(match = cursor.findNext()) ||
                 (cursor.from().line == start.line && cursor.from().ch == start.ch)) {return;
             }
         }
-        h5cTabletFrame["w0"].editor.setSelection(cursor.from(), cursor.to());
+        lcTab.frame[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
         
         cursor.replace(typeof search_state_query == "string" ? text :
             text.replace(/\$(\d)/, function(w, i) {return match[i];}));

@@ -148,8 +148,9 @@ lcProject.Open = function(proj)
                     
                     lcProject.FsTreeLoad(proj);
 
-                    lcLayout.ColumnSet({id: "lcbind-proj-filenav",
-                        hook: lcProjectFs.LayoutResize
+                    lcLayout.ColumnSet({
+                        id   : "lcbind-proj-filenav",
+                        hook : lcProjectFs.LayoutResize
                     });
 
                     setTimeout(function() {
@@ -337,10 +338,10 @@ lcProject.FsTreeEventRefresh = function()
             lcProject.FsTreeLoad(fspath, 0);
             break;
         case "text":
-            lcTab.TabOpen({
+            lcTab.Open({
                 uri    : fspath,
-                target : "0",
-                type   : "html", // editor
+                // colid : "lclay-colmain",
+                type   : "editor",
                 icon   : fsicon,
                 close  : true
             });

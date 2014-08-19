@@ -1,7 +1,7 @@
 
 <div class="lcx-fsnav">
 
-    <span class="lfn-title">Project Files</span>
+    <span class="lfn-title">Files</span>
 
     <ul class="lfn-menus">
         <li class="lfnm-item">

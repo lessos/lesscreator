@@ -388,12 +388,12 @@ textarea {
 .table_list .draggAbleEven {background-color: #ffffff;}
 
 /** CodeMirror Set **/
-.hdev-layout-container .CodeMirror {
+.lctab-box .CodeMirror {
     font-size: 13px;
     line-height: 1.3em;
     height: 100%;
 }
-.hdev-layout-containers .CodeMirror-scroll {
+.lctab-box .CodeMirror-scroll {
   overflow-x: hidden;
   height: hidden;
 }

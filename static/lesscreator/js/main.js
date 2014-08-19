@@ -34,7 +34,7 @@ lc.Boot = function()
             "~/lesscreator/js/c.js?v={{.version}}",
             "~/lesscreator/js/gen.js?v={{.version}}",
             "~/lesscreator/js/genx.js?v={{.version}}",
-            "~/lesscreator/js/editor.js?v={{.version}}",
+            "~/lesscreator/js/editor.js?v={{.version}}&_="+ Math.random(),
             "~/codemirror/3.21.0/codemirror.min.js",
             
             "~/twitter-bootstrap/2.3.2/css/bootstrap.min.css",
@@ -106,17 +106,33 @@ function lcLoadDeps() {
             "~/codemirror/3.21.0/mode/all.min.js",
             "~/codemirror/3.21.0/addon/dialog/dialog.min.js",
             "~/codemirror/3.21.0/addon/dialog/dialog.min.css",
+            "~/codemirror/3.21.0/theme/monokai.min.css",
 
             "~/lesscreator/js/term.js?v={{.version}}",
         ];
 
         seajs.use(rqs, function() {
 
+            lcData.Init(lessCookie.Get("access_userkey"), function(ret) {
+
+                if (!ret) {
+                    
+                    $(".load-progress").removeClass("progress-success").addClass("progress-danger");
+                    
+                    lessAlert("#_load-alert", "alert-error", "Local database (IndexedDB) initialization failed");
+
+                    return;
+                }
+
+                lcBoxList();
+            });
+
+
             // lcBodyLoader("index/desk");
             
             // $(".load-progress-num").css({"width": "90%"});
             // $(".load-progress-msg").append("OK<br />Connecting lessOS Cloud Engine to get your boxes ... ");
-            lcBoxList();
+            
             // setTimeout(_load_sys_config, _load_sleep);
             // setTimeout(_load_box_config, _load_sleep);
         });
@@ -240,34 +256,34 @@ var lcLayout = {
     postop : 0,
     cols   : [
         {
-            id     : "lcbind-proj-filenav",
-            width  : 15,
-            minWidth : 220
+            id       : "lcbind-proj-filenav",
+            width    : 15,
+            minWidth : 200
         },
         {
-            id     : "lclay-colmain",
-            width  : 85
+            id    : "lclay-colmain",
+            width : 85
         }
     ]
 }
 
-lcLayout.Init = function()
+lcLayout.Initialize = function()
 {
-    if (this.init) {
+    if (lcLayout.init) {
         return;
     }
 
-    for (var i in this.cols) {
+    for (var i in lcLayout.cols) {
         
-        var wl = lessLocalStorage.Get(lessSession.Get("proj_id") +"_laysize_"+ this.cols[i].id);
-        
+        var wl = lessLocalStorage.Get(lessSession.Get("proj_id") +"_laysize_"+ lcLayout.cols[i].id);
+
         if (wl !== undefined && parseInt(wl) > 0) {
-            this.cols[i].width = parseInt(wl);
+            lcLayout.cols[i].width = parseInt(wl);
         } else {
 
-            var ws = lessSession.Get("laysize_"+ this.cols[i].id);
+            var ws = lessSession.Get("laysize_"+ lcLayout.cols[i].id);
             if (ws !== undefined && parseInt(ws) > 0) {
-                this.cols[i].width = parseInt(ws);
+                lcLayout.cols[i].width = parseInt(ws);
             }
         }
     }
@@ -361,30 +377,6 @@ lcLayout.BindRefresh = function()
             lcLayout.Resize();
         }, 10);
     });
-
-
-    // for (var i in this.cols) {
-
-    //     $("#"+ this.cols[i].id +"-sep").bind('mousedown', function() {
-        
-    //     $("#hdev_layout").mousemove(function(e) {
-
-    //         var w = $('body').width() - (3 * spacecol);
-    //         //var p = $('#h5c-lyo-col-t').position();
-    //         var p = $('#lcx-start-lyo').position();
-    //         var wrs = e.pageX - p.left - 5;
-
-    //         if (w * (1 - (wrs / w)) < 400) {
-    //             return;
-    //         }
-
-    //         lessLocalStorage.Set("lcLyoLeftW", wrs / w);
-    //         lessSession.Set("lcLyoLeftW", wrs / w);
-
-    //         lcLayout.Resize();
-    //     });
-    // });
-    // }
 }
 
 lcLayout.ColumnSet = function(options)
@@ -405,12 +397,12 @@ lcLayout.ColumnSet = function(options)
     }
 
     var exist = false;
-    for (var i in this.cols) {
-        if (this.cols[i].id == options.id) {
+    for (var i in lcLayout.cols) {
+        if (lcLayout.cols[i].id == options.id) {
             exist = true;
 
-            if (options.hook !== undefined && options.hook != this.cols[i].hook) {
-                this.cols[i].hook = options.hook;
+            if (options.hook !== undefined && options.hook != lcLayout.cols[i].hook) {
+                lcLayout.cols[i].hook = options.hook;
             }
         }
     }
@@ -430,7 +422,7 @@ lcLayout.ColumnSet = function(options)
             colSet.minWidth = options.minWidth;
         }
 
-        this.cols.push(colSet);
+        lcLayout.cols.push(colSet);
 
         lcLayout.BindRefresh();
     }
@@ -438,79 +430,79 @@ lcLayout.ColumnSet = function(options)
 
 lcLayout.Resize = function()
 {
-    this.Init();
+    lcLayout.Initialize();
 
     var colSep = 10;
     
     //
     var bodyHeight = $("body").height();
     var bodyWidth = $("body").width();
-    if (bodyWidth != this.width) {
-        this.width = bodyWidth;
-        $("#lcbind-layout").width(this.width);
+    if (bodyWidth != lcLayout.width) {
+        lcLayout.width = bodyWidth;
+        $("#lcbind-layout").width(lcLayout.width);
     }
 
     //
     var lyo_p = $("#lcbind-layout").position();
     var lyo_h = bodyHeight - lyo_p.top - colSep;
-    this.postop = lyo_p.top;
+    lcLayout.postop = lyo_p.top;
     if (lyo_h < 400) {
         lyo_h = 400;
     }
-    if (lyo_h != this.height) {
-        this.height = lyo_h;
-        $("#lcbind-layout").height(this.height);
+    if (lyo_h != lcLayout.height) {
+        lcLayout.height = lyo_h;
+        $("#lcbind-layout").height(lcLayout.height);
     }
 
     //
-    var colSep1 = 100 * (colSep / this.width);
-    if (colSep1 != this.colsep) {
-        this.colsep = colSep1;
-        $(".lclay-colsep").width(this.colsep +"%");
+    var colSep1 = 100 * (colSep / lcLayout.width);
+    if (colSep1 != lcLayout.colsep) {
+        lcLayout.colsep = colSep1;
+        $(".lclay-colsep").width(lcLayout.colsep +"%");
     }
     // console.log("colSep1: "+ colSep1);
 
     //
-    // console.log("this.cols.length: "+ this.cols.length)
-    var colSepAll = (this.cols.length + 1) * colSep1;
+    // console.log("lcLayout.cols.length: "+ lcLayout.cols.length)
+    var colSepAll = (lcLayout.cols.length + 1) * colSep1;
 
     var rangeUsed = 0.0;
-    for (var i in this.cols) {
+    for (var i in lcLayout.cols) {
 
-        if (this.cols[i].minWidth !== undefined) {
-            if ((this.cols[i].width * this.width / 100) < this.cols[i].minWidth) {
-                this.cols[i].width = 100 * ((this.cols[i].minWidth + 50) / this.width);
+        if (lcLayout.cols[i].minWidth !== undefined) {
+            if ((lcLayout.cols[i].width * lcLayout.width / 100) < lcLayout.cols[i].minWidth) {
+                lcLayout.cols[i].width = 100 * ((lcLayout.cols[i].minWidth + 50) / lcLayout.width);
             }
         }
 
-        if (this.cols[i].width < 10) {
-            this.cols[i].width = 15;
-        } else if (this.cols[i].width > 90) {
-            this.cols[i].width = 80;
+        if (lcLayout.cols[i].width < 10) {
+            lcLayout.cols[i].width = 15;
+        } else if (lcLayout.cols[i].width > 90) {
+            lcLayout.cols[i].width = 80;
         }        
 
-        rangeUsed += this.cols[i].width;
+        rangeUsed += lcLayout.cols[i].width;
     }
     // console.log("rangeUsed: "+ rangeUsed);
-    // for (var i in this.cols) {
-    //     console.log("2 id: "+ this.cols[i].id +", width: "+ this.cols[i].width); 
+    // for (var i in lcLayout.cols) {
+    //     console.log("2 id: "+ lcLayout.cols[i].id +", width: "+ lcLayout.cols[i].width); 
     // }
 
     var fixRate = (100 - colSepAll) / 100;
     var fixRateSpace = rangeUsed / 100;
     
-    for (var i in this.cols) {
-        this.cols[i].width = (this.cols[i].width / fixRateSpace) * fixRate;
+    for (var i in lcLayout.cols) {
+        lcLayout.cols[i].width = (lcLayout.cols[i].width / fixRateSpace) * fixRate;
         
-        $("#"+ this.cols[i].id).width(this.cols[i].width + "%");
+        $("#"+ lcLayout.cols[i].id).width(lcLayout.cols[i].width + "%");
 
-        if (typeof this.cols[i].hook === "function") {
-            this.cols[i].hook(this.cols[i]);
+        if (typeof lcLayout.cols[i].hook === "function") {
+            lcLayout.cols[i].hook(lcLayout.cols[i]);
         }
     }
 
-    // for (var i in this.cols) {
-    //     console.log("3 id: "+ this.cols[i].id +", width: "+ this.cols[i].width); 
+    // for (var i in lcLayout.cols) {
+    //     console.log("3 id: "+ lcLayout.cols[i].id +", width: "+ lcLayout.cols[i].width); 
     // }
 }
 
