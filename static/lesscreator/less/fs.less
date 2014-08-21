@@ -10,7 +10,7 @@
 
     position: relative;
     height: @lcx-fsnav-tile-size;
-    background-color: fade(#000, 80%);
+    background-color: fade(#000, 60%);
     min-width: 160px;
     width: 100%;
     color: #f5f5f5;
@@ -68,6 +68,7 @@
                 position: absolute;
                 top: @lcx-fsnav-tile-size; left: 0px;
                 display: none;
+                z-index: 100;
                 float: left;
                 background-color: fade(#000, 90%);
                 min-width: 160px;
@@ -204,41 +205,4 @@
     .lcbind-fsrcm-item:hover {
         background-color: #ddd;
     }
-}
-
-/** Left Click Menu */
-.hdev-lcmenu {
-    display: none;
-    position: absolute;
-    text-align: left;
-    padding: 3px;
-    background-color: #fff;
-    border: 1px solid #aaa;
-    min-width: 220px;
-    z-index: 100;
-}
-.hdev-lcmenu .lcsepli {
-    border-top: 1px ridge #aaa; margin:2px 0;
-}
-.hdev-lcmenu .lcitem {
-    clear: both; display: block; padding: 5px 2px; 
-    font-size: 13px; line-height: 13px; color: #333;
-}
-.hdev-lcmenu .lcitem:hover {
-    background-color: #d6e9f8;
-}
-.hdev-lcmenu .lcitem a {
-    color: #000; text-decoration: none;
-}
-.hdev-lcmenu .lcitem a:hover {
-    color: #000; text-decoration: underline;
-}
-.hdev-lcmenu .lcitem .lcico {
-    display: inline-block; width: 20px;
-}
-.hdev-lcmenu .lcitem .lcico img {
-    width: 16px; height: 16px;
-}
-.hdev-lcmenu .lcitem .lcctn {
-    display: inline-block; color: #333;
 }

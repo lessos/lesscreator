@@ -1,11 +1,12 @@
 
-@lctab-height: 26px;
+@lctab-height: 28px;
 @lctab-sepline: 3px;
 @lctab-boxbg: fade(#000, 20%);
 @lctab-itembg: fade(#000, 40%);
-@lctab-item-hover: fade(#000, 10%);
+@lctab-item-hover: fade(#000, 20%);
 @lctab-item-current: fade(#000, 40%);
 @lctab-itemfont: #fff;
+@lctab-itemfont-dark: fade(#fff, 40%);
 
 .lctab-box {
     background-color: @lctab-boxbg;
@@ -45,16 +46,15 @@
             height: @lctab-height; 
             font-size: 13px; 
             line-height: 20px;
-            // color: #000; 
-            padding: 3px 2px 0 5px;
+            padding: 4px 2px 0 5px;
             max-width: 300px; 
             margin-right: 0px;
             overflow: hidden; 
             text-decoration: none;
             text-overflow: ellipsis;
             white-space: nowrap;
-            // border-left: 1px solid transparent;
-            // border-right: 1px solid @lctab-itembg;
+            border-left: 1px solid transparent;
+            border-right: 1px solid @lctab-itembg;
             // border-top-right-radius: 6px;
             color: @lctab-itemfont;       
 
@@ -100,7 +100,7 @@
                 border-radius: 100%;
                 font: 14px/100% monospace;
                 text-decoration: none;
-                color: @lctab-itemfont;
+                color: @lctab-itemfont-dark;
             }
             .pgtabclose:before {
                 content: '×';
@@ -119,9 +119,10 @@
             background-color: @lctab-item-current;
             // height: 24px;
         }
-        
-        .pgtab_more_ol {
-            position: absolute;
+
+        .pgtab:hover {
+            background-color: @lctab-item-hover;
+            cursor: pointer;
         }
     }
 
@@ -144,10 +145,6 @@
             cursor: pointer; 
             z-index: 100;
         }
-
-        .lctab-nav-moreol {
-            border-radius: 5px;
-        }
     }
 }
 
@@ -159,5 +156,42 @@
 
 .lctab-body {
     overflow: auto;
-    // background-color: fade(#fff, 95%);
+}
+
+.lctab-navmore {
+
+    display: none;
+    position: absolute;
+    text-align: left;
+    padding: 3px;
+    background-color: #fff;
+    border: 1px solid #aaa;
+    min-width: 220px;
+    z-index: 100;
+
+    .ltm-sepli {
+    	border-top: 1px ridge #aaa; margin:2px 0;
+	}
+    .ltm-item {
+    	clear: both; display: block; padding: 5px 2px; 
+    	font-size: 13px; line-height: 13px; color: #333;
+	}
+    .ltm-item:hover {
+    	background-color: @lctab-item-hover;
+	}
+    .ltm-item a {
+    	color: #000; text-decoration: none;
+	}
+    .ltm-item a:hover {
+    	color: #000; text-decoration: underline;
+	}
+    .ltm-item .ltm-ico {
+    	display: inline-block; width: 20px;
+	}
+    .ltm-item .ltm-ico img {
+    	width: 16px; height: 16px;
+	}
+    .ltm-item .ltm-ctn {
+    	display: inline-block; color: #333;
+	}
 }

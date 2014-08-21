@@ -2,7 +2,7 @@
 var lcEditor = {};
 lcEditor.WebSocket = null;
 lcEditor.ToolTmpl = null;
-lcEditor.SaveAPI = "ws://"+window.location.hostname+":9531/lesscreator/api/fs-save-ws";
+lcEditor.SaveAPI = "ws://"+window.location.hostname+":9531/lesscreator/index/ws";
 lcEditor.Config = {
     'theme'         : 'monokai',
     'tabSize'       : 4,
@@ -24,16 +24,16 @@ lcEditor.Config = {
 lcEditor.isInited = false;
 lcEditor.TabDefault = "lctab-default";
 
-lcEditor.MessageReply = function(cb, msg)
-{
-    if (cb != null && cb.length > 0) {
-        eval(cb +"(msg)");
-    }
-}
-lcEditor.MessageReplyStatus = function(cb, status, message)
-{
-    lcEditor.MessageReply(cb, {status: status, message: message});
-}
+// lcEditor.MessageReply = function(cb, msg)
+// {
+//     if (cb != null && cb.length > 0) {
+//         eval(cb +"(msg)");
+//     }
+// }
+// lcEditor.MessageReplyStatus = function(cb, status, message)
+// {
+//     lcEditor.MessageReply(cb, {status: status, message: message});
+// }
 
 lcEditor.TabletOpen = function(urid, callback)
 {
@@ -41,6 +41,7 @@ lcEditor.TabletOpen = function(urid, callback)
     var item = lcTab.pool[urid];
     if (lcTab.frame[item.target].urid == urid) {
         callback(true);
+        return;
     }
 
     // console.log("lcEditor.TabletOpen 2: "+ urid);
@@ -80,14 +81,18 @@ lcEditor.TabletOpen = function(urid, callback)
         }
 
         req.error = function(status, message) {
-            console.log("error 964: "+ status +", "+ message);
+            // console.log("error 964: "+ status +", "+ message);
             callback(false);
         }
 
         req.success = function(file) {
 
-            console.log("success 964:");
-            console.log(file);
+            // console.log("success 964:");
+            // console.log(file);
+
+            if (file.body == null || file.body === undefined) {
+                file.body = "";
+            }
 
             var entry = {
                 id       : urid,
@@ -111,7 +116,7 @@ lcEditor.TabletOpen = function(urid, callback)
 
                     //lcTab.pool[urid].mime = obj.data.mime;
                     lcEditor.LoadInstance(entry);
-                    lcHeaderAlert('success', "OK");
+                    // lcHeaderAlert('success', "OK");
                     callback(true);
                 } else {
                     // TODO
@@ -124,72 +129,6 @@ lcEditor.TabletOpen = function(urid, callback)
         }
 
         BoxFs.Get(req);
-
-        // $.ajax({
-        //     url     : '/lesscreator/api?func=fs-file-get&_='+ Math.random(),
-        //     type    : "POST",
-        //     timeout : 30000,
-        //     data    : JSON.stringify(req),
-        //     success : function(rsp) {
-
-        //         try {
-        //             var obj = JSON.parse(rsp);
-        //         } catch (e) {
-        //             //lessAlert("#_load-alert", "alert-error", "Error: Service Unavailable ("+url+")");
-        //             // TODO
-        //             callback(false);
-        //             return;
-        //         }
-
-        //         if (obj.status == 200) {
-                    
-        //             //$('#src'+urid).text(obj.data.body);
-                    
-        //             //lcTab.pool[urid].data = obj.data.body;
-                    
-        //             //lcTab.pool[urid].hash = lessCryptoMd5(obj.data.body);
-
-        //             var entry = {
-        //                 id       : urid,
-        //                 projdir  : lessSession.Get("ProjPath"),
-        //                 filepth  : item.url,
-        //                 ctn0_src : obj.data.body,
-        //                 ctn0_sum : lessCryptoMd5(obj.data.body),
-        //                 ctn1_src : "",
-        //                 ctn1_sum : "",
-        //                 mime     : obj.data.mime,
-        //             }
-        //             if (item.icon) {
-        //                 entry.icon = item.icon;
-        //             }
-
-        //             lcData.Put("files", entry, function(ret) {
-        //                 if (ret) {
-                            
-        //                     $("#lctab-bar"+ item.target).empty();
-        //                     $("#lctab-body"+ item.target).empty();
-
-        //                     //lcTab.pool[urid].mime = obj.data.mime;
-        //                     lcEditor.LoadInstance(entry);
-        //                     lcHeaderAlert('success', "OK");
-        //                     callback(true);
-        //                 } else {
-        //                     // TODO
-        //                     lcHeaderAlert('error', "Can not write to IndexedDB");
-        //                     callback(false);
-        //                 }
-        //             });
-                
-        //         } else {
-        //             lcHeaderAlert('error', obj.message);
-        //             callback(false);
-        //         }
-        //     },
-        //     error: function(xhr, textStatus, error) {
-        //         lcHeaderAlert('error', xhr.responseText);
-        //         callback(false);
-        //     }
-        // });
     });
 }
 
@@ -232,7 +171,7 @@ lcEditor.LoadInstance = function(entry)
         mode = 'htmlmixed';
     }
     
-    switch(entry.mime) {
+    switch (entry.mime) {
     case 'text/x-php':
         mode = 'php';
         break;
@@ -275,7 +214,7 @@ lcEditor.LoadInstance = function(entry)
     lcEditor.Config.TmpUrid       = entry.id;
 
     if (!lcEditor.isInited) {
-        
+
         CodeMirror.defineInitHook(function(cminst) {
     
             lcLayout.Resize();
@@ -308,7 +247,6 @@ lcEditor.LoadInstance = function(entry)
         
         lcEditor.isInited = true;
     }
-    
 
     $("#lctab-body"+ item.target).empty();
 
@@ -338,7 +276,7 @@ lcEditor.LoadInstance = function(entry)
             "Shift-Space" : "autocomplete",
             "Ctrl-S" : function() {
                 //console.log("ctrl-s: "+ entry.id);
-                lcEditor.EntrySave(entry.id, null);
+                lcEditor.EntrySave({urid: entry.id});
             }
         }
     });
@@ -388,10 +326,11 @@ lcEditor.Changed = function(urid)
         }
 
         entry.ctn1_src = lcTab.frame[item.target].editor.getValue();
-        entry.ctn1_sum = lessCryptoMd5(lcTab.frame[item.target].editor.getValue());
+        entry.ctn1_sum = lessCryptoMd5(entry.ctn1_src);
 
         lcData.Put("files", entry, function(ret) {
             // TODO
+            console.log(entry);
         });
     });
     
@@ -401,161 +340,269 @@ lcEditor.Changed = function(urid)
 
 lcEditor.SaveCurrent = function()
 {
-    lcEditor.EntrySave(lcTab.frame[lcEditor.TabDefault].urid, null);
+    lcEditor.EntrySave({urid: lcTab.frame[lcEditor.TabDefault].urid});
 }
 
-lcEditor.EntrySave = function(urid, cb)
+lcEditor.EntrySave = function(options)
 {
-    lcData.Get("files", urid, function(ret) {
+    options = options || {};
 
-        if (urid != ret.id) {
-            return lcEditor.MessageReplyStatus(cb, 200, null);
+    if (typeof options.success !== "function") {
+        options.success = function(){};
+    }
+
+    if (typeof options.error !== "function") {
+        options.error = function(){};
+    }
+
+    if (options.urid === undefined) {
+        return;
+    }
+
+    lcData.Get("files", options.urid, function(ret) {
+
+        if (options.urid != ret.id) {
+            return;
         }
 
         var req = {
-            data : {
-                urid     : urid,
-                path     : ret.projdir +"/"+ ret.filepth,
-                body     : null,
-                sumcheck : null,
-            }
+            urid : options.urid,
+            path : ret.filepth,
         }
 
-        var item = lcTab.pool[urid];
-        if (urid == lcTab.frame[item.target].urid) {
-            
+        var item = lcTab.pool[options.urid];
+
+        if (options.urid == lcTab.frame[item.target].urid) {
+
             var ctn = lcTab.frame[item.target].editor.getValue();
             if (ctn == ret.ctn0_src) {
                 
-                $("#pgtab"+ urid +" .chg").hide();
-                $("#pgtab"+ urid +" .pgtabtitle").removeClass("chglight");
+                $("#pgtab"+ options.urid +" .chg").hide();
+                $("#pgtab"+ options.urid +" .pgtabtitle").removeClass("chglight");
 
-                return lcEditor.MessageReplyStatus(cb, 200, null);
+                return; // 200
             }
 
-            req.data.body = ctn;
-            req.data.sumcheck = lessCryptoMd5(ctn);
+            req.data = ctn;
+            req.sumcheck = lessCryptoMd5(ctn);
+
         } else if (ret.ctn1_sum.length < 30) {
             
-            return lcEditor.MessageReplyStatus(cb, 200, null);
+            return; // 200
 
         } else if (ret.ctn1_src != ret.ctn0_src) {
 
-            req.data.body = ret.ctn1_src;
-            req.data.sumcheck = ret.ctn1_sum;
+            req.data = ret.ctn1_src;
+            req.sumcheck = ret.ctn1_sum;
         
         } else if (ret.ctn1_src == ret.ctn0_src) {
 
             //console.log("lcEditor.EntrySave 2");
-            $("#pgtab"+ urid +" .chg").hide();
-            $("#pgtab"+ urid +" .pgtabtitle").removeClass("chglight");
+            $("#pgtab"+ options.urid +" .chg").hide();
+            $("#pgtab"+ options.urid +" .pgtabtitle").removeClass("chglight");
 
-            return lcEditor.MessageReplyStatus(cb, 200, null);
+            return; // 200
         }
 
-        console.log("lcEditor.EntrySave Send: "+ urid);
-        
-        req.msgreply = cb;
-        lcEditor.WebSocketSend(req);
-    });
-}
+        req.success = function(rsp) {
+            
+            // console.log("saved ok");
+            // $("#pgtab"+ options.urid +" .chg").hide();
+            // $("#pgtab"+ options.urid +" .pgtabtitle").removeClass("chglight");
 
-lcEditor.WebSocketSend = function(req)
-{
-    //console.log(req);
-
-    if (lcEditor.WebSocket == null) {
-
-        //console.log("lcEditor.WebSocket == null");
-
-        if (!("WebSocket" in window)) {
-            lcHeaderAlert('error', 'WebSocket Open Failed');
-            return;
-        }
-
-        try {
-
-            lcEditor.WebSocket = new WebSocket(lcEditor.SaveAPI);
-
-            lcEditor.WebSocket.onopen = function() {
-                //console.log("connected to " + wsuri);
-                //console.log("ws.send: "+ JSON.stringify(req));
-                lcEditor.WebSocket.send(JSON.stringify(req));
-            }
-
-            lcEditor.WebSocket.onclose = function(e) {
-                //console.log("connection closed (" + e.code + ")");
-                lcEditor.WebSocket = null;
-            }
-
-            lcEditor.WebSocket.onmessage = function(e) {
-
-                //console.log("on onmessage ...");
-
-                var obj = JSON.parse(e.data);
+            lcData.Get("files", options.urid, function(entry) {
                 
-                if (obj.status == 200) {
-                    
-                    console.log("onmessage ok: "+ obj.data.urid);
-
-                    lcData.Get("files", obj.data.urid, function(entry) {
-                        
-                        if (!entry || entry.id != obj.data.urid) {
-                            return;
-                        }
-
-                        entry.ctn0_src = entry.ctn1_src;
-                        entry.ctn0_sum = entry.ctn1_sum;
-
-                        entry.ctn1_src = "";
-                        entry.ctn1_sum = "";
-
-                        lcData.Put("files", entry, function(ret) {
-
-                            //console.log("onmessage ok 2");
-
-                            if (!ret) {
-                                lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
-                                return;
-                            }
-
-                            ///console.log("onmessage ok 3");
-                            $("#pgtab"+ obj.data.urid +" .chg").hide();
-                            $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
-
-                            lcHeaderAlert('success', "OK");
-
-                            lcEditor.MessageReply(obj.msgreply, obj);
-
-                            //console.log(obj);
-                        });
-                    });
-
-                    //lcTab.pool[urid].hash = obj.sumcheck;
-
-                } else {
-                    //console.log("onmessage errot");
-                    lcHeaderAlert('error', obj.message);
-
-                    lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
+                if (!entry || entry.id != options.urid) {
+                    return;
                 }
 
-                //if ($("#vtknd6").length == 0) {
-                //    lcEditor.WebSocket.close();
-                //}
-            }
+                entry.ctn0_src = entry.ctn1_src;
+                entry.ctn0_sum = entry.ctn1_sum;
 
-        } catch(e) {
-            //console.log("message open failed: "+ e);
-            return;
+                entry.ctn1_src = "";
+                entry.ctn1_sum = "";
+
+                lcData.Put("files", entry, function(ret) {
+
+                    if (!ret) {
+                        lcHeaderAlert("error", "Failed on write Local.IndexedDB");
+                        return;
+                    }
+
+                    $("#pgtab"+ options.urid +" .chg").hide();
+                    $("#pgtab"+ options.urid +" .pgtabtitle").removeClass("chglight");
+                });
+            });
         }
 
-    } else {
+        req.error = function(status, message) {
+            // TODO
+            // console.log(status +": "+ message);
+            lcHeaderAlert("error", "#"+ status +" "+ message);
+        }
 
-        //console.log("ws.send"+ JSON.stringify(req));
-        lcEditor.WebSocket.send(JSON.stringify(req));
-    }
+        // console.log("lcEditor.EntrySave Send: "+ options.urid);
+        // console.log(req);
+
+        BoxFs.Post(req);
+        
+        // req.msgreply = cb;
+        // lcEditor.WebSocketSend(req)
+    });
+
+
+    // lcData.Get("files", urid, function(ret) {
+
+    //     if (urid != ret.id) {
+    //         return lcEditor.MessageReplyStatus(cb, 200, null);
+    //     }
+
+    //     var req = {
+    //         data : {
+    //             urid     : urid,
+    //             path     : ret.projdir +"/"+ ret.filepth,
+    //             body     : null,
+    //             sumcheck : null,
+    //         }
+    //     }
+
+    //     var item = lcTab.pool[urid];
+    //     if (urid == lcTab.frame[item.target].urid) {
+            
+    //         var ctn = lcTab.frame[item.target].editor.getValue();
+    //         if (ctn == ret.ctn0_src) {
+                
+    //             $("#pgtab"+ urid +" .chg").hide();
+    //             $("#pgtab"+ urid +" .pgtabtitle").removeClass("chglight");
+
+    //             return lcEditor.MessageReplyStatus(cb, 200, null);
+    //         }
+
+    //         req.data.body = ctn;
+    //         req.data.sumcheck = lessCryptoMd5(ctn);
+    //     } else if (ret.ctn1_sum.length < 30) {
+            
+    //         return lcEditor.MessageReplyStatus(cb, 200, null);
+
+    //     } else if (ret.ctn1_src != ret.ctn0_src) {
+
+    //         req.data.body = ret.ctn1_src;
+    //         req.data.sumcheck = ret.ctn1_sum;
+        
+    //     } else if (ret.ctn1_src == ret.ctn0_src) {
+
+    //         //console.log("lcEditor.EntrySave 2");
+    //         $("#pgtab"+ urid +" .chg").hide();
+    //         $("#pgtab"+ urid +" .pgtabtitle").removeClass("chglight");
+
+    //         return lcEditor.MessageReplyStatus(cb, 200, null);
+    //     }
+
+    //     console.log("lcEditor.EntrySave Send: "+ urid);
+        
+    //     req.msgreply = cb;
+    //     lcEditor.WebSocketSend(req);
+    // });
 }
+
+// lcEditor.WebSocketSend = function(req)
+// {
+//     //console.log(req);
+
+//     if (lcEditor.WebSocket == null) {
+
+//         //console.log("lcEditor.WebSocket == null");
+
+//         if (!("WebSocket" in window)) {
+//             lcHeaderAlert('error', 'WebSocket Open Failed');
+//             return;
+//         }
+
+//         try {
+
+//             lcEditor.WebSocket = new WebSocket(lcEditor.SaveAPI);
+
+//             lcEditor.WebSocket.onopen = function() {
+//                 // console.log("connected to " + wsuri);
+//                 console.log("ws.send: "+ JSON.stringify(req));
+//                 lcEditor.WebSocket.send(JSON.stringify(req));
+//             }
+
+//             lcEditor.WebSocket.onclose = function(e) {
+//                 console.log("connection closed (" + e.code + ")");
+//                 lcEditor.WebSocket = null;
+//             }
+
+//             lcEditor.WebSocket.onmessage = function(e) {
+
+//                 console.log("on onmessage ...");
+
+//                 var obj = JSON.parse(e.data);
+//                 console.log(obj);
+                
+//                 if (obj.status == 200) {
+                    
+//                     console.log("onmessage ok 200");
+
+//                     // lcData.Get("files", obj.data.urid, function(entry) {
+                        
+//                     //     if (!entry || entry.id != obj.data.urid) {
+//                     //         return;
+//                     //     }
+
+//                     //     entry.ctn0_src = entry.ctn1_src;
+//                     //     entry.ctn0_sum = entry.ctn1_sum;
+
+//                     //     entry.ctn1_src = "";
+//                     //     entry.ctn1_sum = "";
+
+//                     //     lcData.Put("files", entry, function(ret) {
+
+//                     //         //console.log("onmessage ok 2");
+
+//                     //         if (!ret) {
+//                     //             lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
+//                     //             return;
+//                     //         }
+
+//                     //         ///console.log("onmessage ok 3");
+//                     //         $("#pgtab"+ obj.data.urid +" .chg").hide();
+//                     //         $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
+
+//                     //         lcHeaderAlert('success', "OK");
+
+//                     //         lcEditor.MessageReply(obj.msgreply, obj);
+
+//                     //         //console.log(obj);
+//                     //     });
+//                     // });
+//                     lcEditor.MessageReply(obj.msgreply, obj);
+
+//                     //lcTab.pool[urid].hash = obj.sumcheck;
+
+//                 } else {
+//                     //console.log("onmessage errot");
+//                     lcHeaderAlert('error', obj.message);
+
+//                     lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
+//                 }
+
+//                 //if ($("#vtknd6").length == 0) {
+//                 //    lcEditor.WebSocket.close();
+//                 //}
+//             }
+
+//         } catch(e) {
+//             console.log("message open failed: "+ e);
+//             return;
+//         }
+
+//     } else {
+
+//         console.log("ws.send"+ JSON.stringify(req));
+//         lcEditor.WebSocket.send(JSON.stringify(req));
+//     }
+// }
 
 
 lcEditor.IsSaved = function(urid, cb)
@@ -651,7 +698,7 @@ lcEditor.Theme = function(theme)
 {
     if (lcTab.frame[lcEditor.TabDefault].editor) {
 
-        console.log("~/codemirror/3.21.0/theme/"+ theme +".min.css");
+        // console.log("~/codemirror/3.21.0/theme/"+ theme +".min.css");
         seajs.use("~/codemirror/3.21.0/theme/"+ theme +".min.css", function() {
             
             lcEditor.Config.theme = theme;

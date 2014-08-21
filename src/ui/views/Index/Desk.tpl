@@ -258,8 +258,6 @@
   </tr>
 </table>
 
-<div class="pgtab-openfiles-ol hdev-lcmenu less_scroll"></div>
-
 <div id="lc_editor_tools" class="hide">
 
     <div class="editor_bar hdev-ws hdev-tabs hcr-pgbar-editor">
@@ -345,6 +343,8 @@
   </table>
 </div>
 
+<div id="lctab-openfiles-ol" class="lctab-navmore less_scroll"></div>
+
 <script>
 
 $("#lcx-nav-user-box").hover(
@@ -375,6 +375,7 @@ $(".lcx-start-well").click(function() {
     $("#lcx-start-entry").fadeIn(300);
     $(".lcx-start-well").hide(300);
 });
+
 
 //$("#lcx-start-entry").fadeOut(150);
 //$(".lcx-start-well").show(150);

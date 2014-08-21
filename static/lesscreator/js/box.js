@@ -134,12 +134,14 @@ var BoxFs = {
 
         var req = {
             access_token : lessCookie.Get("access_token"),
+            // requestId    : options.requestId,
             data : {
-                path   : options.path,
-                body   : options.data,
-                encode : options.encode,
-                hostid : lessSession.Get("hostid"),
-                boxid  : lessSession.Get("boxid")
+                path     : options.path,
+                body     : options.data,
+                encode   : options.encode,
+                sumcheck : options.sumcheck,
+                hostid   : lessSession.Get("hostid"),
+                boxid    : lessSession.Get("boxid")
             }
         }
 

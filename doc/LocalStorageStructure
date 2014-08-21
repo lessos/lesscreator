@@ -19,5 +19,7 @@
 
 	{ukey}_proj_current
 
+	{boxid}.{proj_id}.tab.{tab.target} => urid
+
 ### Local IndexDB
 	

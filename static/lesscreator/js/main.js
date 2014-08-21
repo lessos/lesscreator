@@ -1,5 +1,6 @@
 var lc = {
-    base : "/lesscreator/"
+    base : "/lesscreator/",
+    // ns   : ""
 }
 
 lc.Boot = function()

@@ -532,7 +532,7 @@ function lcLayoutWebTermSizeFix()
     lcLayout.Resize();
 }
 
-function lcLayout.Resize()
+function lcLayoutResize()
 {
     var spacecol = 10;
 
