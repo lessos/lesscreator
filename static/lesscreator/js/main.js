@@ -84,10 +84,11 @@ function lcLoadDeps() {
         });
 
         var rqs = [
-            // "~/lesscreator/js/eventproxy.js",
+            "~/lesscreator/js/eventproxy.js",
 
             "~/lesscreator/js/box.js?_="+ Math.random(),
             "~/lesscreator/js/project.js?_="+ Math.random(),
+            "~/lesscreator/js/project.fs.js?_="+ Math.random(),
             "~/lesscreator/js/tablet.js?_="+ Math.random(),
 
             // "~/twitter-bootstrap/2.3.2/js/bootstrap.min.js",
@@ -242,6 +243,12 @@ function lcComLoader(uri)
 function lcWorkLoader(uri)
 {
     lcAjax("#work-content", uri);
+}
+
+function lcT(str)
+{
+    // TODO i18n
+    // document.write(str);
 }
 
 function lcHeaderAlert(status, alert)

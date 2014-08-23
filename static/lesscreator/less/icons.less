@@ -1,6 +1,25 @@
 @import "variables.less";
 
 @icon-size: 48px;
+@ico32-size: 32px;
+
+[class^="lcico32-"],
+[class*=" lcico32-"] {
+    position: absolute;
+    display: inline-block;
+    width: @ico32-size;
+    height: @ico32-size;
+    line-height: @ico32-size;
+    top: 50%; left: 50%;
+    margin: -@ico32-size/2 0 0 -@ico32-size/2;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+[class^="lcico32-white"],
+[class*=" lcico32-white"] {
+    background-position: -@ico32-size 0;
+}
+
 
 [class^="lcx-icon-"],
 [class*=" lcx-icon-"] {

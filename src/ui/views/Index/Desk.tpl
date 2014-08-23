@@ -1,4 +1,3 @@
-
 <table class="lcx-header">
   <tr>
     <td width="10px"></td>
@@ -103,14 +102,24 @@
                 <div class="lni-label">Box</div>
                 <div class="lni-title" id="nav-box-state-msg">Connecting</div>
             </div>
-
         </div>
 
         <div id="lcbind-proj-nav" class="lcx-nav-grp hide">
             <div class="lcx-nav-item">
                 <div class="lni-label">Project</div>
                 <div class="lni-title" id="nav-proj-name">Connecting</div>
-            </div>
+            </div><ul class="lcnav-tile-group" style="margin:0">
+                <li class="">
+                    <a href="javascript:lcProject.Set()" title="Project Settings">
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/set2-32.png)"></i>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="javascript:lcProject.Set()" title="Project Settings">
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/gift2-32.png)"></i>
+                    </a>
+                </li>
+            </ul>
         </div>
 
         <div class="lcx-nav-grp">
@@ -260,40 +269,41 @@
 
 <div id="lc_editor_tools" class="hide">
 
-    <div class="editor_bar hdev-ws hdev-tabs hcr-pgbar-editor">
+    <!-- <div class="editor_bar hdev-ws hdev-tabs hcr-pgbar-editor"> -->
+    <div class="lceditor-tools">
         
-        <div class="tabitem" onclick="lcEditor.SaveCurrent()">
+        <div class="let-menu-item" onclick="lcEditor.SaveCurrent()">
             <div class="ctn"><i class="icon-hdd"></i> {{T . "Save"}}</div>
         </div>
 
-        <div class="tabitemline"></div>
-        <div class="tabitem" onclick="lcEditor.Search()">
+        <div class="navline"></div>
+        <div class="let-menu-item" onclick="lcEditor.Search()">
             <div class="ctn"><i class="icon-search"></i> {{T . "Search"}}</div>
         </div>
 
-        <div class="tabitemline"></div>
-        <div class="tabitem" onclick="lcEditor.Undo()">
+        <div class="navline"></div>
+        <div class="let-menu-item" onclick="lcEditor.Undo()">
             <div class="ctn"><i class="icon-chevron-left"></i> {{T . "Undo"}}</div>
         </div>
 
-        <div class="tabitem" onclick="lcEditor.Redo()">
+        <div class="let-menu-item" onclick="lcEditor.Redo()">
             <div class="ctn"><i class="icon-chevron-right"></i> {{T . "Redo"}}</div>
         </div>
         
-        <!-- <div class="tabitemline"></div>
-        <div class="tabitem">
+        <!-- <div class="navline"></div>
+        <div class="let-menu-item">
             <div class="ico"><img src="/lesscreator/~/lesscreator/img/disk.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div> -->
 
-        <div class="tabitemline"></div>
-        <div class="tabitem" onclick="lcEditor.ConfigEditMode()">
-            <div class="ico lc-editor-editmode"><img src="/lesscreator/~/lesscreator/img/editor/mode-win-48.png" class="h5c_icon" /></div>
+        <div class="navline"></div>
+        <div class="let-menu-item" onclick="lcEditor.ConfigEditMode()">
+            <div class="ico lc-editor-editmode"><img src="/lesscreator/~/lesscreator/img/editor/mode-win-48.png" class="_h5c_icon" /></div>
             <div class="ctn">{{T . "Editor Mode"}}</div>
         </div>
 
-        <div class="tabitemline"></div>
-        <div class="tabitem" onclick="lcEditor.ConfigModal()">
+        <div class="navline"></div>
+        <div class="let-menu-item" onclick="lcEditor.ConfigModal()">
             <div class="ctn"><i class="icon-cog"></i> {{T . "Setting"}}</div>
         </div>
     </div>
@@ -332,18 +342,18 @@
             <div id="lctab-navtabs{[=it.tabid]}" class="lctab-navs"></div>
           </div>
           <div class="lctab-navr">
-            <div class="pgtab_more lc_pgtab_more" href="#{[=it.tabid]}"></div>
+            <div class="lcpg-tab-more" href="#{[=it.tabid]}"></div>
           </div>
         </div>
 
-        <div id="lctab-bar{[=it.tabid]}" class="lctab-bar"></div>
+        <div id="lccab-bar{[=it.tabid]}" class="lctab-bar"></div>
         <div id="lctab-body{[=it.tabid]}" class="lctab-body less_scroll"></div>
       </td>
     </tr>
   </table>
 </div>
 
-<div id="lctab-openfiles-ol" class="lctab-navmore less_scroll"></div>
+<div id="lctab-openfiles-ol" class="less_scroll"></div>
 
 <script>
 

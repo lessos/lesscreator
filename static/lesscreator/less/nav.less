@@ -1,4 +1,7 @@
 
+@lcnav-height: 40px;
+@lcnav-bg: fade(#000, 40%);
+
 .lcx-nav-grp {
 
     position: relative;
@@ -6,23 +9,24 @@
     margin-right: 10px;
     top: 0;
     margin-top: 10px;
-    height: 40px;
+    height: @lcnav-height;
+    border-spacing: 0;
+    background-color: @lcnav-bg;
 
     > * {
         display: inline-block;
+        margin: 0;
         padding: 0;
-        height: 40px;
+        height: @lcnav-height;
         position: relative;
     }
 
     .lcx-nav-item {
 
-        background-color: fade(#000, 50%);
-
         position: relative;
         min-width: 140px;
         max-width: 200px;
-        height: 40px;
+        height: @lcnav-height;
         overflow: hidden;
         color: #fff;
         
@@ -46,36 +50,38 @@
         }
     }
 
+
     ul:first-child {
-        margin-left: 0;
+        margin-left: 0px;
     }
 
-    ul.lpn-group {
+    ul.lcnav-tile-group {
 
-        margin: 0 0 0 20px;
-        padding: 0;
-        height: 40px;
+        margin-left: 10px;
+        height: @lcnav-height;
         overflow: hidden;
         text-align: center;
         position: relative;
 
         li {
+            border-left: 1px solid fade(#fff, 10%);
+            list-style: none;
             display: inline-block;
             list-style-type: none;
-            width: 40px; height: 40px;
+            width: @lcnav-height;
+            height: @lcnav-height;
             overflow: hidden;
             text-align: center;
             position: relative;
-            background-color: fade(#000, 50%);
+            // background-color: @lcnav-bg;
             float: left;
-            margin-left: 1px;
         }
         
         li:hover {
             cursor: pointer;
             background-color: fade(#000, 90%);
             .lcx-ico-std {
-                background-position: 0 0;
+                // background-position: 0 0;
             }
         }
 

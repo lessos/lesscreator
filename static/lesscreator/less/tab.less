@@ -136,21 +136,22 @@
         // border-bottom: @lctab-sepline solid @lctab-item-current; 
         height: @lctab-height;
 
-        .pgtab_more {
+        .lcpg-tab-more {
             float: left; 
             font-size: 18px; 
             font-weight: bold;
-            width: 20px; 
+            width: 30px; 
             text-align: center;
             cursor: pointer; 
             z-index: 100;
+            padding-top: 3px;
         }
     }
 }
 
-.lctab-bar {
+.lccab-bar {
     background-color: @lctab-item-current;
-    height: 2px;
+    min-height: 2px;
     display: none;
 }
 
@@ -158,7 +159,11 @@
     overflow: auto;
 }
 
-.lctab-navmore {
+.lctab-body.lctab-body-bg-light {
+    background-color: #fff;
+}
+
+#lctab-openfiles-ol {
 
     display: none;
     position: absolute;

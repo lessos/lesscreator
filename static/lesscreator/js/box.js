@@ -21,7 +21,7 @@ function lcBoxRefresh()
     var url = lessfly_api + "/box/entry";
     url += "?access_token="+ lessCookie.Get("access_token");
     url += "&boxid="+ lessSession.Get("boxid");
-    console.log("box refresh:"+ url);
+    // console.log("box refresh:"+ url);
 
     $.ajax({
         url     : url,
@@ -35,7 +35,8 @@ function lcBoxRefresh()
 
             if (rsj.status == 200) {
                 
-                if (rsj.data.hostaddr.length > 0) { // TODO
+                // TODO!!!
+                if (rsj.data.hostaddr.length > 0) {
                     lessSession.Set("box_hostaddr", rsj.data.hostaddr);
                 }
 

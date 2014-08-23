@@ -8,9 +8,15 @@ var lcTab = {
     //     "colid"  : "lclay-colmain",
     //     "urid"   : "string",
     //     "editor" : null,
-    //     "state"  : "current/null"
+    //     "state"  : "current/null",
     // }
-    frame       : {},
+    frame       : {
+        "lctab-default": {
+            colid : "lclay-colmain",
+            urid  : "",
+            actived : false,
+        }
+    },
 
     // pool[urid] = {
     //     "url"	: "string",
@@ -20,6 +26,8 @@ var lcTab = {
     //     "type"	: "html/code",
     //     "mime"	: "*",
     //     "hash"	: "*",
+    //     "tpluri" : "string",
+    //     "jsdata" : "JSON",
     // }
     pool        : {}
 }
@@ -58,17 +66,28 @@ lcTab.Open = function(options)
     if (!lcTab.pool[urid]) {
 
         lcTab.pool[urid] = {
-            url    : options.uri,
-            colid  : options.colid,
-            target : options.target,
-            type   : options.type,
-            icon   : options.icon,
-            success : options.success,
-            error   : options.error,
+            url       : options.uri,
+            colid     : options.colid,
+            target    : options.target,
+            type      : options.type,
+            title     : options.title,
+            icon      : options.icon,
+            success   : options.success,
+            error     : options.error,
+            titleOnly : options.titleOnly,
+            close     : true,
         }
 
-        if (options.close) {
-        	lcTab.pool[urid].close = true;
+        if (options.close === false) {
+        	lcTab.pool[urid].close = false;
+        }
+
+        if (options.jsdata) {
+            lcTab.pool[urid].jsdata = options.jsdata;
+        }
+
+        if (options.tpluri) {
+            lcTab.pool[urid].tpluri = options.tpluri;
         }
     }
 
@@ -88,7 +107,7 @@ lcTab.Open = function(options)
         });
 
         // TODO
-        $(".lc_pgtab_more").click(function(event) {
+        $(".lcpg-tab-more").click(function(event) {
 
             event.stopPropagation();
 
@@ -106,6 +125,7 @@ lcTab.Open = function(options)
 
 lcTab.Switch = function(urid)
 {
+
     var item = lcTab.pool[urid];
     if (item === undefined) {
         return;
@@ -145,13 +165,93 @@ lcTab.Switch = function(urid)
 
     lcTab.TabletTitle(urid, true);
 
-    if (item.titleonly) {
+    // console.log(item);
+    if (item.titleOnly === true) {
         lcTab.TabletTitleImage(urid);
-        lcTab.pool[urid].titleonly = false;
+        lcTab.pool[urid].titleOnly = false;
         return;
     }
 
+    $("#lctab-body"+ item.target).removeClass("lctab-body-bg-light");
+
     switch (item.type) {
+    case "apidriven":
+
+        if (item.tpluri !== undefined) {
+
+            if (/\?/.test(item.tpluri)) {
+                item.tpluri += "&_=";
+            } else {
+                item.tpluri += "?_=";
+            }
+
+            item.tpluri += Math.random();
+
+            $.ajax({
+                url     : item.tpluri,
+                type    : "GET",
+                timeout : 10000,
+                success : function(rsp) {
+
+                    if (item.jsdata !== undefined) {
+                        var tempFn = doT.template(rsp);
+                        lcTab.pool[urid].data = tempFn(item.jsdata);
+                    } else {
+                        lcTab.pool[urid].data = rsp;
+                    }
+
+                    // console.log(item.jsdata);
+
+                    lcTab.TabletTitleImage(urid);
+                    lcTab.frame[item.target].urid = urid;
+
+                    $("#lccab-bar"+ item.target).hide();
+                    $("#lctab-body"+ item.target).empty().html(lcTab.pool[urid].data);
+                    lcLayout.Resize();
+                    setTimeout(lcLayout.Resize, 10);
+
+                    $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
+
+                    lcTab.pool[urid].editor = null;
+                },
+                error: function(xhr, textStatus, error) {
+                    lcHeaderAlert("error", xhr.responseText);
+                }
+            });
+
+
+            // var ep = EventProxy.create("template", "data", function (template, data) {
+            //     console.log("template", template);
+            //     console.log("data", data);
+            //     //_.template(template, data, l10n);
+            // });
+
+            // $.ajax({
+            //     url     : item.tpluri,
+            //     type    : "GET",
+            //     timeout : 10000,
+            //     success : function(rsp) {
+            //         ep.emit("template", rsp);
+            //     },
+            //     error : function() {
+            //         ep.emit("template", null);
+            //     }
+            // });
+
+            // $.ajax({
+            //     url     : item.datauri,
+            //     type    : "GET",
+            //     timeout : 10000,
+            //     success : function(rsp) {
+            //         ep.emit("data", rsp);
+            //     },
+            //     error : function() {
+            //         ep.emit("data", {});
+            //     }
+            // });
+        }
+
+        break;
     case "html":
     case "webterm":
         if (true || item.data.length < 1) {
@@ -166,7 +266,7 @@ lcTab.Switch = function(urid)
                     lcTab.TabletTitleImage(urid);
                     lcTab.frame[item.target].urid = urid;
 
-                    $("#lctab-bar"+ item.target).hide();
+                    $("#lccab-bar"+ item.target).hide();
                     $("#lctab-body"+ item.target).empty().html(rsp);
                     lcLayout.Resize();
                 },
@@ -178,7 +278,7 @@ lcTab.Switch = function(urid)
             lcTab.TabletTitleImage(urid);
             lcTab.frame[item.target].urid = urid;
             
-            $("#lctab-bar"+ item.target).empty();
+            $("#lccab-bar"+ item.target).empty();
             $("#lctab-body"+ item.target).empty().html(item.data);
             lcLayout.Resize();
         }
@@ -196,7 +296,7 @@ lcTab.Switch = function(urid)
             lcTab.TabletTitleImage(urid);
             lcTab.frame[item.target].urid = urid;
             // lessLocalStorage.Set("tab.fra.urid."+ item.target, urid);
-            lessLocalStorage.Set(lessSession.Get("boxid") +"."+ lessSession.Get("proj_id") +".tab."+ item.target, urid);
+            // lessLocalStorage.Set(lessSession.Get("boxid") +"."+ lessSession.Get("proj_id") +".cab."+ item.target, urid);
         
             item.success();
         });
@@ -273,7 +373,7 @@ lcTab.TabletTitle = function(urid, loading)
         $("#lctab-navtabs"+ item.target).append(entry);            
     }
 
-    if (!item.titleonly) {
+    if (item.titleOnly !== true) {
         $('#lctab-navtabs'+ item.target +' .pgtab.current').removeClass('current');
         $('#pgtab'+ urid).addClass("current");
     }
@@ -293,11 +393,11 @@ lcTab.TabletTitle = function(urid, loading)
             + $('#lctab-navtabs'+ item.target +' .pgtab').last().outerWidth(true);
     
     if (pgl > pg) {
-        //$('#lctab-nav'+ item.target +' .pgtab_more').show();
-        $('#lctab-nav'+ item.target +' .pgtab_more').html("»");
+        //$('#lctab-nav'+ item.target +' .lcpg-tab-more').show();
+        $('#lctab-nav'+ item.target +' .lcpg-tab-more').html("»");
     } else {
-        //$('#lctab-nav'+ item.target +' .pgtab_more').hide();
-        $('#lctab-nav'+ item.target +' .pgtab_more').empty();
+        //$('#lctab-nav'+ item.target +' .lcpg-tab-more').hide();
+        $('#lctab-nav'+ item.target +' .lcpg-tab-more').empty();
     }
 
     $('#lctab-nav'+ item.target +' .lctab-navs').animate({left: "-"+mov+"px"}); // COOL!
@@ -365,6 +465,7 @@ lcTab.Close = function(urid, force)
     var item = lcTab.pool[urid];
 
     switch (item.type) {
+    case "apidriven":
     case 'html':
         lcTab.CloseClean(urid);
         break;
@@ -388,8 +489,29 @@ lcTab.Close = function(urid, force)
                     return;
                 }
 
-                lessModalOpen(lc.base + "editor/changes2save?urid="+ urid, 
-                    1, 500, 180, 'Save changes before closing', null);
+                lessModal.Open({
+                    header_title : "Save changes before closing",
+                    tpluri       : lc.base + "-/editor/changes2save.tpl",
+                    width        : 500,
+                    height       : 180,
+                    data         : {urid: urid},
+                    position     : "center",
+                    buttons      : [
+                        {
+                            onclick : "lcEditor.DialogChanges2SaveDone(\""+urid+"\")",
+                            title   : "Save",
+                            style   : "btn-inverse"
+                        },
+                        {
+                            onclick : "lcEditor.DialogChanges2SaveSkip(\""+urid+"\")",
+                            title   : "Close without Saving",
+                        },
+                        {
+                            onclick : "lessModal.Close()",
+                            title   : "Close"
+                        }
+                    ]
+                });
             });
         }
         break;
@@ -431,7 +553,7 @@ lcTab.CloseClean = function(urid)
             }
 
             $("#lctab-body"+ item.target).empty();
-            $("#lctab-bar"+ item.target).empty();
+            $("#lccab-bar"+ item.target).empty();
 
             lcTab.frame[item.target].urid = 0;
             if (j != 0) {
@@ -470,14 +592,14 @@ lcTab.LayoutResize = function(options)
 
         var _tabs_h = $("#lctab-nav"+ i).height();
         var _tbar_h = 0;
-        if ($("#lctab-bar"+ i).is(":visible")) {
-            _tbar_h = $("#lctab-bar"+ i).height();
-            console.log("lctab-bar height: "+ _tbar_h);
+        if ($("#lccab-bar"+ i).is(":visible")) {
+            _tbar_h = $("#lccab-bar"+ i).height();
+            // console.log("lccab-bar height: "+ _tbar_h);
         }
         var _body_h = lcLayout.height - _tabs_h - _tbar_h;
 
         $("#lctab-body"+ i).height(_body_h);
-        $("#lctab-nav"+ i +" .lctab-navm").width(_w - 20);
+        $("#lctab-nav"+ i +" .lctab-navm").width(_w - 30);
 
         if ($("#lctab-body"+ i +" .CodeMirror").length > 0) {
             $("#lctab-body"+ i +" .CodeMirror").width(_w);

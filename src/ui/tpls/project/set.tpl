@@ -1,0 +1,83 @@
+
+<div id="lcproj-setform">
+
+  <input name="projpath" type="hidden" value="{[=it._projpath]}" />
+  <input name="projid" type="hidden" value="{[=it.projid]}" />
+
+  <table class="table table-condensed" width="100%">
+
+    <tr class="lcproj-bordernil">
+      <td width="200px"><strong>Location</strong></td>
+      <td>{[=it._projpath]}</td>
+    </tr>
+    <tr>
+      <td><strong>Project ID</strong></td>
+      <td>{[=it.projid]}</td>
+    </tr>
+    <tr>
+      <td><strong>Display Name</strong></td>
+      <td>
+        <input name="name" class="input-large" type="text" value="{[=it.name]}" />
+        <label class="label label-important">Required</label>
+        <span class="help-inline">Example: <strong>Hello World</strong></span>
+      </td>
+    </tr>
+    
+    <tr>
+      <td><strong>Version</strong></td>
+      <td>
+        <input name="version" class="input-large" type="text" value="{[=it.version]}" /> 
+        <label class="label label-important">Required</label>
+        <span class="help-inline">Example: <strong>1.0.0</strong></span>
+      </td>
+    </tr>
+
+    <tr>
+      <td valign="top"><strong>Description</strong></td>
+      <td><textarea name="desc" rows="2" style="width:400px;">{[=it.desc]}</textarea></td>
+    </tr>
+
+    <tr>
+      <td><strong>Group by Application</strong></td>
+      <td>
+        {[~it._grpappd :v]}
+        <label class="lcproj-grpitem checkbox">
+            <input type="checkbox" name="grp_app" value="{[=v.id]}" {[ if (it._grpapp.indexOf(v.id) > -1) { ]} checked {[ } ]}> {[=v.name]}
+        </label>
+        {[~]}
+      </td>
+    </tr>
+
+    <tr>
+      <td><strong>Group by Develop</strong></td>
+      <td>
+        {[~it._grpdevd :v]}
+        <label class="lcproj-grpitem checkbox">
+            <input type="checkbox" name="grp_dev" value="{[=v.id]}" {[ if (it._grpdev.indexOf(v.id) > -1) { ]} checked {[ } ]}> {[=v.name]}
+        </label>
+        {[~]}
+      </td>
+    </tr>
+
+    <!-- <tr>
+      <td><strong>Runtime Environment</strong></td>
+      <td><div class="rky7cv">Loading</div></td>
+    </tr>
+
+    <tr>
+      <td><strong>Dependent Packages</strong></td>
+      <td><div class="lgjn8r">Loading</div></td>
+    </tr> -->
+
+    <tr>
+      <td></td>
+      <td>
+        <button class="btn btn-inverse" onclick="lcProject.SetPut()">Save</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script type="text/javascript">
+
+</script>

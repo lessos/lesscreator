@@ -11,7 +11,7 @@ lcEditor.Config = {
     'tabs2spaces'   : true,
     'codeFolding'   : false,
     'fontSize'      : 13,
-    'EditMode'      : null,
+    'EditMode'      : "win",
     'LangEditMode'  : 'Editor Mode Settings',
     // 'TmpEditorZone' : 'w0',
     'TmpScrollLeft' : 0,
@@ -90,7 +90,7 @@ lcEditor.TabletOpen = function(urid, callback)
             // console.log("success 964:");
             // console.log(file);
 
-            if (file.body == null || file.body === undefined) {
+            if (file.body === undefined || file.body == null) {
                 file.body = "";
             }
 
@@ -103,6 +103,7 @@ lcEditor.TabletOpen = function(urid, callback)
                 ctn1_src : "",
                 ctn1_sum : "",
                 mime     : file.mime,
+                cabid    : item.target,
             }
             if (item.icon) {
                 entry.icon = item.icon;
@@ -111,7 +112,7 @@ lcEditor.TabletOpen = function(urid, callback)
             lcData.Put("files", entry, function(ret) {
                 
                 if (ret) {
-                    // $("#lctab-bar"+ item.target).empty();
+                    $("#lccab-bar"+ item.target).empty();
                     $("#lctab-body"+ item.target).empty();
 
                     //lcTab.pool[urid].mime = obj.data.mime;
@@ -125,7 +126,7 @@ lcEditor.TabletOpen = function(urid, callback)
                 }
             });
 
-            callback(true);
+            // callback(true);
         }
 
         BoxFs.Get(req);
@@ -137,46 +138,61 @@ lcEditor.LoadInstance = function(entry)
     var item = lcTab.pool[entry.id];
 
     var ext = item.url.split('.').pop();
-    switch(ext) {
-    case 'c':
-    case 'h':
-    case 'cc':
-    case 'cpp':
-    case 'hpp':
-        mode = 'clike';
+    switch (ext) {
+    case "c":
+    case "h":
+    case "cc":
+    case "cpp":
+    case "hpp":
+    case "java":
+        mode = "clike";
         break;
-    case 'php':
-    case 'css':
-    case 'xml':
-    case 'go' :
+    case "php":
+    case "css":
+    case "xml":
+    case "go" :
+    case "lua":
+    case "less":
         mode = ext;
         break;
-    case 'sql':
-        mode = 'plsql';
+    case "sql":
+        mode = "plsql";
         break;
-    case 'js':
-        mode = 'javascript';
+    case "js":
+        mode = "javascript";
         break;
-    case 'sh':
-        mode = 'shell';
+    case "sh":
+        mode = "shell";
         break;
-    case 'py':
-        mode = 'python';
+    case "py":
+        mode = "python";
         break;
-    case 'yml':
-    case 'yaml':
-        mode = 'yaml';
+    case "rb":
+        mode = "ruby";
+        break;
+    case "perl":
+    case "prl" :
+    case "pl"  :
+    case "pm"  :
+        mode = "perl";
+        break;
+    case "md":
+        mode = "markdown";
+        break;
+    case "yml":
+    case "yaml":
+        mode = "yaml";
         break;
     default:
-        mode = 'htmlmixed';
+        mode = "htmlmixed";
     }
     
     switch (entry.mime) {
-    case 'text/x-php':
-        mode = 'php';
+    case "text/x-php":
+        mode = "php";
         break;
-    case 'text/x-shellscript':
-        mode = 'shell';
+    case "text/x-shellscript":
+        mode = "shell";
         break;
     }
 
@@ -184,19 +200,19 @@ lcEditor.LoadInstance = function(entry)
 
     if (lcTab.frame[item.target].editor != null) {        
         $("#lctab-body"+ item.target).empty();
-        $("#lctab-bar"+ item.target).empty();
+        $("#lccab-bar"+ item.target).empty();
     }
 
     // styling
     $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize +"px"});
 
     if (lcEditor.ToolTmpl == null) {
-        lcEditor.ToolTmpl = $("#lc_editor_tools .editor_bar").parent().html();
+        lcEditor.ToolTmpl = $("#lc_editor_tools .lceditor-tools").parent().html();
     }
     // TODO
-    // $("#lctab-bar"+ item.target).html(lcEditor.ToolTmpl).show(0, function() {
-    //     lcLayout.Resize();
-    // });
+    $("#lccab-bar"+ item.target).html(lcEditor.ToolTmpl).show(0, function() {
+        lcLayout.Resize();
+    });
 
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
     //console.log(entry);
@@ -284,7 +300,7 @@ lcEditor.LoadInstance = function(entry)
     //CodeMirror.modeURL = "/codemirror/3.21.0/mode/%N/%N.js";
     //CodeMirror.autoLoadMode(lcTab.frame[item.target].editor, mode);
 
-    if (lcEditor.Config.EditMode != null) {
+    if (lcEditor.Config.EditMode != "win") {
         lcTab.frame[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
         $('.lc-editor-editmode img').attr("src", 
             "/lesscreator/~/lesscreator/img/editor/mode-"+lcEditor.Config.EditMode+"-48.png");
@@ -330,7 +346,7 @@ lcEditor.Changed = function(urid)
 
         lcData.Put("files", entry, function(ret) {
             // TODO
-            console.log(entry);
+            // console.log(entry);
         });
     });
     
@@ -361,7 +377,8 @@ lcEditor.EntrySave = function(options)
 
     lcData.Get("files", options.urid, function(ret) {
 
-        if (options.urid != ret.id) {
+        if (ret.id == undefined || options.urid != ret.id) {
+            options.error(options);
             return;
         }
 
@@ -380,6 +397,7 @@ lcEditor.EntrySave = function(options)
                 $("#pgtab"+ options.urid +" .chg").hide();
                 $("#pgtab"+ options.urid +" .pgtabtitle").removeClass("chglight");
 
+                options.success(options);
                 return; // 200
             }
 
@@ -388,6 +406,7 @@ lcEditor.EntrySave = function(options)
 
         } else if (ret.ctn1_sum.length < 30) {
             
+            options.success(options);
             return; // 200
 
         } else if (ret.ctn1_src != ret.ctn0_src) {
@@ -401,6 +420,7 @@ lcEditor.EntrySave = function(options)
             $("#pgtab"+ options.urid +" .chg").hide();
             $("#pgtab"+ options.urid +" .pgtabtitle").removeClass("chglight");
 
+            options.success(options);
             return; // 200
         }
 
@@ -413,6 +433,7 @@ lcEditor.EntrySave = function(options)
             lcData.Get("files", options.urid, function(entry) {
                 
                 if (!entry || entry.id != options.urid) {
+                    options.error(options);
                     return;
                 }
 
@@ -426,11 +447,14 @@ lcEditor.EntrySave = function(options)
 
                     if (!ret) {
                         lcHeaderAlert("error", "Failed on write Local.IndexedDB");
+                        options.error(options);
                         return;
                     }
 
                     $("#pgtab"+ options.urid +" .chg").hide();
                     $("#pgtab"+ options.urid +" .pgtabtitle").removeClass("chglight");
+
+                    options.success(options);
                 });
             });
         }
@@ -439,6 +463,7 @@ lcEditor.EntrySave = function(options)
             // TODO
             // console.log(status +": "+ message);
             lcHeaderAlert("error", "#"+ status +" "+ message);
+            options.error(options);
         }
 
         // console.log("lcEditor.EntrySave Send: "+ options.urid);
@@ -504,6 +529,28 @@ lcEditor.EntrySave = function(options)
     //     lcEditor.WebSocketSend(req);
     // });
 }
+
+lcEditor.DialogChanges2SaveSkip = function(urid)
+{
+    lcTab.Close(urid, 1);
+    lessModal.Close();
+}
+
+lcEditor.DialogChanges2SaveDone = function(urid)
+{
+    //console.log(lcEditor.MessageReply(0, "ok"));
+    lcEditor.EntrySave({
+        urid    : urid,
+        success : function() {
+            lcTab.Close(urid, 1);
+            lessModal.Close();
+        },
+        error : function() {
+            lessAlert("#xi1b3h", "alert-error", "<span></span>Internal Server Error<span></span>");
+        }
+    });
+}
+
 
 // lcEditor.WebSocketSend = function(req)
 // {
@@ -836,12 +883,89 @@ lcEditor.SearchClean = function()
 
 lcEditor.ConfigModal = function()
 {
-    lessModalOpen('/lesscreator/editor/editor-set', 1, 800, 530, 
-        'Editor Settings', null);
+    lessModal.Open({
+        header_title : "Editor Settings",
+        tpluri       : lc.base +"-/editor/editor-set.tpl",
+        width        : 800,
+        height       : 500,
+        position     : "center",
+        buttons      : [
+            {
+                onclick : "_lc_editorset_close()",
+                title   : "Save and Close",
+                style   : "btn-inverse"
+            },
+            {
+                onclick : "lessModal.Close()",
+                title   : "Close"
+            }
+        ]
+    });
 }
 
 lcEditor.ConfigEditMode = function()
 {
-    lessModalOpen('/lesscreator/editor/editmode-set', 1, 400, 300, 
-        lcEditor.Config.LangEditMode, null);
+    lessModal.Open({
+        header_title : lcEditor.Config.LangEditMode,
+        tpluri       : lc.base +"-/editor/editmode-set.tpl",
+        width        : 400,
+        height       : 300,
+        data         : {
+            current : lcEditor.Config.EditMode,
+            list : [
+                {id: "win", name: "Default"},
+                {id: "vim", name: "Vim"},
+                {id: "emacs", name: "Emacs"}
+            ]
+        },
+        position     : "center",
+        buttons      : [
+            {
+                onclick : "lessModal.Close()",
+                title   : "Close"
+            }
+        ]
+    });
+}
+
+lcEditor.ConfigEditModeSave = function(mode)
+{
+    switch (mode) {
+    case "win":
+    case "vim":
+    case "emacs":
+        break;
+    default:
+        return;
+    }
+
+    // console.log("mode:"+ mode);
+
+    var icosrc = lc.base +"~/lesscreator/img/editor/mode-";
+
+    if (lcTab.frame[lcTab.def].editor != null) {
+
+        if (mode == "win") {
+            
+            lcTab.frame[lcTab.def].editor.removeKeyMap("vim");
+            lcTab.frame[lcTab.def].editor.removeKeyMap("emacs");
+
+        } else {
+
+            lcTab.frame[lcTab.def].editor.setOption("keyMap", mode);           
+        }
+
+        icosrc += mode;
+    }
+
+    $(".lc-editor-editmode img").attr("src", icosrc +"-48.png");
+
+    lcEditor.Config.EditMode = mode;
+    lessLocalStorage.Set("editor_editmode", mode);
+
+    if (mode == "win") {
+        mode = "Default";
+    }
+    lcHeaderAlert("success", "Successfully switched to "+ mode);
+    lessModal.Close();
 }
