@@ -39,7 +39,7 @@ lcExt.nodejs.StateRefresh = function()
     if ($("#lcext-nodejs-setform :input[name=state]").is (':checked')) {
         $("#lcext-nodejs-setinfo").show();
     } else {
-        $("#lcext-nodejs-setinfo").hide(200);
+        $("#lcext-nodejs-setinfo").hide();
     }
 }
 

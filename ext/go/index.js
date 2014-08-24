@@ -39,7 +39,7 @@ lcExt.go.StateRefresh = function()
     if ($("#lcext-go-setform :input[name=state]").is (':checked')) {
         $("#lcext-go-setinfo").show();
     } else {
-        $("#lcext-go-setinfo").hide(200);
+        $("#lcext-go-setinfo").hide();
     }
 }
 

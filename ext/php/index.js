@@ -56,7 +56,7 @@ lcExt.php.StateRefresh = function()
         // $("#lcext-php-setmsg").hide(200);
         $("#lcext-php-setmod").show();
     } else {
-        $("#lcext-php-setmod").hide(200);
+        $("#lcext-php-setmod").hide();
     }
 }
 

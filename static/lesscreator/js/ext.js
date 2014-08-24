@@ -39,6 +39,10 @@ lcExt.NavRefresh = function()
             continue;
         }
 
+        if (lcProject.Info.runtime[ext.name].state != 1) {
+            continue;
+        }
+
         data.push(ext);
     }
 
