@@ -115,8 +115,8 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="javascript:lcProject.Set()" title="Project Settings">
-                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/gift2-32.png)"></i>
+                    <a href="javascript:lcPackage.ListRuntime()" title="Runtime, Dependent packages">
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/ext-32.png)"></i>
                     </a>
                 </li>
             </ul>

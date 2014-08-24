@@ -32,7 +32,7 @@ func (c Project) NewAction() {
 	c.ViewData["grpdev"] = base.ProjectGroupByDev
 	c.ViewData["grpapp"] = base.ProjectGroupByApp
 
-	c.ViewData["projid"] = utils.StringNewRand36(16)
+	c.ViewData["proj_name"] = utils.StringNewRand36(16)
 }
 
 func (c Project) FileNavAction() {

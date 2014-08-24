@@ -190,8 +190,6 @@ function _proj_rt_nginx_save()
         req.status = 0
     }
 
-
-
     $.ajax({ 
         type    : "POST",
         url     : "/lesscreator/rt/nginx-set-do",

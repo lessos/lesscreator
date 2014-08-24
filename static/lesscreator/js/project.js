@@ -1,15 +1,16 @@
 
 var lcProject = {
+    Info        : {},
     ProjectIndex: "/home/action/.lesscreator/projects.json",
     ProjectInfoDef: {
-        projid  : "",
-        name    : "",
-        desc    : "",
-        version : "0.0.1",
-        release : "1",
-        arch    : "all",
-        grp_app : "",
-        grp_dev : "",
+        name        : "",
+        summary     : "",
+        description : "",
+        version     : "0.0.1",
+        release     : "1",
+        arch        : "all",
+        grp_app     : "",
+        grp_dev     : "",
     },
     ProjectGroupByApp: [
         {id: "50", name: "Business"},
@@ -38,11 +39,6 @@ lcProject.New = function(options)
         options.error = function(){};
     }
     
-    if (options.projid === undefined) {
-        options.error(400, "Project ID can not be null");
-        return;
-    }
-
     if (options.name === undefined || options.name.length < 1) {
         options.error(400, "Project Name can not be null");
         return;
@@ -50,7 +46,6 @@ lcProject.New = function(options)
 
     var projinfo = this.ProjectInfoDef;
     projinfo.name = options.name;
-    projinfo.projid = options.projid;
 
     if (options.grp_app !== undefined) {
         projinfo.grp_app = options.grp_app;
@@ -58,12 +53,12 @@ lcProject.New = function(options)
     if (options.grp_dev !== undefined) {
         projinfo.grp_dev = options.grp_dev;
     }
-    if (options.desc !== undefined) {
-        projinfo.desc = options.desc;
+    if (options.description !== undefined) {
+        projinfo.description = options.description;
     }
 
-    // TODO valid options.projid
-    var projpath = "/home/action/projects/"+ options.projid;
+    // TODO valid options.name
+    var projpath = "/home/action/projects/"+ options.name;
 
     BoxFs.Post({
         path: projpath + "/lcproject.json",
@@ -73,6 +68,7 @@ lcProject.New = function(options)
                 path : projpath,
                 info : projinfo, 
             });
+            lcProject.Info = projinfo;
         },
         error: function(status, message) {
             options.error(status, message);
@@ -135,17 +131,19 @@ lcProject.Open = function(proj)
         }
 
         var pinfo = JSON.parse(file.body);
-        if (pinfo.projid === undefined) {
+        if (pinfo.name === undefined) {
             alert("Can Not Found Project: "+ proj +"/lcproject.json");
             // TODO
             return
         }
 
-        lessSession.Set("proj_id", pinfo.projid);
+        lessSession.Set("proj_name", pinfo.name);
         lessSession.Set("proj_current_name", pinfo.name);
         lessSession.Set("proj_current", proj);
         lessLocalStorage.Set(ukey +"_proj_current", proj);
-
+        // console.log(pinfo);
+        lcProject.Info = pinfo;
+        
         $("#nav-proj-name").text("loading");
         $("#lcbind-proj-nav").show(100);
 
@@ -193,7 +191,7 @@ lcProject.OpenHistoryTabs = function()
 {
     // console.log("lcProject.OpenHistoryTabs");
 
-    // var last_tab_urid = lessLocalStorage.Set(lessSession.Get("boxid") +"."+ lessSession.Get("proj_id") +".tab."+ item.target);
+    // var last_tab_urid = lessLocalStorage.Set(lessSession.Get("boxid") +"."+ lessSession.Get("proj_name") +".tab."+ item.target);
 
     lcData.Query("files", "projdir", lessSession.Get("proj_current"), function(ret) {
     
@@ -215,7 +213,7 @@ lcProject.OpenHistoryTabs = function()
                 cab = lcTab.frame[lcTab.def];
             }
 
-            var tabLastActive = lessLocalStorage.Get(lessSession.Get("boxid") +"."+ lessSession.Get("proj_id") +".cab."+ ret.value.cabid);
+            var tabLastActive = lessLocalStorage.Get(lessSession.Get("boxid") +"."+ lessSession.Get("proj_name") +".cab."+ ret.value.cabid);
             // console.log("tabLastActive: "+ tabLastActive);
 
             var titleOnly = true;
@@ -275,7 +273,7 @@ lcProject.Set = function(proj)
         }
 
         var pinfo = JSON.parse(file.body);
-        if (pinfo.projid === undefined) {
+        if (pinfo.name === undefined) {
             alert("Can Not Found Project: "+ proj +"/lcproject.json");
             // TODO
             return
@@ -329,16 +327,22 @@ lcProject.SetPut = function()
         path    : $("#lcproj-setform :input[name=projpath]").val() +"/lcproject.json",
         encode  : "jm",
         data    : JSON.stringify({
-            name    : $("#lcproj-setform :input[name=name]").val(),
-            version : $("#lcproj-setform :input[name=version]").val(),
-            desc    : $("#lcproj-setform :input[name=desc]").val(),
-            grp_app : grp_app.join(","),
-            grp_dev : grp_dev.join(","),
+            version     : $("#lcproj-setform :input[name=version]").val(),
+            summary     : $("#lcproj-setform :input[name=summary]").val(),
+            description : $("#lcproj-setform :input[name=description]").val(),
+            grp_app     : grp_app.join(","),
+            grp_dev     : grp_dev.join(","),
         })
     }
 
     req.success = function(rsp) {
         lcHeaderAlert('success', "Successfully Updated");
+        lcProject.Info.name = req.data.name;
+        lcProject.Info.version = req.data.version;
+        lcProject.Info.summary = req.data.summary;
+        lcProject.Info.description = req.data.description;
+        lcProject.Info.grp_app = req.data.grp_app;
+        lcProject.Info.grp_dev = req.data.grp_dev;
     }
     
     req.error = function(status, message) {

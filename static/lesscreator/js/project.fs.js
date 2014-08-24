@@ -257,7 +257,7 @@ lcProjectFs.FileNew = function(type, path, file)
     var formid = Math.random().toString(36).slice(2);
 
     var req = {
-        header_title : (type == "dir") ? "New Folder" : "New File",
+        title        : (type == "dir") ? "New Folder" : "New File",
         position     : "cursor",
         width        : 550,
         height       : 160,
@@ -455,7 +455,7 @@ lcProjectFs.FileUpload = function(path)
     // console.log("ids 1: "+ reqid +", "+ areaid);
 
     var req = {
-        header_title : "Upload File From Location",
+        title        : "Upload File From Location",
         position     : "cursor",
         width        : 600,
         height       : 400,
@@ -520,7 +520,7 @@ lcProjectFs.FileRename = function(path)
     var formid = Math.random().toString(36).slice(2);
 
     var req = {
-        header_title : "Rename File/Folder",
+        title        : "Rename File/Folder",
         position     : "cursor",
         width        : 550,
         height       : 160,
@@ -596,7 +596,7 @@ lcProjectFs.FileDel = function(path)
     var formid = Math.random().toString(36).slice(2);
 
     var req = {
-        header_title : "Delete File or Folder",
+        title        : "Delete File or Folder",
         position     : "cursor",
         width        : 550,
         height       : 180,

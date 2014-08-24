@@ -884,7 +884,7 @@ lcEditor.SearchClean = function()
 lcEditor.ConfigModal = function()
 {
     lessModal.Open({
-        header_title : "Editor Settings",
+        title        : "Editor Settings",
         tpluri       : lc.base +"-/editor/editor-set.tpl",
         width        : 800,
         height       : 500,
@@ -906,7 +906,7 @@ lcEditor.ConfigModal = function()
 lcEditor.ConfigEditMode = function()
 {
     lessModal.Open({
-        header_title : lcEditor.Config.LangEditMode,
+        title        : lcEditor.Config.LangEditMode,
         tpluri       : lc.base +"-/editor/editmode-set.tpl",
         width        : 400,
         height       : 300,

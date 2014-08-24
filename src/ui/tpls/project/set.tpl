@@ -2,7 +2,7 @@
 <div id="lcproj-setform">
 
   <input name="projpath" type="hidden" value="{[=it._projpath]}" />
-  <input name="projid" type="hidden" value="{[=it.projid]}" />
+  <input name="proj_name" type="hidden" value="{[=it.name]}" />
 
   <table class="table table-condensed" width="100%">
 
@@ -11,16 +11,28 @@
       <td>{[=it._projpath]}</td>
     </tr>
     <tr>
-      <td><strong>Project ID</strong></td>
-      <td>{[=it.projid]}</td>
+      <td><strong>Project Name</strong></td>
+      <td>{[=it.name]}</td>
     </tr>
-    <tr>
-      <td><strong>Display Name</strong></td>
+    <!-- <tr>
+      <td><strong>Project Name</strong></td>
       <td>
         <input name="name" class="input-large" type="text" value="{[=it.name]}" />
         <label class="label label-important">Required</label>
+        <span class="help-inline">Example: <strong>company-oa</strong></span>
+      </td>
+    </tr> -->
+    <tr>
+      <td><strong>Summary</strong></td>
+      <td>
+        <input name="summary" class="input-large" type="text" value="{[=it.summary]}" />
+        <label class="label label-important">Required</label>
         <span class="help-inline">Example: <strong>Hello World</strong></span>
       </td>
+    </tr>
+    <tr>
+      <td valign="top"><strong>Description</strong></td>
+      <td><textarea name="description" rows="3" style="width:400px;">{[=it.description]}</textarea></td>
     </tr>
     
     <tr>
@@ -30,12 +42,7 @@
         <label class="label label-important">Required</label>
         <span class="help-inline">Example: <strong>1.0.0</strong></span>
       </td>
-    </tr>
-
-    <tr>
-      <td valign="top"><strong>Description</strong></td>
-      <td><textarea name="desc" rows="2" style="width:400px;">{[=it.desc]}</textarea></td>
-    </tr>
+    </tr>    
 
     <tr>
       <td><strong>Group by Application</strong></td>

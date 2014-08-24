@@ -30,7 +30,7 @@
     <tr class="bordernil">
       <td width="180px"><strong>{{T . "Project ID"}}</strong> </td>
       <td>
-        <input id="_proj_new_projid" name="projid" type="text" class="span2" value="{{.projid}}" />
+        <input id="_proj_new_proj_name" name="proj_name" type="text" class="span2" value="{{.proj_name}}" />
         <label class="label label-important">{{T . "Required"}}</label>
         <label class="help-inline">{{T . "Unique identifier, similar to the package name"}}</label>
       </td>
@@ -90,12 +90,11 @@ var _project_new = "";
 function _project_new_commit()
 {
     var req = {
-        projid : $("#_proj_new_projid").val(),
-        name   : $("#_proj_new_name").val(),
+        name   : $("#_proj_new_proj_name").val(),
         desc   : $("#_proj_new_desc").val(),
     }
 
-    req.projid = "demo"; // TODO
+    req.name = "demo"; // TODO
 
     var grpapp = [];
     $("._proj_new_grpapp:checked").each(function(){

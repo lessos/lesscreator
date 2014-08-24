@@ -296,7 +296,7 @@ lcTab.Switch = function(urid)
             lcTab.TabletTitleImage(urid);
             lcTab.frame[item.target].urid = urid;
             // lessLocalStorage.Set("tab.fra.urid."+ item.target, urid);
-            // lessLocalStorage.Set(lessSession.Get("boxid") +"."+ lessSession.Get("proj_id") +".cab."+ item.target, urid);
+            // lessLocalStorage.Set(lessSession.Get("boxid") +"."+ lessSession.Get("proj_name") +".cab."+ item.target, urid);
         
             item.success();
         });
@@ -490,7 +490,7 @@ lcTab.Close = function(urid, force)
                 }
 
                 lessModal.Open({
-                    header_title : "Save changes before closing",
+                    title        : "Save changes before closing",
                     tpluri       : lc.base + "-/editor/changes2save.tpl",
                     width        : 500,
                     height       : 180,

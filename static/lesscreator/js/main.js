@@ -87,9 +87,10 @@ function lcLoadDeps() {
             "~/lesscreator/js/eventproxy.js",
 
             "~/lesscreator/js/box.js?_="+ Math.random(),
+            "~/lesscreator/js/tablet.js?_="+ Math.random(),
             "~/lesscreator/js/project.js?_="+ Math.random(),
             "~/lesscreator/js/project.fs.js?_="+ Math.random(),
-            "~/lesscreator/js/tablet.js?_="+ Math.random(),
+            "~/lesscreator/js/package.js?_="+ Math.random(),            
 
             // "~/twitter-bootstrap/2.3.2/js/bootstrap.min.js",
             "~/codemirror/3.21.0/codemirror.min.css",
@@ -283,7 +284,7 @@ lcLayout.Initialize = function()
 
     for (var i in lcLayout.cols) {
         
-        var wl = lessLocalStorage.Get(lessSession.Get("proj_id") +"_laysize_"+ lcLayout.cols[i].id);
+        var wl = lessLocalStorage.Get(lessSession.Get("proj_name") +"_laysize_"+ lcLayout.cols[i].id);
 
         if (wl !== undefined && parseInt(wl) > 0) {
             lcLayout.cols[i].width = parseInt(wl);
@@ -363,9 +364,9 @@ lcLayout.BindRefresh = function()
             lcLayout.cols[leftIndexId].width = leftWidthNew;
             lcLayout.cols[rightIndexId].width = rightWidthNew;
 
-            lessLocalStorage.Set(lessSession.Get("proj_id") +"_laysize_"+ leftLayId, leftWidthNew);
+            lessLocalStorage.Set(lessSession.Get("proj_name") +"_laysize_"+ leftLayId, leftWidthNew);
             lessSession.Set("laysize_"+ leftLayId, leftWidthNew);
-            lessLocalStorage.Set(lessSession.Get("proj_id") +"_laysize_"+ rightLayId, rightWidthNew);
+            lessLocalStorage.Set(lessSession.Get("proj_name") +"_laysize_"+ rightLayId, rightWidthNew);
             lessSession.Set("laysize_"+ rightLayId, rightWidthNew);
 
             setTimeout(function() {
