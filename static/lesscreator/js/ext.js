@@ -94,6 +94,8 @@ lcExt.RtSet = function(name)
     switch (name) {
     case "nginx":
     case "php":
+    case "go":
+    case "nodejs":
         break;
     default:
         return;
