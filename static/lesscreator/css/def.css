@@ -248,7 +248,7 @@ textarea {
 #hdev_editor {
     margin: 0; padding: 0;
 }
-
+/*
 .hcr-pgtabs-frame {
     position: relative; left: 0; top: 0;
     background-color: #e7e8ea; 
@@ -317,6 +317,7 @@ textarea {
 .hcr-pgtabs .pgtab .close a:hover {
     color: #db4a37; cursor: pointer;
 }
+*/
 .pgtab-openfiles {
     float: left; font-size: 18px; font-weight: bold;
     width: 20px; text-align: center;
@@ -330,7 +331,7 @@ textarea {
     background-color: #f6f7f8; height: 24px;
     border-bottom: 1px solid #cfd4d7; 
 }
-
+/*
 .hdev-pgtabs-box {
     overflow: hidden;
     position: relative; left: 0; top: 0;
@@ -379,7 +380,7 @@ textarea {
 .hdev-pgtabs .pgtabitem .close a:hover {
     color: #db4a37; cursor: pointer;
 }
-
+*/
 
 .table_list {padding:0;}
 .table_list th {padding: 3px; background-color: #f5f5f5; border-bottom: #ccc 2px solid;}
@@ -699,7 +700,7 @@ textarea {
     position: relative;
 }
 
-
+/*
 .h5c_tablet_frame {
 
 }
@@ -786,6 +787,7 @@ textarea {
 .h5c_tablet_body {
     overflow: auto;
 }
+*/
 .pgtab-openfiles-ol {
     border-radius: 5px;
 }
