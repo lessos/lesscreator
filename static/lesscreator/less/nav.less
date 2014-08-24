@@ -21,7 +21,7 @@
         position: relative;
     }
 
-    .lcx-nav-item {
+    .lcx-nav-itemex {
 
         position: relative;
         min-width: 140px;
@@ -50,6 +50,28 @@
         }
     }
 
+    .lcx-nav-item {
+
+        margin-left: 1px;
+        list-style: none;
+        display: inline-block;
+        list-style-type: none;
+        width: @lcnav-height;
+        height: @lcnav-height;
+        overflow: hidden;
+        text-align: center;
+        position: relative;
+        float: left;
+    }
+
+    .lcx-nav-item:hover {
+        cursor: pointer;
+        background-color: fade(#000, 90%);    
+    }
+
+    .lcx-nav-item:first-child {
+        margin-left: 0;
+    }
 
     ul:first-child {
         margin-left: 0px;

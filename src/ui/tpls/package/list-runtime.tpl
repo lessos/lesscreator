@@ -1,7 +1,7 @@
 
 <div id="lcpkg-list-runtime">
 
-<a class="lcpkg-lr-item" href="#rt/nginx-set">
+<a class="lcpkg-lr-item" href="#nginx">
 <table>
     <tr>
         <td width="100px"><img class="rtlogo" src="/lesscreator/~/lesscreator/img/rt/nginx_200.png" /></td>
@@ -16,7 +16,7 @@
 </table>
 </a>
 
-<a class="lcpkg-lr-item" href="#rt/php-set">
+<a class="lcpkg-lr-item" href="#php">
 <table>
     <tr class="line">
         <td width="100px"><img class="rtlogo" src="/lesscreator/~/lesscreator/img/rt/php_200.png" /></td>
@@ -31,7 +31,7 @@
 </table>
 </a>
 
-<a class="lcpkg-lr-item" href="#rt/go-set">
+<a class="lcpkg-lr-item" href="#go">
 <table>
     <tr class="line">
         <td width="100px"><img class="rtlogo" src="/lesscreator/~/lesscreator/img/rt/go_200.png" /></td>
@@ -46,7 +46,7 @@
 </table>
 </a>
 
-<a class="lcpkg-lr-item" href="#rt/nodejs-set">
+<a class="lcpkg-lr-item" href="#nodejs">
 <table>
     <tr class="line">
         <td width="100px"><img class="rtlogo" src="/lesscreator/~/lesscreator/img/rt/nodejs_200.png" /></td>
@@ -61,7 +61,7 @@
 </table>
 </a>
 
-<a class="lcpkg-lr-item" href="#rt/java-set">
+<a class="lcpkg-lr-item" href="#java">
 <table>
     <tr class="line">
         <td width="100px"><img class="rtlogo imggray" src="/lesscreator/~/lesscreator/img/rt/java_200.png" /></td>
@@ -76,7 +76,7 @@
 </table>
 </a>
 
-<a class="lcpkg-lr-item" href="#rt/python-set">
+<a class="lcpkg-lr-item" href="#python">
 <table>
     <tr class="line">
         <td width="100px"><img class="rtlogo imggray" src="/lesscreator/~/lesscreator/img/rt/python_200.png" /></td>

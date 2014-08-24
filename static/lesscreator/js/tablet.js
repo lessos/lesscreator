@@ -212,7 +212,7 @@ lcTab.Switch = function(urid)
 
                     $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
 
-                    lcTab.pool[urid].editor = null;
+                    lcTab.frame[item.target].editor = null;
                 },
                 error: function(xhr, textStatus, error) {
                     lcHeaderAlert("error", xhr.responseText);
@@ -265,10 +265,15 @@ lcTab.Switch = function(urid)
                     lcTab.pool[urid].data = rsp;
                     lcTab.TabletTitleImage(urid);
                     lcTab.frame[item.target].urid = urid;
+                    lcTab.frame[item.target].editor = null;
 
                     $("#lccab-bar"+ item.target).hide();
                     $("#lctab-body"+ item.target).empty().html(rsp);
                     lcLayout.Resize();
+
+                    $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
+
+                    item.success();
                 },
                 error: function(xhr, textStatus, error) {
                     lcHeaderAlert("error", xhr.responseText);
@@ -460,6 +465,16 @@ lcTab.TabletMore = function(tg)
     });
 }
 
+lcTab.ScrollTop = function(urid)
+{
+    var item = lcTab.pool[urid];
+    if (item === undefined || item.target === undefined) {
+        return;
+    }
+
+    $("#lctab-body"+ item.target +".less_scroll").scrollTop(0);
+}
+
 lcTab.Close = function(urid, force)
 {
     var item = lcTab.pool[urid];
@@ -601,9 +616,12 @@ lcTab.LayoutResize = function(options)
         $("#lctab-body"+ i).height(_body_h);
         $("#lctab-nav"+ i +" .lctab-navm").width(_w - 30);
 
-        if ($("#lctab-body"+ i +" .CodeMirror").length > 0) {
-            $("#lctab-body"+ i +" .CodeMirror").width(_w);
-            $("#lctab-body"+ i +" .CodeMirror").height(_body_h);
+        if (lcTab.frame[i].editor !== null) {
+            // console.log("CodeMirror changed");
+            if ($("#lctab-body"+ i +" > .CodeMirror").length > 0) {
+                $("#lctab-body"+ i +" > .CodeMirror").width(_w);
+                $("#lctab-body"+ i +" > .CodeMirror").height(_body_h);
+            }
         }
     }
 

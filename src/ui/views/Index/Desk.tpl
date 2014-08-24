@@ -98,14 +98,14 @@
         
         <div id="lcbind-box-nav" class="lcx-nav-grp">
 
-            <div class="lcx-nav-item">
+            <div class="lcx-nav-itemex">
                 <div class="lni-label">Box</div>
                 <div class="lni-title" id="nav-box-state-msg">Connecting</div>
             </div>
         </div>
 
         <div id="lcbind-proj-nav" class="lcx-nav-grp hide">
-            <div class="lcx-nav-item">
+            <div class="lcx-nav-itemex">
                 <div class="lni-label">Project</div>
                 <div class="lni-title" id="nav-proj-name">Connecting</div>
             </div><ul class="lcnav-tile-group" style="margin:0">
@@ -115,11 +115,20 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="javascript:lcPackage.ListRuntime()" title="Runtime, Dependent packages">
+                    <a href="javascript:lcExt.ListRuntime()" title="Runtime, Dependent packages">
                     <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/ext-32.png)"></i>
                     </a>
                 </li>
             </ul>
+        </div>
+
+        <div id="lcext-nav" class="lcx-nav-grp"></div>
+        <div id="lcext-nav-tpl" class="hide">
+            {[~it :v]}
+            <div id="lcext-nav{[=v.name]}" class="lcx-nav-item" onclick="lcExt.RtSet('{[=v.name]}')">
+                <i class="lcico32-std" style="background-image:url(/lesscreator/+/{[=v.name]}/img/s32.png)"></i>
+            </div>
+            {[~]}
         </div>
 
         <div class="lcx-nav-grp">

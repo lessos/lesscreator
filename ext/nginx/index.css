@@ -1,0 +1,21 @@
+#lcext-nginx-setmsg {
+    margin: 0 10px 0 0;
+    width: 95%;
+}
+
+#lcext-nginx-tplname {
+    padding: 2px; 
+    font-size: 12px;
+    width: 95%;
+}
+
+#lcext-nginx-conf {
+    width: 95%
+}
+
+#lcext-nginx-conf .CodeMirror {
+    font-size: 11px;
+    height: 100%;
+    width: 100%;
+    border: 2px solid #ccc;
+}

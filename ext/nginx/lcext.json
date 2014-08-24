@@ -1,0 +1,6 @@
+{
+    "vender": "lessos",
+    "name": "nginx",
+    "summary": "Nginx Web Server",
+    "description": "High Performance Web Server, Load Balancer and Reverse Proxy"
+}

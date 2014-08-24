@@ -143,6 +143,8 @@ lcProject.Open = function(proj)
         lessLocalStorage.Set(ukey +"_proj_current", proj);
         // console.log(pinfo);
         lcProject.Info = pinfo;
+
+        lcExt.NavRefresh();
         
         $("#nav-proj-name").text("loading");
         $("#lcbind-proj-nav").show(100);
@@ -181,6 +183,8 @@ lcProject.Open = function(proj)
                 // TODO
             }
         });
+
+        //
     }
 
     BoxFs.Get(req);

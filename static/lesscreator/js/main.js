@@ -90,7 +90,7 @@ function lcLoadDeps() {
             "~/lesscreator/js/tablet.js?_="+ Math.random(),
             "~/lesscreator/js/project.js?_="+ Math.random(),
             "~/lesscreator/js/project.fs.js?_="+ Math.random(),
-            "~/lesscreator/js/package.js?_="+ Math.random(),            
+            "~/lesscreator/js/ext.js?_="+ Math.random(),
 
             // "~/twitter-bootstrap/2.3.2/js/bootstrap.min.js",
             "~/codemirror/3.21.0/codemirror.min.css",
