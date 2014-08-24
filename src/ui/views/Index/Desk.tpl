@@ -119,6 +119,11 @@
                     <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/ext-32.png)"></i>
                     </a>
                 </li>
+                <li class="">
+                    <a href="javascript:lcProject.Run()" title="Run this Project">
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/play-32.png)"></i>
+                    </a>
+                </li>
             </ul>
         </div>
 

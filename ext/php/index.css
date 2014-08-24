@@ -1,0 +1,18 @@
+#lcext-php-setmsg {
+    margin: 0 10px 0 0;
+    width: 95%;
+}
+
+
+.lcext-php-grpitem {
+        
+    position: relative;
+    width: 160px;
+    font-size: 12px;
+    float: left;
+    margin: 3px 10px 3px 0;
+
+    input {
+        margin-bottom: 0;
+    }
+}

@@ -93,12 +93,13 @@ lcExt.RtSet = function(name)
 {
     switch (name) {
     case "nginx":
+    case "php":
         break;
     default:
         return;
     }
 
-    seajs.use(["+/"+ name +"/index.js", "+/"+ name +"/index.css"], function() {
+    seajs.use(["+/"+ name +"/index.js?_="+ Math.random(), "+/"+ name +"/index.css?_="+ Math.random()], function() {
 
         var fn = eval("lcExt."+ name +".Index");
 
