@@ -39,11 +39,13 @@ lcProjectFs.UiTreeLoad = function(options)
     req.success = function(rs) {
         
         var ls = rs.items;
+        var lsfs = [];
 
         for (var i in ls) {
             
             if (ls[i].name == "lcproject.json") {
                 // TODO
+                continue;
             }
 
             var fspath = rs.path +"/"+ ls[i].name;
@@ -55,7 +57,7 @@ lcProjectFs.UiTreeLoad = function(options)
             var ico = "page_white";
 
             if (ls[i].isdir !== undefined && ls[i].isdir == true) {
-            
+
                 ico = "folder";
                 ls[i].fstype = "dir";
 
@@ -110,13 +112,15 @@ lcProjectFs.UiTreeLoad = function(options)
             }
 
             ls[i].ico = ico;
+
+            lsfs.push(ls[i]);
         }
 
         if (document.getElementById("fstd"+ ptdid) == null) {
             $("#ptp"+ ptdid).after("<div id=\"fstd"+ptdid+"\" style=\"padding-left:20px;\"></div>");
         }
 
-        lessTemplate.RenderFromId("fstd"+ ptdid, "lcx-filenav-tree-tpl", ls);
+        lessTemplate.RenderFromId("fstd"+ ptdid, "lcx-filenav-tree-tpl", lsfs);
         
         options.success();
 
