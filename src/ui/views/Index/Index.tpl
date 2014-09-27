@@ -14,7 +14,7 @@
 
   <script type="text/javascript">
     var lessfly_api = "{{.lessfly_api}}";
-    window.onload = lc.Boot;
+    window.onload = l9r.Boot;
   </script>
 </head>
 <body>

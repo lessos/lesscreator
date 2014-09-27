@@ -34,7 +34,7 @@ lcExt.nginx.Index = function()
     data.cfgtpls = lcExt.nginx.cfgTpls;
 
     lessTemplate.Render({
-        tplurl : lc.base +"+/nginx/set.tpl",
+        tplurl : l9r.base +"+/nginx/set.tpl",
         dstid  : "lcext-nginx-setform",
         data   : data,
         success : function() {
@@ -66,7 +66,7 @@ lcExt.nginx.StateRefresh = function()
         } else {
             $.ajax({ 
                 type    : "GET",
-                url     : lc.base +"+/nginx/cfg/virtual."+ tplname +".conf",
+                url     : l9r.base +"+/nginx/cfg/virtual."+ tplname +".conf",
                 timeout : 10000,
                 async   : false,
                 success : function(rsp) {
@@ -115,7 +115,7 @@ lcExt.nginx.SetEditor = function(tplname, conf)
         readOnly      : readOnly,
     });
 
-    CodeMirror.modeURL = lc.base +"/~/codemirror3/3.21.0/mode/%N/%N.min.js";
+    CodeMirror.modeURL = l9r.base +"/~/codemirror3/3.21.0/mode/%N/%N.min.js";
     CodeMirror.autoLoadMode(lcExt.nginx.editor, "nginx");
 }
 
@@ -140,7 +140,7 @@ lcExt.nginx.SetSave = function()
         lessAlert("#lcext-nginx-setmsg", "alert-success", "Successfully Updated");
         lcProject.Info.runtime.nginx = ngx;
         
-        var tabid = lessCryptoMd5(lc.base +"+/nginx/index.tpl");
+        var tabid = lessCryptoMd5(l9r.base +"+/nginx/index.tpl");
         lcTab.ScrollTop(tabid);
 
         lcExt.NavRefresh(); // TODO SD
@@ -151,5 +151,5 @@ lcExt.nginx.SetSave = function()
         lessModal.ScrollTop();
     }
 
-    BoxFs.Post(req);
+    PodFs.Post(req);
 }

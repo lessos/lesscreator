@@ -23,7 +23,7 @@ lcExt.go.Index = function()
     }
 
     lessTemplate.Render({
-        tplurl : lc.base +"+/go/set.tpl",
+        tplurl : l9r.base +"+/go/set.tpl",
         dstid  : "lcext-go-setform",
         data   : data,
         success : function() {
@@ -61,7 +61,7 @@ lcExt.go.SetSave = function()
         lessAlert("#lcext-go-setmsg", "alert-success", "Successfully Updated");
         lcProject.Info.runtime.go = itemset;
         
-        var tabid = lessCryptoMd5(lc.base +"+/go/index.tpl");
+        var tabid = lessCryptoMd5(l9r.base +"+/go/index.tpl");
         lcTab.ScrollTop(tabid);
 
         lcExt.NavRefresh(); // TODO SD
@@ -72,5 +72,5 @@ lcExt.go.SetSave = function()
         lessModal.ScrollTop();
     }
 
-    BoxFs.Post(req);
+    PodFs.Post(req);
 }

@@ -129,7 +129,7 @@ lcEditor.TabletOpen = function(urid, callback)
             // callback(true);
         }
 
-        BoxFs.Get(req);
+        PodFs.Get(req);
     });
 }
 
@@ -469,7 +469,7 @@ lcEditor.EntrySave = function(options)
         // console.log("lcEditor.EntrySave Send: "+ options.urid);
         // console.log(req);
 
-        BoxFs.Post(req);
+        PodFs.Post(req);
         
         // req.msgreply = cb;
         // lcEditor.WebSocketSend(req)
@@ -885,7 +885,7 @@ lcEditor.ConfigModal = function()
 {
     lessModal.Open({
         title        : "Editor Settings",
-        tpluri       : lc.base +"-/editor/editor-set.tpl",
+        tpluri       : l9r.base +"-/editor/editor-set.tpl",
         width        : 800,
         height       : 500,
         position     : "center",
@@ -907,7 +907,7 @@ lcEditor.ConfigEditMode = function()
 {
     lessModal.Open({
         title        : lcEditor.Config.LangEditMode,
-        tpluri       : lc.base +"-/editor/editmode-set.tpl",
+        tpluri       : l9r.base +"-/editor/editmode-set.tpl",
         width        : 400,
         height       : 300,
         data         : {
@@ -941,7 +941,7 @@ lcEditor.ConfigEditModeSave = function(mode)
 
     // console.log("mode:"+ mode);
 
-    var icosrc = lc.base +"~/lesscreator/img/editor/mode-";
+    var icosrc = l9r.base +"~/lesscreator/img/editor/mode-";
 
     if (lcTab.frame[lcTab.def].editor != null) {
 

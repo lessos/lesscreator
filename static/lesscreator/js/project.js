@@ -60,7 +60,7 @@ lcProject.New = function(options)
     // TODO valid options.name
     var projpath = "/home/action/projects/"+ options.name;
 
-    BoxFs.Post({
+    PodFs.Post({
         path: projpath + "/lcproject.json",
         data: JSON.stringify(projinfo),
         success: function(rsp) {
@@ -91,7 +91,7 @@ lcProject.Open = function(proj)
 
     if (!proj) {
         // TODO
-        lessModalOpen(lc.base + "project/open-nav", 1, 800, 450, "Start a Project from ...", null);
+        lessModalOpen(l9r.base + "project/open-nav", 1, 800, 450, "Start a Project from ...", null);
         return;
     }
 
@@ -104,7 +104,7 @@ lcProject.Open = function(proj)
 
     // if (projCurrent != proj) {
     //     if (projCurrent.split("/").pop(-1) != proj.split("/").pop(-1)) {
-    //         window.open(lc.base + "index?"+ uri, '_blank');
+    //         window.open(l9r.base + "index?"+ uri, '_blank');
     //     }
     //     return;
     // }
@@ -146,11 +146,11 @@ lcProject.Open = function(proj)
 
         lcExt.NavRefresh();
         
-        $("#nav-proj-name").text("loading");
-        $("#lcbind-proj-nav").show(100);
+        $("#l9r-proj-nav-status").text("loading");
+        $("#l9r-proj-nav").show(100);
 
         $.ajax({
-            url     : lc.base + "project/file-nav?_="+ Math.random(),
+            url     : l9r.base + "project/file-nav?_="+ Math.random(),
             type    : "GET",
             timeout : 10000,
             success : function(rsp) {
@@ -187,7 +187,7 @@ lcProject.Open = function(proj)
         //
     }
 
-    BoxFs.Get(req);
+    PodFs.Get(req);
 }
 
 
@@ -258,6 +258,7 @@ lcProject.Set = function(proj)
     var req = {
         path: proj +"/lcproject.json",
     }
+    console.log("lcProject.Set"+ proj);
 
     req.error = function(status, message) {
 
@@ -299,7 +300,7 @@ lcProject.Set = function(proj)
             uri     : req.path,
             title   : "Project Settings",
             type    : "apidriven",
-            tpluri  : lc.base +"-/project/set.tpl",
+            tpluri  : l9r.base +"-/project/set.tpl",
             jsdata  : pinfo,
             icon    : "app-t3-16",
             success : function() {
@@ -311,7 +312,7 @@ lcProject.Set = function(proj)
         });
     }
 
-    BoxFs.Get(req);
+    PodFs.Get(req);
 }
 
 
@@ -353,7 +354,7 @@ lcProject.SetPut = function()
         lcHeaderAlert('error', "Error: "+ message);
     }
 
-    BoxFs.Post(req);
+    PodFs.Post(req);
 }
 
 lcProject.Run = function()

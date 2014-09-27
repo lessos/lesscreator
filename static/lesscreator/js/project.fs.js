@@ -4,6 +4,8 @@ var lcProjectFs = {}
 
 lcProjectFs.UiTreeLoad = function(options)
 {
+    // console.log("lcProjectFs.UiTreeLoad"+ options.path);
+
     options = options || {};
 
     if (typeof options.success !== "function") {
@@ -14,12 +16,16 @@ lcProjectFs.UiTreeLoad = function(options)
         options.error = function(){};
     }
 
+    if (options.toggle === undefined) {
+        options.toggle = false;
+    }
+
     var ptdid = lessCryptoMd5(options.path);
     if (options.path == lessSession.Get("proj_current")) {
         ptdid = "root";
     }
 
-    if (ptdid != "root" && document.getElementById("fstd"+ ptdid)) {
+    if (ptdid != "root" && options.toggle && document.getElementById("fstd"+ ptdid)) {
         $("#fstd"+ ptdid).remove();
         return;
     }
@@ -27,6 +33,8 @@ lcProjectFs.UiTreeLoad = function(options)
     var req = {
         path: options.path,// lessSession.Get("proj_current"),
     }
+
+    // console.log("path reload "+ options.path);
 
     req.success = function(rs) {
         
@@ -106,8 +114,6 @@ lcProjectFs.UiTreeLoad = function(options)
 
         if (document.getElementById("fstd"+ ptdid) == null) {
             $("#ptp"+ ptdid).after("<div id=\"fstd"+ptdid+"\" style=\"padding-left:20px;\"></div>");
-        } else {
-            // TODO
         }
 
         lessTemplate.RenderFromId("fstd"+ ptdid, "lcx-filenav-tree-tpl", ls);
@@ -117,7 +123,7 @@ lcProjectFs.UiTreeLoad = function(options)
         setTimeout(function() {
             lcProjectFs.UiTreeEventRefresh();
             lcLayout.Resize();
-            $("#nav-proj-name").text(lessSession.Get("proj_current_name"));
+            $("#l9r-proj-nav-status").text(lessSession.Get("proj_current_name"));
         }, 10);
     }
 
@@ -126,7 +132,7 @@ lcProjectFs.UiTreeLoad = function(options)
         options.error(status, message);
     }
 
-    BoxFs.List(req);
+    PodFs.List(req);
 }
 
 var _fsItemPath = "";
@@ -182,7 +188,7 @@ lcProjectFs.UiTreeEventRefresh = function()
     
         switch (fstype) {
         case "dir":
-            lcProjectFs.UiTreeLoad({path: fspath});
+            lcProjectFs.UiTreeLoad({path: fspath, toggle: true});
             break;
         case "text":
             lcTab.Open({
@@ -297,7 +303,7 @@ lcProjectFs.FileNewSave = function(formid)
         return;
     }
 
-    BoxFs.Post({
+    PodFs.Post({
         path    : path +"/"+ name,
         data    : "\n",
         success : function(rsp) {
@@ -308,11 +314,12 @@ lcProjectFs.FileNewSave = function(formid)
             //     _plugin_yaf_cvlist();
             // }
 
-            // lcProjectFs.UiTreeLoad({path: path});
+            lcProjectFs.UiTreeLoad({path: path});
+
             lessModal.Close();
         },
         error: function(status, message) {
-            console.log(status, message);
+            // console.log(status, message);
             // hdev_header_alert('error', textStatus+' '+xhr.responseText);
         }
     });
@@ -385,7 +392,7 @@ function _fsUploadCommit(reqid, file)
             var ppath = $("#"+ reqid +" :input[name=path]").val();
             // console.log("upload path: "+ ppath);
 
-            BoxFs.Post({
+            PodFs.Post({
                 path    : ppath +"/"+ file.name,
                 size    : file.size,
                 data    : e.target.result,
@@ -563,7 +570,7 @@ lcProjectFs.FileRenameSave = function(formid)
         return;
     }
 
-    BoxFs.Rename({
+    PodFs.Rename({
         path    : path,
         pathset : pathset,
         success : function(rsp) {
@@ -629,7 +636,7 @@ lcProjectFs.FileDelSave = function(formid)
         return;
     }
 
-    BoxFs.Del({
+    PodFs.Del({
         path    : path,
         success : function(rsp) {
             

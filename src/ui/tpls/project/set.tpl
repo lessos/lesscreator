@@ -14,6 +14,16 @@
       <td><strong>Project Name</strong></td>
       <td>{[=it.name]}</td>
     </tr>
+
+    <tr>
+      <td><strong>Version</strong></td>
+      <td>
+        <input name="version" class="input-large" type="text" value="{[=it.version]}" /> 
+        <label class="label label-important">Required</label>
+        <span class="help-inline">Example: <strong>1.0.0</strong></span>
+      </td>
+    </tr>  
+
     <!-- <tr>
       <td><strong>Project Name</strong></td>
       <td>
@@ -34,15 +44,6 @@
       <td valign="top"><strong>Description</strong></td>
       <td><textarea name="description" rows="3" style="width:400px;">{[=it.description]}</textarea></td>
     </tr>
-    
-    <tr>
-      <td><strong>Version</strong></td>
-      <td>
-        <input name="version" class="input-large" type="text" value="{[=it.version]}" /> 
-        <label class="label label-important">Required</label>
-        <span class="help-inline">Example: <strong>1.0.0</strong></span>
-      </td>
-    </tr>    
 
     <tr>
       <td><strong>Group by Application</strong></td>

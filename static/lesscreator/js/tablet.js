@@ -322,7 +322,7 @@ lcTab.TabletTitleImage = function(urid, imgsrc)
         if (item.icon.slice(0, 1) == "/") {
             imgsrc = item.icon;
         } else {
-            imgsrc = lc.base + "~/lesscreator/img/"+ item.icon +".png";
+            imgsrc = l9r.base + "~/lesscreator/img/"+ item.icon +".png";
         }
     }
 
@@ -350,9 +350,9 @@ lcTab.TabletTitle = function(urid, loading)
         if (item.icon) {
 
             if (loading) {
-                var imgsrc = lc.base + "~/lesscreator/img/loading4.gif";
+                var imgsrc = l9r.base + "~/lesscreator/img/loading4.gif";
             } else {
-                var imgsrc = lc.base + "~/lesscreator/img/"+ item.icon +".png";
+                var imgsrc = l9r.base + "~/lesscreator/img/"+ item.icon +".png";
             }
 
             //
@@ -421,7 +421,7 @@ lcTab.TabletMore = function(tg)
 
         var href = "javascript:lcTab.Switch('"+ i +"')";
         ol += '<div class="ltm-item lctab-nav-moreitem">';
-        ol += '<div class="ltm-ico"><img src="'+ lc.base + '~/lesscreator/img/'+ lcTab.pool[i].icon +'.png" align="absmiddle" /></div>';
+        ol += '<div class="ltm-ico"><img src="'+ l9r.base + '~/lesscreator/img/'+ lcTab.pool[i].icon +'.png" align="absmiddle" /></div>';
         ol += '<div class="ltm-ctn"><a href="'+ href +'">'+ lcTab.pool[i].title +'</a></div>';
         ol += '</div>';
     }
@@ -506,7 +506,7 @@ lcTab.Close = function(urid, force)
 
                 lessModal.Open({
                     title        : "Save changes before closing",
-                    tpluri       : lc.base + "-/editor/changes2save.tpl",
+                    tpluri       : l9r.base + "-/editor/changes2save.tpl",
                     width        : 500,
                     height       : 180,
                     data         : {urid: urid},

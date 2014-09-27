@@ -23,7 +23,7 @@ lcExt.nodejs.Index = function()
     }
 
     lessTemplate.Render({
-        tplurl : lc.base +"+/nodejs/set.tpl",
+        tplurl : l9r.base +"+/nodejs/set.tpl",
         dstid  : "lcext-nodejs-setform",
         data   : data,
         success : function() {
@@ -61,7 +61,7 @@ lcExt.nodejs.SetSave = function()
         lessAlert("#lcext-nodejs-setmsg", "alert-success", "Successfully Updated");
         lcProject.Info.runtime.nodejs = itemset;
         
-        var tabid = lessCryptoMd5(lc.base +"+/nodejs/index.tpl");
+        var tabid = lessCryptoMd5(l9r.base +"+/nodejs/index.tpl");
         lcTab.ScrollTop(tabid);
 
         lcExt.NavRefresh(); // TODO SD
@@ -72,5 +72,5 @@ lcExt.nodejs.SetSave = function()
         lessModal.ScrollTop();
     }
 
-    BoxFs.Post(req);
+    PodFs.Post(req);
 }

@@ -1,12 +1,12 @@
-var lc = {
+var l9r = {
     base : "/lesscreator/",
     // ns   : ""
 }
 
-lc.Boot = function()
+l9r.Boot = function()
 {
     seajs.config({
-        base: lc.base,
+        base: l9r.base,
     });
 
     var rqs = [
@@ -22,11 +22,11 @@ lc.Boot = function()
         // if (!((browser == 'Chrome' && version >= 20)
         //     || (browser == 'Firefox' && version >= 3.6)
         //     || (browser == 'Safari' && version >= 5.0 && OS == 'Mac'))) {
-        //     $('#body-content').load(lc.base + "error/browser");
+        //     $('#body-content').load(l9r.base + "error/browser");
         //     return;
         // }
         if (!(browser == 'Chrome' && version >= 22)) { 
-            $('body').load(lc.base + "error/browser");
+            $('body').load(l9r.base + "error/browser");
             return;
         }
 
@@ -130,7 +130,7 @@ function lcLoadDeps() {
                     return;
                 }
 
-                lcPodList();
+                l9rPodList();
             });
 
 
@@ -145,7 +145,7 @@ function lcLoadDeps() {
     });
 }
 
-function lcPodList()
+function l9rPodList()
 {
     if (lessCookie.Get("access_userkey") == null) {
         return;
@@ -161,7 +161,7 @@ function lcPodList()
     // url += "access_token="+ lessCookie.Get("access_token");
     // url += "&project=lesscreator";
 
-    lessModalOpen(lc.base + "/-/pod/list.tpl", 1, 660, 400, "Pods", null);
+    lessModalOpen(l9r.base + "/-/pod/list.tpl", 1, 660, 400, "Pods", null);
 
     return;
 
@@ -197,7 +197,7 @@ function lcPodList()
     });
 }
 
-function lcAjax(obj, url, cb)
+function l9rAjax(obj, url, cb)
 {
     if (/\?/.test(url)) {
         url += "&_=";
@@ -207,7 +207,7 @@ function lcAjax(obj, url, cb)
     url += Math.random();
     //console.log("req: lesscreator/"+ url);
     $.ajax({
-        url     : lc.base + ""+ url,
+        url     : l9r.base + ""+ url,
         type    : "GET",
         timeout : 30000,
         success : function(rsp) {
@@ -230,7 +230,7 @@ function lcAjax(obj, url, cb)
 
 function lcBodyLoader(uri)
 {
-    lcAjax("#body-content", uri);
+    l9rAjax("#body-content", uri);
 
     if (uri == "index/desk") {
         $(window).resize(function() {
@@ -241,12 +241,12 @@ function lcBodyLoader(uri)
 
 function lcComLoader(uri)
 {
-    lcAjax("#com-content", uri);
+    l9rAjax("#com-content", uri);
 }
 
 function lcWorkLoader(uri)
 {
-    lcAjax("#work-content", uri);
+    l9rAjax("#work-content", uri);
 }
 
 function lcT(str)

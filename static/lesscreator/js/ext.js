@@ -59,7 +59,7 @@ lcExt.ListRuntime = function () {
         title        : "Runtime Environment Settings",
         width        : 600,
         height       : 400,
-        tpluri       : lc.base +"-/package/list-runtime.tpl",
+        tpluri       : l9r.base +"-/package/list-runtime.tpl",
         buttons      : [
             {
                 onclick : "lessModal.Close()",
@@ -111,9 +111,9 @@ lcExt.RtSet = function(name)
 
         lcTab.Open({
             type    : "html",
-            uri     : lc.base +"+/"+ name +"/index.tpl",
+            uri     : l9r.base +"+/"+ name +"/index.tpl",
             title   : name,
-            icon    : lc.base +"+/"+ name +"/img/s32.png",
+            icon    : l9r.base +"+/"+ name +"/img/s32.png",
             success : function() {
                 fn();
                 lessModal.Close();

@@ -39,7 +39,7 @@ lcExt.php.Index = function()
     data._lsmodules = lcExt.php.lsModules;
 
     lessTemplate.Render({
-        tplurl : lc.base +"+/php/set.tpl",
+        tplurl : l9r.base +"+/php/set.tpl",
         dstid  : "lcext-php-setform",
         data   : data,
         success : function() {
@@ -83,7 +83,7 @@ lcExt.php.SetSave = function()
         lessAlert("#lcext-php-setmsg", "alert-success", "Successfully Updated");
         lcProject.Info.runtime.php = itemset;
         
-        var tabid = lessCryptoMd5(lc.base +"+/php/index.tpl");
+        var tabid = lessCryptoMd5(l9r.base +"+/php/index.tpl");
         lcTab.ScrollTop(tabid);
 
         lcExt.NavRefresh(); // TODO SD
@@ -94,5 +94,5 @@ lcExt.php.SetSave = function()
         lessModal.ScrollTop();
     }
 
-    BoxFs.Post(req);
+    PodFs.Post(req);
 }

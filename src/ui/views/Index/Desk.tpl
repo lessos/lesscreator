@@ -103,10 +103,10 @@
             </div>
         </div>
 
-        <div id="lcbind-proj-nav" class="lcx-nav-grp hide">
+        <div id="l9r-proj-nav" class="lcx-nav-grp hide">
             <div class="lcx-nav-itemex">
                 <div class="lni-label">Project</div>
-                <div class="lni-title" id="nav-proj-name">Connecting</div>
+                <div class="lni-title" id="l9r-proj-nav-status">Connecting</div>
             </div><ul class="lcnav-tile-group" style="margin:0">
                 <li class="">
                     <a href="javascript:lcProject.Set()" title="Project Settings">
@@ -281,6 +281,7 @@
 </table>
 
 <div id="lc_editor_tools" class="hide">
+    <script type="text/text" id="lc_editor_tools"></script>
 
     <!-- <div class="editor_bar hdev-ws hdev-tabs hcr-pgbar-editor"> -->
     <div class="lceditor-tools">
@@ -436,6 +437,6 @@ lcLayout.Resize();
 lcLayout.BindRefresh();
 
 // setTimeout(lcLayout.Resize, 3000)
-lcPodRefresh();
+l9rPodRefresh();
 
 </script>

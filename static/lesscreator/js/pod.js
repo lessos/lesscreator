@@ -7,7 +7,7 @@ var PodFailed  = "Failed";
 var PodDestroy = "Destroy";
 
 //
-function lcPodRefresh()
+function l9rPodRefresh()
 {
     // console.log(lessSession.Get("podid"));
 
@@ -74,7 +74,7 @@ function lcPodRefresh()
 }
 
 
-var BoxFs = {
+var PodFs = {
     Get: function(options) {
         // Force options to be an object
         options = options || {};
