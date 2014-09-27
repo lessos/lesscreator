@@ -86,7 +86,7 @@ function lcLoadDeps() {
         var rqs = [
             "~/lesscreator/js/eventproxy.js",
 
-            "~/lesscreator/js/box.js?_="+ Math.random(),
+            "~/lesscreator/js/pod.js?_="+ Math.random(),
             "~/lesscreator/js/tablet.js?_="+ Math.random(),
             "~/lesscreator/js/project.js?_="+ Math.random(),
             "~/lesscreator/js/project.fs.js?_="+ Math.random(),
@@ -116,6 +116,9 @@ function lcLoadDeps() {
 
         seajs.use(rqs, function() {
 
+            // TODO access_token getting issue
+
+            //
             lcData.Init(lessCookie.Get("access_userkey"), function(ret) {
 
                 if (!ret) {
@@ -127,7 +130,7 @@ function lcLoadDeps() {
                     return;
                 }
 
-                lcBoxList();
+                lcPodList();
             });
 
 
@@ -142,23 +145,23 @@ function lcLoadDeps() {
     });
 }
 
-function lcBoxList()
+function lcPodList()
 {
     if (lessCookie.Get("access_userkey") == null) {
         return;
     }
     lessSession.Set("access_userkey", lessCookie.Get("access_userkey"));
 
-    if (lessSession.Get("boxid") != null) {
+    if (lessSession.Get("podid") != null) {
         lcBodyLoader("index/desk");
         return;
     }
 
-    var url = lessfly_api + "/box/list?";
-    url += "access_token="+ lessCookie.Get("access_token");
-    url += "&project=lesscreator";
+    // var url = lessfly_api + "/pods?";
+    // url += "access_token="+ lessCookie.Get("access_token");
+    // url += "&project=lesscreator";
 
-    lessModalOpen(lc.base + "index/box-list", 1, 660, 400, "Boxes", null);
+    lessModalOpen(lc.base + "/-/pod/list.tpl", 1, 660, 400, "Pods", null);
 
     return;
 

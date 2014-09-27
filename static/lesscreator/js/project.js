@@ -195,7 +195,7 @@ lcProject.OpenHistoryTabs = function()
 {
     // console.log("lcProject.OpenHistoryTabs");
 
-    // var last_tab_urid = lessLocalStorage.Set(lessSession.Get("boxid") +"."+ lessSession.Get("proj_name") +".tab."+ item.target);
+    // var last_tab_urid = lessLocalStorage.Set(lessSession.Get("podid") +"."+ lessSession.Get("proj_name") +".tab."+ item.target);
 
     lcData.Query("files", "projdir", lessSession.Get("proj_current"), function(ret) {
     
@@ -217,7 +217,7 @@ lcProject.OpenHistoryTabs = function()
                 cab = lcTab.frame[lcTab.def];
             }
 
-            var tabLastActive = lessLocalStorage.Get(lessSession.Get("boxid") +"."+ lessSession.Get("proj_name") +".cab."+ ret.value.cabid);
+            var tabLastActive = lessLocalStorage.Get(lessSession.Get("podid") +"."+ lessSession.Get("proj_name") +".cab."+ ret.value.cabid);
             // console.log("tabLastActive: "+ tabLastActive);
 
             var titleOnly = true;

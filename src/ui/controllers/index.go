@@ -117,10 +117,6 @@ func (c Index) WsAction() {
 	}
 }
 
-func (c Index) BoxListAction() {
-
-}
-
 func (c Index) DeskAction() {
 
 	c.ViewData["lc_version"] = conf.Config.Version

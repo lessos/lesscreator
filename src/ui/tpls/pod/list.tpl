@@ -34,20 +34,25 @@
 </style>
 
 <div id="ztk4yq56" class="alert alert-info">
-	Connecting lessOS Cloud Engine to get your boxes ...
+	Getting your Pod Instances ...
 </div>
 
 <div id="i7egk4aw"></div>
 
 <div id="i7egk4aw-tpl" class="hide">
+
 {[~it.items :v]}
-<a class="ciyhh9" href="#box/{[=v.id]}" onclick="_box_open('{[=v.id]}')">
+<a class="ciyhh9" href="#pod/{[=v.metadata.id]}" onclick="_pod_open('{[=v.metadata.id]}')">
 <table>
   <tr>
     <td width="40px"><img class="licon" src="/lesscreator/~/lesscreator/img/gen/box01.png" /></td>
     <td>
-        <div class="title">{[=v.name]}</div>
-        <div class="spec">CPU Share: {[=v.spec.cpu_num]}x, Memory: {[=v.spec.mem_size]} MB, Storage: {[=v.spec.stor_size]} MB</div>
+        <div class="title">{[=v.metadata.id]}</div>
+        <div class="spec">
+            {[~v.desiredState.manifest.boxes :vb]}
+                CPU: {[=vb.quota.cpu]}, Memory: {[=_quota_size_format(vb.quota.memory)]}, Storage: 100 MB
+            {[~]}
+        </div>
     </td>
     <td width="30px" align="right">
       <i class="icon-chevron-right"></i>
@@ -56,15 +61,29 @@
 </table>
 </a>
 {[~]}
+
 </div>
 
 <script type="text/javascript">
 
 // lessModalButtonAdd("doo8l6", "{{T . "Close"}}", "lessModalClose()", "");
 
-function _load_boxlist()
+function _quota_size_format(size)
 {
-    var url = lessfly_api + "/box/list?";
+    if (size > 1073741824) {
+        return (size / 1073741824).toFixed(0) + " <span>GB</span>";
+    } else if (size > 1048576) {
+        return (size / 1048576).toFixed(0) + " <span>MB</span>";
+    } else if (size > 1024) {
+        return (size / 1024).toFixed(0) + " <span>KB</span>";
+    }
+
+    return size + " <span>Bytes</span>";
+}
+
+function _load_podlist()
+{
+    var url = lessfly_api + "/pods/?";
     url += "access_token="+ lessCookie.Get("access_token");
     url += "&project=lesscreator";
     // console.log(url);
@@ -78,20 +97,18 @@ function _load_boxlist()
 
             // console.log(rsp);
 
-            if (rsj.status == 200) {
+            if (rsj.kind == "PodList") {
                 
                 //$(".load-progress-msg").append("OK");
 
-                if (rsj.data.totalItems == 0) {
+                if (rsj.items.length == 0) {
                     // TODO
-                } else if (rsj.data.totalItems == 1) {
+                } else if (rsj.items.length == 1) {
                     // Launch Immediately
-                } else if (rsj.data.totalItems > 1) {
+                } else if (rsj.items.length > 1) {
                     // Select one to Launch ...
-                    lessTemplate.RenderFromId("i7egk4aw", "i7egk4aw-tpl", rsj.data);
+                    lessTemplate.RenderFromId("i7egk4aw", "i7egk4aw-tpl", rsj);
                 }
-
-
 
             } else {
                 // $(".load-progress").removeClass("progress-success").addClass("progress-danger");
@@ -105,14 +122,14 @@ function _load_boxlist()
     });
 }
 
-_load_boxlist();
+_load_podlist();
 
-function _box_open(boxid)
+function _pod_open(podid)
 {
     lessModalClose();
-    lessSession.Set("boxid", boxid);
+    lessSession.Set("podid", podid);
     lcBodyLoader("index/desk");
-    // lessModalNext("/lesscreator/index/box-open?boxid="+ boxid, "Log In My Box", null);
+    // lessModalNext("/lesscreator/index/pod-open?podid="+ podid, "Log In My Box", null);
 }
 
 </script>

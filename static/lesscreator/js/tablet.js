@@ -301,7 +301,7 @@ lcTab.Switch = function(urid)
             lcTab.TabletTitleImage(urid);
             lcTab.frame[item.target].urid = urid;
             // lessLocalStorage.Set("tab.fra.urid."+ item.target, urid);
-            // lessLocalStorage.Set(lessSession.Get("boxid") +"."+ lessSession.Get("proj_name") +".cab."+ item.target, urid);
+            // lessLocalStorage.Set(lessSession.Get("podid") +"."+ lessSession.Get("proj_name") +".cab."+ item.target, urid);
         
             item.success();
         });

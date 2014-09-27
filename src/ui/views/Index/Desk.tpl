@@ -96,11 +96,10 @@
 
     <td align="left">
         
-        <div id="lcbind-box-nav" class="lcx-nav-grp">
-
+        <div id="l9r-pod-nav" class="lcx-nav-grp">
             <div class="lcx-nav-itemex">
                 <div class="lni-label">Box</div>
-                <div class="lni-title" id="nav-box-state-msg">Connecting</div>
+                <div class="lni-title" id="l9r-pod-status-msg">Connecting</div>
             </div>
         </div>
 
@@ -437,6 +436,6 @@ lcLayout.Resize();
 lcLayout.BindRefresh();
 
 // setTimeout(lcLayout.Resize, 3000)
-lcBoxRefresh();
+lcPodRefresh();
 
 </script>
