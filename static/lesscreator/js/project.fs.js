@@ -45,7 +45,7 @@ lcProjectFs.UiTreeLoad = function(options)
             
             if (ls[i].name == "lcproject.json") {
                 // TODO
-                continue;
+                // continue;
             }
 
             var fspath = rs.path +"/"+ ls[i].name;

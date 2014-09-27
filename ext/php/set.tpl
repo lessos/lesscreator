@@ -10,7 +10,7 @@
     <td>
     {[~it._lsmodules :v]}
     <label class="lcext-php-grpitem checkbox">
-      <input type="checkbox" name="mod" value="{[=v.id]}" {[ if (it.mods.indexOf(v.name) > -1) { ]} checked {[ } ]}> {[=v.summary]}
+      <input type="checkbox" name="mod" value="{[=v.name]}" {[ if (it.mods.indexOf(v.name) > -1) { ]} checked {[ } ]}> {[=v.summary]}
     </label>
     {[~]}
     </td>

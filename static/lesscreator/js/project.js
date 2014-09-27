@@ -11,6 +11,7 @@ var lcProject = {
         arch        : "all",
         grp_app     : "",
         grp_dev     : "",
+        runtime     : {},
     },
     ProjectGroupByApp: [
         {id: "50", name: "Business"},
@@ -137,6 +138,10 @@ lcProject.Open = function(proj)
             return
         }
 
+        if (pinfo.runtime == undefined) {
+            pinfo.runtime = {};
+        }
+
         lessSession.Set("proj_name", pinfo.name);
         lessSession.Set("proj_current_name", pinfo.name);
         lessSession.Set("proj_current", proj);
@@ -258,7 +263,7 @@ lcProject.Set = function(proj)
     var req = {
         path: proj +"/lcproject.json",
     }
-    console.log("lcProject.Set"+ proj);
+    // console.log("lcProject.Set"+ proj);
 
     req.error = function(status, message) {
 

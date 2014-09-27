@@ -95,6 +95,7 @@ lcExt.ListRuntime = function () {
 
 lcExt.RtSet = function(name)
 {
+    // TODO auto registry
     switch (name) {
     case "nginx":
     case "php":
@@ -111,7 +112,7 @@ lcExt.RtSet = function(name)
 
         lcTab.Open({
             type    : "html",
-            uri     : l9r.base +"+/"+ name +"/index.tpl",
+            uri     : l9r.base +"+/"+ name +"/index.tpl?_="+ Math.random(),
             title   : name,
             icon    : l9r.base +"+/"+ name +"/img/s32.png",
             success : function() {

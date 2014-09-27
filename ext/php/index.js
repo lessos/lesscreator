@@ -13,7 +13,8 @@ lcExt.php = {
         {name: "bcmath", summary: "bcmath"}
     ],
     cfgDef : {
-        state   : 0,
+        state : 1,
+        mods  : ["fpm"]
     }
 }
 
@@ -34,12 +35,10 @@ lcExt.php.Index = function()
         data = lcExt.php.cfgDef;
     }
 
-    data.mods = ["fpm", "redis"];
-
     data._lsmodules = lcExt.php.lsModules;
 
     lessTemplate.Render({
-        tplurl : l9r.base +"+/php/set.tpl",
+        tplurl : l9r.base +"+/php/set.tpl?_="+ Math.random(),
         dstid  : "lcext-php-setform",
         data   : data,
         success : function() {
