@@ -41,22 +41,6 @@ function l9rPodRefresh()
                     return;
                 }
 
-                // TODO!!!
-                if (rsj.currentState.placement.hostIP.length > 0 &&
-                    rsj.currentState.placement.hostPort.length > 0) {
-                    lessSession.Set("pod_placement_addr", rsj.currentState.placement.hostIP +":"+ rsj.currentState.placement.hostPort);
-                } else {
-                    return;
-                }
-
-                if (rsj.desiredState.placement.group.length > 0) {
-                    lessSession.Set("pod_placement_group", rsj.desiredState.placement.group);
-                }
-
-                if (rsj.desiredState.placement.host.length > 0) {
-                    lessSession.Set("pod_placement_host", rsj.desiredState.placement.host);
-                }
-
                 $("#l9r-pod-status-msg").text("Active");
                 
                 lcProject.Open();
@@ -92,12 +76,9 @@ var PodFs = {
             options.error = function(){};
         }
 
-        var url = "http://"+ lessSession.Get("pod_placement_addr") + "/lessfly/v1/fs/get";
+        var url = lessfly_api +"/pods/"+ lessSession.Get("podid") +"/fs/get";
         url += "?access_token="+ lessCookie.Get("access_token");
         url += "&path="+ options.path;
-        url += "&pod_placement_group="+ lessSession.Get("pod_placement_group");
-        url += "&pod_placement_host="+ lessSession.Get("pod_placement_host");
-        url += "&podid="+ lessSession.Get("podid");
 
         // console.log("box refresh:"+ url);
 
@@ -151,22 +132,17 @@ var PodFs = {
         }
 
         var req = {
-            access_token : lessCookie.Get("access_token"),
+            // access_token : lessCookie.Get("access_token"),
             // requestId    : options.requestId,
             data : {
                 path     : options.path,
                 body     : options.data,
                 encode   : options.encode,
                 sumcheck : options.sumcheck,
-                podid    : lessSession.Get("podid"),
-                placement : {
-                    group : lessSession.Get("pod_placement_group"),
-                    host  : lessSession.Get("pod_placement_host")
-                }
             }
         }
 
-        var url = "http://"+ lessSession.Get("pod_placement_addr") + "/lessfly/v1/fs/put";
+        var url = lessfly_api +"/pods/"+ lessSession.Get("podid") +"/fs/put?access_token="+ lessCookie.Get("access_token");
 
         $.ajax({
             url     : url,
@@ -214,19 +190,14 @@ var PodFs = {
         }
 
         var req = {
-            access_token : lessCookie.Get("access_token"),
+            // access_token : lessCookie.Get("access_token"),
             data : {
                 path    : options.path,
                 pathset : options.pathset,
-                podid   : lessSession.Get("podid"),
-                placement : {
-                    group : lessSession.Get("pod_placement_group"),
-                    host  : lessSession.Get("pod_placement_host")
-                }
             }
         }
 
-        var url = "http://"+ lessSession.Get("pod_placement_addr") + "/lessfly/v1/fs/rename";
+        var url = lessfly_api +"/pods/"+ lessSession.Get("podid") +"/fs/rename?access_token="+ lessCookie.Get("access_token");
 
         $.ajax({
             url     : url,
@@ -269,18 +240,13 @@ var PodFs = {
         }
 
         var req = {
-            access_token : lessCookie.Get("access_token"),
+            // access_token : lessCookie.Get("access_token"),
             data : {
                 path    : options.path,
-                podid   : lessSession.Get("podid"),
-                placement : {
-                    group : lessSession.Get("pod_placement_group"),
-                    host  : lessSession.Get("pod_placement_host")
-                }
             }
         }
 
-        var url = "http://"+ lessSession.Get("pod_placement_addr") + "/lessfly/v1/fs/del";
+        var url = lessfly_api +"/pods/"+ lessSession.Get("podid") +"/fs/del?access_token="+ lessCookie.Get("access_token");
 
         $.ajax({
             url     : url,
@@ -322,18 +288,13 @@ var PodFs = {
         }
 
         var req = {
-            access_token : lessCookie.Get("access_token"),
+            // access_token : lessCookie.Get("access_token"),
             data : {
                 path   : options.path,
-                podid  : lessSession.Get("podid"),
-                placement : {
-                    group : lessSession.Get("pod_placement_group"),
-                    host  : lessSession.Get("pod_placement_host")
-                }
             }
         }
 
-        var url = "http://"+ lessSession.Get("pod_placement_addr") + "/lessfly/v1/fs/list";
+        var url = lessfly_api +"/pods/"+ lessSession.Get("podid") +"/fs/list?access_token="+ lessCookie.Get("access_token");
 
         $.ajax({
             url     : url,

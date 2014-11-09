@@ -8,8 +8,6 @@
 
 	access_userkey
 	podid
-	hostid
-	pod_placement_addr
 
 	proj_id
 	proj_current
