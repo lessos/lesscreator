@@ -11,7 +11,6 @@ import (
 	"os"
 	"runtime"
 	"strconv"
-	"time"
 )
 
 import (
@@ -65,8 +64,4 @@ func main() {
 
 	//
 	pagelet.Run()
-
-	for {
-		time.Sleep(3e9)
-	}
 }
