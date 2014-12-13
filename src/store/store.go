@@ -1,9 +1,9 @@
 package store
 
 import (
-	"../../deps/lessgo/service/lesskeeper"
 	"../conf"
 	"errors"
+	"github.com/lessos/lessgo/service/lesskeeper"
 	"sync"
 )
 

@@ -126,12 +126,12 @@ function _project_new_commit()
         lessAlert("#m4ph6m", "alert-error", "Error: "+ message);
     }
 
-    lcProject.New(req);
+    l9rProj.New(req);
 }
 
 function _project_new_goto()
 {
-    lcProject.Open(_project_new);
+    l9rProj.Open(_project_new);
     lessModalClose();
 }
 

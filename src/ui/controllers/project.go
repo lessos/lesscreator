@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"../../../deps/lessgo/pagelet"
-	"../../../deps/lessgo/utils"
 	"../../base"
 	"../../conf"
+	"github.com/lessos/lessgo/pagelet"
+	"github.com/lessos/lessgo/utils"
 	// "fmt"
 )
 

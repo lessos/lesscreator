@@ -1,18 +1,18 @@
 
 function lcInitSetting()
 {
-    /* var autosave = lessCookie.Get('editor_autosave');
+    /* var autosave = l4iCookie.Get('editor_autosave');
     if (autosave == null) {
-        lessCookie.SetByDay("editor_autosave", "on", 365);
+        l4iCookie.SetByDay("editor_autosave", "on", 365);
         autosave = 'on';
     }
     if (autosave == 'on') {
         $("#editor_autosave").prop("checked", true);
     } */
     
-    var theme = lessCookie.Get('editor_theme');
+    var theme = l4iCookie.Get('editor_theme');
     if (theme == null) {
-        lessCookie.SetByDay("editor_theme", "monokai", 365);
+        l4iCookie.SetByDay("editor_theme", "monokai", 365);
         theme = "monokai";
     }
     lcEditor.Config.theme = theme;
@@ -25,32 +25,32 @@ function lcInitSetting()
         lcEditor.Config.EditMode = editor_editmode;
     }
         
-    var search_case = lessCookie.Get('editor_search_case');
+    var search_case = l4iCookie.Get('editor_search_case');
     if (search_case == null) {
-        lessCookie.SetByDay("editor_search_case", "off", 365);
+        l4iCookie.SetByDay("editor_search_case", "off", 365);
         search_case = 'off';
     }
     if (search_case == 'on') {
         $("#editor_search_case").prop("checked", true);
     }
     
-    var tabSize = lessCookie.Get('editor_tabSize');
+    var tabSize = l4iCookie.Get('editor_tabSize');
     if (tabSize != null) {
         lcEditor.Config.tabSize = parseInt(tabSize);
     }
 
-    var fontSize = lessCookie.Get('editor_fontSize');
+    var fontSize = l4iCookie.Get('editor_fontSize');
     if (fontSize != null) {
         lcEditor.Config.fontSize = parseInt(fontSize);
     }
     
-    lcEditor.Config.tabs2spaces = (lessCookie.Get('editor_tabs2spaces') == 'false') ? false : true;
+    lcEditor.Config.tabs2spaces = (l4iCookie.Get('editor_tabs2spaces') == 'false') ? false : true;
     
-    lcEditor.Config.smartIndent = (lessCookie.Get('editor_smartIndent') == 'false') ? false : true;
+    lcEditor.Config.smartIndent = (l4iCookie.Get('editor_smartIndent') == 'false') ? false : true;
     
-    lcEditor.Config.lineWrapping = (lessCookie.Get('editor_lineWrapping') == 'false') ? false : true;
+    lcEditor.Config.lineWrapping = (l4iCookie.Get('editor_lineWrapping') == 'false') ? false : true;
 
-    lcEditor.Config.codeFolding = (lessCookie.Get('editor_codeFolding') == 'true') ? true : false;
+    lcEditor.Config.codeFolding = (l4iCookie.Get('editor_codeFolding') == 'true') ? true : false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -1758,7 +1758,7 @@ function lc_terminal_conn(termid, wsurl)
 
     lc_terminal_ws.onopen = function() {
         var req = {
-            "access_token": lessCookie.Get("access_token"),
+            "access_token": l4iCookie.Get("access_token"),
         }
         lc_terminal_ws.send(JSON.stringify(req))
         lc_terminal_ws.send(indent(colsrows[0], 8))

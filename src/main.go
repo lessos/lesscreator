@@ -1,8 +1,8 @@
 package main
 
 import (
-	"../deps/lessgo/logger"
-	"../deps/lessgo/pagelet"
+	"github.com/lessos/lessgo/logger"
+	"github.com/lessos/lessgo/pagelet"
 
 	"./conf"
 	"./store"
@@ -14,7 +14,7 @@ import (
 )
 
 import (
-	c_api "./api"
+	// c_api "./api"
 	c_ui "./ui/controllers"
 )
 
@@ -48,8 +48,8 @@ func main() {
 	pagelet.Config.I18n(conf.Config.Prefix + "/src/i18n/zh_CN.json")
 
 	//
-	pagelet.Config.RouteAppend("v1", "/:controller/:action")
-	pagelet.RegisterController("v1", (*c_api.Index)(nil))
+	// pagelet.Config.RouteAppend("v1", "/:controller/:action")
+	// pagelet.RegisterController("v1", (*c_api.Index)(nil))
 	// pagelet.RegisterController("v1", (*c_api.Ext)(nil))
 
 	//
@@ -63,5 +63,6 @@ func main() {
 	pagelet.RegisterController("default", (*c_ui.Project)(nil))
 
 	//
+	fmt.Println("Running")
 	pagelet.Run()
 }

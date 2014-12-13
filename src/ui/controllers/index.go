@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"../../../deps/lessgo/pagelet"
-	"../../../deps/lessgo/service/lessids"
 	"../../conf"
 	"fmt"
+	"github.com/lessos/lessgo/pagelet"
+	"github.com/lessos/lessgo/service/lessids"
 	"net/http"
 )
 
@@ -23,10 +23,22 @@ func (c Index) IndexAction() {
 		return
 	}
 
+	// fmt.Println(session)
+
 	ck := &http.Cookie{
-		Name:    "access_userkey",
-		Value:   session.Uuid,
-		Path:    "/",
+		Name:  "access_userid",
+		Value: session.Uuid,
+		Path:  "/",
+		// HttpOnly: true,
+		Expires: session.Expired.UTC(),
+	}
+	http.SetCookie(c.Response.Out, ck)
+
+	ck = &http.Cookie{
+		Name:  "access_token",
+		Value: session.AccessToken,
+		Path:  "/",
+		// HttpOnly: true,
 		Expires: session.Expired.UTC(),
 	}
 	http.SetCookie(c.Response.Out, ck)
@@ -34,7 +46,7 @@ func (c Index) IndexAction() {
 	//
 	if c.Params.Get("access_token") != "" {
 
-		ck := &http.Cookie{
+		ck = &http.Cookie{
 			Name:  "access_token",
 			Value: session.AccessToken,
 			Path:  "/",

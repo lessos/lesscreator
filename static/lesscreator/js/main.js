@@ -1,19 +1,20 @@
 var l9r = {
     base : "/lesscreator/",
-    // ns   : ""
 }
 
 l9r.Boot = function()
 {
     seajs.config({
         base: l9r.base,
+        alias: {
+            ep: '~/lessui/js/eventproxy.js'
+        },
     });
 
-    var rqs = [
+    seajs.use([
         "~/lesscreator/js/jquery.js",
         "~/lessui/js/BrowserDetect.js",
-    ];
-    seajs.use(rqs, function() {
+    ], function() {
 
         var browser = BrowserDetect.browser;
         var version = BrowserDetect.version;
@@ -30,13 +31,13 @@ l9r.Boot = function()
             return;
         }
 
-        rqs = [
+        seajs.use([
             "~/lessui/js/lessui.js?v={{.version}}&_="+ Math.random(),
             "~/lesscreator/js/c.js?v={{.version}}",
             "~/lesscreator/js/gen.js?v={{.version}}",
             "~/lesscreator/js/genx.js?v={{.version}}",
             "~/lesscreator/js/editor.js?v={{.version}}&_="+ Math.random(),
-            "~/codemirror/3.21.0/codemirror.min.js",
+            "~/codemirror/4.11.0/codemirror.js",
             
             "~/twitter-bootstrap/2.3.2/css/bootstrap.min.css",
 
@@ -49,9 +50,9 @@ l9r.Boot = function()
             // "~/lesscreator/css/defx.css?v={{.version}}",
 
             "~/lesscreator/css/def.css?v={{.version}}",
-        ];
-        seajs.use(rqs, function() {
-            lcLoadDeps();
+            "~/lessui/js/eventproxy.js",
+        ], function() {
+            l9r.bootLoadDeps();
         });
     });
 
@@ -60,11 +61,12 @@ l9r.Boot = function()
     }
 }
 
-function lcLoadDeps() {
+l9r.bootLoadDeps = function()
+{    
+    $(".loading").hide(300);
     
-    $(".loading").hide();
-    $(".lcx-loadwell").show(0, function() {
-    
+    $(".l9r-loadwell").show(0, function() {
+
         var bh = $('body').height();
         var bw = $('body').width();
 
@@ -75,51 +77,61 @@ function lcLoadDeps() {
             bw = 600;
         }
 
-        var eh = $('.lcx-loadwell').height();
-        var ew = $('.lcx-loadwell').width();
+        var eh = $('.l9r-loadwell').height();
+        var ew = $('.l9r-loadwell').width();
 
-        $('.lcx-loadwell').css({
+        $('.l9r-loadwell').css({
             "top" : ((bh - eh) / 3) + "px",
             "left": ((bw - ew) / 2) + "px"
         });
 
-        var rqs = [
-            "~/lesscreator/js/eventproxy.js",
-
+        seajs.use([
             "~/lesscreator/js/pod.js?_="+ Math.random(),
             "~/lesscreator/js/tablet.js?_="+ Math.random(),
             "~/lesscreator/js/project.js?_="+ Math.random(),
             "~/lesscreator/js/project.fs.js?_="+ Math.random(),
             "~/lesscreator/js/ext.js?_="+ Math.random(),
 
-            // "~/twitter-bootstrap/2.3.2/js/bootstrap.min.js",
-            "~/codemirror/3.21.0/codemirror.min.css",
+            // "~/codemirror/3.21.0/codemirror.min.css",
+            // "~/codemirror/3.21.0/addon/hint/show-hint.min.css",
+            // "~/codemirror/3.21.0/addon/mode/loadmode.min.js",
+            // "~/codemirror/3.21.0/addon/search/searchcursor.min.js",
+            // "~/codemirror/3.21.0/keymap/vim.min.js",
+            // "~/codemirror/3.21.0/keymap/emacs.min.js",
+            // "~/codemirror/3.21.0/addon/fold/foldcode.min.js",
+            // "~/codemirror/3.21.0/addon/fold/foldgutter.min.js",
+            // "~/codemirror/3.21.0/addon/fold/brace-fold.min.js",
+            // "~/codemirror/3.21.0/addon/hint/show-hint.min.js",
+            // "~/codemirror/3.21.0/addon/hint/javascript-hint.min.js",
+            // "~/codemirror/3.21.0/mode/all.min.js",
+            // "~/codemirror/3.21.0/addon/dialog/dialog.min.js",
+            // "~/codemirror/3.21.0/addon/dialog/dialog.min.css",
+            // "~/codemirror/3.21.0/theme/monokai.min.css",
 
-            "~/codemirror/3.21.0/addon/hint/show-hint.min.css",
+            "~/codemirror/4.11.0/codemirror.css",
+            "~/codemirror/4.11.0/addon/hint/show-hint.css",
+            "~/codemirror/4.11.0/addon/mode/loadmode.js",
+            "~/codemirror/4.11.0/addon/search/searchcursor.js",
+            "~/codemirror/4.11.0/keymap/vim.js",
+            "~/codemirror/4.11.0/keymap/emacs.js",
+            "~/codemirror/4.11.0/addon/fold/foldcode.js",
+            "~/codemirror/4.11.0/addon/fold/foldgutter.js",
+            "~/codemirror/4.11.0/addon/fold/brace-fold.js",
+            "~/codemirror/4.11.0/addon/hint/show-hint.js",
+            "~/codemirror/4.11.0/addon/hint/javascript-hint.js",
+            // "~/codemirror/4.11.0/mode/all.min.js",
+            "~/codemirror/4.11.0/addon/dialog/dialog.js",
+            "~/codemirror/4.11.0/addon/dialog/dialog.css",
+            "~/codemirror/4.11.0/theme/monokai.css",
 
-            "~/codemirror/3.21.0/addon/mode/loadmode.min.js",
-            "~/codemirror/3.21.0/addon/search/searchcursor.min.js",
-            "~/codemirror/3.21.0/keymap/vim.min.js",
-            "~/codemirror/3.21.0/keymap/emacs.min.js",
-            "~/codemirror/3.21.0/addon/fold/foldcode.min.js",
-            "~/codemirror/3.21.0/addon/fold/foldgutter.min.js",
-            "~/codemirror/3.21.0/addon/fold/brace-fold.min.js",
-            "~/codemirror/3.21.0/addon/hint/show-hint.min.js",
-            "~/codemirror/3.21.0/addon/hint/javascript-hint.min.js",
-            "~/codemirror/3.21.0/mode/all.min.js",
-            "~/codemirror/3.21.0/addon/dialog/dialog.min.js",
-            "~/codemirror/3.21.0/addon/dialog/dialog.min.css",
-            "~/codemirror/3.21.0/theme/monokai.min.css",
 
             "~/lesscreator/js/term.js?v={{.version}}",
-        ];
-
-        seajs.use(rqs, function() {
+        ], function() {
 
             // TODO access_token getting issue
-
+            
             //
-            lcData.Init(lessCookie.Get("access_userkey"), function(ret) {
+            lcData.Init(l4iCookie.Get("access_userid"), function(ret) {
 
                 if (!ret) {
                     
@@ -130,27 +142,57 @@ function lcLoadDeps() {
                     return;
                 }
 
-                l9rPodList();
+                l9r.Ajax("index/desk", {
+                    callback: function(err, data) {
+                        
+                        if (err) {
+                            return alert(err);
+                        }
+
+                        $("#body-content").html(data);
+
+                        $(window).resize(function() {
+                            lcLayout.Resize();
+                            lcLayout.BindRefresh();
+                        });
+
+                        lcLayout.Resize();
+                        lcLayout.BindRefresh();
+
+                        l9r.Initialize();
+                    },
+                });
             });
 
-
-            // lcBodyLoader("index/desk");
-            
             // $(".load-progress-num").css({"width": "90%"});
             // $(".load-progress-msg").append("OK<br />Connecting lessOS Cloud Engine to get your boxes ... ");
-            
+
             // setTimeout(_load_sys_config, _load_sleep);
             // setTimeout(_load_box_config, _load_sleep);
         });
     });
 }
 
-function l9rPodList()
+l9r.Initialize = function()
 {
-    if (lessCookie.Get("access_userkey") == null) {
+    // // console.log("ExtInit");
+    // if (l4iCookie.Get("access_userid") == null) {
+    //     return;
+    // }
+
+    l9rPod.Initialize(function(err, data) {
+        console.log("l9r.ExtInit - l9rPod.Initialize");
+    });
+}
+
+l9r.PodList = function()
+{
+    console.log("Pod List");
+
+    if (l4iCookie.Get("access_userid") == null) {
         return;
     }
-    lessSession.Set("access_userkey", lessCookie.Get("access_userkey"));
+    lessSession.Set("access_userid", l4iCookie.Get("access_userid"));
 
     if (lessSession.Get("podid") != null) {
         lcBodyLoader("index/desk");
@@ -158,10 +200,21 @@ function l9rPodList()
     }
 
     // var url = lessfly_api + "/pods?";
-    // url += "access_token="+ lessCookie.Get("access_token");
+    // url += "access_token="+ l4iCookie.Get("access_token");
     // url += "&project=lesscreator";
 
-    lessModalOpen(l9r.base + "/-/pod/list.tpl", 1, 660, 400, "Pods", null);
+    l4iModal.Open({
+        tpluri : l9r.base + "/-/pod/list.tpl",
+        width  : 660,
+        height : 400,
+        title  : "Pods",
+        buttons : [
+            {
+                onclick : "l4iModal.Close()",
+                title   : "Close"
+            }
+        ]
+    });
 
     return;
 
@@ -195,6 +248,75 @@ function l9rPodList()
             lessAlert("#_load-alert", "alert-error", "Failed on Initializing System Environment");
         }
     });
+}
+
+
+l9r.Ajax = function(url, options)
+{
+    options = options || {};
+
+    //
+    if (url.substr(0, 1) != "/" && url.substr(0, 4) != "http") {
+        url = l9r.base + url;
+    }
+
+    //
+    if (/\?/.test(url)) {
+        url += "&_=";
+    } else {
+        url += "?_=";
+    }
+    url += Math.random();
+
+    //
+    url += "&access_token="+ l4iCookie.Get("access_token");
+
+    // console.log(url);
+
+    //
+    if (options.method === undefined) {
+        options.method = "GET";
+    }
+
+    //
+    if (options.timeout === undefined) {
+        options.timeout = 10000;
+    }
+
+    //
+    $.ajax({
+        url     : url,
+        type    : options.method,
+        data    : options.data,
+        timeout : options.timeout,
+        success : function(rsp) {
+            if (typeof options.callback === "function") {
+                options.callback(null, rsp);
+            }
+            if (typeof options.success === "function") {
+                options.success(rsp);
+            }
+        },
+        error: function(xhr, textStatus, error) {
+            // console.log(xhr.responseText);
+            if (typeof options.callback === "function") {
+                options.callback(xhr.responseText, null);
+            }
+            if (typeof options.error === "function") {
+                options.error(xhr, textStatus, error);
+            }
+        }
+    });
+}
+
+l9r.HeaderAlert = function(status, msg)
+{
+    $("#l9r-halert").removeClass().addClass(status).html(msg).fadeOut(200).fadeIn(200);
+}
+
+l9r.HeaderAlertClose = function()
+{
+    $("#l9r-halert").fadeOut(300);
 }
 
 function l9rAjax(obj, url, cb)
@@ -257,7 +379,7 @@ function lcT(str)
 
 function lcHeaderAlert(status, alert)
 {
-    $("#lcx_halert").removeClass().addClass(status).html(alert).fadeOut(200).fadeIn(200);
+    $("#l9r-halert").removeClass().addClass(status).html(alert).fadeOut(200).fadeIn(200);
 }
 
 var lcLayout = {
@@ -456,6 +578,9 @@ lcLayout.Resize = function()
 
     //
     var lyo_p = $("#lcbind-layout").position();
+    if (!lyo_p) {
+        return;
+    }
     var lyo_h = bodyHeight - lyo_p.top - colSep;
     lcLayout.postop = lyo_p.top;
     if (lyo_h < 400) {

@@ -10,19 +10,19 @@
             
             <ul class="lfnm-item-submenu">
                 <li>
-                    <a href="#proj/fs/file-new" onclick="lcProjectFs.FileNew('file', null, '')">
+                    <a href="#proj/fs/file-new" onclick="l9rProjFs.FileNew('file', null, '')">
                         <img src="/lesscreator/~/lesscreator/img/page_white_add.png" class="h5c_icon" />
                         {{T . "New File"}}
                     </a>
                 </li>
                 <li>
-                    <a href="#proj/fs/file-new-dir" onclick="lcProjectFs.FileNew('dir', null, '')">
+                    <a href="#proj/fs/file-new-dir" onclick="l9rProjFs.FileNew('dir', null, '')">
                         <img src="/lesscreator/~/lesscreator/img/folder_add.png" class="h5c_icon" />
                         {{T . "New Folder"}}
                     </a>
                 </li>
                 <li>
-                    <a href="#proj/fs/file-upl" onclick="lcProjectFs.FileUpload(null)">
+                    <a href="#proj/fs/file-upl" onclick="l9rProjFs.FileUpload(null)">
                         <img src="/lesscreator/~/lesscreator/img/page_white_get.png" class="h5c_icon" />
                         {{T . "Upload"}}
                     </a>
@@ -99,7 +99,7 @@
 
 <!-- TPL : File New -->
 <div id="lcbind-fstpl-filenew" class="hide"> 
-<form id="{[=it.formid]}" action="#" onsubmit="lcProjectFs.FileNewSave('{[=it.formid]}');return false;">
+<form id="{[=it.formid]}" action="#" onsubmit="l9rProjFs.FileNewSave('{[=it.formid]}');return false;">
   <div class="input-prepend" style="margin-left:2px">
     <span class="add-on">
         <img src="/lesscreator/~/lesscreator/img/folder_add.png" class="h5c_icon">
@@ -115,7 +115,7 @@
 
 <!-- TPL : File Rename -->
 <div id="lcbind-fstpl-filerename" class="hide"> 
-<form id="{[=it.formid]}" action="#" onsubmit="lcProjectFs.FileRenameSave('{[=it.formid]}');return false;">
+<form id="{[=it.formid]}" action="#" onsubmit="l9rProjFs.FileRenameSave('{[=it.formid]}');return false;">
   <div class="input-prepend" style="margin-left:2px">
     <span class="add-on">
         <img src="/lesscreator/~/lesscreator/img/folder_edit.png" class="h5c_icon">
@@ -129,7 +129,7 @@
 
 <!-- TPL : File Delete -->
 <div id="lcbind-fstpl-filedel" class="hide"> 
-<form id="{[=it.formid]}" action="#" onsubmit="lcProjectFs.FileDelSave('{[=it.formid]}');return false;">
+<form id="{[=it.formid]}" action="#" onsubmit="l9rProjFs.FileDelSave('{[=it.formid]}');return false;">
   <input type="hidden" name="path" value="{[=it.path]}">
   <div class="alert alert-danger" role="alert">
     <p>Are you sure to delete this file or folder?</p>

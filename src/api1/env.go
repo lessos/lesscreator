@@ -1,9 +1,9 @@
 package api
 
 import (
-	lutils "../../deps/lessgo/utils"
 	"../utils"
 	"fmt"
+	lutils "github.com/lessos/lessgo/utils"
 	"io"
 	"io/ioutil"
 	"net/http"

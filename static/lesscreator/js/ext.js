@@ -25,7 +25,7 @@ var lcExt = {
 
 lcExt.NavRefresh = function()
 {
-    if (lcProject.Info.runtime === undefined) {
+    if (l9rProj.Info.runtime === undefined) {
         return;
     }
 
@@ -35,11 +35,11 @@ lcExt.NavRefresh = function()
 
         var ext = lcExt.list[i];
 
-        if (!(ext.name in lcProject.Info.runtime)) {
+        if (!(ext.name in l9rProj.Info.runtime)) {
             continue;
         }
 
-        if (lcProject.Info.runtime[ext.name].state != 1) {
+        if (l9rProj.Info.runtime[ext.name].state != 1) {
             continue;
         }
 
@@ -62,7 +62,7 @@ lcExt.ListRuntime = function () {
         tpluri       : l9r.base +"-/package/list-runtime.tpl",
         buttons      : [
             {
-                onclick : "lessModal.Close()",
+                onclick : "l4iModal.Close()",
                 title   : "Close"
             }
         ]
@@ -90,7 +90,7 @@ lcExt.ListRuntime = function () {
         });
     }
 
-    lessModal.Open(req);
+    l4iModal.Open(req);
 }
 
 lcExt.RtSet = function(name)
@@ -117,7 +117,7 @@ lcExt.RtSet = function(name)
             icon    : l9r.base +"+/"+ name +"/img/s32.png",
             success : function() {
                 fn();
-                lessModal.Close();
+                l4iModal.Close();
             }
         });
     });

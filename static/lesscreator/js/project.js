@@ -1,5 +1,5 @@
 
-var lcProject = {
+var l9rProj = {
     Info        : {},
     ProjectIndex: "/home/action/.lesscreator/projects.json",
     ProjectInfoDef: {
@@ -8,7 +8,8 @@ var lcProject = {
         description : "",
         version     : "0.0.1",
         release     : "1",
-        arch        : "all",
+        dist        : "all",
+        arch        : "noarch",
         grp_app     : "",
         grp_dev     : "",
         runtime     : {},
@@ -28,7 +29,7 @@ var lcProject = {
     ]
 }
 
-lcProject.New = function(options)
+l9rProj.New = function(options)
 {
     options = options || {};
 
@@ -69,7 +70,7 @@ lcProject.New = function(options)
                 path : projpath,
                 info : projinfo, 
             });
-            lcProject.Info = projinfo;
+            l9rProj.Info = projinfo;
         },
         error: function(status, message) {
             options.error(status, message);
@@ -77,23 +78,51 @@ lcProject.New = function(options)
     });
 }
 
-
-lcProject.Open = function(proj)
+l9rProj.notFound = function(proj)
 {
-    var ukey = lessSession.Get("access_userkey");
+    l4iModal.Open({
+        tplsrc  : '<div class="alert alert-danger">{[=it.msg]}</div>',
+        data    : {
+            msg : "The Project ("+ proj +"/lcproject.json) Can Not Found",
+        },
+        title   : "Project Not Found",
+        width   : 500,
+        height  : 200,
+        buttons : [
+            {
+                onclick : "l9rProj.New()",
+                title   : "Create new Project",
+                style   : "btn-inverse"
+            },
+            {
+                onclick : "l4iModal.Close()",
+                title   : "Close"
+            }
+        ]
+    });
+}
 
+l9rProj.Open = function(proj)
+{
+    var userid = l4iCookie.Get("access_userid");
+    console.log("userid"+ userid);
+    
     if (!proj) {
         proj = lessSession.Get("proj_current");
     }
 
     if (!proj) {
-        proj = lessLocalStorage.Get(ukey +"_proj_current");
+        proj = lessLocalStorage.Get(userid +"_proj_current");
     }    
 
     if (!proj) {
         // TODO
-        lessModalOpen(l9r.base + "project/open-nav", 1, 800, 450, "Start a Project from ...", null);
-        return;
+        return l4iModal.Open({
+            url: l9r.base + "project/open-nav",
+            width: 800,
+            height: 450,
+            title: "Start a Project from ...",
+        });
     }
 
     var uri = "proj="+ proj;
@@ -119,23 +148,20 @@ lcProject.Open = function(proj)
         if (status == 404) {
             // TODO
         }
-        alert("Can Not Found Project: "+ proj +"/lcproject.json, Error:"+ message);
+        // alert("Can Not Found Project: "+ proj +"/lcproject.json, Error:"+ message);
+        return l9rProj.notFound(proj);
     }
 
     req.success = function(file) {
-            
+
         // console.log(file);
         if (file.size < 10) {
-            alert("Can Not Found Project: "+ proj +"/lcproject.json");
-            // TODO
-            return;
+            return l9rProj.notFound(proj);
         }
 
         var pinfo = JSON.parse(file.body);
         if (pinfo.name === undefined) {
-            alert("Can Not Found Project: "+ proj +"/lcproject.json");
-            // TODO
-            return
+            return l9rProj.notFound(proj);
         }
 
         if (pinfo.runtime == undefined) {
@@ -145,9 +171,9 @@ lcProject.Open = function(proj)
         lessSession.Set("proj_name", pinfo.name);
         lessSession.Set("proj_current_name", pinfo.name);
         lessSession.Set("proj_current", proj);
-        lessLocalStorage.Set(ukey +"_proj_current", proj);
+        lessLocalStorage.Set(userid +"_proj_current", proj);
         // console.log(pinfo);
-        lcProject.Info = pinfo;
+        l9rProj.Info = pinfo;
 
         lcExt.NavRefresh();
         
@@ -164,7 +190,7 @@ lcProject.Open = function(proj)
 
                 lcLayout.ColumnSet({
                     id   : "lcbind-proj-filenav",
-                    hook : lcProjectFs.LayoutResize
+                    hook : l9rProjFs.LayoutResize
                 });
 
                 // console.log("open filenav");
@@ -177,12 +203,12 @@ lcProject.Open = function(proj)
                     
                     // console.log("open filenav, treeload.success");
 
-                    lcProject.OpenHistoryTabs();
+                    l9rProj.OpenHistoryTabs();
 
                     lcLayout.Resize();
                 }
 
-                lcProjectFs.UiTreeLoad(treeload);
+                l9rProjFs.UiTreeLoad(treeload);
             },
             error: function(xhr, textStatus, error) {
                 // TODO
@@ -196,9 +222,9 @@ lcProject.Open = function(proj)
 }
 
 
-lcProject.OpenHistoryTabs = function()
+l9rProj.OpenHistoryTabs = function()
 {
-    // console.log("lcProject.OpenHistoryTabs");
+    // console.log("l9rProj.OpenHistoryTabs");
 
     // var last_tab_urid = lessLocalStorage.Set(lessSession.Get("podid") +"."+ lessSession.Get("proj_name") +".tab."+ item.target);
 
@@ -254,7 +280,7 @@ lcProject.OpenHistoryTabs = function()
 
 
 // https://github.com/peterbourgon/mergemap/blob/master/mergemap.go
-lcProject.Set = function(proj)
+l9rProj.Set = function(proj)
 {
     if (proj === undefined) {
         proj = lessSession.Get("proj_current");
@@ -263,7 +289,7 @@ lcProject.Set = function(proj)
     var req = {
         path: proj +"/lcproject.json",
     }
-    // console.log("lcProject.Set"+ proj);
+    // console.log("l9rProj.Set"+ proj);
 
     req.error = function(status, message) {
 
@@ -297,8 +323,8 @@ lcProject.Set = function(proj)
         pinfo._projpath = proj;
         pinfo._grpapp = pinfo.grp_app.split(",");
         pinfo._grpdev = pinfo.grp_dev.split(",");
-        pinfo._grpappd = lcProject.ProjectGroupByApp;
-        pinfo._grpdevd = lcProject.ProjectGroupByDev;
+        pinfo._grpappd = l9rProj.ProjectGroupByApp;
+        pinfo._grpdevd = l9rProj.ProjectGroupByDev;
         // console.log(pinfo);
 
         lcTab.Open({
@@ -321,7 +347,7 @@ lcProject.Set = function(proj)
 }
 
 
-lcProject.SetPut = function()
+l9rProj.SetPut = function()
 {
     var grp_app = [];
     $("#lcproj-setform :input[name=grp_app]:checked").each(function(){
@@ -347,12 +373,12 @@ lcProject.SetPut = function()
 
     req.success = function(rsp) {
         lcHeaderAlert('success', "Successfully Updated");
-        lcProject.Info.name = req.data.name;
-        lcProject.Info.version = req.data.version;
-        lcProject.Info.summary = req.data.summary;
-        lcProject.Info.description = req.data.description;
-        lcProject.Info.grp_app = req.data.grp_app;
-        lcProject.Info.grp_dev = req.data.grp_dev;
+        l9rProj.Info.name = req.data.name;
+        l9rProj.Info.version = req.data.version;
+        l9rProj.Info.summary = req.data.summary;
+        l9rProj.Info.description = req.data.description;
+        l9rProj.Info.grp_app = req.data.grp_app;
+        l9rProj.Info.grp_dev = req.data.grp_dev;
     }
     
     req.error = function(status, message) {
@@ -362,7 +388,7 @@ lcProject.SetPut = function()
     PodFs.Post(req);
 }
 
-lcProject.Run = function()
+l9rProj.Run = function()
 {
     
 }

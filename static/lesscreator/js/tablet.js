@@ -504,7 +504,7 @@ lcTab.Close = function(urid, force)
                     return;
                 }
 
-                lessModal.Open({
+                l4iModal.Open({
                     title        : "Save changes before closing",
                     tpluri       : l9r.base + "-/editor/changes2save.tpl",
                     width        : 500,
@@ -522,7 +522,7 @@ lcTab.Close = function(urid, force)
                             title   : "Close without Saving",
                         },
                         {
-                            onclick : "lessModal.Close()",
+                            onclick : "l4iModal.Close()",
                             title   : "Close"
                         }
                     ]

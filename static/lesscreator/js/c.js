@@ -14,63 +14,63 @@ var hceditor = {
 
 function hdev_init_setting()
 {
-    var autosave = lessCookie.Get('editor_autosave');
+    var autosave = l4iCookie.Get('editor_autosave');
     if (autosave == null) {
-        lessCookie.SetByDay("editor_autosave", "on", 365);
+        l4iCookie.SetByDay("editor_autosave", "on", 365);
         autosave = 'on';
     }
     if (autosave == 'on') {
         $("#editor_autosave").prop("checked", true);
     }
     
-    var theme = lessCookie.Get('editor_theme');
+    var theme = l4iCookie.Get('editor_theme');
     if (theme == null) {
-        lessCookie.SetByDay("editor_theme", "monokai", 365);
+        l4iCookie.SetByDay("editor_theme", "monokai", 365);
     }
     
-    var keymap_vim = lessCookie.Get('editor_keymap_vim');
+    var keymap_vim = l4iCookie.Get('editor_keymap_vim');
     if (keymap_vim == null) {
-        lessCookie.SetByDay("editor_keymap_vim", "off", 365);
+        l4iCookie.SetByDay("editor_keymap_vim", "off", 365);
         keymap_vim = 'off';
     }
     if (keymap_vim == 'on') {
         $("#editor_keymap_vim").prop("checked", true);
     }
     
-    var search_case = lessCookie.Get('editor_search_case');
+    var search_case = l4iCookie.Get('editor_search_case');
     if (search_case == null) {
-        lessCookie.SetByDay("editor_search_case", "off", 365);
+        l4iCookie.SetByDay("editor_search_case", "off", 365);
         search_case = 'off';
     }
     if (search_case == 'on') {
         $("#editor_search_case").prop("checked", true);
     }
     
-    var tabSize = lessCookie.Get('editor_tabSize');
+    var tabSize = l4iCookie.Get('editor_tabSize');
     if (tabSize != null) {
         hceditor.tabSize = parseInt(tabSize);
     }
     
-    hceditor.tabs2spaces = (lessCookie.Get('editor_tabs2spaces') == 'false') ? false : true;
+    hceditor.tabs2spaces = (l4iCookie.Get('editor_tabs2spaces') == 'false') ? false : true;
     
-    hceditor.smartIndent = (lessCookie.Get('editor_smartIndent') == 'false') ? false : true;
+    hceditor.smartIndent = (l4iCookie.Get('editor_smartIndent') == 'false') ? false : true;
     
-    hceditor.lineWrapping = (lessCookie.Get('editor_lineWrapping') == 'false') ? false : true;
+    hceditor.lineWrapping = (l4iCookie.Get('editor_lineWrapping') == 'false') ? false : true;
 
-    var v = lessCookie.Get('config_tablet_colw');
+    var v = l4iCookie.Get('config_tablet_colw');
     if (v == null) {
         v = $('#h5c-tablet-vcol-w').innerWidth(true);
-        lessCookie.SetByDay("config_tablet_colw", v, 365);
+        l4iCookie.SetByDay("config_tablet_colw", v, 365);
     }
-    v = lessCookie.Get('config_tablet_roww0');
+    v = l4iCookie.Get('config_tablet_roww0');
     if (v == null) {
         v = $('#h5c-tablet-framew0').height();
-        lessCookie.SetByDay("config_tablet_roww0", v, 365);
+        l4iCookie.SetByDay("config_tablet_roww0", v, 365);
     }
-    v = lessCookie.Get('config_tablet_rowt0');
+    v = l4iCookie.Get('config_tablet_rowt0');
     if (v == null) {
         v = $('#h5c-tablet-framet0').height();
-        lessCookie.SetByDay("config_tablet_rowt0", v, 365);
+        l4iCookie.SetByDay("config_tablet_rowt0", v, 365);
     }
     
 }
@@ -78,34 +78,34 @@ function hdev_init_setting()
 function hdev_editor_set(key, val)
 {
     if (key == "editor_autosave") {
-        if (lessCookie.Get('editor_autosave') == "on") {
-            lessCookie.SetByDay("editor_autosave", "off", 365);
+        if (l4iCookie.Get('editor_autosave') == "on") {
+            l4iCookie.SetByDay("editor_autosave", "off", 365);
         } else {
-            lessCookie.SetByDay("editor_autosave", "on", 365);
+            l4iCookie.SetByDay("editor_autosave", "on", 365);
         }
-        msg = "Setting Editor::AutoSave to "+lessCookie.Get('editor_autosave');
+        msg = "Setting Editor::AutoSave to "+l4iCookie.Get('editor_autosave');
         hdev_header_alert("success", msg);
     }
     
     if (key == "editor_keymap_vim") {
-        if (lessCookie.Get('editor_keymap_vim') == "on") {
-            lessCookie.SetByDay("editor_keymap_vim", "off", 365);
+        if (l4iCookie.Get('editor_keymap_vim') == "on") {
+            l4iCookie.SetByDay("editor_keymap_vim", "off", 365);
             hceditor.instance.setOption("keyMap", null);
         } else {
-            lessCookie.SetByDay("editor_keymap_vim", "on", 365);
+            l4iCookie.SetByDay("editor_keymap_vim", "on", 365);
             hceditor.instance.setOption("keyMap", "vim");
         }
-        msg = "Setting Editor::KeyMap to VIM "+lessCookie.Get('editor_keymap_vim');
+        msg = "Setting Editor::KeyMap to VIM "+l4iCookie.Get('editor_keymap_vim');
         hdev_header_alert("success", msg);
     }
     
     if (key == "editor_search_case") {
-        if (lessCookie.Get('editor_search_case') == "on") {
-            lessCookie.SetByDay("editor_search_case", "off", 365);
+        if (l4iCookie.Get('editor_search_case') == "on") {
+            l4iCookie.SetByDay("editor_search_case", "off", 365);
         } else {
-            lessCookie.SetByDay("editor_search_case", "on", 365);
+            l4iCookie.SetByDay("editor_search_case", "on", 365);
         }
-        msg = "Setting Editor::Search Match case "+lessCookie.Get('editor_search_case');
+        msg = "Setting Editor::Search Match case "+l4iCookie.Get('editor_search_case');
         hdev_header_alert("success", msg);
         hdev_editor_search_clean();
     }
@@ -123,7 +123,7 @@ function hdev_editor_theme(node)
     if (hceditor.instance) {
         var theme = node.options[node.selectedIndex].innerHTML;
         hceditor.instance.setOption("theme", theme);
-        lessCookie.SetByDay("editor_theme", theme, 365);
+        l4iCookie.SetByDay("editor_theme", theme, 365);
         hdev_layout_resize();
         hdev_header_alert('success', 'Change Editor color theme to "'+theme+'"');
     }
@@ -152,7 +152,7 @@ function hdev_layout_resize()
     lo_mw = $('#hdev_layout_middle').innerWidth();
     
     // OFFSET
-    var offset = parseInt(lessCookie.Get('config_tablet_colw')) - lo_lw;
+    var offset = parseInt(l4iCookie.Get('config_tablet_colw')) - lo_lw;
     if (offset != 0) {
         lo_lw += offset;
         $('#hdev_layout_leftbar').width(lo_lw);
@@ -392,7 +392,7 @@ function hdev_editor(path)
         mode: mode,
         indentUnit: hceditor.tabSize,
         tabSize: hceditor.tabSize,
-        theme: lessCookie.Get("editor_theme"),
+        theme: l4iCookie.Get("editor_theme"),
         smartIndent: hceditor.smartIndent,
         lineWrapping: hceditor.lineWrapping,
         extraKeys: {Tab: function(cm) {
@@ -403,7 +403,7 @@ function hdev_editor(path)
             hdev_page_editor_save(pgid, 0);
         }
     });
-    if (lessCookie.Get('editor_keymap_vim') == "on") {
+    if (l4iCookie.Get('editor_keymap_vim') == "on") {
         hceditor.instance.setOption("keyMap", "vim");
     }
     CodeMirror.commands.save = function() {
@@ -421,7 +421,7 @@ function hdev_page_editor_save(pgid, force)
     if (pgid == hceditor.instancepgid && hceditor.instance)
         hceditor.instance.save();
     
-    var autosave = lessCookie.Get('editor_autosave');
+    var autosave = l4iCookie.Get('editor_autosave');
     if (autosave == 'off' && force == 0) {
         $("#pgtab"+pgid+" .chg").show();
         return;
@@ -557,7 +557,7 @@ function hdev_editor_search()
 function hdev_editor_search_next(rev)
 {
     var query = $("#hcr_editor_searchbar").find("input[name=find]").val();
-    var matchcase = (lessCookie.Get('editor_search_case') == "on") ? false : null;
+    var matchcase = (l4iCookie.Get('editor_search_case') == "on") ? false : null;
     
     if (search_state_query != query) {
         hdev_editor_search_clean();
@@ -601,7 +601,7 @@ function hdev_editor_search_replace(all)
     if (!text)
         return;
     
-    var matchcase = (lessCookie.Get('editor_search_case') == "on") ? false : null;
+    var matchcase = (l4iCookie.Get('editor_search_case') == "on") ? false : null;
     
     if (all) {
 

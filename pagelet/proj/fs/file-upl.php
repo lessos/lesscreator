@@ -143,7 +143,7 @@ function _fs_file_upl_do(file, path)
             //console.log($("#ok8lnk-path").val());
 
             var req = {
-                "access_token" : lessCookie.Get("access_token"),
+                "access_token" : l4iCookie.Get("access_token"),
                 "data" : {
                     "projid": lessSession.Get("projid"),
                     "path" : lessSession.Get("ProjPath") +"/"+ subdir +"/"+ path,
@@ -209,7 +209,7 @@ function _fs_file_upl()
                 }
 
                 var req = {
-                    "access_token" : lessCookie.Get("access_token"),
+                    "access_token" : l4iCookie.Get("access_token"),
                     "data" : {
                         "path" : lessSession.Get("ProjPath") +"/"+ path +"/"+ file.name,
                         "size" : file.size,

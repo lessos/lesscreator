@@ -46,7 +46,7 @@ function _fs_file_new()
     path += "/"+ $("#egj3zj").find("input[name=name]").val();
 
     var req = {
-        "access_token" : lessCookie.Get("access_token"),
+        "access_token" : l4iCookie.Get("access_token"),
         "data" : {
             "type" : $("#egj3zj").find("input[name=type]").val(),
             "path" : path,

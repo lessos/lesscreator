@@ -1,10 +1,12 @@
 
-var lcProjectFs = {}
+var l9rProjFs = {
+    //
+}
 
 
-lcProjectFs.UiTreeLoad = function(options)
+l9rProjFs.UiTreeLoad = function(options)
 {
-    // console.log("lcProjectFs.UiTreeLoad"+ options.path);
+    // console.log("l9rProjFs.UiTreeLoad"+ options.path);
 
     options = options || {};
 
@@ -125,7 +127,7 @@ lcProjectFs.UiTreeLoad = function(options)
         options.success();
 
         setTimeout(function() {
-            lcProjectFs.UiTreeEventRefresh();
+            l9rProjFs.UiTreeEventRefresh();
             lcLayout.Resize();
             $("#l9r-proj-nav-status").text(lessSession.Get("proj_current_name"));
         }, 10);
@@ -140,7 +142,7 @@ lcProjectFs.UiTreeLoad = function(options)
 }
 
 var _fsItemPath = "";
-lcProjectFs.UiTreeEventRefresh = function()
+l9rProjFs.UiTreeEventRefresh = function()
 {
     // if ($("#lclay-col"+ 1).length < 1) {
     //     $("#lcbind-laycol").before("<td width=\"10px\" class=\"lclay-col-resize\"></td>\
@@ -150,7 +152,7 @@ lcProjectFs.UiTreeEventRefresh = function()
     //         <td id=\"lclay-col"+ 2 +"\" class=\"lcx-lay-colbg\">"+2+"</td>");
     // }
 
-    // console.log("lcProjectFs.UiTreeEventRefresh");
+    // console.log("l9rProjFs.UiTreeEventRefresh");
     $(".lcx-fsitem").unbind();
     $(".lcx-fsitem").bind("contextmenu", function(e) {
 
@@ -192,7 +194,7 @@ lcProjectFs.UiTreeEventRefresh = function()
     
         switch (fstype) {
         case "dir":
-            lcProjectFs.UiTreeLoad({path: fspath, toggle: true});
+            l9rProjFs.UiTreeLoad({path: fspath, toggle: true});
             break;
         case "text":
             lcTab.Open({
@@ -219,19 +221,19 @@ lcProjectFs.UiTreeEventRefresh = function()
         // console.log("right click: "+ action);
         switch (action) {
         case "new-file":
-            lcProjectFs.FileNew("file", _fsItemPath, "");
+            l9rProjFs.FileNew("file", _fsItemPath, "");
             break;
         case "new-dir":
-            lcProjectFs.FileNew("dir", _fsItemPath, "");
+            l9rProjFs.FileNew("dir", _fsItemPath, "");
             break;
         case "upload":
-            lcProjectFs.FileUpload(_fsItemPath);
+            l9rProjFs.FileUpload(_fsItemPath);
             break;
         case "rename":
-            lcProjectFs.FileRename(_fsItemPath);
+            l9rProjFs.FileRename(_fsItemPath);
             break;
         case "file-del":
-            lcProjectFs.FileDel(_fsItemPath);
+            l9rProjFs.FileDel(_fsItemPath);
             break;
         default:
             break;
@@ -247,7 +249,7 @@ lcProjectFs.UiTreeEventRefresh = function()
 
 
 
-lcProjectFs.LayoutResize = function(options)
+l9rProjFs.LayoutResize = function(options)
 {
     var fsp = $("#lcbind-fsnav-fstree").position();
     if (fsp) {
@@ -258,7 +260,7 @@ lcProjectFs.LayoutResize = function(options)
     }
 }
 
-lcProjectFs.FileNew = function(type, path, file)
+l9rProjFs.FileNew = function(type, path, file)
 {
     if (path === undefined || path === null) {
         path = lessSession.Get("proj_current");
@@ -280,12 +282,12 @@ lcProjectFs.FileNew = function(type, path, file)
         },
         buttons      : [
             {
-                onclick : "lcProjectFs.FileNewSave(\""+ formid +"\")",
+                onclick : "l9rProjFs.FileNewSave(\""+ formid +"\")",
                 title   : "Create",
                 style   : "btn-inverse"
             },
             {
-                onclick : "lessModal.Close()",
+                onclick : "l4iModal.Close()",
                 title   : "Close"
             }
         ]
@@ -295,10 +297,10 @@ lcProjectFs.FileNew = function(type, path, file)
         $("#"+ formid +" :input[name=name]").focus();
     }
 
-    lessModal.Open(req);
+    l4iModal.Open(req);
 }
 
-lcProjectFs.FileNewSave = function(formid)
+l9rProjFs.FileNewSave = function(formid)
 {
     var path = $("#"+ formid +" :input[name=path]").val();
     var name = $("#"+ formid +" :input[name=name]").val();
@@ -318,9 +320,9 @@ lcProjectFs.FileNewSave = function(formid)
             //     _plugin_yaf_cvlist();
             // }
 
-            lcProjectFs.UiTreeLoad({path: path});
+            l9rProjFs.UiTreeLoad({path: path});
 
-            lessModal.Close();
+            l4iModal.Close();
         },
         error: function(status, message) {
             // console.log(status, message);
@@ -412,8 +414,8 @@ function _fsUploadCommit(reqid, file)
                     //     _plugin_yaf_cvlist();
                     // }
 
-                    // lcProjectFs.UiTreeLoad({path: ppath});
-                    // lessModal.Close();
+                    // l9rProjFs.UiTreeLoad({path: ppath});
+                    // l4iModal.Close();
                 },
                 error: function(status, message) {
 
@@ -444,7 +446,7 @@ function _fsUploadHander(evt)
     }
 }
 
-lcProjectFs.FileUpload = function(path)
+l9rProjFs.FileUpload = function(path)
 {
     if (path === undefined || path === null) {
         path = lessSession.Get("proj_current");
@@ -478,12 +480,12 @@ lcProjectFs.FileUpload = function(path)
         },
         buttons      : [
             // {
-            //     onclick : "lcProjectFs.FileUploadSave(\""+ reqid +"\",\""+ areaid +"\")",
+            //     onclick : "l9rProjFs.FileUploadSave(\""+ reqid +"\",\""+ areaid +"\")",
             //     title   : "Commit",
             //     style   : "btn-inverse"
             // },
             {
-                onclick : "lessModal.Close()",
+                onclick : "l4iModal.Close()",
                 title   : "Close"
             }
         ]
@@ -517,11 +519,11 @@ lcProjectFs.FileUpload = function(path)
         _fsUploadBind.addEventListener('dragleave', _fsUploadHanderDragLeave, false);
     }
 
-    lessModal.Open(req);
+    l4iModal.Open(req);
 }
 
 
-lcProjectFs.FileRename = function(path)
+l9rProjFs.FileRename = function(path)
 {
     if (path === undefined || path === null) {
         alert("Path can not be null"); // TODO
@@ -542,12 +544,12 @@ lcProjectFs.FileRename = function(path)
         },
         buttons      : [
             {
-                onclick : "lcProjectFs.FileRenameSave(\""+ formid +"\")",
+                onclick : "l9rProjFs.FileRenameSave(\""+ formid +"\")",
                 title   : "Rename",
                 style   : "btn-inverse"
             },
             {
-                onclick : "lessModal.Close()",
+                onclick : "l4iModal.Close()",
                 title   : "Close"
             }
         ]
@@ -557,10 +559,10 @@ lcProjectFs.FileRename = function(path)
         $("#"+ formid +" :input[name=pathset]").focus();
     }
 
-    lessModal.Open(req);
+    l4iModal.Open(req);
 }
 
-lcProjectFs.FileRenameSave = function(formid)
+l9rProjFs.FileRenameSave = function(formid)
 {
     var path = $("#"+ formid +" :input[name=path]").val();
     var pathset = $("#"+ formid +" :input[name=pathset]").val();
@@ -570,7 +572,7 @@ lcProjectFs.FileRenameSave = function(formid)
     }
 
     if (path == pathset) {
-        lessModal.Close();
+        l4iModal.Close();
         return;
     }
 
@@ -587,8 +589,8 @@ lcProjectFs.FileRenameSave = function(formid)
             var ppath = path.slice(0, path.lastIndexOf("/"));
             // console.log(ppath);
 
-            lcProjectFs.UiTreeLoad({path: ppath});
-            lessModal.Close();
+            l9rProjFs.UiTreeLoad({path: ppath});
+            l4iModal.Close();
         },
         error: function(status, message) {
             console.log(status, message);
@@ -597,7 +599,7 @@ lcProjectFs.FileRenameSave = function(formid)
     });
 }
 
-lcProjectFs.FileDel = function(path)
+l9rProjFs.FileDel = function(path)
 {
     if (path === undefined || path === null) {
         alert("Path can not be null"); // TODO
@@ -618,21 +620,21 @@ lcProjectFs.FileDel = function(path)
         },
         buttons      : [
             {
-                onclick : "lcProjectFs.FileDelSave(\""+ formid +"\")",
+                onclick : "l9rProjFs.FileDelSave(\""+ formid +"\")",
                 title   : "Confirm and Delete",
                 style   : "btn-danger"
             },
             {
-                onclick : "lessModal.Close()",
+                onclick : "l4iModal.Close()",
                 title   : "Cancel"
             }
         ]
     }
 
-    lessModal.Open(req);
+    l4iModal.Open(req);
 }
 
-lcProjectFs.FileDelSave = function(formid)
+l9rProjFs.FileDelSave = function(formid)
 {
     var path = $("#"+ formid +" :input[name=path]").val();
     if (path === undefined || path.length < 1) {
@@ -647,7 +649,7 @@ lcProjectFs.FileDelSave = function(formid)
             var fsid = "ptp" + lessCryptoMd5(path);
             $("#"+ fsid).remove();
 
-            lessModal.Close();
+            l4iModal.Close();
         },
         error: function(status, message) {
             alert(message);

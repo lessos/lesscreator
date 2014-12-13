@@ -54,7 +54,7 @@ if ($fsini->status != 200) {
 function _plugin_go_beego_start()
 {
 	var req = {
-        "access_token" : lessCookie.Get("access_token"),
+        "access_token" : l4iCookie.Get("access_token"),
         "data" : {
             "projdir": lessSession.Get("ProjPath")
         }

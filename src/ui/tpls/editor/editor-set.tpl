@@ -89,7 +89,7 @@
 function _lc_editorset_close()
 {
     _lc_editorset_save("");
-    setTimeout(lessModal.Close, 400);
+    setTimeout(l4iModal.Close, 400);
 }
 
 function _lc_editorset_save(title)
@@ -106,21 +106,21 @@ function _lc_editorset_save(title)
     if (lcEditor.Config.fontSize < 8) {
         lcEditor.Config.fontSize = 8;
     }
-    lessCookie.SetByDay('editor_fontSize', lcEditor.Config.fontSize, 365);
+    l4iCookie.SetByDay('editor_fontSize', lcEditor.Config.fontSize, 365);
     $("#fontSize").val(lcEditor.Config.fontSize);
     $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize+"px"});
 
     lcEditor.Config.tabs2spaces = $("#tabs2spaces").prop('checked') ? true : false;
-    lessCookie.SetByDay('editor_tabs2spaces', lcEditor.Config.tabs2spaces, 365);
+    l4iCookie.SetByDay('editor_tabs2spaces', lcEditor.Config.tabs2spaces, 365);
     
     lcEditor.Config.smartIndent = $("#smartIndent").prop('checked') ? true : false;
-    lessCookie.SetByDay('editor_smartIndent', lcEditor.Config.smartIndent, 365);
+    l4iCookie.SetByDay('editor_smartIndent', lcEditor.Config.smartIndent, 365);
     
     lcEditor.Config.lineWrapping = $("#lineWrapping").prop('checked') ? true : false;
-    lessCookie.SetByDay('editor_lineWrapping', lcEditor.Config.lineWrapping, 365);
+    l4iCookie.SetByDay('editor_lineWrapping', lcEditor.Config.lineWrapping, 365);
 
     lcEditor.Config.codeFolding = $("#codeFolding").prop('checked') ? true : false;
-    lessCookie.SetByDay('editor_codeFolding', lcEditor.Config.codeFolding, 365);
+    l4iCookie.SetByDay('editor_codeFolding', lcEditor.Config.codeFolding, 365);
     
     if (title.length > 0) {
         title = '"'+title+'"';

@@ -63,13 +63,13 @@ function _proj_fs_vs_create_do()
     console.log($("#bvszs0").serialize());
 
     var url = '/lesscreator/proj/fs/vs/git-clone-do';
-    url += '?access_token='+ lessCookie.Get("access_token");
+    url += '?access_token='+ l4iCookie.Get("access_token");
     url += '&'+ $("#bvszs0").serialize();
     lessModalNext(url, "<?php echo $this->T('Create Project')?>", null);
 
     return;
     var req = {
-        "access_token": lessCookie.Get("access_token"),
+        "access_token": l4iCookie.Get("access_token"),
         "data": {
             "git_url": $("#bvszs0 input[name=git_url]").val(),
             "git_target": $("#bvszs0 input[name=git_target]").val(),

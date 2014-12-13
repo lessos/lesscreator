@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"../../../deps/lessgo/pagelet"
+	"github.com/lessos/lessgo/pagelet"
 )
 
 type Error struct {

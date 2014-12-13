@@ -1,11 +1,11 @@
 package conf
 
 import (
-	"../../deps/lessgo/service/lessids"
-	"../../deps/lessgo/service/lesskeeper"
-	"../../deps/lessgo/utils"
 	"errors"
 	"fmt"
+	"github.com/lessos/lessgo/service/lessids"
+	"github.com/lessos/lessgo/service/lesskeeper"
+	"github.com/lessos/lessgo/utils"
 	"io/ioutil"
 	"os"
 	"path"

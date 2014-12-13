@@ -22,12 +22,12 @@ lcExt.php.Index = function()
 {
     var data = {};
 
-    if (lcProject.Info.runtime !== undefined 
-        && lcProject.Info.runtime.php !== undefined) {
+    if (l9rProj.Info.runtime !== undefined 
+        && l9rProj.Info.runtime.php !== undefined) {
                     
-        data = lcProject.Info.runtime.php;
+        data = l9rProj.Info.runtime.php;
                     
-        if (lcProject.Info.runtime.php.state == 1) {
+        if (l9rProj.Info.runtime.php.state == 1) {
             fn = lcExt.php.StateRefresh;
         }
 
@@ -80,7 +80,7 @@ lcExt.php.SetSave = function()
 
     req.success = function() {
         lessAlert("#lcext-php-setmsg", "alert-success", "Successfully Updated");
-        lcProject.Info.runtime.php = itemset;
+        l9rProj.Info.runtime.php = itemset;
         
         var tabid = lessCryptoMd5(l9r.base +"+/php/index.tpl");
         lcTab.ScrollTop(tabid);
@@ -90,7 +90,7 @@ lcExt.php.SetSave = function()
 
     req.error = function(status, message) {
         lessAlert("#lcext-php-setmsg", "alert-error", "Error: "+ message);
-        lessModal.ScrollTop();
+        l4iModal.ScrollTop();
     }
 
     PodFs.Post(req);

@@ -70,7 +70,7 @@ lcEditor.TabletOpen = function(urid, callback)
         //$("#lctab-body"+ item.target).prepend(t);
 
         // var req = {
-        //     "access_token" : lessCookie.Get("access_token"), 
+        //     "access_token" : l4iCookie.Get("access_token"), 
         //     "data" : {
         //         "path" : lessSession.Get("ProjPath") +"/"+ item.url
         //     }
@@ -297,8 +297,8 @@ lcEditor.LoadInstance = function(entry)
         }
     });
 
-    //CodeMirror.modeURL = "/codemirror/3.21.0/mode/%N/%N.js";
-    //CodeMirror.autoLoadMode(lcTab.frame[item.target].editor, mode);
+    CodeMirror.modeURL = l9r.base +"/~/codemirror/4.11.0/mode/%N/%N.js";
+    CodeMirror.autoLoadMode(lcTab.frame[item.target].editor, mode);
 
     if (lcEditor.Config.EditMode != "win") {
         lcTab.frame[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
@@ -533,7 +533,7 @@ lcEditor.EntrySave = function(options)
 lcEditor.DialogChanges2SaveSkip = function(urid)
 {
     lcTab.Close(urid, 1);
-    lessModal.Close();
+    l4iModal.Close();
 }
 
 lcEditor.DialogChanges2SaveDone = function(urid)
@@ -543,7 +543,7 @@ lcEditor.DialogChanges2SaveDone = function(urid)
         urid    : urid,
         success : function() {
             lcTab.Close(urid, 1);
-            lessModal.Close();
+            l4iModal.Close();
         },
         error : function() {
             lessAlert("#xi1b3h", "alert-error", "<span></span>Internal Server Error<span></span>");
@@ -702,22 +702,22 @@ lcEditor.HookOnBeforeUnload = function()
 lcEditor.ConfigSet = function(key, val)
 {
     if (key == "editor_autosave") {
-        if (lessCookie.Get('editor_autosave') == "on") {
-            lessCookie.SetByDay("editor_autosave", "off", 365);
+        if (l4iCookie.Get('editor_autosave') == "on") {
+            l4iCookie.SetByDay("editor_autosave", "off", 365);
         } else {
-            lessCookie.SetByDay("editor_autosave", "on", 365);
+            l4iCookie.SetByDay("editor_autosave", "on", 365);
         }
-        msg = "Setting Editor::AutoSave to "+lessCookie.Get('editor_autosave');
+        msg = "Setting Editor::AutoSave to "+l4iCookie.Get('editor_autosave');
         lcHeaderAlert("success", msg);
     }
     
     if (key == "editor_search_case") {
-        if (lessCookie.Get('editor_search_case') == "on") {
-            lessCookie.SetByDay("editor_search_case", "off", 365);
+        if (l4iCookie.Get('editor_search_case') == "on") {
+            l4iCookie.SetByDay("editor_search_case", "off", 365);
         } else {
-            lessCookie.SetByDay("editor_search_case", "on", 365);
+            l4iCookie.SetByDay("editor_search_case", "on", 365);
         }
-        msg = "Setting Editor::Search Match case "+lessCookie.Get('editor_search_case');
+        msg = "Setting Editor::Search Match case "+l4iCookie.Get('editor_search_case');
         lcHeaderAlert("success", msg);
         lcEditor.SearchClean();
     }
@@ -749,7 +749,7 @@ lcEditor.Theme = function(theme)
         seajs.use("~/codemirror/3.21.0/theme/"+ theme +".min.css", function() {
             
             lcEditor.Config.theme = theme;
-            lessCookie.SetByDay("editor_theme", theme, 365);
+            l4iCookie.SetByDay("editor_theme", theme, 365);
 
             lcTab.frame[lcEditor.TabDefault].editor.setOption("theme", theme);
 
@@ -790,7 +790,7 @@ lcEditor.Search = function()
 lcEditor.SearchNext = function(rev)
 {
     var query = $(".lc_editor_searchbar").find("input[name=find]").val();
-    var matchcase = (lessCookie.Get('editor_search_case') == "on") ? false : null;
+    var matchcase = (l4iCookie.Get('editor_search_case') == "on") ? false : null;
     
     if (search_state_query != query) {
         lcEditor.SearchClean();
@@ -837,7 +837,7 @@ lcEditor.SearchReplace = function(all)
         return;
     }
     
-    var matchcase = (lessCookie.Get('editor_search_case') == "on") ? false : null;
+    var matchcase = (l4iCookie.Get('editor_search_case') == "on") ? false : null;
     
     if (all) {
 
@@ -883,7 +883,7 @@ lcEditor.SearchClean = function()
 
 lcEditor.ConfigModal = function()
 {
-    lessModal.Open({
+    l4iModal.Open({
         title        : "Editor Settings",
         tpluri       : l9r.base +"-/editor/editor-set.tpl",
         width        : 800,
@@ -896,7 +896,7 @@ lcEditor.ConfigModal = function()
                 style   : "btn-inverse"
             },
             {
-                onclick : "lessModal.Close()",
+                onclick : "l4iModal.Close()",
                 title   : "Close"
             }
         ]
@@ -905,7 +905,7 @@ lcEditor.ConfigModal = function()
 
 lcEditor.ConfigEditMode = function()
 {
-    lessModal.Open({
+    l4iModal.Open({
         title        : lcEditor.Config.LangEditMode,
         tpluri       : l9r.base +"-/editor/editmode-set.tpl",
         width        : 400,
@@ -921,7 +921,7 @@ lcEditor.ConfigEditMode = function()
         position     : "center",
         buttons      : [
             {
-                onclick : "lessModal.Close()",
+                onclick : "l4iModal.Close()",
                 title   : "Close"
             }
         ]
@@ -967,5 +967,5 @@ lcEditor.ConfigEditModeSave = function(mode)
         mode = "Default";
     }
     lcHeaderAlert("success", "Successfully switched to "+ mode);
-    lessModal.Close();
+    l4iModal.Close();
 }

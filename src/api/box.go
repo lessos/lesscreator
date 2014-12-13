@@ -1,9 +1,9 @@
 package api
 
 import (
-	"../../deps/lessgo/pagelet"
-	"../../deps/lessgo/utils"
 	"../base"
+	"github.com/lessos/lessgo/pagelet"
+	"github.com/lessos/lessgo/utils"
 	"io"
 )
 

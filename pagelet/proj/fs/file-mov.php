@@ -41,7 +41,7 @@ function _fs_file_mov()
     }
 
     var req = {
-        "access_token" : lessCookie.Get("access_token"),
+        "access_token" : l4iCookie.Get("access_token"),
         "data" : {
             "pathnew" : lessSession.Get("ProjPath") +"/"+ pathnew,
             "pathpre" : lessSession.Get("ProjPath") +"/"+ pathpre,

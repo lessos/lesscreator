@@ -2,10 +2,10 @@ package api
 
 import (
 	"../../deps/go.net/websocket"
-	"../../deps/lessgo/keeper"
-	"../../deps/lessgo/passport"
 	"../conf"
 	"fmt"
+	"github.com/lessos/lessgo/keeper"
+	"github.com/lessos/lessgo/passport"
 	"net/http"
 	"time"
 )

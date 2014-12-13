@@ -18,12 +18,12 @@ lcExt.nginx.Index = function()
 {    
     var data = {};
 
-    if (lcProject.Info.runtime !== undefined 
-        && lcProject.Info.runtime.nginx !== undefined) {
+    if (l9rProj.Info.runtime !== undefined 
+        && l9rProj.Info.runtime.nginx !== undefined) {
                     
-        data = lcProject.Info.runtime.nginx;
+        data = l9rProj.Info.runtime.nginx;
                     
-        if (lcProject.Info.runtime.nginx.state == 1) {
+        if (l9rProj.Info.runtime.nginx.state == 1) {
             fn = lcExt.nginx.StateRefresh;
         }
 
@@ -58,11 +58,11 @@ lcExt.nginx.StateRefresh = function()
         $("#lcext-nginx-setmsg").hide();
 
         var conf = "";
-        if (lcProject.Info.runtime !== undefined 
-            && lcProject.Info.runtime.nginx !== undefined
-            && lcProject.Info.runtime.nginx.cfgtpl == tplname
-            && lcProject.Info.runtime.nginx.conf !== undefined) {
-            conf = lcProject.Info.runtime.nginx.conf;
+        if (l9rProj.Info.runtime !== undefined 
+            && l9rProj.Info.runtime.nginx !== undefined
+            && l9rProj.Info.runtime.nginx.cfgtpl == tplname
+            && l9rProj.Info.runtime.nginx.conf !== undefined) {
+            conf = l9rProj.Info.runtime.nginx.conf;
         } else {
             $.ajax({ 
                 type    : "GET",
@@ -138,7 +138,7 @@ lcExt.nginx.SetSave = function()
 
     req.success = function() {
         lessAlert("#lcext-nginx-setmsg", "alert-success", "Successfully Updated");
-        lcProject.Info.runtime.nginx = ngx;
+        l9rProj.Info.runtime.nginx = ngx;
         
         var tabid = lessCryptoMd5(l9r.base +"+/nginx/index.tpl");
         lcTab.ScrollTop(tabid);
@@ -148,7 +148,7 @@ lcExt.nginx.SetSave = function()
 
     req.error = function(status, message) {
         lessAlert("#lcext-nginx-setmsg", "alert-error", "Error: "+ message);
-        lessModal.ScrollTop();
+        l4iModal.ScrollTop();
     }
 
     PodFs.Post(req);

@@ -2,12 +2,12 @@
 ### Cookie
 
 	access_token
-	access_userkey
+	access_userid
 
 ### Local Session
 
-	access_userkey
-	podid
+	access_userid
+	lessfly_pod
 
 	proj_id
 	proj_current

@@ -80,7 +80,7 @@
     <tr>
       <td></td>
       <td>
-        <button class="btn btn-inverse" onclick="lcProject.SetPut()">Save</button>
+        <button class="btn btn-inverse" onclick="l9rProj.SetPut()">Save</button>
       </td>
     </tr>
   </table>

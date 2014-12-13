@@ -7,6 +7,6 @@
         "accessKey": "vy6gaadrhgax4jss",
         "secretKey": "s2+M0RHQp7Ws9bUs3d5VlUn1R64P5Bx+"
     },
-    "lessfly_api": "http://127.0.0.1:1779/lessfly/v1",
+    "lessfly_api": "http://127.0.0.1:1779/lessfly",
     "lessfly_dir": "/opt/src/m12/lessfly"
 }

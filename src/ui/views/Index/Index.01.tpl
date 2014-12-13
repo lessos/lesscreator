@@ -135,7 +135,7 @@ function _load_box_config()
     $(".load-progress-msg").append("<br />Loading settings ...");
 
     var req = {
-        access_token: lessCookie.Get("access_token"),
+        access_token: l4iCookie.Get("access_token"),
     }
 
     $.ajax({
@@ -187,7 +187,7 @@ function _load_box_config()
                 }
 
                 lessSession.Set("basedir", rsj.data.basedir);
-                lessCookie.Set("basedir", rsj.data.basedir, 0);
+                l4iCookie.Set("basedir", rsj.data.basedir, 0);
                 lessSession.Set("SessUser", rsj.data.user);
 
                 lcData.Init(rsj.data.user, function(ret) {
@@ -223,7 +223,7 @@ function _load_sys_config()
     $(".load-progress-msg").append("<br />Loading settings ...");
 
     var req = {
-        access_token: lessCookie.Get("access_token"),
+        access_token: l4iCookie.Get("access_token"),
     }
 
     var url = "/lesscreator/api?func=env-init&_="+ Math.random();
@@ -256,7 +256,7 @@ function _load_sys_config()
                 }
 
                 lessSession.Set("basedir", rsj.data.basedir);
-                lessCookie.Set("basedir", rsj.data.basedir, 0);
+                l4iCookie.Set("basedir", rsj.data.basedir, 0);
                 lessSession.Set("SessUser", rsj.data.user);
 
                 lcData.Init(rsj.data.user, function(ret) {

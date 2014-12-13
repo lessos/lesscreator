@@ -13,36 +13,35 @@
   <script src="/lesscreator/~/lessui/less/less.min.js"></script>
 
   <script type="text/javascript">
-    var lessfly_api = "{{.lessfly_api}}";
+    var lessfly_api = "{{.lessfly_api}}/v1";
+    var lessfly_ext = "{{.lessfly_api}}/ext";
     window.onload = l9r.Boot;
   </script>
 </head>
 <body>
 <div id="body-content">
+  <style>
+  .loading {
+    margin: 0;
+    padding: 30px 40px;
+    font-size: 24px;
+    color: #000;
+  }
+  </style>
     
-    <style>
-    .loading {
-      margin: 0;
-      padding: 30px 40px;
-      font-size: 24px;
-      color: #000;
-    }
-    </style>
-    
-    <div class="loading">loading ...</div>
+  <div class="loading">loading ...</div>
 
-    <div class="lcx-loadwell" style="display:none">
-        <div class="">
-            <div id="_load-alert" class="alert alert-success">
-                {{T . "Initializing System Environment"}} ...</div>    
-        </div>
-
-        <div class="load-progress-msg">{{T . "Loading dependencies"}} ... </div>
-        <div class="load-progress progress progress-success">
-            <div class="bar load-progress-num" style="width: 1%"></div>
-        </div>
+  <div class="l9r-loadwell" style="display:none">
+    <div class="">
+      <div id="_load-alert" class="alert alert-success">
+        {{T . "Initializing System Environment"}} ...</div>    
     </div>
 
+    <div class="load-progress-msg">{{T . "Loading dependencies"}} ... </div>
+    <div class="load-progress progress progress-success">
+      <div class="bar load-progress-num" style="width: 1%"></div>
+    </div>
+  </div>
 </div>
 
 </body>
@@ -58,7 +57,7 @@ function _load_box_config()
     $(".load-progress-msg").append("<br />Loading settings ...");
 
     var req = {
-        access_token: lessCookie.Get("access_token"),
+        access_token: l4iCookie.Get("access_token"),
     }
 
     $.ajax({
@@ -110,7 +109,7 @@ function _load_box_config()
                 }
 
                 lessSession.Set("basedir", rsj.data.basedir);
-                lessCookie.Set("basedir", rsj.data.basedir, 0);
+                l4iCookie.Set("basedir", rsj.data.basedir, 0);
                 lessSession.Set("SessUser", rsj.data.user);
 
                 lcData.Init(rsj.data.user, function(ret) {
@@ -146,7 +145,7 @@ function _load_sys_config()
     $(".load-progress-msg").append("<br />Loading settings ...");
 
     var req = {
-        access_token: lessCookie.Get("access_token"),
+        access_token: l4iCookie.Get("access_token"),
     }
 
     var url = "/lesscreator/api?func=env-init&_="+ Math.random();
@@ -179,7 +178,7 @@ function _load_sys_config()
                 }
 
                 lessSession.Set("basedir", rsj.data.basedir);
-                lessCookie.Set("basedir", rsj.data.basedir, 0);
+                l4iCookie.Set("basedir", rsj.data.basedir, 0);
                 lessSession.Set("SessUser", rsj.data.user);
 
                 lcData.Init(rsj.data.user, function(ret) {

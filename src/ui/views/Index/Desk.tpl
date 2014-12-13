@@ -31,7 +31,7 @@
                         {{T . "Project"}}
                     </div>
                     
-                    <div class="less-tile flatui-bg-peter-river" onclick="lcProject.Open()">
+                    <div class="less-tile flatui-bg-peter-river" onclick="l9rProj.Open()">
                         <div class="lt-content icon">
                             <img src="/lesscreator/~/lesscreator/img/gen/pen0-48.png">
                         </div>
@@ -96,7 +96,7 @@
 
     <td align="left">
         
-        <div id="l9r-pod-nav" class="lcx-nav-grp">
+        <div id="l9r-pod-nav" class="lcx-nav-grp hide">
             <div class="lcx-nav-itemex">
                 <div class="lni-label">Box</div>
                 <div class="lni-title" id="l9r-pod-status-msg">Connecting</div>
@@ -109,7 +109,7 @@
                 <div class="lni-title" id="l9r-proj-nav-status">Connecting</div>
             </div><ul class="lcnav-tile-group" style="margin:0">
                 <li class="">
-                    <a href="javascript:lcProject.Set()" title="Project Settings">
+                    <a href="javascript:l9rProj.Set()" title="Project Settings">
                     <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/set2-32.png)"></i>
                     </a>
                 </li>
@@ -119,7 +119,7 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="javascript:lcProject.Run()" title="Run this Project">
+                    <a href="javascript:l9rProj.Run()" title="Run this Project">
                     <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/play-32.png)"></i>
                     </a>
                 </li>
@@ -136,7 +136,7 @@
         </div>
 
         <div class="lcx-nav-grp">
-            <div id="lcx_halert" class="success hide"></div>
+            <div id="lcx_halert" class="hide"></div>
         </div>
 
         <div id="lcbind-proj-navstart" class="lcx-proj-navbox"></div>
@@ -433,10 +433,10 @@ function _lc_nav_terminal()
 // lcWebTerminal(0);
 
 
-lcLayout.Resize();
-lcLayout.BindRefresh();
+// lcLayout.Resize();
+// lcLayout.BindRefresh();
 
 // setTimeout(lcLayout.Resize, 3000)
-l9rPodRefresh();
+// l9rPodRefresh();
 
 </script>

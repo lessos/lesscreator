@@ -501,7 +501,7 @@ function _fs_file_del(path)
     p = lessCryptoMd5(path);
     
     var req = {
-        "access_token" : lessCookie.Get("access_token"),
+        "access_token" : l4iCookie.Get("access_token"),
         "data" : lessSession.Get("ProjPath") +"/"+ path,
     }
 

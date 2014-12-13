@@ -9,12 +9,12 @@ lcExt.nodejs.Index = function()
 {
     var data = {};
 
-    if (lcProject.Info.runtime !== undefined 
-        && lcProject.Info.runtime.nodejs !== undefined) {
+    if (l9rProj.Info.runtime !== undefined 
+        && l9rProj.Info.runtime.nodejs !== undefined) {
                     
-        data = lcProject.Info.runtime.nodejs;
+        data = l9rProj.Info.runtime.nodejs;
                     
-        if (lcProject.Info.runtime.nodejs.state == 1) {
+        if (l9rProj.Info.runtime.nodejs.state == 1) {
             fn = lcExt.nodejs.StateRefresh;
         }
 
@@ -59,7 +59,7 @@ lcExt.nodejs.SetSave = function()
 
     req.success = function() {
         lessAlert("#lcext-nodejs-setmsg", "alert-success", "Successfully Updated");
-        lcProject.Info.runtime.nodejs = itemset;
+        l9rProj.Info.runtime.nodejs = itemset;
         
         var tabid = lessCryptoMd5(l9r.base +"+/nodejs/index.tpl");
         lcTab.ScrollTop(tabid);
@@ -69,7 +69,7 @@ lcExt.nodejs.SetSave = function()
 
     req.error = function(status, message) {
         lessAlert("#lcext-nodejs-setmsg", "alert-error", "Error: "+ message);
-        lessModal.ScrollTop();
+        l4iModal.ScrollTop();
     }
 
     PodFs.Post(req);

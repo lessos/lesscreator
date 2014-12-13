@@ -9,12 +9,12 @@ lcExt.go.Index = function()
 {
     var data = {};
 
-    if (lcProject.Info.runtime !== undefined 
-        && lcProject.Info.runtime.go !== undefined) {
+    if (l9rProj.Info.runtime !== undefined 
+        && l9rProj.Info.runtime.go !== undefined) {
                     
-        data = lcProject.Info.runtime.go;
+        data = l9rProj.Info.runtime.go;
                     
-        if (lcProject.Info.runtime.go.state == 1) {
+        if (l9rProj.Info.runtime.go.state == 1) {
             fn = lcExt.go.StateRefresh;
         }
 
@@ -59,7 +59,7 @@ lcExt.go.SetSave = function()
 
     req.success = function() {
         lessAlert("#lcext-go-setmsg", "alert-success", "Successfully Updated");
-        lcProject.Info.runtime.go = itemset;
+        l9rProj.Info.runtime.go = itemset;
         
         var tabid = lessCryptoMd5(l9r.base +"+/go/index.tpl");
         lcTab.ScrollTop(tabid);
@@ -69,7 +69,7 @@ lcExt.go.SetSave = function()
 
     req.error = function(status, message) {
         lessAlert("#lcext-go-setmsg", "alert-error", "Error: "+ message);
-        lessModal.ScrollTop();
+        l4iModal.ScrollTop();
     }
 
     PodFs.Post(req);

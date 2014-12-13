@@ -153,7 +153,7 @@ $(".m3w0wf").click(function() {
 
     //return;
 
-    var data = "access_token="+ lessCookie.Get("access_token");
+    var data = "access_token="+ l4iCookie.Get("access_token");
     data += "&proj="+ lessSession.Get("ProjPath");
     data += "&projid="+ projid;
 
