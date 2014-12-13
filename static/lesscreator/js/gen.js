@@ -20,7 +20,7 @@ function lcInitSetting()
         seajs.use("/lesscreator/~/codemirror3/3.21.0/theme/"+theme+".css");
     }
     
-    var editor_editmode = lessLocalStorage.Get('editor_editmode');
+    var editor_editmode = l4iStorage.Get('editor_editmode');
     if (editor_editmode == 'vim' || editor_editmode == 'emacs') {
         lcEditor.Config.EditMode = editor_editmode;
     }
@@ -156,7 +156,7 @@ var h5cTabletPool = {};
 
 function h5cTabOpen(uri, target, type, opt)
 {
-    var urid = lessCryptoMd5(uri);
+    var urid = l4iString.CryptoMd5(uri);
 
     if (!h5cTabletFrame[target]) {
         h5cTabletFrame[target] = {
@@ -239,7 +239,7 @@ function h5cTabSwitch(urid)
 
                     $("#h5c-tablet-toolbar-"+ item.target).empty();
                     $("#h5c-tablet-body-"+ item.target).empty().html(rsp);
-                    lcLayout.Resize();
+                    l9rLayout.Resize();
                 },
                 error: function(xhr, textStatus, error) {
                     hdev_header_alert('error', xhr.responseText);
@@ -251,7 +251,7 @@ function h5cTabSwitch(urid)
             
             $("#h5c-tablet-toolbar-"+ item.target).empty();
             $("#h5c-tablet-body-"+ item.target).empty().html(item.data);
-            lcLayout.Resize();
+            l9rLayout.Resize();
         }
         break;
 
@@ -266,7 +266,7 @@ function h5cTabSwitch(urid)
             //console.log("lcEditor.TabletOpen OK");
             h5cTabletTitleImage(urid);
             h5cTabletFrame[item.target].urid = urid;
-            lessLocalStorage.Set("tab.fra.urid."+ item.target, urid);
+            l4iStorage.Set("tab.fra.urid."+ item.target, urid);
         });
 
         break;
@@ -428,7 +428,7 @@ function lcTabClose(urid, force)
     case 'webterm':
         $('#h5c-tablet-framew1').hide();
         _lcTabCloseClean(urid);
-        lessLocalStorage.Set("lcWebTerminal0", "0");
+        l4iStorage.Set("lcWebTerminal0", "0");
         break;
     case 'editor':
 
@@ -508,31 +508,31 @@ function _lcTabCloseClean(urid)
         h5cTabletFrame[item.target].urid = j;
     }
 
-    lcLayout.Resize();
+    l9rLayout.Resize();
 }
 
-var lcLayoutWebTermPos = null;
-var lcLayoutWebTermInterv = null;
-function lcLayoutWebTermSizeFix()
+var l9rLayoutWebTermPos = null;
+var l9rLayoutWebTermInterv = null;
+function l9rLayoutWebTermSizeFix()
 {
     if (!document.getElementById("lc-terminal")) {
-        clearInterval(lcLayoutWebTermInterv);
-        lcLayoutWebTermPos = null;
+        clearInterval(l9rLayoutWebTermInterv);
+        l9rLayoutWebTermPos = null;
         return;
     }
 
     var obj = JSON.parse(rsp);
     
     var pnew = JSON.stringify($("#lc-terminal").position());
-    if (lcLayoutWebTermPos == pnew) {
+    if (l9rLayoutWebTermPos == pnew) {
         return;
     }
 
-    lcLayoutWebTermPos = pnew;
-    lcLayout.Resize();
+    l9rLayoutWebTermPos = pnew;
+    l9rLayout.Resize();
 }
 
-function lcLayoutResize()
+function l9rLayoutResize()
 {
     var spacecol = 10;
 
@@ -541,14 +541,14 @@ function lcLayoutResize()
 
     $("#hdev_layout").width(bw);
     
-    var toset = lessSession.Get('lcLyoLeftW');
+    var toset = l4iSession.Get('lcLyoLeftW');
     if (toset == 0 || toset == null) {   
-        toset = lessLocalStorage.Get('lcLyoLeftW');
+        toset = l4iStorage.Get('lcLyoLeftW');
     }
     if (toset == 0 || toset == null) {
         toset = 0.1;
-        lessLocalStorage.Set("lcLyoLeftW", toset);
-        lessSession.Set("lcLyoLeftW", toset);
+        l4iStorage.Set("lcLyoLeftW", toset);
+        l4iSession.Set("lcLyoLeftW", toset);
     }
 
     var left_w = (bw - (3 * spacecol)) * toset;
@@ -578,14 +578,14 @@ function lcLayoutResize()
 
         $('#h5c-resize-roww0').show();
 
-        toset = lessSession.Get('lcLyoCtn0H');
+        toset = l4iSession.Get('lcLyoCtn0H');
         if (toset == 0 || toset == null) {
-            toset = lessLocalStorage.Get('lcLyoCtn0H');
+            toset = l4iStorage.Get('lcLyoCtn0H');
         }
         if (toset == 0 || toset == null) {
             toset = 0.7;
-            lessLocalStorage.Set("lcLyoCtn0H", toset);
-            lessSession.Set("lcLyoCtn0H", toset);
+            l4iStorage.Set("lcLyoCtn0H", toset);
+            l4iSession.Set("lcLyoCtn0H", toset);
         }
 
         var ctn1_tab_h = $('#h5c-tablet-tabs-framew1').height();
@@ -648,14 +648,14 @@ function lcLayoutResize()
 
 function h5cProjectOpen(proj)
 {
-    var uname = lessSession.Get("SessUser");
+    var uname = l4iSession.Get("SessUser");
 
     if (!proj) {
-        proj = lessLocalStorage.Get(uname +"LastProjPath");
+        proj = l4iStorage.Get(uname +"LastProjPath");
     }
 
     if (!proj) {
-        proj = lessSession.Get("ProjPath");
+        proj = l4iSession.Get("ProjPath");
     }
 
     if (!proj) {
@@ -664,7 +664,7 @@ function h5cProjectOpen(proj)
         return;
     }
 
-    var uri = "basedir="+ lessSession.Get("basedir");
+    var uri = "basedir="+ l4iSession.Get("basedir");
     uri += "&proj="+ proj;
 
     if (projCurrent) {
@@ -680,7 +680,7 @@ function h5cProjectOpen(proj)
         timeout : 30000,
         success : function(rsp) {
             $("#lcx-proj-box").empty().html(rsp);
-            lcLayout.Resize();
+            l9rLayout.Resize();
         },
         error: function(xhr, textStatus, error) {
             //
@@ -689,13 +689,13 @@ function h5cProjectOpen(proj)
 
     
     projCurrent = proj;    
-    lessSession.Set("ProjPath", proj);
-    lessLocalStorage.Set(uname +"LastProjPath", proj);    
+    l4iSession.Set("ProjPath", proj);
+    l4iStorage.Set(uname +"LastProjPath", proj);    
 }
 
 function lcProjOpen()
 {
-    lessModalOpen('/lesscreator/proj/open-recent?basedir='+ lessSession.Get("basedir"), 1, 800, 450, 'Open Project', null);
+    lessModalOpen('/lesscreator/proj/open-recent?basedir='+ l4iSession.Get("basedir"), 1, 800, 450, 'Open Project', null);
 }
 
 function lcProjNew()
@@ -712,7 +712,7 @@ function lcProjSet()
         'img': '/lesscreator/static/img/app-t3-16.png',
     }
 
-    var url = '/lesscreator/proj/set?proj='+ lessSession.Get("ProjPath");
+    var url = '/lesscreator/proj/set?proj='+ l4iSession.Get("ProjPath");
 
     h5cTabOpen(url, 'w0', 'html', opt);
 }
@@ -731,15 +731,15 @@ function lcProjLaunch(title)
     //var uri = "/lesscreator/launch/webserver";
     //var uri = "/lesscreator/launch/dataset";
     var uri = "/lesscreator/launch/index";
-    uri += "?proj="+ lessSession.Get("ProjPath");
-    uri += "&user="+ lessSession.Get("SessUser"); // TODO access_token
+    uri += "?proj="+ l4iSession.Get("ProjPath");
+    uri += "&user="+ l4iSession.Get("SessUser"); // TODO access_token
 
     lessModalOpen(uri, 1, 900, 500, title, null);
 }
 
 function lcWebTerminal(force)
 {
-    if (force != 1 && lessLocalStorage.Get("lcWebTerminal0") != 1) {
+    if (force != 1 && l4iStorage.Get("lcWebTerminal0") != 1) {
         return;
     }
 

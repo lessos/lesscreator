@@ -74,7 +74,7 @@ $(".b9nxc5").click(function(){
     default:
         return;
     }
-    url += "?basedir="+ lessSession.Get("basedir");
+    url += "?basedir="+ l4iSession.Get("basedir");
 
     lessModalNext(url, title, null);
 });

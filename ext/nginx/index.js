@@ -33,7 +33,7 @@ lcExt.nginx.Index = function()
 
     data.cfgtpls = lcExt.nginx.cfgTpls;
 
-    lessTemplate.Render({
+    l4iTemplate.Render({
         tplurl : l9r.base +"+/nginx/set.tpl",
         dstid  : "lcext-nginx-setform",
         data   : data,
@@ -73,7 +73,7 @@ lcExt.nginx.StateRefresh = function()
                     conf = rsp; 
                 },
                 error: function(xhr, textStatus, error) {
-                    lessAlert("#lcext-nginx-setmsg", "alert-error", textStatus+' '+xhr.responseText);
+                    l4i.InnerAlert("#lcext-nginx-setmsg", "alert-error", textStatus+' '+xhr.responseText);
                 }
             });
         }
@@ -131,23 +131,23 @@ lcExt.nginx.SetSave = function()
     }
 
     var req = {
-        path   : lessSession.Get("proj_current") +"/lcproject.json",
+        path   : l4iSession.Get("proj_current") +"/lcproject.json",
         encode : "jm",
         data   : JSON.stringify({runtime: {nginx: ngx}}),
     }
 
     req.success = function() {
-        lessAlert("#lcext-nginx-setmsg", "alert-success", "Successfully Updated");
+        l4i.InnerAlert("#lcext-nginx-setmsg", "alert-success", "Successfully Updated");
         l9rProj.Info.runtime.nginx = ngx;
         
-        var tabid = lessCryptoMd5(l9r.base +"+/nginx/index.tpl");
-        lcTab.ScrollTop(tabid);
+        var tabid = l4iString.CryptoMd5(l9r.base +"+/nginx/index.tpl");
+        l9rTab.ScrollTop(tabid);
 
         lcExt.NavRefresh(); // TODO SD
     }
 
     req.error = function(status, message) {
-        lessAlert("#lcext-nginx-setmsg", "alert-error", "Error: "+ message);
+        l4i.InnerAlert("#lcext-nginx-setmsg", "alert-error", "Error: "+ message);
         l4iModal.ScrollTop();
     }
 

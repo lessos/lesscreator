@@ -77,7 +77,7 @@ function _php_yaf_controller_new()
 {
     var url = "/lesscreator/plugins/php-yaf/fs-ov-controller-new?func=controller-new";
 
-    var data = "proj="+ lessSession.Get("ProjPath");
+    var data = "proj="+ l4iSession.Get("ProjPath");
     data += "&ctrl_name="+ $("#illb99").find("input[name=ctrl_name]").val();
 
     $.ajax({

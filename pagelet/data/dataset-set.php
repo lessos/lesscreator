@@ -73,12 +73,12 @@ function _data_dataset_set()
         data    : $("#b2qcyo").serialize() +"&proj="+ projCurrent,
         success : function(rsp) {
             if (rsp == "OK") {
-                lessAlert(".bmejc8", "alert-success", "OK "+ time);
+                l4i.InnerAlert(".bmejc8", "alert-success", "OK "+ time);
                 if (typeof _proj_data_tabopen == 'function') {
                     _proj_data_tabopen('/lesscreator/proj/data/list?proj='+projCurrent, 1);
                 }
             } else {
-                lessAlert(".bmejc8", "alert-error", rsp +" "+ time);
+                l4i.InnerAlert(".bmejc8", "alert-error", rsp +" "+ time);
             }
         }
     });

@@ -37,7 +37,7 @@ lessModalButtonAdd("fvxmpf", "<?php echo $this->T('Create Project')?>", "_proj_f
 lessModalButtonAdd("r3aenq", "<?php echo $this->T('Close')?>", "lessModalClose()", "");
 
 
-$("input[name=git_base]").val(lessSession.Get("basedir") +"/app/");
+$("input[name=git_base]").val(l4iSession.Get("basedir") +"/app/");
 
 $("input[name=git_url]").bind("change", function(e) {
 	//e.preventDefault();
@@ -86,7 +86,7 @@ function _proj_fs_vs_create_do()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#htowou", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+                l4i.InnerAlert("#htowou", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
@@ -95,15 +95,15 @@ function _proj_fs_vs_create_do()
                 //_basedir = $("#basedir").val();
                 //_projid  = $("#projid").val();
 
-                lessAlert("#htowou", "alert-success", "<p><strong><?php echo $this->T('Successfully Done')?></strong> \
+                l4i.InnerAlert("#htowou", "alert-success", "<p><strong><?php echo $this->T('Successfully Done')?></strong> \
                     <button class=\"btn btn-success\" onclick=\"_proj_new_goto()\"><?php echo $this->T('Open this Project')?></button>");
 
             } else {
-                lessAlert("#htowou", "alert-error", rsj.message);
+                l4i.InnerAlert("#htowou", "alert-error", rsj.message);
             }
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#htowou", "alert-error", xhr.responseText);
+            l4i.InnerAlert("#htowou", "alert-error", xhr.responseText);
         }
     });
 

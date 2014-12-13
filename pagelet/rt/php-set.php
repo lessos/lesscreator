@@ -62,7 +62,7 @@ lessModalButtonAdd("mhm701", "<?php echo $this->T('Save')?>", "_proj_rt_php_save
 
 function _proj_rt_php_save()
 {
-    var req = "proj=" + lessSession.Get("ProjPath");
+    var req = "proj=" + l4iSession.Get("ProjPath");
     req += "&runtime=php";
 
     if ($("#hldp2x").is (':checked')) {
@@ -80,20 +80,20 @@ function _proj_rt_php_save()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#k3bahm", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+                l4i.InnerAlert("#k3bahm", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
             if (rsj.status != 200) {
-                lessAlert("#k3bahm", "alert-error", rsj.message);
+                l4i.InnerAlert("#k3bahm", "alert-error", rsj.message);
                 return;
             }
 
-            lessAlert("#k3bahm", "alert-success", rsj.message);
+            l4i.InnerAlert("#k3bahm", "alert-success", rsj.message);
             _proj_rt_refresh();
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#k3bahm", "alert-error", textStatus+' '+xhr.responseText);
+            l4i.InnerAlert("#k3bahm", "alert-error", textStatus+' '+xhr.responseText);
         }
     });
 }

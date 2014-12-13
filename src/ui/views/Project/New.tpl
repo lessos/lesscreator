@@ -118,12 +118,12 @@ function _project_new_commit()
 
         $("#sdtqvj").hide(100);
 
-        lessAlert("#m4ph6m", "alert-success", "<p><strong>{{T . "Successfully Done"}}</strong> \
+        l4i.InnerAlert("#m4ph6m", "alert-success", "<p><strong>{{T . "Successfully Done"}}</strong> \
             <button class=\"btn btn-success\" onclick=\"_project_new_goto()\">{{T . "Open this Project"}}</button>");
     }
 
     req.error = function(status, message) {
-        lessAlert("#m4ph6m", "alert-error", "Error: "+ message);
+        l4i.InnerAlert("#m4ph6m", "alert-error", "Error: "+ message);
     }
 
     l9rProj.New(req);

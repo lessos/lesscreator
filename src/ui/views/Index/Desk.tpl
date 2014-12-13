@@ -360,7 +360,7 @@
           </div>
         </div>
 
-        <div id="lccab-bar{[=it.tabid]}" class="lctab-bar"></div>
+        <div id="lctab-bar{[=it.tabid]}" class="lctab-bar"></div>
         <div id="lctab-body{[=it.tabid]}" class="lctab-body less_scroll"></div>
       </td>
     </tr>
@@ -426,17 +426,17 @@ function _lc_nav_terminal()
         lcWebTerminal(1);
     } else if (lc_terminal_conn.IsOk()) {
         lc_terminal_conn.CloseAll();
-        var urid = lessCryptoMd5("/lesscreator/term/index?");
+        var urid = l4iString.CryptoMd5("/lesscreator/term/index?");
         lcTabClose(urid, 1);
     }
 }
 // lcWebTerminal(0);
 
 
-// lcLayout.Resize();
-// lcLayout.BindRefresh();
+// l9rLayout.Resize();
+// l9rLayout.BindRefresh();
 
-// setTimeout(lcLayout.Resize, 3000)
+// setTimeout(l9rLayout.Resize, 3000)
 // l9rPodRefresh();
 
 </script>

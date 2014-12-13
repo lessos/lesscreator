@@ -44,7 +44,7 @@ function _plugin_zf_mvc_start()
 	var req = {
         "access_token" : l4iCookie.Get("access_token"),
         "data" : {
-        	"projdir": lessSession.Get("ProjPath")
+        	"projdir": l4iSession.Get("ProjPath")
         }
     }
 
@@ -54,8 +54,8 @@ function _plugin_zf_mvc_start()
         data    : JSON.stringify(req),
         success : function(rsp) {
             //$("#pt"+p).html(data);
-            //lcLayoutResize();
-            lessAlert("#f79gwj", "alert-success", rsp);
+            //l9rLayoutResize();
+            l4i.InnerAlert("#f79gwj", "alert-success", rsp);
         },
         error   : function(xhr, textStatus, error) {
             //hdev_header_alert('error', textStatus+' '+xhr.responseText);

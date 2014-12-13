@@ -105,14 +105,14 @@ l9rProj.notFound = function(proj)
 l9rProj.Open = function(proj)
 {
     var userid = l4iCookie.Get("access_userid");
-    console.log("userid"+ userid);
+    // console.log("userid"+ userid);
     
     if (!proj) {
-        proj = lessSession.Get("proj_current");
+        proj = l4iSession.Get("proj_current");
     }
 
     if (!proj) {
-        proj = lessLocalStorage.Get(userid +"_proj_current");
+        proj = l4iStorage.Get(userid +"_proj_current");
     }    
 
     if (!proj) {
@@ -168,10 +168,10 @@ l9rProj.Open = function(proj)
             pinfo.runtime = {};
         }
 
-        lessSession.Set("proj_name", pinfo.name);
-        lessSession.Set("proj_current_name", pinfo.name);
-        lessSession.Set("proj_current", proj);
-        lessLocalStorage.Set(userid +"_proj_current", proj);
+        l4iSession.Set("proj_name", pinfo.name);
+        l4iSession.Set("proj_current_name", pinfo.name);
+        l4iSession.Set("proj_current", proj);
+        l4iStorage.Set(userid +"_proj_current", proj);
         // console.log(pinfo);
         l9rProj.Info = pinfo;
 
@@ -180,15 +180,12 @@ l9rProj.Open = function(proj)
         $("#l9r-proj-nav-status").text("loading");
         $("#l9r-proj-nav").show(100);
 
-        $.ajax({
-            url     : l9r.base + "project/file-nav?_="+ Math.random(),
-            type    : "GET",
-            timeout : 10000,
+        l9r.Ajax(l9r.base + "-/project/file-nav.tpl", {
             success : function(rsp) {
-                
+
                 $("#lcbind-proj-filenav").empty().html(rsp);
 
-                lcLayout.ColumnSet({
+                l9rLayout.ColumnSet({
                     id   : "lcbind-proj-filenav",
                     hook : l9rProjFs.LayoutResize
                 });
@@ -205,7 +202,7 @@ l9rProj.Open = function(proj)
 
                     l9rProj.OpenHistoryTabs();
 
-                    lcLayout.Resize();
+                    l9rLayout.Resize();
                 }
 
                 l9rProjFs.UiTreeLoad(treeload);
@@ -214,8 +211,6 @@ l9rProj.Open = function(proj)
                 // TODO
             }
         });
-
-        //
     }
 
     PodFs.Get(req);
@@ -226,38 +221,38 @@ l9rProj.OpenHistoryTabs = function()
 {
     // console.log("l9rProj.OpenHistoryTabs");
 
-    // var last_tab_urid = lessLocalStorage.Set(lessSession.Get("podid") +"."+ lessSession.Get("proj_name") +".tab."+ item.target);
+    // var last_tab_urid = l4iStorage.Set(l4iSession.Get("podid") +"."+ l4iSession.Get("proj_name") +".tab."+ item.target);
 
-    lcData.Query("files", "projdir", lessSession.Get("proj_current"), function(ret) {
+    lcData.Query("files", "projdir", l4iSession.Get("proj_current"), function(ret) {
     
         // console.log("Query files");
         if (ret == null) {
             return;
         }
         
-        if (ret.value.id && ret.value.projdir == lessSession.Get("proj_current")) {
+        if (ret.value.id && ret.value.projdir == l4iSession.Get("proj_current")) {
 
             var icon = undefined;
             if (ret.value.icon) {
                 icon = ret.value.icon;
             }
 
-            var cab = lcTab.frame[ret.value.cabid];
+            var cab = l9rTab.frame[ret.value.cabid];
             if (cab === undefined) {
-                ret.value.cabid = lcTab.def;
-                cab = lcTab.frame[lcTab.def];
+                ret.value.cabid = l9rTab.def;
+                cab = l9rTab.frame[l9rTab.def];
             }
 
-            var tabLastActive = lessLocalStorage.Get(lessSession.Get("podid") +"."+ lessSession.Get("proj_name") +".cab."+ ret.value.cabid);
+            var tabLastActive = l4iStorage.Get(l4iSession.Get("podid") +"."+ l4iSession.Get("proj_name") +".cab."+ ret.value.cabid);
             // console.log("tabLastActive: "+ tabLastActive);
 
             var titleOnly = true;
             if (cab.actived === false || tabLastActive == ret.value.id) {
-                lcTab.frame[ret.value.cabid].actived = true;
+                l9rTab.frame[ret.value.cabid].actived = true;
                 titleOnly = false;
             }
 
-            lcTab.Open({
+            l9rTab.Open({
                 uri   : ret.value.filepth,
                 type  : "editor",
                 icon  : icon,
@@ -283,7 +278,7 @@ l9rProj.OpenHistoryTabs = function()
 l9rProj.Set = function(proj)
 {
     if (proj === undefined) {
-        proj = lessSession.Get("proj_current");
+        proj = l4iSession.Get("proj_current");
     }
 
     var req = {
@@ -327,7 +322,7 @@ l9rProj.Set = function(proj)
         pinfo._grpdevd = l9rProj.ProjectGroupByDev;
         // console.log(pinfo);
 
-        lcTab.Open({
+        l9rTab.Open({
             uri     : req.path,
             title   : "Project Settings",
             type    : "apidriven",
@@ -397,7 +392,7 @@ l9rProj.Run = function()
 // function _proj_rt_refresh()
 // {
 //     var url = "/lesscreator/proj/set?apimethod=self.rt.list";
-//     url += "&proj=" + lessSession.Get("ProjPath");
+//     url += "&proj=" + l4iSession.Get("ProjPath");
 
 //     $.ajax({ 
 //         type    : "GET",
@@ -436,7 +431,7 @@ l9rProj.Run = function()
 //         return;
 //     }
     
-//     uri += "?proj=" + lessSession.Get("ProjPath");
+//     uri += "?proj=" + l4iSession.Get("ProjPath");
 //     lessModalOpen("/lesscreator/"+ uri, 1, 800, 500, title, null);
 // }
 
@@ -446,7 +441,7 @@ l9rProj.Run = function()
 // function _proj_pkgs_refresh()
 // {
 //     var url = "/lesscreator/proj/set?apimethod=self.pkg.list";
-//     url += "&proj=" + lessSession.Get("ProjPath");
+//     url += "&proj=" + l4iSession.Get("ProjPath");
 
 //     $.ajax({ 
 //         type    : "GET",
@@ -462,7 +457,7 @@ l9rProj.Run = function()
 
 // function _proj_pkgs_select(node)
 // {
-//     var uri = "/lesscreator/proj/set-pkgs?proj="+ lessSession.Get("ProjPath");
+//     var uri = "/lesscreator/proj/set-pkgs?proj="+ l4iSession.Get("ProjPath");
 //     lessModalOpen(uri, 1, 800, 500, "##Select Dependent Packages##", null);
 // }
 

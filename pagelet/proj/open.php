@@ -76,7 +76,7 @@ function _proj_open_recent_del(projid)
 {
     $.ajax({
         type: "POST",
-        url: '/lesscreator/proj/open-recent?basedir='+ lessSession.Get("basedir"),
+        url: '/lesscreator/proj/open-recent?basedir='+ l4iSession.Get("basedir"),
         data: {'func':'del', 'projid':projid},
         success: function(data) {
             if (data == "OK") {

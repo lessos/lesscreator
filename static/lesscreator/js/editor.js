@@ -38,8 +38,8 @@ lcEditor.TabDefault = "lctab-default";
 lcEditor.TabletOpen = function(urid, callback)
 {
     // console.log("lcEditor.TabletOpen 1: "+ urid);
-    var item = lcTab.pool[urid];
-    if (lcTab.frame[item.target].urid == urid) {
+    var item = l9rTab.pool[urid];
+    if (l9rTab.frame[item.target].urid == urid) {
         callback(true);
         return;
     }
@@ -55,8 +55,8 @@ lcEditor.TabletOpen = function(urid, callback)
             && ((ret.ctn1_sum && ret.ctn1_sum.length > 30)
                 || (ret.ctn0_sum && ret.ctn0_sum.length > 30))) {
 
-            //lcTab.pool[urid].data = ret.ctn1_src;
-            //lcTab.pool[urid].hash = lessCryptoMd5(ret.ctn1_src);
+            //l9rTab.pool[urid].data = ret.ctn1_src;
+            //l9rTab.pool[urid].hash = l4iString.CryptoMd5(ret.ctn1_src);
             // console.log(ret);
             lcEditor.LoadInstance(ret);
             callback(true);
@@ -72,7 +72,7 @@ lcEditor.TabletOpen = function(urid, callback)
         // var req = {
         //     "access_token" : l4iCookie.Get("access_token"), 
         //     "data" : {
-        //         "path" : lessSession.Get("ProjPath") +"/"+ item.url
+        //         "path" : l4iSession.Get("ProjPath") +"/"+ item.url
         //     }
         // }
 
@@ -96,10 +96,10 @@ lcEditor.TabletOpen = function(urid, callback)
 
             var entry = {
                 id       : urid,
-                projdir  : lessSession.Get("proj_current"),
+                projdir  : l4iSession.Get("proj_current"),
                 filepth  : item.url,
                 ctn0_src : file.body,
-                ctn0_sum : lessCryptoMd5(file.body),
+                ctn0_sum : l4iString.CryptoMd5(file.body),
                 ctn1_src : "",
                 ctn1_sum : "",
                 mime     : file.mime,
@@ -112,10 +112,10 @@ lcEditor.TabletOpen = function(urid, callback)
             lcData.Put("files", entry, function(ret) {
                 
                 if (ret) {
-                    $("#lccab-bar"+ item.target).empty();
+                    $("#lctab-bar"+ item.target).empty();
                     $("#lctab-body"+ item.target).empty();
 
-                    //lcTab.pool[urid].mime = obj.data.mime;
+                    //l9rTab.pool[urid].mime = obj.data.mime;
                     lcEditor.LoadInstance(entry);
                     // lcHeaderAlert('success', "OK");
                     callback(true);
@@ -135,7 +135,7 @@ lcEditor.TabletOpen = function(urid, callback)
 
 lcEditor.LoadInstance = function(entry)
 {
-    var item = lcTab.pool[entry.id];
+    var item = l9rTab.pool[entry.id];
 
     var ext = item.url.split('.').pop();
     switch (ext) {
@@ -152,13 +152,15 @@ lcEditor.LoadInstance = function(entry)
     case "xml":
     case "go" :
     case "lua":
-    case "less":
+    case "sql":
+    // case "less":
         mode = ext;
         break;
-    case "sql":
-        mode = "plsql";
-        break;
+    // case "sql":
+    //     mode = "plsql";
+    //     break;
     case "js":
+    case "json":
         mode = "javascript";
         break;
     case "sh":
@@ -196,11 +198,11 @@ lcEditor.LoadInstance = function(entry)
         break;
     }
 
-    //lcTab.frame[item.target].urid = entry.id;
+    //l9rTab.frame[item.target].urid = entry.id;
 
-    if (lcTab.frame[item.target].editor != null) {        
+    if (l9rTab.frame[item.target].editor != null) {        
         $("#lctab-body"+ item.target).empty();
-        $("#lccab-bar"+ item.target).empty();
+        $("#lctab-bar"+ item.target).empty();
     }
 
     // styling
@@ -210,8 +212,8 @@ lcEditor.LoadInstance = function(entry)
         lcEditor.ToolTmpl = $("#lc_editor_tools .lceditor-tools").parent().html();
     }
     // TODO
-    $("#lccab-bar"+ item.target).html(lcEditor.ToolTmpl).show(0, function() {
-        lcLayout.Resize();
+    $("#lctab-bar"+ item.target).html(lcEditor.ToolTmpl).show(0, function() {
+        l9rLayout.Resize();
     });
 
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
@@ -220,7 +222,7 @@ lcEditor.LoadInstance = function(entry)
     lcEditor.Config.TmpLine2Str = null;
     if (item.editor_strto && item.editor_strto.length > 1) {
         lcEditor.Config.TmpLine2Str = item.editor_strto;
-        lcTab.pool[entry.id].editor_strto = null;
+        l9rTab.pool[entry.id].editor_strto = null;
     }
 
     lcEditor.Config.TmpScrollLeft = isNaN(entry.scrlef) ? 0 : parseInt(entry.scrlef);
@@ -233,7 +235,7 @@ lcEditor.LoadInstance = function(entry)
 
         CodeMirror.defineInitHook(function(cminst) {
     
-            lcLayout.Resize();
+            l9rLayout.Resize();
 
             if (lcEditor.Config.TmpLine2Str != null) {
                 
@@ -266,7 +268,16 @@ lcEditor.LoadInstance = function(entry)
 
     $("#lctab-body"+ item.target).empty();
 
-    lcTab.frame[item.target].editor = CodeMirror(
+    // seajs.use(l9r.basecm +"mode/"+ mode +"/"+ mode +".js");
+
+    // seajs.use([
+    //     "cm",
+    //     l9r.basecm +"mode/"+ mode +"/"+ mode +".js",
+    // ], function() {
+
+    //     return;
+
+    l9rTab.frame[item.target].editor = CodeMirror(
         document.getElementById("lctab-body"+ item.target), {
         
         value         : src,
@@ -281,8 +292,12 @@ lcEditor.LoadInstance = function(entry)
         lineWrapping  : lcEditor.Config.lineWrapping,
         foldGutter    : lcEditor.Config.codeFolding,
         gutters       : ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        rulers        : [{color: "#777", column: 80, lineStyle: "dashed"}],
+        autoCloseTags : true,
+        autoCloseBrackets       : true,
         showCursorWhenSelecting : true,
-        extraKeys     : {
+        styleActiveLine         : true,        
+        extraKeys : {
             Tab : function(cm) {
                 if (lcEditor.Config.tabs2spaces) {
                     var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
@@ -291,22 +306,23 @@ lcEditor.LoadInstance = function(entry)
             },
             "Shift-Space" : "autocomplete",
             "Ctrl-S" : function() {
-                //console.log("ctrl-s: "+ entry.id);
                 lcEditor.EntrySave({urid: entry.id});
             }
         }
     });
 
-    CodeMirror.modeURL = l9r.base +"/~/codemirror/4.11.0/mode/%N/%N.js";
-    CodeMirror.autoLoadMode(lcTab.frame[item.target].editor, mode);
+    // CodeMirror.modeURL = l9r.basecm +"mode/%N/%N.js";
+    // CodeMirror.autoLoadMode(l9rTab.frame[item.target].editor, mode);
 
     if (lcEditor.Config.EditMode != "win") {
-        lcTab.frame[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
+        l9rTab.frame[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
         $('.lc-editor-editmode img').attr("src", 
             "/lesscreator/~/lesscreator/img/editor/mode-"+lcEditor.Config.EditMode+"-48.png");
+    } else {
+        l9rTab.frame[item.target].editor.setOption("keyMap", "sublime");
     }
 
-    lcTab.frame[item.target].editor.on("change", function(cm) {
+    l9rTab.frame[item.target].editor.on("change", function(cm) {
         lcEditor.Changed(entry.id);
     });
 
@@ -318,7 +334,9 @@ lcEditor.LoadInstance = function(entry)
         CodeMirror.showHint(cm, CodeMirror.hint.javascript);
     }
 
-    setTimeout(lcLayout.Resize, 200);
+    setTimeout(l9rLayout.Resize, 200);
+
+    // });
 }
 
 
@@ -326,12 +344,12 @@ lcEditor.Changed = function(urid)
 {
     //console.log("lcEditor.Changed:"+ urid);
 
-    if (!lcTab.pool[urid]) {
+    if (!l9rTab.pool[urid]) {
         return;
     }
-    var item = lcTab.pool[urid];
+    var item = l9rTab.pool[urid];
 
-    if (urid != lcTab.frame[item.target].urid) {
+    if (urid != l9rTab.frame[item.target].urid) {
         return;
     }
 
@@ -341,8 +359,8 @@ lcEditor.Changed = function(urid)
             return;
         }
 
-        entry.ctn1_src = lcTab.frame[item.target].editor.getValue();
-        entry.ctn1_sum = lessCryptoMd5(entry.ctn1_src);
+        entry.ctn1_src = l9rTab.frame[item.target].editor.getValue();
+        entry.ctn1_sum = l4iString.CryptoMd5(entry.ctn1_src);
 
         lcData.Put("files", entry, function(ret) {
             // TODO
@@ -356,7 +374,7 @@ lcEditor.Changed = function(urid)
 
 lcEditor.SaveCurrent = function()
 {
-    lcEditor.EntrySave({urid: lcTab.frame[lcEditor.TabDefault].urid});
+    lcEditor.EntrySave({urid: l9rTab.frame[lcEditor.TabDefault].urid});
 }
 
 lcEditor.EntrySave = function(options)
@@ -387,11 +405,11 @@ lcEditor.EntrySave = function(options)
             path : ret.filepth,
         }
 
-        var item = lcTab.pool[options.urid];
+        var item = l9rTab.pool[options.urid];
 
-        if (options.urid == lcTab.frame[item.target].urid) {
+        if (options.urid == l9rTab.frame[item.target].urid) {
 
-            var ctn = lcTab.frame[item.target].editor.getValue();
+            var ctn = l9rTab.frame[item.target].editor.getValue();
             if (ctn == ret.ctn0_src) {
                 
                 $("#pgtab"+ options.urid +" .chg").hide();
@@ -402,7 +420,7 @@ lcEditor.EntrySave = function(options)
             }
 
             req.data = ctn;
-            req.sumcheck = lessCryptoMd5(ctn);
+            req.sumcheck = l4iString.CryptoMd5(ctn);
 
         } else if (ret.ctn1_sum.length < 30) {
             
@@ -491,10 +509,10 @@ lcEditor.EntrySave = function(options)
     //         }
     //     }
 
-    //     var item = lcTab.pool[urid];
-    //     if (urid == lcTab.frame[item.target].urid) {
+    //     var item = l9rTab.pool[urid];
+    //     if (urid == l9rTab.frame[item.target].urid) {
             
-    //         var ctn = lcTab.frame[item.target].editor.getValue();
+    //         var ctn = l9rTab.frame[item.target].editor.getValue();
     //         if (ctn == ret.ctn0_src) {
                 
     //             $("#pgtab"+ urid +" .chg").hide();
@@ -504,7 +522,7 @@ lcEditor.EntrySave = function(options)
     //         }
 
     //         req.data.body = ctn;
-    //         req.data.sumcheck = lessCryptoMd5(ctn);
+    //         req.data.sumcheck = l4iString.CryptoMd5(ctn);
     //     } else if (ret.ctn1_sum.length < 30) {
             
     //         return lcEditor.MessageReplyStatus(cb, 200, null);
@@ -532,7 +550,7 @@ lcEditor.EntrySave = function(options)
 
 lcEditor.DialogChanges2SaveSkip = function(urid)
 {
-    lcTab.Close(urid, 1);
+    l9rTab.Close(urid, 1);
     l4iModal.Close();
 }
 
@@ -542,11 +560,11 @@ lcEditor.DialogChanges2SaveDone = function(urid)
     lcEditor.EntrySave({
         urid    : urid,
         success : function() {
-            lcTab.Close(urid, 1);
+            l9rTab.Close(urid, 1);
             l4iModal.Close();
         },
         error : function() {
-            lessAlert("#xi1b3h", "alert-error", "<span></span>Internal Server Error<span></span>");
+            l4i.InnerAlert("#xi1b3h", "alert-error", "<span></span>Internal Server Error<span></span>");
         }
     });
 }
@@ -625,7 +643,7 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 //                     // });
 //                     lcEditor.MessageReply(obj.msgreply, obj);
 
-//                     //lcTab.pool[urid].hash = obj.sumcheck;
+//                     //l9rTab.pool[urid].hash = obj.sumcheck;
 
 //                 } else {
 //                     //console.log("onmessage errot");
@@ -674,13 +692,13 @@ lcEditor.IsSaved = function(urid, cb)
 
 lcEditor.HookOnBeforeUnload = function()
 {
-    if (lcTab.frame[lcEditor.TabDefault].editor != null 
-        && lcTab.frame[lcEditor.TabDefault].urid == lcEditor.Config.TmpUrid) {
+    if (l9rTab.frame[lcEditor.TabDefault].editor != null 
+        && l9rTab.frame[lcEditor.TabDefault].urid == lcEditor.Config.TmpUrid) {
         
-        var prevEditorScrollInfo = lcTab.frame[lcEditor.TabDefault].editor.getScrollInfo();
-        var prevEditorCursorInfo = lcTab.frame[lcEditor.TabDefault].editor.getCursor();
+        var prevEditorScrollInfo = l9rTab.frame[lcEditor.TabDefault].editor.getScrollInfo();
+        var prevEditorCursorInfo = l9rTab.frame[lcEditor.TabDefault].editor.getCursor();
 
-        lcData.Get("files", lcTab.frame[lcEditor.TabDefault].urid, function(prevEntry) {
+        lcData.Get("files", l9rTab.frame[lcEditor.TabDefault].urid, function(prevEntry) {
 
             if (!prevEntry) {
                 return;
@@ -725,25 +743,25 @@ lcEditor.ConfigSet = function(key, val)
 
 lcEditor.Undo = function()
 {
-    if (!lcTab.frame[lcEditor.TabDefault].editor) {
+    if (!l9rTab.frame[lcEditor.TabDefault].editor) {
         return;
     }
 
-    lcTab.frame[lcEditor.TabDefault].editor.undo();
+    l9rTab.frame[lcEditor.TabDefault].editor.undo();
 }
 
 lcEditor.Redo = function()
 {
-    if (!lcTab.frame[lcEditor.TabDefault].editor) {
+    if (!l9rTab.frame[lcEditor.TabDefault].editor) {
         return;
     }
     
-    lcTab.frame[lcEditor.TabDefault].editor.redo();
+    l9rTab.frame[lcEditor.TabDefault].editor.redo();
 }
 
 lcEditor.Theme = function(theme)
 {
-    if (lcTab.frame[lcEditor.TabDefault].editor) {
+    if (l9rTab.frame[lcEditor.TabDefault].editor) {
 
         // console.log("~/codemirror/3.21.0/theme/"+ theme +".min.css");
         seajs.use("~/codemirror/3.21.0/theme/"+ theme +".min.css", function() {
@@ -751,9 +769,9 @@ lcEditor.Theme = function(theme)
             lcEditor.Config.theme = theme;
             l4iCookie.SetByDay("editor_theme", theme, 365);
 
-            lcTab.frame[lcEditor.TabDefault].editor.setOption("theme", theme);
+            l9rTab.frame[lcEditor.TabDefault].editor.setOption("theme", theme);
 
-            lcLayout.Resize();
+            l9rLayout.Resize();
         });        
         
         lcHeaderAlert('success', 'Change Editor color theme to "'+ theme +'"');
@@ -768,7 +786,7 @@ var search_state_marked  = [];
 lcEditor.Search = function()
 {
     $(".lc_editor_searchbar").toggle(0, function(){
-        lcLayout.Resize();
+        l9rLayout.Resize();
     });
 
     $(".lc_editor_searchbar").find("input").css("color","#999");
@@ -795,9 +813,9 @@ lcEditor.SearchNext = function(rev)
     if (search_state_query != query) {
         lcEditor.SearchClean();
         
-        for (var cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
+        for (var cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
 
-            search_state_marked.push(lcTab.frame[lcEditor.TabDefault].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
+            search_state_marked.push(l9rTab.frame[lcEditor.TabDefault].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
             
             search_state_posFrom = cursor.from();
             search_state_posTo = cursor.to();
@@ -806,22 +824,22 @@ lcEditor.SearchNext = function(rev)
         search_state_query = query;
     }
     
-    var cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(
+    var cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(
         search_state_query, 
         rev ? search_state_posFrom : search_state_posTo,
         matchcase);
     
     if (!cursor.find(rev)) {
-        cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(
+        cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(
             search_state_query, 
-            rev ? {line: lcTab.frame[lcEditor.TabDefault].editor.lineCount() - 1} : {line: 0, ch: 0},
+            rev ? {line: l9rTab.frame[lcEditor.TabDefault].editor.lineCount() - 1} : {line: 0, ch: 0},
             matchcase);
         if (!cursor.find(rev)) {
             return;
         }
     }
     
-    lcTab.frame[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
+    l9rTab.frame[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
     search_state_posFrom = cursor.from(); 
     search_state_posTo = cursor.to();
 }
@@ -841,9 +859,9 @@ lcEditor.SearchReplace = function(all)
     
     if (all) {
 
-        for (var cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
+        for (var cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
             if (typeof search_state_query != "string") {
-                var match = lcTab.frame[lcEditor.TabDefault].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
+                var match = l9rTab.frame[lcEditor.TabDefault].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
                 cursor.replace(text.replace(/\$(\d)/, function(w, i) {return match[i];}));
             } else {
                 cursor.replace(text);
@@ -852,16 +870,16 @@ lcEditor.SearchReplace = function(all)
 
     } else {
           
-        var cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, lcTab.frame[lcEditor.TabDefault].editor.getCursor(), matchcase);
+        var cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, l9rTab.frame[lcEditor.TabDefault].editor.getCursor(), matchcase);
 
         var start = cursor.from(), match;
         if (!(match = cursor.findNext())) {
-            cursor = lcTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase);
+            cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase);
             if (!(match = cursor.findNext()) ||
                 (cursor.from().line == start.line && cursor.from().ch == start.ch)) {return;
             }
         }
-        lcTab.frame[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
+        l9rTab.frame[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
         
         cursor.replace(typeof search_state_query == "string" ? text :
             text.replace(/\$(\d)/, function(w, i) {return match[i];}));
@@ -943,16 +961,17 @@ lcEditor.ConfigEditModeSave = function(mode)
 
     var icosrc = l9r.base +"~/lesscreator/img/editor/mode-";
 
-    if (lcTab.frame[lcTab.def].editor != null) {
+    if (l9rTab.frame[l9rTab.def].editor != null) {
 
         if (mode == "win") {
             
-            lcTab.frame[lcTab.def].editor.removeKeyMap("vim");
-            lcTab.frame[lcTab.def].editor.removeKeyMap("emacs");
+            l9rTab.frame[l9rTab.def].editor.removeKeyMap("vim");
+            l9rTab.frame[l9rTab.def].editor.removeKeyMap("emacs");
+            l9rTab.frame[l9rTab.def].editor.setOption("keyMap", "sublime");
 
         } else {
 
-            lcTab.frame[lcTab.def].editor.setOption("keyMap", mode);           
+            l9rTab.frame[l9rTab.def].editor.setOption("keyMap", mode);
         }
 
         icosrc += mode;
@@ -961,7 +980,7 @@ lcEditor.ConfigEditModeSave = function(mode)
     $(".lc-editor-editmode img").attr("src", icosrc +"-48.png");
 
     lcEditor.Config.EditMode = mode;
-    lessLocalStorage.Set("editor_editmode", mode);
+    l4iStorage.Set("editor_editmode", mode);
 
     if (mode == "win") {
         mode = "Default";

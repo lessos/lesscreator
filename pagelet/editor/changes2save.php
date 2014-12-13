@@ -28,7 +28,7 @@ function _proj_editor_c2s_save_reply(ret)
         lcTabClose(ret.data.urid, 1);
         lessModalClose();
     } else {
-        lessAlert("#xi1b3h", "alert-error", "<?php echo $this->T('Internal Server Error')?>");
+        l4i.InnerAlert("#xi1b3h", "alert-error", "<?php echo $this->T('Internal Server Error')?>");
     }
 }
 </script>

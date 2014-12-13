@@ -43,15 +43,15 @@ function _fs_file_mov()
     var req = {
         "access_token" : l4iCookie.Get("access_token"),
         "data" : {
-            "pathnew" : lessSession.Get("ProjPath") +"/"+ pathnew,
-            "pathpre" : lessSession.Get("ProjPath") +"/"+ pathpre,
+            "pathnew" : l4iSession.Get("ProjPath") +"/"+ pathnew,
+            "pathpre" : l4iSession.Get("ProjPath") +"/"+ pathpre,
         }
     }
    
     //var refreshpre = pathpre.substring(0, pathpre.lastIndexOf('/'));
     var refreshnew = pathnew.substring(0, pathnew.lastIndexOf('/'));    
 
-    var pathPreUrid = lessCryptoMd5(pathpre);
+    var pathPreUrid = l4iString.CryptoMd5(pathpre);
 
     lcEditor.IsSaved(pathPreUrid, function(ret) {
 
@@ -78,7 +78,7 @@ function _fs_file_mov()
     
                     var path = pathpre.replace(/(^\/*)|(\/*$)/g, "");
                     path = path.replace(/(\/+)/g, "/");
-                    var p = lessCryptoMd5(path);
+                    var p = l4iString.CryptoMd5(path);
                     $("#ptp"+p).remove();
                     $("#pt"+p).remove();
                     
@@ -87,7 +87,7 @@ function _fs_file_mov()
                     for (var i in ps) {
     
                         path += "/"+ ps[i];
-                        p = lessCryptoMd5(path);
+                        p = l4iString.CryptoMd5(path);
                         if (!$("#pt"+p).html() || $("#pt"+p).html().length < 1) {
                             //console.log("load new "+ path);
                             _fs_tree_dir(path, 1);

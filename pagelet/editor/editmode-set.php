@@ -78,12 +78,12 @@ function _lc_editor_mode(mode)
     $('.lc-editor-editmode img').attr("src", icosrc +"-48.png");
 
     lcEditor.Config.EditMode = mode;
-    lessLocalStorage.Set('editor_editmode', mode);
+    l4iStorage.Set('editor_editmode', mode);
 
     if (mode == null) {
         mode = '<?php echo $this->T('Default')?>';
     }
-    lessAlert('#en8dfy', 'alert-success', '<?php echo $this->T('Successfully switched to')?> '+ mode);
+    l4i.InnerAlert('#en8dfy', 'alert-success', '<?php echo $this->T('Successfully switched to')?> '+ mode);
 }
 
 if (lcEditor.Config.EditMode != null) { 

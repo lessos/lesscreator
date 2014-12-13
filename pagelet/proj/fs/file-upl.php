@@ -145,13 +145,13 @@ function _fs_file_upl_do(file, path)
             var req = {
                 "access_token" : l4iCookie.Get("access_token"),
                 "data" : {
-                    "projid": lessSession.Get("projid"),
-                    "path" : lessSession.Get("ProjPath") +"/"+ subdir +"/"+ path,
+                    "projid": l4iSession.Get("projid"),
+                    "path" : l4iSession.Get("ProjPath") +"/"+ subdir +"/"+ path,
                     "size" : file.size,
                     "body" : e.target.result,
                 }
             }
-            // console.log(lessSession.Get("ProjPath") +"/"+ path);
+            // console.log(l4iSession.Get("ProjPath") +"/"+ path);
 
             $.ajax({
                 type    : "POST",
@@ -211,7 +211,7 @@ function _fs_file_upl()
                 var req = {
                     "access_token" : l4iCookie.Get("access_token"),
                     "data" : {
-                        "path" : lessSession.Get("ProjPath") +"/"+ path +"/"+ file.name,
+                        "path" : l4iSession.Get("ProjPath") +"/"+ path +"/"+ file.name,
                         "size" : file.size,
                         "body" : e.target.result,
                     }

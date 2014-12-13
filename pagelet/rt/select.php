@@ -153,7 +153,7 @@ $(".kyexic").click(function(){
         return;
     }
     
-    uri += "?proj=" + lessSession.Get("ProjPath");
+    uri += "?proj=" + l4iSession.Get("ProjPath");
     lessModalOpen("/lesscreator/"+ uri, 1, 600, 400, title, null);
 });
 

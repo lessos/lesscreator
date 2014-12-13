@@ -41,7 +41,7 @@ $("#egj3zj").submit(function(event) {
 
 function _fs_file_new()
 {    
-    var path = lessSession.Get("ProjPath");
+    var path = l4iSession.Get("ProjPath");
     path += "/"+ $("#egj3zj").find("input[name=path]").val();
     path += "/"+ $("#egj3zj").find("input[name=name]").val();
 

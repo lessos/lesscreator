@@ -22,8 +22,8 @@ l9rProjFs.UiTreeLoad = function(options)
         options.toggle = false;
     }
 
-    var ptdid = lessCryptoMd5(options.path);
-    if (options.path == lessSession.Get("proj_current")) {
+    var ptdid = l4iString.CryptoMd5(options.path);
+    if (options.path == l4iSession.Get("proj_current")) {
         ptdid = "root";
     }
 
@@ -33,7 +33,7 @@ l9rProjFs.UiTreeLoad = function(options)
     }
 
     var req = {
-        path: options.path,// lessSession.Get("proj_current"),
+        path: options.path,// l4iSession.Get("proj_current"),
     }
 
     // console.log("path reload "+ options.path);
@@ -47,12 +47,12 @@ l9rProjFs.UiTreeLoad = function(options)
             
             if (ls[i].name == "lcproject.json") {
                 // TODO
-                // continue;
+                continue;
             }
 
             var fspath = rs.path +"/"+ ls[i].name;
             ls[i].path = fspath.replace(/\/+/g, "/");
-            ls[i].fsid = lessCryptoMd5(ls[i].path);
+            ls[i].fsid = l4iString.CryptoMd5(ls[i].path);
 
             ls[i].fstype = "none";
 
@@ -122,14 +122,14 @@ l9rProjFs.UiTreeLoad = function(options)
             $("#ptp"+ ptdid).after("<div id=\"fstd"+ptdid+"\" style=\"padding-left:20px;\"></div>");
         }
 
-        lessTemplate.RenderFromId("fstd"+ ptdid, "lcx-filenav-tree-tpl", lsfs);
+        l4iTemplate.RenderFromId("fstd"+ ptdid, "lcx-filenav-tree-tpl", lsfs);
         
         options.success();
 
         setTimeout(function() {
             l9rProjFs.UiTreeEventRefresh();
-            lcLayout.Resize();
-            $("#l9r-proj-nav-status").text(lessSession.Get("proj_current_name"));
+            l9rLayout.Resize();
+            $("#l9r-proj-nav-status").text(l4iSession.Get("proj_current_name"));
         }, 10);
     }
 
@@ -197,7 +197,7 @@ l9rProjFs.UiTreeEventRefresh = function()
             l9rProjFs.UiTreeLoad({path: fspath, toggle: true});
             break;
         case "text":
-            lcTab.Open({
+            l9rTab.Open({
                 uri    : fspath,
                 // colid : "lclay-colmain",
                 type   : "editor",
@@ -253,17 +253,17 @@ l9rProjFs.LayoutResize = function(options)
 {
     var fsp = $("#lcbind-fsnav-fstree").position();
     if (fsp) {
-        // $(".lcx-fsnav").width((lcLayout.width * options.width / 100));
-        // console.log((lcLayout.width * options.width / 100));
-        $("#lcbind-fsnav-fstree").width((lcLayout.width * options.width / 100));
-        $("#lcbind-fsnav-fstree").height(lcLayout.height - (fsp.top - lcLayout.postop));
+        // $(".lcx-fsnav").width((l9rLayout.width * options.width / 100));
+        // console.log((l9rLayout.width * options.width / 100));
+        $("#lcbind-fsnav-fstree").width((l9rLayout.width * options.width / 100));
+        $("#lcbind-fsnav-fstree").height(l9rLayout.height - (fsp.top - l9rLayout.postop));
     }
 }
 
 l9rProjFs.FileNew = function(type, path, file)
 {
     if (path === undefined || path === null) {
-        path = lessSession.Get("proj_current");
+        path = l4iSession.Get("proj_current");
     }
 
     var formid = Math.random().toString(36).slice(2);
@@ -449,7 +449,7 @@ function _fsUploadHander(evt)
 l9rProjFs.FileUpload = function(path)
 {
     if (path === undefined || path === null) {
-        path = lessSession.Get("proj_current");
+        path = l4iSession.Get("proj_current");
         // alert("Path can not be null"); // TODO
         // return;
     }
@@ -646,7 +646,7 @@ l9rProjFs.FileDelSave = function(formid)
         path    : path,
         success : function(rsp) {
             
-            var fsid = "ptp" + lessCryptoMd5(path);
+            var fsid = "ptp" + l4iString.CryptoMd5(path);
             $("#"+ fsid).remove();
 
             l4iModal.Close();

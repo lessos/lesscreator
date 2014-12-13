@@ -84,7 +84,7 @@ function _php_yaf_action_new()
 {
     var url = "/lesscreator/plugins/php-yaf/fs-ov-action-new?func=action-new";
 
-    var data = "proj="+ lessSession.Get("ProjPath");
+    var data = "proj="+ l4iSession.Get("ProjPath");
     data += "&path=/application/controllers/<?php echo $this->req->ctl?>";
     data += "&func_name="+ $("#td5kfz").find("input[name=func_name]").val();
     data += "&class=<?php echo strstr($this->req->ctl, ".", true)?>";

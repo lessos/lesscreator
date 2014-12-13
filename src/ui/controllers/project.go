@@ -35,6 +35,3 @@ func (c Project) NewAction() {
 	c.ViewData["proj_name"] = utils.StringNewRand36(16)
 }
 
-func (c Project) FileNavAction() {
-
-}

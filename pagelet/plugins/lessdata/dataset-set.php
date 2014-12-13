@@ -74,12 +74,12 @@ function _data_dataset_set()
         data    : $("#b2qcyo").serialize() +"&proj="+ projCurrent,
         success : function(rsp) {
             if (rsp == "OK") {
-                lessAlert(".bmejc8", "alert-success", "OK");
+                l4i.InnerAlert(".bmejc8", "alert-success", "OK");
                 if (typeof _proj_data_tabopen == 'function') {
                     _proj_data_tabopen('/lesscreator/plugins/lessdata/list?proj='+projCurrent, 1);
                 }
             } else {
-                lessAlert(".bmejc8", "alert-error", rsp);
+                l4i.InnerAlert(".bmejc8", "alert-error", rsp);
             }
         }
     });

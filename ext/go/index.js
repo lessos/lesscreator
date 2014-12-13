@@ -22,7 +22,7 @@ lcExt.go.Index = function()
         data = lcExt.go.cfgDef;
     }
 
-    lessTemplate.Render({
+    l4iTemplate.Render({
         tplurl : l9r.base +"+/go/set.tpl",
         dstid  : "lcext-go-setform",
         data   : data,
@@ -52,23 +52,23 @@ lcExt.go.SetSave = function()
     }
 
     var req = {
-        path   : lessSession.Get("proj_current") +"/lcproject.json",
+        path   : l4iSession.Get("proj_current") +"/lcproject.json",
         encode : "jm",
         data   : JSON.stringify({runtime: {go: itemset}}),
     }
 
     req.success = function() {
-        lessAlert("#lcext-go-setmsg", "alert-success", "Successfully Updated");
+        l4i.InnerAlert("#lcext-go-setmsg", "alert-success", "Successfully Updated");
         l9rProj.Info.runtime.go = itemset;
         
-        var tabid = lessCryptoMd5(l9r.base +"+/go/index.tpl");
-        lcTab.ScrollTop(tabid);
+        var tabid = l4iString.CryptoMd5(l9r.base +"+/go/index.tpl");
+        l9rTab.ScrollTop(tabid);
 
         lcExt.NavRefresh(); // TODO SD
     }
 
     req.error = function(status, message) {
-        lessAlert("#lcext-go-setmsg", "alert-error", "Error: "+ message);
+        l4i.InnerAlert("#lcext-go-setmsg", "alert-error", "Error: "+ message);
         l4iModal.ScrollTop();
     }
 

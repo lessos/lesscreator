@@ -26,7 +26,7 @@ try {
     } */
 
 } catch (\Exception $e) {
-    echo "<script>lessAlert('#iei0ne', 'alert-error', '".$e->getMessage()."');</script>";
+    echo "<script>l4i.InnerAlert('#iei0ne', 'alert-error', '".$e->getMessage()."');</script>";
 }
 
 ?>

@@ -101,7 +101,7 @@ $("#td5kfz").submit(function(event) {
 var reopenurid = null;
 function _go_beego_action_new()
 {
-    var urid = lessCryptoMd5("controllers/<?php echo $this->req->file?>");
+    var urid = l4iString.CryptoMd5("controllers/<?php echo $this->req->file?>");
     
     var item = h5cTabletPool[urid];
 
@@ -123,7 +123,7 @@ function _go_beego_action_new2(rs)
     //return;
     var url = "/lesscreator/plugins/go-beego/fs-ov-action-new?func=action-new";
 
-    var data = "proj="+ lessSession.Get("ProjPath");
+    var data = "proj="+ l4iSession.Get("ProjPath");
     data += "&func_name="+ $("#td5kfz").find("select[name=func_name]").val();
     data += "&file=<?php echo $this->req->file?>";
     data += "&ctl=<?php echo $this->req->ctl?>";

@@ -171,8 +171,8 @@ function _proj_launch_webserver_try()
 {
     var url = "/lesscreator/launch/webserver";
     url += "?apimethod=launch.web";
-    url += "&proj="+ lessSession.Get("ProjPath");
-    url += "&user="+ lessSession.Get("SessUser");
+    url += "&proj="+ l4iSession.Get("ProjPath");
+    url += "&user="+ l4iSession.Get("SessUser");
 
     $.ajax({
         url     : url,
@@ -183,7 +183,7 @@ function _proj_launch_webserver_try()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                return lessAlert("#mc0zzp", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+                return l4i.InnerAlert("#mc0zzp", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
             }
 
             if (rsj.status == 202) {
@@ -191,11 +191,11 @@ function _proj_launch_webserver_try()
                 setTimeout(_proj_launch_webserver_try_status, 1000);
 
             } else {
-                lessAlert("#mc0zzp", "alert-error", "Error: "+ rsj.message);
+                l4i.InnerAlert("#mc0zzp", "alert-error", "Error: "+ rsj.message);
             }
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#mc0zzp", "alert-error", "Error: "+ xhr.responseText);
+            l4i.InnerAlert("#mc0zzp", "alert-error", "Error: "+ xhr.responseText);
         }
     });
 }
@@ -207,14 +207,14 @@ var _proj_launch_webserver_try_num = 10;
 function _proj_launch_webserver_try_status()
 {
     if (_proj_launch_webserver_try_num < 0) {
-        lessAlert("#mc0zzp", "alert-error", "Error: Timeout");
+        l4i.InnerAlert("#mc0zzp", "alert-error", "Error: Timeout");
         return;
     }
 
     var url = "/lesscreator/launch/webserver";
     url += "?apimethod=launch.web.status";
-    url += "&proj="+ lessSession.Get("ProjPath");
-    url += "&user="+ lessSession.Get("SessUser");
+    url += "&proj="+ l4iSession.Get("ProjPath");
+    url += "&user="+ l4iSession.Get("SessUser");
 
     $.ajax({
         url     : url,
@@ -225,7 +225,7 @@ function _proj_launch_webserver_try_status()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                return lessAlert("#mc0zzp", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+                return l4i.InnerAlert("#mc0zzp", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
             }
 
             if (rsj.status == 200) {
@@ -238,14 +238,14 @@ function _proj_launch_webserver_try_status()
                 //msg += " -- or -- ";
                 //msg += "<button class='btn' onclick='lessModalClose()'>Close</button>";
 
-                lessAlert("#mc0zzp", "alert-success", msg);
+                l4i.InnerAlert("#mc0zzp", "alert-success", msg);
 
             } else if (rsj.status == 202) {
                 setTimeout(_proj_launch_webserver_try_status, 1000);
             }
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#mc0zzp", "alert-error", "Error: "+ xhr.responseText);
+            l4i.InnerAlert("#mc0zzp", "alert-error", "Error: "+ xhr.responseText);
         }
     });
 

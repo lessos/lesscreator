@@ -1,5 +1,5 @@
 
-var lcTab = {
+var l9rTab = {
     def         : "lctab-default",
     pageArray   : {},
     pageCurrent : 0,
@@ -32,7 +32,7 @@ var lcTab = {
     pool        : {}
 }
 
-lcTab.Open = function(options)
+l9rTab.Open = function(options)
 {
     options = options || {};
 
@@ -49,13 +49,13 @@ lcTab.Open = function(options)
     }
 
     if (options.target === undefined) {
-        options.target = lcTab.def;
+        options.target = l9rTab.def;
     }
 
-    var urid = lessCryptoMd5(options.uri);
+    var urid = l4iString.CryptoMd5(options.uri);
 
-    if (!lcTab.frame[options.target]) {
-        lcTab.frame[options.target] = {
+    if (!l9rTab.frame[options.target]) {
+        l9rTab.frame[options.target] = {
             urid   : 0,
             colid  : options.colid,
             editor : null,
@@ -63,9 +63,9 @@ lcTab.Open = function(options)
         };
     }
 
-    if (!lcTab.pool[urid]) {
+    if (!l9rTab.pool[urid]) {
 
-        lcTab.pool[urid] = {
+        l9rTab.pool[urid] = {
             url       : options.uri,
             colid     : options.colid,
             target    : options.target,
@@ -79,21 +79,21 @@ lcTab.Open = function(options)
         }
 
         if (options.close === false) {
-        	lcTab.pool[urid].close = false;
+        	l9rTab.pool[urid].close = false;
         }
 
         if (options.jsdata) {
-            lcTab.pool[urid].jsdata = options.jsdata;
+            l9rTab.pool[urid].jsdata = options.jsdata;
         }
 
         if (options.tpluri) {
-            lcTab.pool[urid].tpluri = options.tpluri;
+            l9rTab.pool[urid].tpluri = options.tpluri;
         }
     }
 
     if (document.getElementById("lctab-box"+ options.target) == null) {
         
-        var tpl = lessTemplate.RenderById("lctab-tpl", {tabid: lcTab.def});
+        var tpl = l4iTemplate.RenderById("lctab-tpl", {tabid: l9rTab.def});
         
         if (tpl == "") {
             return;
@@ -101,9 +101,9 @@ lcTab.Open = function(options)
 
         // console.log(tpl);
         $("#"+ options.colid).append(tpl);
-        lcLayout.ColumnSet({
+        l9rLayout.ColumnSet({
             id   : "lclay-colmain",
-            hook : lcTab.LayoutResize
+            hook : l9rTab.LayoutResize
         });
 
         // TODO
@@ -111,7 +111,7 @@ lcTab.Open = function(options)
 
             event.stopPropagation();
 
-            lcTab.TabletMore($(this).attr('href').substr(1));
+            l9rTab.TabletMore($(this).attr('href').substr(1));
 
             $(document).click(function() {
                 $("#lctab-openfiles-ol").empty().hide();
@@ -120,28 +120,27 @@ lcTab.Open = function(options)
         });
     }
 
-    lcTab.Switch(urid);
+    l9rTab.Switch(urid);
 }
 
-lcTab.Switch = function(urid)
+l9rTab.Switch = function(urid)
 {
-
-    var item = lcTab.pool[urid];
+    var item = l9rTab.pool[urid];
     if (item === undefined) {
         return;
     }
 
-    if (lcTab.frame[item.target].urid == urid) {
+    if (l9rTab.frame[item.target].urid == urid) {
         return;
     }
 
     // TODO
-    // if (lcTab.frame[item.target].editor != null) {
+    // if (l9rTab.frame[item.target].editor != null) {
 
-    //     var prevEditorScrollInfo = lcTab.frame[item.target].editor.getScrollInfo();
-    //     var prevEditorCursorInfo = lcTab.frame[item.target].editor.getCursor();
+    //     var prevEditorScrollInfo = l9rTab.frame[item.target].editor.getScrollInfo();
+    //     var prevEditorCursorInfo = l9rTab.frame[item.target].editor.getCursor();
 
-    //     lcData.Get("files", lcTab.frame[item.target].urid, function(prevEntry) {
+    //     lcData.Get("files", l9rTab.frame[item.target].urid, function(prevEntry) {
 
     //         if (!prevEntry) {
     //             return;
@@ -158,17 +157,17 @@ lcTab.Switch = function(urid)
     //     });
     // }
 
-    if (lcTab.frame[item.target].urid != urid) {
+    if (l9rTab.frame[item.target].urid != urid) {
         //lcEditor.Save(lcEditor.urid, 1);
-        lcTab.frame[item.target].urid = 0;
+        l9rTab.frame[item.target].urid = 0;
     }
 
-    lcTab.TabletTitle(urid, true);
+    l9rTab.TabletTitle(urid, true);
 
     // console.log(item);
     if (item.titleOnly === true) {
-        lcTab.TabletTitleImage(urid);
-        lcTab.pool[urid].titleOnly = false;
+        l9rTab.TabletTitleImage(urid);
+        l9rTab.pool[urid].titleOnly = false;
         return;
     }
 
@@ -179,76 +178,34 @@ lcTab.Switch = function(urid)
 
         if (item.tpluri !== undefined) {
 
-            if (/\?/.test(item.tpluri)) {
-                item.tpluri += "&_=";
-            } else {
-                item.tpluri += "?_=";
-            }
-
-            item.tpluri += Math.random();
-
-            $.ajax({
-                url     : item.tpluri,
-                type    : "GET",
-                timeout : 10000,
+            l9r.Ajax(item.tpluri, {
                 success : function(rsp) {
 
                     if (item.jsdata !== undefined) {
                         var tempFn = doT.template(rsp);
-                        lcTab.pool[urid].data = tempFn(item.jsdata);
+                        l9rTab.pool[urid].data = tempFn(item.jsdata);
                     } else {
-                        lcTab.pool[urid].data = rsp;
+                        l9rTab.pool[urid].data = rsp;
                     }
 
                     // console.log(item.jsdata);
 
-                    lcTab.TabletTitleImage(urid);
-                    lcTab.frame[item.target].urid = urid;
+                    l9rTab.TabletTitleImage(urid);
+                    l9rTab.frame[item.target].urid = urid;
 
-                    $("#lccab-bar"+ item.target).hide();
-                    $("#lctab-body"+ item.target).empty().html(lcTab.pool[urid].data);
-                    lcLayout.Resize();
-                    setTimeout(lcLayout.Resize, 10);
+                    $("#lctab-bar"+ item.target).hide();
+                    $("#lctab-body"+ item.target).empty().html(l9rTab.pool[urid].data);
+                    l9rLayout.Resize();
+                    setTimeout(l9rLayout.Resize, 10);
 
                     $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
 
-                    lcTab.frame[item.target].editor = null;
+                    l9rTab.frame[item.target].editor = null;
                 },
                 error: function(xhr, textStatus, error) {
                     lcHeaderAlert("error", xhr.responseText);
                 }
             });
-
-
-            // var ep = EventProxy.create("template", "data", function (template, data) {
-            //     console.log("template", template);
-            //     console.log("data", data);
-            //     //_.template(template, data, l10n);
-            // });
-
-            // $.ajax({
-            //     url     : item.tpluri,
-            //     type    : "GET",
-            //     timeout : 10000,
-            //     success : function(rsp) {
-            //         ep.emit("template", rsp);
-            //     },
-            //     error : function() {
-            //         ep.emit("template", null);
-            //     }
-            // });
-
-            // $.ajax({
-            //     url     : item.datauri,
-            //     type    : "GET",
-            //     timeout : 10000,
-            //     success : function(rsp) {
-            //         ep.emit("data", rsp);
-            //     },
-            //     error : function() {
-            //         ep.emit("data", {});
-            //     }
-            // });
         }
 
         break;
@@ -256,20 +213,18 @@ lcTab.Switch = function(urid)
     case "webterm":
         if (true || item.data.length < 1) {
             // console.log(item);
-            $.ajax({
-                url     : item.url,
-                type    : "GET",
+            l9r.Ajax(item.url, {
                 timeout : 30000,
                 success : function(rsp) {
 
-                    lcTab.pool[urid].data = rsp;
-                    lcTab.TabletTitleImage(urid);
-                    lcTab.frame[item.target].urid = urid;
-                    lcTab.frame[item.target].editor = null;
+                    l9rTab.pool[urid].data = rsp;
+                    l9rTab.TabletTitleImage(urid);
+                    l9rTab.frame[item.target].urid = urid;
+                    l9rTab.frame[item.target].editor = null;
 
-                    $("#lccab-bar"+ item.target).hide();
+                    $("#lctab-bar"+ item.target).hide();
                     $("#lctab-body"+ item.target).empty().html(rsp);
-                    lcLayout.Resize();
+                    l9rLayout.Resize();
 
                     $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
 
@@ -280,12 +235,12 @@ lcTab.Switch = function(urid)
                 }
             });
         } else {
-            lcTab.TabletTitleImage(urid);
-            lcTab.frame[item.target].urid = urid;
+            l9rTab.TabletTitleImage(urid);
+            l9rTab.frame[item.target].urid = urid;
             
-            $("#lccab-bar"+ item.target).empty();
+            $("#lctab-bar"+ item.target).empty();
             $("#lctab-body"+ item.target).empty().html(item.data);
-            lcLayout.Resize();
+            l9rLayout.Resize();
         }
         break;
 
@@ -298,10 +253,10 @@ lcTab.Switch = function(urid)
             }
 
             //console.log("lcEditor.TabletOpen OK");
-            lcTab.TabletTitleImage(urid);
-            lcTab.frame[item.target].urid = urid;
-            // lessLocalStorage.Set("tab.fra.urid."+ item.target, urid);
-            // lessLocalStorage.Set(lessSession.Get("podid") +"."+ lessSession.Get("proj_name") +".cab."+ item.target, urid);
+            l9rTab.TabletTitleImage(urid);
+            l9rTab.frame[item.target].urid = urid;
+            // l4iStorage.Set("tab.fra.urid."+ item.target, urid);
+            // l4iStorage.Set(l4iSession.Get("podid") +"."+ l4iSession.Get("proj_name") +".cab."+ item.target, urid);
         
             item.success();
         });
@@ -313,9 +268,9 @@ lcTab.Switch = function(urid)
     }
 }
 
-lcTab.TabletTitleImage = function(urid, imgsrc)
+l9rTab.TabletTitleImage = function(urid, imgsrc)
 {
-    var item = lcTab.pool[urid];
+    var item = l9rTab.pool[urid];
 
     if (imgsrc === undefined && item.icon !== undefined) {
         
@@ -331,9 +286,9 @@ lcTab.TabletTitleImage = function(urid, imgsrc)
     }
 }
 
-lcTab.TabletTitle = function(urid, loading)
+l9rTab.TabletTitle = function(urid, loading)
 {
-    var item = lcTab.pool[urid];
+    var item = l9rTab.pool[urid];
     
     if (!item.target) {
         return;
@@ -345,7 +300,7 @@ lcTab.TabletTitle = function(urid, loading)
             item.title = item.url.replace(/^.*[\\\/]/, '');
         }
 
-        entry  = '<table id="pgtab'+ urid +'" class="pgtab"><tr>';
+        var entry  = '<table id="pgtab'+ urid +'" class="pgtab" style="display:none"><tr>';
         
         if (item.icon) {
 
@@ -360,22 +315,22 @@ lcTab.TabletTitle = function(urid, loading)
                 imgsrc = item.icon;
             }
 
-            entry += "<td class='ico' onclick=\"lcTab.Switch('"+ urid +"')\">\
+            entry += "<td class='ico' onclick=\"l9rTab.Switch('"+ urid +"')\">\
                 <img src='"+ imgsrc +"' align='absmiddle' /></td>";
         }
 
         entry += '<td class="chg">*</td>';
-        entry += "<td class=\"pgtabtitle\" onclick=\"lcTab.Switch('"+ urid +"')\">"+item.title+"</td>";
+        entry += "<td class=\"pgtabtitle\" onclick=\"l9rTab.Switch('"+ urid +"')\">"+item.title+"</td>";
         
         if (item.close) {
-            // entry += '<td><div class="pgtabclose" onclick="lcTab.Close(\''+ urid +'\', 0)"><div class="pgtabcloseitem">&times;</div></div></td>';
-            entry += '<td><span class="pgtabclose" onclick="lcTab.Close(\''+ urid +'\', 0)"></span></td>';
-
+            // entry += '<td><div class="pgtabclose" onclick="l9rTab.Close(\''+ urid +'\', 0)"><div class="pgtabcloseitem">&times;</div></div></td>';
+            entry += '<td><span class="pgtabclose" onclick="l9rTab.Close(\''+ urid +'\', 0)"></span></td>';
         }
 
         entry += '</tr></table>';
         
-        $("#lctab-navtabs"+ item.target).append(entry);            
+        $("#lctab-navtabs"+ item.target).append(entry);
+        $("#pgtab"+ urid).show(200);
     }
 
     if (item.titleOnly !== true) {
@@ -408,21 +363,21 @@ lcTab.TabletTitle = function(urid, loading)
     $('#lctab-nav'+ item.target +' .lctab-navs').animate({left: "-"+mov+"px"}); // COOL!
 }
 
-lcTab.TabletMore = function(tg)
+l9rTab.TabletMore = function(tg)
 {
     // console.log("TabletMore: "+ tg);
 
     var ol = '';
-    for (i in lcTab.pool) {
+    for (i in l9rTab.pool) {
 
-        if (lcTab.pool[i].target != tg) {
+        if (l9rTab.pool[i].target != tg) {
             continue;
         }
 
-        var href = "javascript:lcTab.Switch('"+ i +"')";
+        var href = "javascript:l9rTab.Switch('"+ i +"')";
         ol += '<div class="ltm-item lctab-nav-moreitem">';
-        ol += '<div class="ltm-ico"><img src="'+ l9r.base + '~/lesscreator/img/'+ lcTab.pool[i].icon +'.png" align="absmiddle" /></div>';
-        ol += '<div class="ltm-ctn"><a href="'+ href +'">'+ lcTab.pool[i].title +'</a></div>';
+        ol += '<div class="ltm-ico"><img src="'+ l9r.base + '~/lesscreator/img/'+ l9rTab.pool[i].icon +'.png" align="absmiddle" /></div>';
+        ol += '<div class="ltm-ctn"><a href="'+ href +'">'+ l9rTab.pool[i].title +'</a></div>';
         ol += '</div>';
     }
     $("#lctab-openfiles-ol").empty().html(ol);
@@ -465,9 +420,9 @@ lcTab.TabletMore = function(tg)
     });
 }
 
-lcTab.ScrollTop = function(urid)
+l9rTab.ScrollTop = function(urid)
 {
-    var item = lcTab.pool[urid];
+    var item = l9rTab.pool[urid];
     if (item === undefined || item.target === undefined) {
         return;
     }
@@ -475,32 +430,32 @@ lcTab.ScrollTop = function(urid)
     $("#lctab-body"+ item.target +".less_scroll").scrollTop(0);
 }
 
-lcTab.Close = function(urid, force)
+l9rTab.Close = function(urid, force)
 {
-    var item = lcTab.pool[urid];
+    var item = l9rTab.pool[urid];
 
     switch (item.type) {
     case "apidriven":
     case 'html':
-        lcTab.CloseClean(urid);
+        l9rTab.CloseClean(urid);
         break;
     case 'webterm':
         $('#lctab-nav-w1').hide();
-        lcTab.CloseClean(urid);
-        lessLocalStorage.Set("lcWebTerminal0", "0");
+        l9rTab.CloseClean(urid);
+        l4iStorage.Set("lcWebTerminal0", "0");
         break;
     case 'editor':
 
         if (force == 1) {
         
-            lcTab.CloseClean(urid);
+            l9rTab.CloseClean(urid);
 
         } else {
 
             lcEditor.IsSaved(urid, function(ret) {
                 
                 if (ret) {
-                    lcTab.CloseClean(urid);
+                    l9rTab.CloseClean(urid);
                     return;
                 }
 
@@ -535,22 +490,23 @@ lcTab.Close = function(urid, force)
     }
 }
 
-lcTab.CloseClean = function(urid)
+l9rTab.CloseClean = function(urid)
 {
-    var item = lcTab.pool[urid];
-    if (item == undefined || !item.url) {
+    var item = l9rTab.pool[urid];
+    if (!item || !item.url) {
         return;
     }
 
     var j = 0;
-    for (var i in lcTab.pool) {
+    var cleanbody = false;
+    for (var i in l9rTab.pool) {
 
-        if (item.target != lcTab.pool[i].target) {
+        if (item.target != l9rTab.pool[i].target) {
             continue;
         }
 
-        if (!lcTab.pool[i].target) {
-            delete lcTab.pool[i];
+        if (!l9rTab.pool[i].target) {
+            delete l9rTab.pool[i];
             continue;
         }
 
@@ -560,42 +516,55 @@ lcTab.CloseClean = function(urid)
                 //console.log("del: "+ rs);
             });
 
-            $('#pgtab'+ urid).remove();
-            delete lcTab.pool[urid];
+            $('#pgtab'+ urid).hide(200, function() {
+                $('#pgtab'+ urid).remove()
+            });
+            delete l9rTab.pool[urid];
 
-            if (urid != lcTab.frame[item.target].urid) {
+            if (urid != l9rTab.frame[item.target].urid) {
                 return;
             }
 
-            $("#lctab-body"+ item.target).empty();
-            $("#lccab-bar"+ item.target).empty();
+            cleanbody = true;
 
-            lcTab.frame[item.target].urid = 0;
+            // $("#lctab-body"+ item.target).empty();
+            // $("#lctab-bar"+ item.target).empty();
+
+            l9rTab.frame[item.target].urid = 0;
             if (j != 0) {
                 break;
             }
 
         } else {            
             j = i;            
-            if (lcTab.frame[item.target].urid == 0) {
+            if (l9rTab.frame[item.target].urid == 0) {
                 break;
             }
         }
     }
     
     if (j != 0) {
-        lcTab.Switch(j);
-        lcTab.frame[item.target].urid = j;
+        l9rTab.Switch(j);
+        l9rTab.frame[item.target].urid = j;
+    } else if (cleanbody)  {
+        // $("#lctab-body"+ item.target).slideUp(200, function() {
+        //     $("#lctab-body"+ item.target).empty();
+        // });
+        $("#lctab-bar"+ item.target).slideUp(100, function() {
+            $("#lctab-bar"+ item.target).empty();
+        });
+        $("#lctab-body"+ item.target).empty();
+        // $("#lctab-bar"+ item.target).empty();
     }
 
-    lcLayout.Resize();
+    l9rLayout.Resize();
 }
 
-lcTab.LayoutResize = function(options)
+l9rTab.LayoutResize = function(options)
 {
-    for (var i in lcTab.frame) {
+    for (var i in l9rTab.frame) {
 
-        if (lcTab.frame[i].colid != options.id) {
+        if (l9rTab.frame[i].colid != options.id) {
             continue;
         }
 
@@ -603,20 +572,20 @@ lcTab.LayoutResize = function(options)
             continue;
         }
 
-        var _w = options.width * lcLayout.width / 100;
+        var _w = options.width * l9rLayout.width / 100;
 
         var _tabs_h = $("#lctab-nav"+ i).height();
         var _tbar_h = 0;
-        if ($("#lccab-bar"+ i).is(":visible")) {
-            _tbar_h = $("#lccab-bar"+ i).height();
-            // console.log("lccab-bar height: "+ _tbar_h);
+        if ($("#lctab-bar"+ i).is(":visible")) {
+            _tbar_h = $("#lctab-bar"+ i).height();
+            // console.log("lctab-bar height: "+ _tbar_h);
         }
-        var _body_h = lcLayout.height - _tabs_h - _tbar_h;
+        var _body_h = l9rLayout.height - _tabs_h - _tbar_h;
 
         $("#lctab-body"+ i).height(_body_h);
         $("#lctab-nav"+ i +" .lctab-navm").width(_w - 30);
 
-        if (lcTab.frame[i].editor !== null) {
+        if (l9rTab.frame[i].editor !== null) {
             // console.log("CodeMirror changed");
             if ($("#lctab-body"+ i +" > .CodeMirror").length > 0) {
                 $("#lctab-body"+ i +" > .CodeMirror").width(_w);
@@ -633,14 +602,14 @@ lcTab.LayoutResize = function(options)
 
     //     $('#h5c-resize-roww0').show();
 
-    //     toset = lessSession.Get('lcLyoCtn0H');
+    //     toset = l4iSession.Get('lcLyoCtn0H');
     //     if (toset == 0 || toset == null) {
-    //         toset = lessLocalStorage.Get('lcLyoCtn0H');
+    //         toset = l4iStorage.Get('lcLyoCtn0H');
     //     }
     //     if (toset == 0 || toset == null) {
     //         toset = 0.7;
-    //         lessLocalStorage.Set("lcLyoCtn0H", toset);
-    //         lessSession.Set("lcLyoCtn0H", toset);
+    //         l4iStorage.Set("lcLyoCtn0H", toset);
+    //         l4iSession.Set("lcLyoCtn0H", toset);
     //     }
 
     //     var ctn1_tab_h = $('#h5c-tablet-tabs-framew1').height();

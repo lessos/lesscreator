@@ -97,7 +97,7 @@ var instanceid  = null;
 var flowgrpid   = '<?php echo $this->req->flowgrpid?>';
 var flowactorid = '<?php echo $this->req->flowactorid?>';
 
-lessSession.delPrefix("Launch");
+l4iSession.delPrefix("Launch");
 
 sessionStorage.LaunchInstanceId  = instanceid;
 sessionStorage.LaunchFlowGrpId   = flowgrpid;

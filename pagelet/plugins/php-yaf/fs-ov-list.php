@@ -134,7 +134,7 @@ $(".rcifxb-new").click(function(event) {
 
     var tit = "<?php echo $this->T('New')?> Controller";
     var url = "/lesscreator/plugins/php-yaf/fs-ov-controller-new";
-    url += "?proj="+ lessSession.Get("ProjPath");
+    url += "?proj="+ l4iSession.Get("ProjPath");
 
     lessModalOpen(url, 1, 550, 180, tit, null);
 });
@@ -160,7 +160,7 @@ $(".rr20fx-new").click(function(event) {
     var tit = "<?php echo $this->T('New')?> Action";
     var url = "/lesscreator/plugins/php-yaf/fs-ov-action-new";
     url += "?ctl="+ uri[1];
-    url += "&proj="+ lessSession.Get("ProjPath");
+    url += "&proj="+ l4iSession.Get("ProjPath");
 
 
     lessModalOpen(url, 1, 550, 180, tit, null);

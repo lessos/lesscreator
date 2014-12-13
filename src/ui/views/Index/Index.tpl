@@ -75,7 +75,7 @@ function _load_box_config()
         },
         error: function(xhr, textStatus, error) {
             $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-            lessAlert("#_load-alert", "alert-error", "{{T . "Failed on Initializing System Environment"}}");
+            l4i.InnerAlert("#_load-alert", "alert-error", "{{T . "Failed on Initializing System Environment"}}");
         }
     });
 
@@ -94,28 +94,28 @@ function _load_box_config()
                 var rsj = JSON.parse(rsp);
             } catch (e) {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                lessAlert("#_load-alert", "alert-error", "{{T . "Service Unavailable"}} ("+url+")");
+                l4i.InnerAlert("#_load-alert", "alert-error", "{{T . "Service Unavailable"}} ("+url+")");
                 return;
             }
 
             if (rsj.status == 401) {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                lessAlert("#_load-alert", "alert-error", "{{T . "Unauthorized"}}, <a href='/user'>{{T . "try login again"}}</a>");
+                l4i.InnerAlert("#_load-alert", "alert-error", "{{T . "Unauthorized"}}, <a href='/user'>{{T . "try login again"}}</a>");
             } else if (rsj.status == 200) {
 
-                if (rsj.data.basedir != lessSession.Get("basedir")) {
-                    lessSession.Del("basedir");
-                    lessSession.Del("ProjPath");
+                if (rsj.data.basedir != l4iSession.Get("basedir")) {
+                    l4iSession.Del("basedir");
+                    l4iSession.Del("ProjPath");
                 }
 
-                lessSession.Set("basedir", rsj.data.basedir);
+                l4iSession.Set("basedir", rsj.data.basedir);
                 l4iCookie.Set("basedir", rsj.data.basedir, 0);
-                lessSession.Set("SessUser", rsj.data.user);
+                l4iSession.Set("SessUser", rsj.data.user);
 
                 lcData.Init(rsj.data.user, function(ret) {
                     
                     if (!ret) {
-                        return lessAlert("#_load-alert", "alert-error", 
+                        return l4i.InnerAlert("#_load-alert", "alert-error", 
                             "{{T . "Local database (IndexedDB) initialization failed"}}");
                     }
 
@@ -126,12 +126,12 @@ function _load_box_config()
 
             } else {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                lessAlert("#_load-alert", "alert-error", rsj.message);
+                l4i.InnerAlert("#_load-alert", "alert-error", rsj.message);
             }
         },
         error: function(xhr, textStatus, error) {
             $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-            lessAlert("#_load-alert", "alert-error", "{{T . "Service Unavailable"}}");
+            l4i.InnerAlert("#_load-alert", "alert-error", "{{T . "Service Unavailable"}}");
         }
     });
 
@@ -163,28 +163,28 @@ function _load_sys_config()
                 var rsj = JSON.parse(rsp);
             } catch (e) {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                lessAlert("#_load-alert", "alert-error", "{{T . "Service Unavailable"}} ("+url+")");
+                l4i.InnerAlert("#_load-alert", "alert-error", "{{T . "Service Unavailable"}} ("+url+")");
                 return;
             }
 
             if (rsj.status == 401) {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                lessAlert("#_load-alert", "alert-error", "{{T . "Unauthorized"}}, <a href='/user'>{{T . "try login again"}}</a>");
+                l4i.InnerAlert("#_load-alert", "alert-error", "{{T . "Unauthorized"}}, <a href='/user'>{{T . "try login again"}}</a>");
             } else if (rsj.status == 200) {
 
-                if (rsj.data.basedir != lessSession.Get("basedir")) {
-                    lessSession.Del("basedir");
-                    lessSession.Del("ProjPath");
+                if (rsj.data.basedir != l4iSession.Get("basedir")) {
+                    l4iSession.Del("basedir");
+                    l4iSession.Del("ProjPath");
                 }
 
-                lessSession.Set("basedir", rsj.data.basedir);
+                l4iSession.Set("basedir", rsj.data.basedir);
                 l4iCookie.Set("basedir", rsj.data.basedir, 0);
-                lessSession.Set("SessUser", rsj.data.user);
+                l4iSession.Set("SessUser", rsj.data.user);
 
                 lcData.Init(rsj.data.user, function(ret) {
                     
                     if (!ret) {
-                        return lessAlert("#_load-alert", "alert-error", 
+                        return l4i.InnerAlert("#_load-alert", "alert-error", 
                             "{{T . "Local database (IndexedDB) initialization failed"}}");
                     }
 
@@ -195,12 +195,12 @@ function _load_sys_config()
 
             } else {
                 $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                lessAlert("#_load-alert", "alert-error", rsj.message);
+                l4i.InnerAlert("#_load-alert", "alert-error", rsj.message);
             }
         },
         error: function(xhr, textStatus, error) {
             $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-            lessAlert("#_load-alert", "alert-error", "{{T . "Service Unavailable"}}");
+            l4i.InnerAlert("#_load-alert", "alert-error", "{{T . "Service Unavailable"}}");
         }
     });
 }
@@ -226,7 +226,7 @@ function _load_desk(basedir)
         },
         error: function(xhr, textStatus, error) {
             $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-            lessAlert("#_load-alert", "alert-error", "{{T . "Failed on Initializing System Environment"}}");
+            l4i.InnerAlert("#_load-alert", "alert-error", "{{T . "Failed on Initializing System Environment"}}");
         }
     });
 }
@@ -238,12 +238,12 @@ function _env_init()
 
     window.onbeforeunload = function() {
         lcEditor.HookOnBeforeUnload();
-        //lessLocalStorage.Set(lessSession.Get("SessUser") +".lastproj", proj);
+        //l4iStorage.Set(l4iSession.Get("SessUser") +".lastproj", proj);
         //return "Leave the page and lose your changes?";
     }
 
     $(window).resize(function() {
-        lcLayout.Resize();
+        l9rLayout.Resize();
     });
 
     var spacecol = 10;
@@ -261,10 +261,10 @@ function _env_init()
                 return;
             }
 
-            lessLocalStorage.Set("lcLyoLeftW", wrs / w);
-            lessSession.Set("lcLyoLeftW", wrs / w);
+            l4iStorage.Set("lcLyoLeftW", wrs / w);
+            l4iSession.Set("lcLyoLeftW", wrs / w);
 
-            lcLayout.Resize();
+            l9rLayout.Resize();
         });
     });
 
@@ -280,10 +280,10 @@ function _env_init()
                 hrs = 0;
             }
 
-            lessLocalStorage.Set("lcLyoCtn0H", hrs / h);
-            lessSession.Set("lcLyoCtn0H", hrs / h);
+            l4iStorage.Set("lcLyoCtn0H", hrs / h);
+            l4iSession.Set("lcLyoCtn0H", hrs / h);
 
-            lcLayout.Resize();
+            l9rLayout.Resize();
         });
     });
     
@@ -295,7 +295,7 @@ function _env_init()
 
     h5cProjectOpen('{{.proj}}');
         
-    lcLayout.Resize();
-    setTimeout(lcLayout.Resize, 3000);
+    l9rLayout.Resize();
+    setTimeout(l9rLayout.Resize, 3000);
 }
 </script>

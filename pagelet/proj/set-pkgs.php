@@ -154,7 +154,7 @@ $(".m3w0wf").click(function() {
     //return;
 
     var data = "access_token="+ l4iCookie.Get("access_token");
-    data += "&proj="+ lessSession.Get("ProjPath");
+    data += "&proj="+ l4iSession.Get("ProjPath");
     data += "&projid="+ projid;
 
     $.ajax({
@@ -168,13 +168,13 @@ $(".m3w0wf").click(function() {
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#ekjujo", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+                l4i.InnerAlert("#ekjujo", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
             if (rsj.status == 200) {
 
-                lessAlert("#ekjujo", "alert-success", "<?php echo $this->T('Successfully Done')?>");
+                l4i.InnerAlert("#ekjujo", "alert-success", "<?php echo $this->T('Successfully Done')?>");
 
 
                 if (rsj.data.status == 0) {
@@ -192,11 +192,11 @@ $(".m3w0wf").click(function() {
                 //lessModalClose();
 
             } else {
-                lessAlert("#ekjujo", "alert-error", rsj.message);
+                l4i.InnerAlert("#ekjujo", "alert-error", rsj.message);
             }
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#ekjujo", "alert-error", xhr.responseText);
+            l4i.InnerAlert("#ekjujo", "alert-error", xhr.responseText);
         }
     });
 });
@@ -206,28 +206,28 @@ function _proj_pkg_save()
     $.ajax({
         type    : "POST",
         url     : $("#d3tmtf").attr('action'),
-        data    : $("#d3tmtf").serialize() +"&proj="+ lessSession.Get("ProjPath"),
+        data    : $("#d3tmtf").serialize() +"&proj="+ l4iSession.Get("ProjPath"),
         success : function(rsp) {
             //console.log(rsp);
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#ekjujo", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+                l4i.InnerAlert("#ekjujo", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
             if (rsj.status == 200) {
 
-                lessAlert("#ekjujo", "alert-success", "<?php echo $this->T('Successfully Done')?>");
+                l4i.InnerAlert("#ekjujo", "alert-success", "<?php echo $this->T('Successfully Done')?>");
                 _proj_pkgs_refresh();
                 lessModalClose();
 
             } else {
-                lessAlert("#ekjujo", "alert-error", rsj.message);
+                l4i.InnerAlert("#ekjujo", "alert-error", rsj.message);
             }
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#ekjujo", "alert-error", xhr.responseText);
+            l4i.InnerAlert("#ekjujo", "alert-error", xhr.responseText);
         }
     });
 

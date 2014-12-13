@@ -250,7 +250,7 @@ function _lc_nav_terminal()
         lcWebTerminal(1);
     } else if (lc_terminal_conn.IsOk()) {
         lc_terminal_conn.CloseAll();
-        var urid = lessCryptoMd5("/lesscreator/term/index?");
+        var urid = l4iString.CryptoMd5("/lesscreator/term/index?");
         lcTabClose(urid, 1);
     }
 }

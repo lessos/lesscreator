@@ -173,7 +173,7 @@ function _proj_new_commit()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#m4ph6m", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+                l4i.InnerAlert("#m4ph6m", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
@@ -181,15 +181,15 @@ function _proj_new_commit()
 
                 _proj_new = rsj.data.proj;
 
-                lessAlert("#m4ph6m", "alert-success", "<p><strong><?php echo $this->T('Successfully Done')?></strong> \
+                l4i.InnerAlert("#m4ph6m", "alert-success", "<p><strong><?php echo $this->T('Successfully Done')?></strong> \
                     <button class=\"btn btn-success\" onclick=\"_proj_new_goto()\"><?php echo $this->T('Open this Project')?></button>");
 
             } else {
-                lessAlert("#m4ph6m", "alert-error", "Error: "+ rsj.message);
+                l4i.InnerAlert("#m4ph6m", "alert-error", "Error: "+ rsj.message);
             }
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#m4ph6m", "alert-error", "Error: "+ xhr.responseText);
+            l4i.InnerAlert("#m4ph6m", "alert-error", "Error: "+ xhr.responseText);
         }
     });
 

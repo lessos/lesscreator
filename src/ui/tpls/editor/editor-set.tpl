@@ -125,7 +125,7 @@ function _lc_editorset_save(title)
     if (title.length > 0) {
         title = '"'+title+'"';
     }
-    lessAlert("#x17kwr", 'alert-success', '<span></span>Successfully Saved<span></span>'+ title);
+    l4i.InnerAlert("#x17kwr", 'alert-success', '<span></span>Successfully Saved<span></span>'+ title);
 }
 
 function _lc_editorset_theme(node)

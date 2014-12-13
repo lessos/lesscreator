@@ -76,7 +76,7 @@ function _plugin_yaf_mvc_start()
 	var req = {
         "access_token" : l4iCookie.Get("access_token"),
         "data" : {
-            "projdir": lessSession.Get("ProjPath")
+            "projdir": l4iSession.Get("ProjPath")
         }
     }
 
@@ -100,7 +100,7 @@ function _plugin_yaf_mvc_start()
 function _plugin_yaf_cvlist()
 {
     var uri = '/lesscreator/plugins/php-yaf/fs-ov-list?_='+ Math.random();
-    uri += "&proj="+ lessSession.Get("ProjPath");
+    uri += "&proj="+ l4iSession.Get("ProjPath");
 
     $.ajax({
         type    : "GET",

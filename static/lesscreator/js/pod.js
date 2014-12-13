@@ -12,7 +12,7 @@ var PodDestroy = "Destroy";
 
 l9rPod.Initialize = function(cb)
 {
-    if (lessSession.Get("lessfly_pod")) {
+    if (l4iSession.Get("lessfly_pod")) {
         l9rPod.initOpen(cb);
     } else {
         l9rPod.initList(cb);
@@ -39,7 +39,7 @@ l9rPod.Open = function(id)
                 return alert("No Pod Found");
             }
 
-            lessSession.Set("lessfly_pod", rsj.metadata.id);
+            l4iSession.Set("lessfly_pod", rsj.metadata.id);
             l9rPod.Instance = rsj;
                  
             $("#l9r-pod-status-msg").text(rsj.status.phase);
@@ -57,7 +57,7 @@ l9rPod.Open = function(id)
 l9rPod.initOpen = function(cb)
 {
     var url = lessfly_api + "/pods/entry";
-    url += "?id="+ lessSession.Get("lessfly_pod");
+    url += "?id="+ l4iSession.Get("lessfly_pod");
 
     l9r.Ajax(url, {
         callback: function(err, data) {
@@ -176,12 +176,12 @@ l9rPod.ListSelector = function(tplid, data)
                 //     }
                 // ],
                 success : function() {
-                    lessTemplate.Render({
+                    l4iTemplate.Render({
                         dstid: tplid,
                         tplid: tplid +"-tpl",
                         data:  rsj,
                         success : function() {
-                            lessAlert("#"+ tplid +"-alert", "alert-success", "Select a Pod as your Workspace ...");
+                            l4i.InnerAlert("#"+ tplid +"-alert", "alert-success", "Select a Pod as your Workspace ...");
                         }
                     });
                 },
@@ -231,9 +231,9 @@ l9rPod.ListSelector = function(tplid, data)
 // //
 // function l9rPodRefresh()
 // {
-//     // console.log(lessSession.Get("lessfly_pod"));
+//     // console.log(l4iSession.Get("lessfly_pod"));
 
-//     if (lessSession.Get("lessfly_pod") == null) {
+//     if (l4iSession.Get("lessfly_pod") == null) {
 //         // alert("No Pod Found");
 //         lcHeaderAlert("error", "No Pod Found");
 //         // lcBoxList();
@@ -242,7 +242,7 @@ l9rPod.ListSelector = function(tplid, data)
 
 //     var url = lessfly_api + "/pods/entry";
 //     url += "?access_token="+ l4iCookie.Get("access_token");
-//     url += "&podid="+ lessSession.Get("lessfly_pod");
+//     url += "&podid="+ l4iSession.Get("lessfly_pod");
 //     // url += "&boxname=los.box.def";
 //     // console.log("box refresh:"+ url);
 
@@ -300,7 +300,7 @@ var PodFs = {
             options.error = function(){};
         }
 
-        var url = lessfly_api +"/pods/"+ lessSession.Get("lessfly_pod") +"/fs/get";
+        var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/get";
         // url += "?access_token="+ l4iCookie.Get("access_token");
         url += "?path="+ options.path;
 
@@ -383,7 +383,7 @@ var PodFs = {
             }
         }
 
-        var url = lessfly_api +"/pods/"+ lessSession.Get("lessfly_pod") +"/fs/put";
+        var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/put";
 
         l9r.Ajax(url, {
             method  : "POST",
@@ -457,7 +457,7 @@ var PodFs = {
             }
         }
 
-        var url = lessfly_api +"/pods/"+ lessSession.Get("lessfly_pod") +"/fs/rename";
+        var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/rename";
         l9r.Ajax(url, {
             method  : "POST",
             timeout : 10000,
@@ -523,7 +523,7 @@ var PodFs = {
             }
         }
 
-        var url = lessfly_api +"/pods/"+ lessSession.Get("lessfly_pod") +"/fs/del";
+        var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/del";
 
         l9r.Ajax(url, {
             method  : "POST",
@@ -589,7 +589,7 @@ var PodFs = {
             }
         }
 
-        var url = lessfly_api +"/pods/"+ lessSession.Get("lessfly_pod") +"/fs/list";
+        var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/list";
 
         l9r.Ajax(url, {
             method  : "POST",

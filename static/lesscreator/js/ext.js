@@ -46,7 +46,7 @@ lcExt.NavRefresh = function()
         data.push(ext);
     }
 
-    lessTemplate.Render({
+    l4iTemplate.Render({
         data : data,
         dstid : "lcext-nav",
         tplid : "lcext-nav-tpl"
@@ -110,7 +110,7 @@ lcExt.RtSet = function(name)
 
         var fn = eval("lcExt."+ name +".Index");
 
-        lcTab.Open({
+        l9rTab.Open({
             type    : "html",
             uri     : l9r.base +"+/"+ name +"/index.tpl?_="+ Math.random(),
             title   : name,

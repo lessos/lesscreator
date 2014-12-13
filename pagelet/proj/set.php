@@ -343,7 +343,7 @@ $("#k2948f").submit(function(event) {
 function _proj_rt_refresh()
 {
     var url = "/lesscreator/proj/set?apimethod=self.rt.list";
-    url += "&proj=" + lessSession.Get("ProjPath");
+    url += "&proj=" + l4iSession.Get("ProjPath");
 
     $.ajax({ 
         type    : "GET",
@@ -382,7 +382,7 @@ function _proj_rt_set(node)
         return;
     }
     
-    uri += "?proj=" + lessSession.Get("ProjPath");
+    uri += "?proj=" + l4iSession.Get("ProjPath");
     lessModalOpen("/lesscreator/"+ uri, 1, 800, 500, title, null);
 }
 
@@ -392,7 +392,7 @@ _proj_rt_refresh();
 function _proj_pkgs_refresh()
 {
     var url = "/lesscreator/proj/set?apimethod=self.pkg.list";
-    url += "&proj=" + lessSession.Get("ProjPath");
+    url += "&proj=" + l4iSession.Get("ProjPath");
 
     $.ajax({ 
         type    : "GET",
@@ -408,7 +408,7 @@ function _proj_pkgs_refresh()
 
 function _proj_pkgs_select(node)
 {
-    var uri = "/lesscreator/proj/set-pkgs?proj="+ lessSession.Get("ProjPath");
+    var uri = "/lesscreator/proj/set-pkgs?proj="+ l4iSession.Get("ProjPath");
     lessModalOpen(uri, 1, 800, 500, "<?php echo $this->T('Select Dependent Packages')?>", null);
 }
 

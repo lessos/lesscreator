@@ -207,7 +207,7 @@ $("#_proj_dataflow_actornew_form").submit(function(event) {
 
 function _proj_dataflow_tabopen(proj, path, force)
 {
-    var p = lessCryptoMd5(path);
+    var p = l4iString.CryptoMd5(path);
 
     if (force != 1 && $("#pt"+p).html() && $("#pt"+p).html().length > 1) {
         $("#pt"+p).empty();
@@ -220,7 +220,7 @@ function _proj_dataflow_tabopen(proj, path, force)
         data: 'proj='+proj+'&path='+path,
         success: function(data) {
             $("#pt"+p).html(data);
-            lcLayoutResize();
+            l9rLayoutResize();
         }
     });
 }

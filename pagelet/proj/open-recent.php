@@ -90,9 +90,9 @@ function _proj_open_recent_open(path)
 
 function _proj_open_recent()
 {
-    var url = "/lesscreator/proj/open-recent?basedir="+ lessSession.Get("basedir");
+    var url = "/lesscreator/proj/open-recent?basedir="+ l4iSession.Get("basedir");
 
-    if (lessModalPrevId() == lessCryptoMd5("modal"+url)) {
+    if (lessModalPrevId() == l4iString.CryptoMd5("modal"+url)) {
         lessModalPrev();
     } else {
         lessModalNext(url, "<?php echo $this->T('Open Project')?>", null);
@@ -102,9 +102,9 @@ function _proj_open_recent()
 function _proj_open_fs(path, force)
 {
     var url = "/lesscreator/proj/open-fs";
-    url += "?basedir="+ lessSession.Get("basedir");
+    url += "?basedir="+ l4iSession.Get("basedir");
 
-    if (lessModalPrevId() == lessCryptoMd5("modal"+url)) {
+    if (lessModalPrevId() == l4iString.CryptoMd5("modal"+url)) {
         lessModalPrev();
     } else {
         lessModalNext(url, "<?php echo $this->T('Open Project')?>", null);
@@ -115,7 +115,7 @@ function _proj_open_recent_del(projid)
 {
     $.ajax({
         type: "POST",
-        url: '/lesscreator/proj/open-recent?basedir='+ lessSession.Get("basedir"),
+        url: '/lesscreator/proj/open-recent?basedir='+ l4iSession.Get("basedir"),
         data: {'func':'del', 'projid':projid},
         success: function(data) {
             if (data == "OK") {

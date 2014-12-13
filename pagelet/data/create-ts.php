@@ -73,10 +73,10 @@ function _data_new_ts()
                 rsp += '<p>Your DataSet has been created successfully</p>';
                 rsp += '<p><a class="btn" href="#" onclick="_data_create_open()">Manage</a></p>';
 
-                lessAlert("#h5c_dialog_alert", "alert-success", rsp);
+                l4i.InnerAlert("#h5c_dialog_alert", "alert-success", rsp);
                 
             } else {
-                lessAlert("#h5c_dialog_alert", "alert-error", rsp);
+                l4i.InnerAlert("#h5c_dialog_alert", "alert-error", rsp);
             }
         }
     });

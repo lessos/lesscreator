@@ -133,7 +133,7 @@ function _launth_beego_run()
 function _launch_next_dataset()
 {
     var uri = "/lesscreator/launch/dataset";
-    uri += "?proj="+ lessSession.Get("ProjPath");
+    uri += "?proj="+ l4iSession.Get("ProjPath");
 
     lessModalNext(uri, "<?php echo $this->T('Run and Deply')?>", null);
 }

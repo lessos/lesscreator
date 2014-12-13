@@ -115,7 +115,7 @@ function _proj_quickstart_phpyaf()
         'img': '/lesscreator/static/img/plugins/php-yaf/yaf-s2-48.png',
     }
 
-    var url = '/lesscreator/plugins/php-yaf/index?proj='+ lessSession.Get("ProjPath");
+    var url = '/lesscreator/plugins/php-yaf/index?proj='+ l4iSession.Get("ProjPath");
 
     h5cTabOpen(url, 'w0', 'html', opt);
 }
@@ -132,7 +132,7 @@ function _proj_quickstart_beego()
         'img': '/lesscreator/static/img/plugins/go-beego/beego-ico-48.png',
     }
 
-    var url = '/lesscreator/plugins/go-beego/index?proj='+ lessSession.Get("ProjPath");
+    var url = '/lesscreator/plugins/go-beego/index?proj='+ l4iSession.Get("ProjPath");
 
     h5cTabOpen(url, 'w0', 'html', opt);
 }

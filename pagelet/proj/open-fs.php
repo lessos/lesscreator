@@ -45,9 +45,9 @@ var _path_click = null;
 
 function _proj_open_recent()
 {
-    var url = "/lesscreator/proj/open-recent?basedir="+ lessSession.Get("basedir");
+    var url = "/lesscreator/proj/open-recent?basedir="+ l4iSession.Get("basedir");
 
-    if (lessModalPrevId() == lessCryptoMd5("modal"+url)) {
+    if (lessModalPrevId() == l4iString.CryptoMd5("modal"+url)) {
         lessModalPrev();
     } else {
         lessModalNext(url, "<?php echo $this->T('Open Project')?>", null);

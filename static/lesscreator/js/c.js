@@ -197,7 +197,7 @@ function hdev_layout_resize()
 /** Editor **/
 function hdev_page_open(path, type, title, img)
 {
-    var pgid = lessCryptoMd5(path);
+    var pgid = l4iString.CryptoMd5(path);
 
     switch (type) {
     case 'editor'   :
@@ -250,7 +250,7 @@ function hdev_page_open(path, type, title, img)
 
 function hdev_page_close(path)
 {
-    var pgid = lessCryptoMd5(path);
+    var pgid = l4iString.CryptoMd5(path);
     
     switch (pageArray[pgid]['type']) {
     case 'editor':
@@ -299,7 +299,7 @@ function hdev_page_close(path)
 
 function hdev_page_editor_open(path)
 {
-    var pgid = lessCryptoMd5(path);
+    var pgid = l4iString.CryptoMd5(path);
     
     if (pgid == hceditor.instancepgid)
         return;
@@ -323,7 +323,7 @@ function hdev_page_editor_open(path)
 
 function hdev_page_editor_close(path)
 {
-    var pgid = lessCryptoMd5(path);
+    var pgid = l4iString.CryptoMd5(path);
 
     if (pgid == hceditor.instancepgid)
         hceditor.instance.toTextArea();
@@ -341,7 +341,7 @@ function hdev_page_editor_close(path)
 
 function hdev_editor(path)
 {
-    var pgid = lessCryptoMd5(path);
+    var pgid = l4iString.CryptoMd5(path);
 
     if (hceditor.instancepgid && hceditor.instancepgid != pgid) {
         hceditor.instance.toTextArea();

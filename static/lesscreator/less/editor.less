@@ -61,3 +61,65 @@
     }
 }
 
+.lctab-box .CodeMirror {
+    font-size: 13px;
+    line-height: 1.3em;
+    height: 100%;
+}
+.lctab-box .CodeMirror-scroll {
+  overflow-x: hidden;
+  height: hidden;
+}
+.CodeMirror {
+    font-size: 13px;
+    line-height: 1.3em;
+}
+.CodeMirror-scroll {
+  overflow-x: hidden;
+  height: hidden;
+}
+.CodeMirror-foldmarker {
+    color: blue;
+    text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
+    font-family: arial;
+    line-height: .3;
+    cursor: pointer;
+}
+.CodeMirror-foldgutter {
+    width: .7em;
+}
+.CodeMirror-foldgutter-open,
+.CodeMirror-foldgutter-folded {
+    color: #555;
+    cursor: pointer;
+}
+.CodeMirror-foldgutter-open:after {
+    content: "\25BE";
+}
+.CodeMirror-foldgutter-folded:after {
+    content: "\25B8";
+}
+.CodeMirror-lines {
+    line-height: 1.2em;
+}
+.CodeMirror *::-webkit-scrollbar {
+    width: 10px; height: 10px; background-color: transparent;
+    background-color: #ccc;
+}
+.CodeMirror *::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+.CodeMirror *::-webkit-scrollbar-button:start:decrement,
+.CodeMirror *::-webkit-scrollbar-button:end:increment {
+    display: none;
+}
+.CodeMirror *::-webkit-scrollbar-thumb:vertical,
+.CodeMirror *::-webkit-scrollbar-thumb:horizontal {
+    background-color: #999;
+}
+.CodeMirror *::-webkit-scrollbar-thumb:hover {
+    background-color: #666;
+}
+.CodeMirror *::-webkit-scrollbar-thumb:active {
+    background-color: #444;
+}

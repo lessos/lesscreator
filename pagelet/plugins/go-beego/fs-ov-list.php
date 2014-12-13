@@ -167,7 +167,7 @@ $(".rcifxb-new").click(function(event) {
 
     var tit = "<?php echo $this->T('New')?> Controller";
     var url = "/lesscreator/plugins/go-beego/fs-ov-controller-new";
-    url += "?proj="+ lessSession.Get("ProjPath");
+    url += "?proj="+ l4iSession.Get("ProjPath");
 
     lessModalOpen(url, 1, 550, 180, tit, null);
 });
@@ -196,7 +196,7 @@ $(".rr20fx-new").click(function(event) {
     var tit = "<?php echo $this->T('New')?> Action";
     var url = "/lesscreator/plugins/go-beego/fs-ov-action-new";
     url += "?file="+uri[1]+"&ctl="+ uri[2];
-    url += "&proj="+ lessSession.Get("ProjPath");
+    url += "&proj="+ l4iSession.Get("ProjPath");
     //console.log(url);
     lessModalOpen(url, 1, 550, 180, tit, null);
 });

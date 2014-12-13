@@ -98,12 +98,12 @@ function _data_tableid_set()
         data    : $("#x23w5t").serialize() +"&proj="+ projCurrent,
         success : function(rsp) {
             if (rsp == "OK") {
-                lessAlert(".j82fpe", "alert-success", "OK "+ time);
+                l4i.InnerAlert(".j82fpe", "alert-success", "OK "+ time);
                 if (typeof _proj_data_tabopen == 'function') {
                     _proj_data_tabopen('/lesscreator/proj/data/list?proj='+projCurrent, 1);
                 }
             } else {
-                lessAlert(".j82fpe", "alert-error", rsp +" "+ time);
+                l4i.InnerAlert(".j82fpe", "alert-error", rsp +" "+ time);
             }
         }
     });

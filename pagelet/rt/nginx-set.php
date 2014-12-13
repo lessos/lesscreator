@@ -169,7 +169,7 @@ function _proj_rt_nginx_onoff_chg()
 function _proj_rt_nginx_save()
 {
     var req = {
-        proj: lessSession.Get("ProjPath"),
+        proj: l4iSession.Get("ProjPath"),
         status: 1,
         ngx_conf: null,
         ngx_conf_mode: null,
@@ -199,21 +199,21 @@ function _proj_rt_nginx_save()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#gix0qn", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+                l4i.InnerAlert("#gix0qn", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
             if (rsj.status != 200) {
-                lessAlert("#gix0qn", "alert-error", rsj.message);
+                l4i.InnerAlert("#gix0qn", "alert-error", rsj.message);
                 return;
             }
 
-            lessAlert("#gix0qn", "alert-success", rsj.message);
+            l4i.InnerAlert("#gix0qn", "alert-success", rsj.message);
             _proj_rt_refresh();
             //window.scrollTo(0,0);
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#gix0qn", "alert-error", textStatus+' '+xhr.responseText);
+            l4i.InnerAlert("#gix0qn", "alert-error", textStatus+' '+xhr.responseText);
         }
     });
 }
@@ -222,7 +222,7 @@ var ngxEditor = null;
 function _proj_rt_nginx_conf_load(mode)
 {
     var url = "/lesscreator/rt/nginx-set?apimethod=ngx_conf.get";
-    url += "&proj=" + lessSession.Get("ProjPath");
+    url += "&proj=" + l4iSession.Get("ProjPath");
     url += "&ngx_conf_mode="+ mode;
 
     $.ajax({ 
@@ -235,12 +235,12 @@ function _proj_rt_nginx_conf_load(mode)
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                lessAlert("#gix0qn", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+                l4i.InnerAlert("#gix0qn", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
 
             if (rsj.status != 200) {
-                lessAlert("#gix0qn", "alert-error", rsj.message);
+                l4i.InnerAlert("#gix0qn", "alert-error", rsj.message);
                 return;
             }
 
@@ -268,7 +268,7 @@ function _proj_rt_nginx_conf_load(mode)
             CodeMirror.autoLoadMode(ngxEditor, "nginx");
         },
         error: function(xhr, textStatus, error) {
-            lessAlert("#gix0qn", "alert-error", textStatus+' '+xhr.responseText);
+            l4i.InnerAlert("#gix0qn", "alert-error", textStatus+' '+xhr.responseText);
         }
     });
 }

@@ -291,7 +291,7 @@ function _app_install_data_do()
     
     var uri = "user="+ user;
     uri += "&jobid="+ dbjobid;
-    uri += "&proj="+ lessSession.Get("ProjPath");
+    uri += "&proj="+ l4iSession.Get("ProjPath");
     //console.log($(".rtmr4e").serialize());
 
     $.ajax({
@@ -307,7 +307,7 @@ function _app_install_data_do()
                 
                 lessModalScrollTop();
                 
-                lessAlert("#f1lj5d", " ", "<?php echo $this->T('op-commit-wait-desc')?>");
+                l4i.InnerAlert("#f1lj5d", " ", "<?php echo $this->T('op-commit-wait-desc')?>");
                 window.setTimeout(_app_install_data_status, 500);
 
             } else {
@@ -324,7 +324,7 @@ function _app_install_data_status()
 {
     if (dbjobtry > 600) {
         
-        lessAlert("#f1lj5d", "alert-error", "<?php echo $this->T('Processing timeout, please try again later')?>");
+        l4i.InnerAlert("#f1lj5d", "alert-error", "<?php echo $this->T('Processing timeout, please try again later')?>");
         $(".x203yg").hide(300);
         
         dbjobtry = 0;
@@ -333,7 +333,7 @@ function _app_install_data_status()
     
     var uri = "user="+ user;
     uri += "&jobid="+ dbjobid;
-    uri += "&proj="+ lessSession.Get("ProjPath");
+    uri += "&proj="+ l4iSession.Get("ProjPath");
 
     $.ajax({
         type    : "GET",
@@ -344,7 +344,7 @@ function _app_install_data_status()
             try {
                 var rsj = JSON.parse(rsp);
             } catch (e) {
-                //lessAlert("#gix0qn", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
+                //l4i.InnerAlert("#gix0qn", "alert-error", "<?php echo $this->T('Service Unavailable')?>");
                 return;
             }
             
@@ -355,7 +355,7 @@ function _app_install_data_status()
 
                 if (rsj.data.process_percent >= 100) {
                     
-                    lessAlert("#f1lj5d", "alert-success", "<?php echo $this->T('Successfully Processed')?>");
+                    l4i.InnerAlert("#f1lj5d", "alert-success", "<?php echo $this->T('Successfully Processed')?>");
                     $(".x203yg").hide(600);
 
                     dbjobtry = 0;
@@ -385,7 +385,7 @@ function _app_install_done()
     }
     
     var uri = "/lesscreator/launch/<?php echo $next_uri?>?";
-    uri += "proj="+ lessSession.Get("ProjPath");
+    uri += "proj="+ l4iSession.Get("ProjPath");
 
     lessModalNext(uri, "<?php echo $this->T('Setting WebServer')?>", null);
 }

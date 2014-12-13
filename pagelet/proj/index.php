@@ -163,9 +163,9 @@ $(document).click(function(event) {
     // Mark the last active project path
     //  will be used in launch the enter project after user signed
     //  or recover the status after browser crashed
-    var suser = lessSession.Get("SessUser");
-    if (lessLocalStorage.Get(suser +"LastProjPath") != sessionStorage.ProjPath) {
-        lessLocalStorage.Set(suser +"LastProjPath") = sessionStorage.ProjPath;
+    var suser = l4iSession.Get("SessUser");
+    if (l4iStorage.Get(suser +"LastProjPath") != sessionStorage.ProjPath) {
+        l4iStorage.Set(suser +"LastProjPath") = sessionStorage.ProjPath;
     }
 });
 
@@ -185,7 +185,7 @@ function _proj_nav_open(plg)
             $("._proj_nav li.active").removeClass("active");
             $(".ueg14o_"+plg).addClass("active");
             
-            lcLayoutResize();
+            l9rLayoutResize();
         }
     });
 }
@@ -203,7 +203,7 @@ function _proj_plugins_lessdata()
         'img': '/lesscreator/static/img/plugins/lessdata/aliyun-rds.png',
     }
 
-    var url = '/lesscreator/plugins/lessdata/index?proj='+ lessSession.Get("ProjPath");
+    var url = '/lesscreator/plugins/lessdata/index?proj='+ l4iSession.Get("ProjPath");
 
     h5cTabOpen(url, 'w0', 'html', opt);
 }
@@ -215,7 +215,7 @@ function _proj_plugins_phpyaf()
         'img': '/lesscreator/static/img/plugins/php-yaf/yaf-s2-48.png',
     }
 
-    var url = '/lesscreator/plugins/php-yaf/index?proj='+ lessSession.Get("ProjPath");
+    var url = '/lesscreator/plugins/php-yaf/index?proj='+ l4iSession.Get("ProjPath");
 
     h5cTabOpen(url, 'w0', 'html', opt);
 }
@@ -235,7 +235,7 @@ $('._proj_tab_href').click(function() {
             'img': '/lesscreator/static/img/plugins/lessdata/aliyun-rds.png',
         }
 
-        var url = '/lesscreator/'+ uri +'?proj='+ lessSession.Get("ProjPath");
+        var url = '/lesscreator/'+ uri +'?proj='+ l4iSession.Get("ProjPath");
 
         h5cTabOpen(url, 'w0', 'html', opt);
         break;
@@ -245,7 +245,7 @@ $('._proj_tab_href').click(function() {
 */
 
 var _proj_tab_active = false;
-var _proj_tab_last = lessLocalStorage.Get("tab.fra.urid.w0");
+var _proj_tab_last = l4iStorage.Get("tab.fra.urid.w0");
 
 
 lcData.Query("files", "projdir", sessionStorage.ProjPath, function(ret) {
@@ -315,7 +315,7 @@ function _proj_fs_nav_hdr(uri)
             'img': '/lesscreator/static/img/plugins/php-yaf/yaf-ico-48.png',
         }
 
-        var url = '/lesscreator/'+ uri +'?proj='+ lessSession.Get("ProjPath");
+        var url = '/lesscreator/'+ uri +'?proj='+ l4iSession.Get("ProjPath");
 
         h5cTabOpen(url, 'w0', 'html', opt);
         break;
@@ -326,7 +326,7 @@ function _proj_fs_nav_hdr(uri)
             'img': '/lesscreator/static/img/plugins/php-zf/zf-ico-48.png',
         }
 
-        var url = '/lesscreator/'+ uri +'?proj='+ lessSession.Get("ProjPath");
+        var url = '/lesscreator/'+ uri +'?proj='+ l4iSession.Get("ProjPath");
 
         h5cTabOpen(url, 'w0', 'html', opt);
         break;
@@ -476,7 +476,7 @@ function _fs_tree_refresh()
 function _fs_tree_dir(path, force)
 {
     path = path.replace(/(^\/*)|(\/*$)/g, "");
-    p = lessCryptoMd5(path);
+    p = l4iString.CryptoMd5(path);
     //console.log("do path"+ path)
     if (force != 1 && $("#pt"+p).html() && $("#pt"+p).html().length > 1) {
         $("#pt"+p).empty();
@@ -490,7 +490,7 @@ function _fs_tree_dir(path, force)
         async   : false,
         success : function(data) {
             $("#pt"+p).html(data);
-            lcLayoutResize();
+            l9rLayoutResize();
         }
     });
 }
@@ -498,11 +498,11 @@ function _fs_tree_dir(path, force)
 function _fs_file_del(path)
 {
     path = path.replace(/(^\/*)|(\/*$)/g, "");
-    p = lessCryptoMd5(path);
+    p = l4iString.CryptoMd5(path);
     
     var req = {
         "access_token" : l4iCookie.Get("access_token"),
-        "data" : lessSession.Get("ProjPath") +"/"+ path,
+        "data" : l4iSession.Get("ProjPath") +"/"+ path,
     }
 
     $.ajax({
