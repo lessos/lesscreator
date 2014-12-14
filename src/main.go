@@ -60,7 +60,6 @@ func main() {
 	pagelet.Config.ViewPath("default", conf.Config.Prefix+"/src/ui/views")
 	pagelet.RegisterController("default", (*c_ui.Index)(nil))
 	pagelet.RegisterController("default", (*c_ui.Error)(nil))
-	pagelet.RegisterController("default", (*c_ui.Project)(nil))
 
 	//
 	fmt.Println("Running")

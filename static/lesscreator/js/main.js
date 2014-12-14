@@ -22,13 +22,9 @@ l9r.Boot = function()
         var version = BrowserDetect.version;
         var OS      = BrowserDetect.OS;
 
-        // if (!((browser == 'Chrome' && version >= 20)
-        //     || (browser == 'Firefox' && version >= 3.6)
-        //     || (browser == 'Safari' && version >= 5.0 && OS == 'Mac'))) {
-        //     $('#body-content').load(l9r.base + "error/browser");
-        //     return;
-        // }
-        if (!(browser == 'Chrome' && version >= 22)) { 
+        if (!((browser == 'Chrome' && version >= 22)
+            || (browser == 'Firefox' && version >= 31.0))) { 
+            // || (browser == 'Safari' && version >= 5.0 && OS == 'Mac'))) {
             $('body').load(l9r.base + "error/browser");
             return;
         }
@@ -322,6 +318,7 @@ l9r.Ajax = function(url, options)
 
 l9r.HeaderAlert = function(status, msg)
 {
+    console.log(status + msg);
     $("#l9r-halert").removeClass().addClass(status).html(msg).fadeOut(200).fadeIn(200);
 }
 
@@ -388,10 +385,10 @@ function lcT(str)
     // document.write(str);
 }
 
-function lcHeaderAlert(status, alert)
-{
-    $("#l9r-halert").removeClass().addClass(status).html(alert).fadeOut(200).fadeIn(200);
-}
+// function l9r.HeaderAlert(status, alert)
+// {
+//     $("#l9r-halert").removeClass().addClass(status).html(alert).fadeOut(200).fadeIn(200);
+// }
 
 var l9rLayout = {
     init   : false,

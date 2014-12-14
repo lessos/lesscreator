@@ -12,19 +12,19 @@
                 <li>
                     <a href="#proj/fs/file-new" onclick="l9rProjFs.FileNew('file', null, '')">
                         <img src="/lesscreator/~/lesscreator/img/page_white_add.png" class="h5c_icon" />
-                        {{T . "New File"}}
+                        {%New File%}
                     </a>
                 </li>
                 <li>
                     <a href="#proj/fs/file-new-dir" onclick="l9rProjFs.FileNew('dir', null, '')">
                         <img src="/lesscreator/~/lesscreator/img/folder_add.png" class="h5c_icon" />
-                        {{T . "New Folder"}}
+                        {%New Folder%}
                     </a>
                 </li>
                 <li>
                     <a href="#proj/fs/file-upl" onclick="l9rProjFs.FileUpload(null)">
                         <img src="/lesscreator/~/lesscreator/img/page_white_get.png" class="h5c_icon" />
-                        {{T . "Upload"}}
+                        {%Upload%}
                     </a>
                 </li>
             </ul>
@@ -65,19 +65,19 @@
     <div class="rcico">
         <img src="/lesscreator/~/lesscreator/img/page_white_add.png" align="absmiddle" />
     </div>
-    <a href="#" class="rcctn">{{T . "New File"}}</a>
+    <a href="#" class="rcctn">{%New File%}</a>
   </div>
   <div class="lcbind-fsrcm-item fsrcm-isdir" lc-fsnav="new-dir">
     <div class="rcico">
         <img src="/lesscreator/~/lesscreator/img/folder_add.png" align="absmiddle">
     </div>
-    <a href="#" class="rcctn">{{T . "New Folder"}}</a>
+    <a href="#" class="rcctn">{%New Folder%}</a>
   </div>
   <div class="lcbind-fsrcm-item fsrcm-isdir" lc-fsnav="upload">
     <div class="rcico">
         <img src="/lesscreator/~/lesscreator/img/page_white_get.png" align="absmiddle">
     </div>
-    <a href="#" class="rcctn">{{T . "Upload"}}</a>
+    <a href="#" class="rcctn">{%Upload%}</a>
   </div>
 
   <div class="rcm-sepline fsrcm-isdir"></div>
@@ -86,13 +86,13 @@
     <div class="rcico">
         <img src="/lesscreator/~/lesscreator/img/page_white_copy.png" align="absmiddle">
     </div>
-    <a href="#" class="rcctn">{{T . "Rename"}}</a>
+    <a href="#" class="rcctn">{%Rename%}</a>
   </div>
   <div class="lcbind-fsrcm-item" lc-fsnav="file-del">
     <div class="rcico">
         <img src="/lesscreator/~/lesscreator/img/delete.png" align="absmiddle">
     </div>
-    <a href="#" class="rcctn">{{T . "Delete"}}</a>
+    <a href="#" class="rcctn">{%Delete%}</a>
   </div>
 </div>
 
@@ -160,14 +160,14 @@
 </style>
 <div id="lcbind-fstpl-fileupload" class="hide">
 <div id="{[=it.reqid]}">
-  <div>{{T . "The target of Upload directory"}}</div>
+  <div>{%The target of Upload directory%}</div>
   <div class="input-prepend">
     <span class="add-on"><img src="/lesscreator/~/lesscreator/img/page_white_get.png" align="absmiddle"></span>
     <input style="width:400px;" name="path" type="text" value="{[=it.path]}">
-    <button class="btn hide" type="button" onclick="_fs_upl_chgdir()">{{T . "Change directory"}}</button>
+    <button class="btn hide" type="button" onclick="_fs_upl_chgdir()">{%Change directory%}</button>
   </div>
   <div id="{[=it.areaid]}" class="lsarea">
-    {{T . "Drag and Drop your files or folders to here"}}
+    {%Drag and Drop your files or folders to here%}
   </div>
   <div class="alert alert-info hide lsstate" style="width:430px;"></div>
 </div>

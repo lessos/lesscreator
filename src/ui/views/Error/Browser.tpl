@@ -35,6 +35,10 @@ body {
 .err-footer {
     text-align: center;
     margin: 0 auto;
+    color: #fff;
+}
+.err-footer a {
+    color: #fff;
 }
 </style>
 
@@ -49,23 +53,10 @@ body {
         <td><strong>Google Chrome</strong></td>
         <td><a href="http://www.google.com/chrome/" target="_blank">http://www.google.com/chrome/</a></td>
       </tr>
-    </table>
-
-    <br />
-    <div>{{T . "browser-dev-wait-desc"}} :-)</div>
-    <table>
       <tr>
-        <td><img src="/lesscreator/~/lessui/img/browser/safari.png" class="imgs0" /></td>
-        <td>
-            Apple Safari
-            <!-- <a href="http://www.apple.com/safari/" target="_blank">http://www.apple.com/safari/</a> -->
-        </td>
-        <td></td>
-        <td><img src="/lesscreator/~/lessui/img/browser/firefox.png" class="imgs0" /></td>
-        <td>
-            Mozilla Firefox
-            <!-- <a href="http://www.mozilla.org/" target="_blank">http://www.mozilla.org/</a> -->
-        </td>
+        <td><img src="/lesscreator/~/lessui/img/browser/firefox.png" class="imgs1" /></td>
+        <td><strong>Mozilla Firefox</strong></td>
+        <td><a href="http://www.mozilla.org/" target="_blank">http://www.mozilla.org/</a></td>
       </tr>
     </table>
     

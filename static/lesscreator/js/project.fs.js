@@ -98,9 +98,12 @@ l9rProjFs.UiTreeLoad = function(options)
                     ico = "page_white_ruby";
                 } else if (ls[i].name.slice(-3) == ".go") {
                     ico = "ht-page_white_golang";
+                } else if (ls[i].name.slice(-5) == ".java") {
+                    ico = "page_white_cup";
                 } else if (ls[i].name.slice(-3) == ".py" 
                     || ls[i].name.slice(-4) == ".yml"
                     || ls[i].name.slice(-5) == ".yaml"
+                    || ls[i].name.slice(-3) == ".md"
                     ) {
                     ico = "page_white_code";
                 }
@@ -109,7 +112,11 @@ l9rProjFs.UiTreeLoad = function(options)
                 
                 ls[i].fstype = "text";
 
-            } else if (ls[i].mime.slice(-5) == "image") {
+            } else if (ls[i].mime.slice(-5) == "image"
+                || ls[i].name.slice(-4) == ".jpg"
+                || ls[i].name.slice(-4) == ".png"
+                || ls[i].name.slice(-4) == ".gif"
+                ) {
                 ico = "page_white_picture";
             }
 
@@ -138,7 +145,7 @@ l9rProjFs.UiTreeLoad = function(options)
         options.error(status, message);
     }
 
-    PodFs.List(req);
+    l9rPodFs.List(req);
 }
 
 var _fsItemPath = "";
@@ -309,7 +316,7 @@ l9rProjFs.FileNewSave = function(formid)
         return;
     }
 
-    PodFs.Post({
+    l9rPodFs.Post({
         path    : path +"/"+ name,
         data    : "\n",
         success : function(rsp) {
@@ -398,7 +405,7 @@ function _fsUploadCommit(reqid, file)
             var ppath = $("#"+ reqid +" :input[name=path]").val();
             // console.log("upload path: "+ ppath);
 
-            PodFs.Post({
+            l9rPodFs.Post({
                 path    : ppath +"/"+ file.name,
                 size    : file.size,
                 data    : e.target.result,
@@ -576,7 +583,7 @@ l9rProjFs.FileRenameSave = function(formid)
         return;
     }
 
-    PodFs.Rename({
+    l9rPodFs.Rename({
         path    : path,
         pathset : pathset,
         success : function(rsp) {
@@ -642,7 +649,7 @@ l9rProjFs.FileDelSave = function(formid)
         return;
     }
 
-    PodFs.Del({
+    l9rPodFs.Del({
         path    : path,
         success : function(rsp) {
             

@@ -12,7 +12,7 @@
     </tr>
     <tr>
       <td><strong>Project Name</strong></td>
-      <td>{[=it.name]}</td>
+      <td>{[=it.metadata.name]}</td>
     </tr>
 
     <tr>

@@ -3,7 +3,9 @@ var l9rProj = {
     Info        : {},
     ProjectIndex: "/home/action/.lesscreator/projects.json",
     ProjectInfoDef: {
-        name        : "",
+        metadata : {
+            name : "",
+        },
         summary     : "",
         description : "",
         version     : "0.0.1",
@@ -18,65 +20,196 @@ var l9rProj = {
         {id: "50", name: "Business"},
         {id: "51", name: "Collaboration"},
         {id: "52", name: "Productivity"},
-        {id: "53", name: "Developer Tools"}
+        {id: "53", name: "Development Kit"}
     ],
     ProjectGroupByDev: [
-        {id: "60", name: "Web Frontend Library, Framework"},
-        {id: "61", name: "Web Backend Library, Framework"},
-        {id: "70", name: "System Library"},
-        {id: "71", name: "System Server, Service"},
+        {id: "60", name: "Web Frontend"},
+        {id: "61", name: "Web Backend"},
+        {id: "70", name: "Library"},
+        {id: "71", name: "Service"},
         {id: "72", name: "Runtime"}
     ]
 }
 
-l9rProj.New = function(options)
+l9rProj.NavStart = function()
 {
-    options = options || {};
-
-    if (typeof options.success !== "function") {
-        options.success = function(){};
-    }
-        
-    if (typeof options.error !== "function") {
-        options.error = function(){};
-    }
-    
-    if (options.name === undefined || options.name.length < 1) {
-        options.error(400, "Project Name can not be null");
-        return;
-    }
-
-    var projinfo = this.ProjectInfoDef;
-    projinfo.name = options.name;
-
-    if (options.grp_app !== undefined) {
-        projinfo.grp_app = options.grp_app;
-    }
-    if (options.grp_dev !== undefined) {
-        projinfo.grp_dev = options.grp_dev;
-    }
-    if (options.description !== undefined) {
-        projinfo.description = options.description;
-    }
-
-    // TODO valid options.name
-    var projpath = "/home/action/projects/"+ options.name;
-
-    PodFs.Post({
-        path: projpath + "/lcproject.json",
-        data: JSON.stringify(projinfo),
-        success: function(rsp) {
-            options.success({
-                path : projpath,
-                info : projinfo, 
-            });
-            l9rProj.Info = projinfo;
-        },
-        error: function(status, message) {
-            options.error(status, message);
-        }
+    l4iModal.Open({
+        tpluri : l9r.base +"-/project/open-nav.tpl",
+        width  : 700,
+        height : 400,
+        title  : "Start a Project from ...",
+        i18n   : true,
+        buttons : [
+            {
+                onclick : "l4iModal.Close()",
+                title   : "Close"
+            }
+        ],
     });
 }
+
+l9rProj.New = function()
+{
+    var pinfo = l4i.Clone(l9rProj.ProjectInfoDef);
+
+    pinfo._projpath = "/home/action/projects/";
+    pinfo._grpapp = pinfo.grp_app.split(",");
+    pinfo._grpdev = pinfo.grp_dev.split(",");
+    pinfo._grpappd = l9rProj.ProjectGroupByApp;
+    pinfo._grpdevd = l9rProj.ProjectGroupByDev;
+
+    pinfo.metadata.name = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8);
+    pinfo.summary = "My Project";
+
+    l4iModal.Open({
+        id     : "proj-nav-new",
+        tpluri : l9r.base +"-/project/new.tpl",
+        title  : "Create New Project",
+        i18n   : true,
+        data   : pinfo,
+        // width  : 800,
+        backEnable : true,
+        buttons : [
+            {
+                onclick : "l9rProj.NewPut()",
+                title   : "Confirm and Create",
+                style   : "btn-inverse",
+            }
+        ],
+    });
+}
+
+l9rProj.NewPut = function()
+{
+    var pinfo = l4i.Clone(l9rProj.ProjectInfoDef),
+        nameRegex = /^[a-zA-Z]{1}[a-zA-Z0-9_-]{2,29}$/;
+
+    pinfo.metadata.name = $("#l9rproj-newform :input[name=name]").val();
+    // TODO valid
+    if (!pinfo.metadata.name) {
+        return l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", "Name Can Not be Null");
+    }
+    if (pinfo.metadata.name.length < 3 || pinfo.metadata.name.length > 30) {
+        return l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", "Name must be between 3 and 30 characters long");
+    }
+    if (!pinfo.metadata.name.match(nameRegex)) {
+        return l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", "Name must consist of letters, numbers, `_` or `-`, and begin with a letter");
+    }
+
+    pinfo.summary = $("#l9rproj-newform :input[name=summary]").val();
+    if (!pinfo.summary) {
+        return l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", "Summary Can Not be Null");
+    }
+
+    var grp_app = [];
+    $("#l9rproj-newform :input[name=grp_app]:checked").each(function(){
+        grp_app.push($(this).val());
+    });
+    if (grp_app.length < 1) {
+        return l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", "Group by Application Can Not be Null");
+    }
+
+    var grp_dev = [];
+    $("#l9rproj-newform :input[name=grp_dev]:checked").each(function(){
+        grp_dev.push($(this).val());
+    });
+    pinfo.grp_app = grp_app.join(",");
+    pinfo.grp_dev = grp_dev.join(",");
+
+    var proj = "/home/action/projects/"+ pinfo.metadata.name;
+
+    var req = {
+        path    : proj +"/lcproject.json",
+        data    : JSON.stringify(pinfo),
+    }
+    // console.log(req);
+    // return;
+    req.success = function(rsp) {
+        l9r.HeaderAlert('success', "Successfully Created");
+        l4i.InnerAlert("#l9rproj-newform-alert", "alert-success", "<p><strong>"+ l4i.T("Successfully Done") +"</strong> \
+            <button class=\"btn btn-success\" onclick=\"l9rProj.Open('"+ proj +"')\">"+ l4i.T("Open this Project") +"</button>");
+        $("#l9rproj-newform").hide(200);
+        // TODO
+    }
+    
+    req.error = function(status, message) {
+        l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", message);
+    }
+
+    l9rPodFs.Post(req);
+
+    //
+    var reqrd = {
+        path    : proj +"/README.md",
+        data    : pinfo.summary +"\n========\nabout...\n",
+    }
+    l9rPodFs.Post(reqrd);
+}
+
+l9rProj.NavRecent = function()
+{
+    return alert("TODO"); // TODO
+    l4iModal.Open({
+        id     : "proj-nav-recent",
+        tpluri : l9r.base +"-/project/open-recent.tpl",
+        title  : "Open Project",
+        backEnable : true,
+    });
+}
+
+l9rProj.NavVerCtrl = function()
+{
+    return alert("TODO"); // TODO
+}
+
+// l9rProj.NewPut = function(options)
+// {
+//     options = options || {};
+
+//     if (typeof options.success !== "function") {
+//         options.success = function(){};
+//     }
+        
+//     if (typeof options.error !== "function") {
+//         options.error = function(){};
+//     }
+    
+//     if (options.name === undefined || options.name.length < 1) {
+//         options.error(400, "Project Name can not be null");
+//         return;
+//     }
+
+//     var projinfo = this.ProjectInfoDef;
+//     projinfo.name = options.name;
+
+//     if (options.grp_app !== undefined) {
+//         projinfo.grp_app = options.grp_app;
+//     }
+//     if (options.grp_dev !== undefined) {
+//         projinfo.grp_dev = options.grp_dev;
+//     }
+//     if (options.description !== undefined) {
+//         projinfo.description = options.description;
+//     }
+
+//     // TODO valid options.name
+//     var projpath = "/home/action/projects/"+ options.name;
+
+//     l9rPodFs.Post({
+//         path: projpath + "/lcproject.json",
+//         data: JSON.stringify(projinfo),
+//         success: function(rsp) {
+//             options.success({
+//                 path : projpath,
+//                 info : projinfo, 
+//             });
+//             l9rProj.Info = projinfo;
+//         },
+//         error: function(status, message) {
+//             options.error(status, message);
+//         }
+//     });
+// }
 
 l9rProj.notFound = function(proj)
 {
@@ -90,7 +223,7 @@ l9rProj.notFound = function(proj)
         height  : 200,
         buttons : [
             {
-                onclick : "l9rProj.New()",
+                onclick : "l9rProj.NavStart()",
                 title   : "Create new Project",
                 style   : "btn-inverse"
             },
@@ -104,6 +237,9 @@ l9rProj.notFound = function(proj)
 
 l9rProj.Open = function(proj)
 {
+    // TODO
+    l4iModal.Close();
+
     var userid = l4iCookie.Get("access_userid");
     // console.log("userid"+ userid);
     
@@ -113,16 +249,11 @@ l9rProj.Open = function(proj)
 
     if (!proj) {
         proj = l4iStorage.Get(userid +"_proj_current");
-    }    
+    }
 
     if (!proj) {
         // TODO
-        return l4iModal.Open({
-            url: l9r.base + "project/open-nav",
-            width: 800,
-            height: 450,
-            title: "Start a Project from ...",
-        });
+        return l9rProj.NavStart();
     }
 
     var uri = "proj="+ proj;
@@ -154,13 +285,12 @@ l9rProj.Open = function(proj)
 
     req.success = function(file) {
 
-        // console.log(file);
         if (file.size < 10) {
             return l9rProj.notFound(proj);
         }
 
         var pinfo = JSON.parse(file.body);
-        if (pinfo.name === undefined) {
+        if (pinfo.metadata.name === undefined) {
             return l9rProj.notFound(proj);
         }
 
@@ -168,8 +298,8 @@ l9rProj.Open = function(proj)
             pinfo.runtime = {};
         }
 
-        l4iSession.Set("proj_name", pinfo.name);
-        l4iSession.Set("proj_current_name", pinfo.name);
+        l4iSession.Set("proj_name", pinfo.metadata.name);
+        l4iSession.Set("proj_current_name", pinfo.metadata.name);
         l4iSession.Set("proj_current", proj);
         l4iStorage.Set(userid +"_proj_current", proj);
         // console.log(pinfo);
@@ -180,11 +310,12 @@ l9rProj.Open = function(proj)
         $("#l9r-proj-nav-status").text("loading");
         $("#l9r-proj-nav").show(100);
 
-        l9r.Ajax(l9r.base + "-/project/file-nav.tpl", {
-            success : function(rsp) {
-
-                $("#lcbind-proj-filenav").empty().html(rsp);
-
+        l4iTemplate.Render({
+            dstid  : "lcbind-proj-filenav",
+            tplurl : l9r.base + "-/project/file-nav.tpl",
+            i18n   : true,
+            success : function() {
+                
                 l9rLayout.ColumnSet({
                     id   : "lcbind-proj-filenav",
                     hook : l9rProjFs.LayoutResize
@@ -207,13 +338,10 @@ l9rProj.Open = function(proj)
 
                 l9rProjFs.UiTreeLoad(treeload);
             },
-            error: function(xhr, textStatus, error) {
-                // TODO
-            }
         });
     }
 
-    PodFs.Get(req);
+    l9rPodFs.Get(req);
 }
 
 
@@ -304,7 +432,7 @@ l9rProj.Set = function(proj)
         }
 
         var pinfo = JSON.parse(file.body);
-        if (pinfo.name === undefined) {
+        if (pinfo.metadata.name === undefined) {
             alert("Can Not Found Project: "+ proj +"/lcproject.json");
             // TODO
             return
@@ -338,7 +466,7 @@ l9rProj.Set = function(proj)
         });
     }
 
-    PodFs.Get(req);
+    l9rPodFs.Get(req);
 }
 
 
@@ -366,9 +494,11 @@ l9rProj.SetPut = function()
         })
     }
 
+    // console.log(req);
+
     req.success = function(rsp) {
-        lcHeaderAlert('success', "Successfully Updated");
-        l9rProj.Info.name = req.data.name;
+        l9r.HeaderAlert('success', "Successfully Updated");
+        
         l9rProj.Info.version = req.data.version;
         l9rProj.Info.summary = req.data.summary;
         l9rProj.Info.description = req.data.description;
@@ -377,10 +507,10 @@ l9rProj.SetPut = function()
     }
     
     req.error = function(status, message) {
-        lcHeaderAlert('error', "Error: "+ message);
+        l9r.HeaderAlert('error', "Error: "+ message);
     }
 
-    PodFs.Post(req);
+    l9rPodFs.Post(req);
 }
 
 l9rProj.Run = function()

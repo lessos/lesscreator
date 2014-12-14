@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>{{T . "lessCreator"}}</title>
+  <title>{{T . "Creator"}}</title>
   <link href="/lesscreator/~/lesscreator/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
   <script src="/lesscreator/~/lessui/js/sea.js"></script>
   <script src="/lesscreator/~/lesscreator/js/main.js"></script>

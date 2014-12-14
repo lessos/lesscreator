@@ -117,11 +117,11 @@ lcEditor.TabletOpen = function(urid, callback)
 
                     //l9rTab.pool[urid].mime = obj.data.mime;
                     lcEditor.LoadInstance(entry);
-                    // lcHeaderAlert('success', "OK");
+                    // l9r.HeaderAlert('success', "OK");
                     callback(true);
                 } else {
                     // TODO
-                    lcHeaderAlert('error', "Can not write to IndexedDB");
+                    l9r.HeaderAlert('error', "Can not write to IndexedDB");
                     callback(false);
                 }
             });
@@ -129,7 +129,7 @@ lcEditor.TabletOpen = function(urid, callback)
             // callback(true);
         }
 
-        PodFs.Get(req);
+        l9rPodFs.Get(req);
     });
 }
 
@@ -464,7 +464,7 @@ lcEditor.EntrySave = function(options)
                 lcData.Put("files", entry, function(ret) {
 
                     if (!ret) {
-                        lcHeaderAlert("error", "Failed on write Local.IndexedDB");
+                        l9r.HeaderAlert("error", "Failed on write Local.IndexedDB");
                         options.error(options);
                         return;
                     }
@@ -480,14 +480,14 @@ lcEditor.EntrySave = function(options)
         req.error = function(status, message) {
             // TODO
             // console.log(status +": "+ message);
-            lcHeaderAlert("error", "#"+ status +" "+ message);
+            l9r.HeaderAlert("error", "#"+ status +" "+ message);
             options.error(options);
         }
 
         // console.log("lcEditor.EntrySave Send: "+ options.urid);
         // console.log(req);
 
-        PodFs.Post(req);
+        l9rPodFs.Post(req);
         
         // req.msgreply = cb;
         // lcEditor.WebSocketSend(req)
@@ -579,7 +579,7 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 //         //console.log("lcEditor.WebSocket == null");
 
 //         if (!("WebSocket" in window)) {
-//             lcHeaderAlert('error', 'WebSocket Open Failed');
+//             l9r.HeaderAlert('error', 'WebSocket Open Failed');
 //             return;
 //         }
 
@@ -634,7 +634,7 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 //                     //         $("#pgtab"+ obj.data.urid +" .chg").hide();
 //                     //         $("#pgtab"+ obj.data.urid +" .pgtabtitle").removeClass("chglight");
 
-//                     //         lcHeaderAlert('success', "OK");
+//                     //         l9r.HeaderAlert('success', "OK");
 
 //                     //         lcEditor.MessageReply(obj.msgreply, obj);
 
@@ -647,7 +647,7 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 
 //                 } else {
 //                     //console.log("onmessage errot");
-//                     lcHeaderAlert('error', obj.message);
+//                     l9r.HeaderAlert('error', obj.message);
 
 //                     lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
 //                 }
@@ -726,7 +726,7 @@ lcEditor.ConfigSet = function(key, val)
             l4iCookie.SetByDay("editor_autosave", "on", 365);
         }
         msg = "Setting Editor::AutoSave to "+l4iCookie.Get('editor_autosave');
-        lcHeaderAlert("success", msg);
+        l9r.HeaderAlert("success", msg);
     }
     
     if (key == "editor_search_case") {
@@ -736,7 +736,7 @@ lcEditor.ConfigSet = function(key, val)
             l4iCookie.SetByDay("editor_search_case", "on", 365);
         }
         msg = "Setting Editor::Search Match case "+l4iCookie.Get('editor_search_case');
-        lcHeaderAlert("success", msg);
+        l9r.HeaderAlert("success", msg);
         lcEditor.SearchClean();
     }
 }
@@ -774,7 +774,7 @@ lcEditor.Theme = function(theme)
             l9rLayout.Resize();
         });        
         
-        lcHeaderAlert('success', 'Change Editor color theme to "'+ theme +'"');
+        l9r.HeaderAlert('success', 'Change Editor color theme to "'+ theme +'"');
     }
 }
 
@@ -985,6 +985,6 @@ lcEditor.ConfigEditModeSave = function(mode)
     if (mode == "win") {
         mode = "Default";
     }
-    lcHeaderAlert("success", "Successfully switched to "+ mode);
+    l9r.HeaderAlert("success", "Successfully switched to "+ mode);
     l4iModal.Close();
 }

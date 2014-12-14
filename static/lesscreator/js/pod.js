@@ -207,6 +207,18 @@ l9rPod.ListSelector = function(tplid, data)
     });
 }
 
+l9rPod.UtilResourceSizeFormat = function(size)
+{
+    if (size > 1073741824) {
+        return (size / 1073741824).toFixed(0) + " <span>GB</span>";
+    } else if (size > 1048576) {
+        return (size / 1048576).toFixed(0) + " <span>MB</span>";
+    } else if (size > 1024) {
+        return (size / 1024).toFixed(0) + " <span>KB</span>";
+    }
+
+    return size + " <span>Bytes</span>";
+}
 
 // l9rPod.ListRefresh = function(tplid)
 // {
@@ -235,7 +247,7 @@ l9rPod.ListSelector = function(tplid, data)
 
 //     if (l4iSession.Get("lessfly_pod") == null) {
 //         // alert("No Pod Found");
-//         lcHeaderAlert("error", "No Pod Found");
+//         l9r.HeaderAlert("error", "No Pod Found");
 //         // lcBoxList();
 //         return;
 //     }
@@ -281,369 +293,250 @@ l9rPod.ListSelector = function(tplid, data)
 // }
 
 
-var PodFs = {
+var l9rPodFs = {
 
-    Get: function(options) {
-        // Force options to be an object
-        options = options || {};
-        
-        if (options.path === undefined) {
-            // console.log("undefined");
-            return;
-        }
-
-        if (typeof options.success !== "function") {
-            options.success = function(){};
-        }
-        
-        if (typeof options.error !== "function") {
-            options.error = function(){};
-        }
-
-        var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/get";
-        // url += "?access_token="+ l4iCookie.Get("access_token");
-        url += "?path="+ options.path;
-
-
-        // console.log("box refresh:"+ url);
-        l9r.Ajax(url, {
-            success: function(data) {
-                var rsj = JSON.parse(data);
-
-                if (rsj === undefined) {
-                    options.error(500, "Networking Error"); 
-                } else if (rsj.status == 200) {
-                    options.success(rsj.data);
-                } else {
-                    options.error(rsj.status, rsj.message);
-                }
-            },
-            error : function(xhr, textStatus, error) {
-                options.error(textStatus, error);
-            }
-        });
-
-        // $.ajax({
-        //     url     : url,
-        //     type    : "GET",
-        //     timeout : 10000,
-        //     async   : false,
-        //     success : function(rsp) {
-
-        //         var rsj = JSON.parse(rsp);
-
-        //         if (rsj === undefined) {
-        //             options.error(500, "Networking Error"); 
-        //         } else if (rsj.status == 200) {
-        //             options.success(rsj.data);
-        //         } else {
-        //             options.error(rsj.status, rsj.message);
-        //         }
-        //     },
-        //     error   : function(xhr, textStatus, error) {
-        //         options.error(textStatus, error);
-        //     }
-        // });
-    },
-
-    Post: function(options) {
-
-        options = options || {};
-
-        if (typeof options.success !== "function") {
-            options.success = function(){};
-        }
-        
-        if (typeof options.error !== "function") {
-            options.error = function(){};
-        }
-
-        if (options.path === undefined) {
-            options.error(400, "path can not be null")
-            return;
-        }
-
-        if (options.data === undefined) {
-            options.error(400, "data can not be null")
-            return;
-        }
-
-        if (options.encode === undefined) {
-            options.encode = "text";
-        }
-
-        var req = {
-            // access_token : l4iCookie.Get("access_token"),
-            // requestId    : options.requestId,
-            data : {
-                path     : options.path,
-                body     : options.data,
-                encode   : options.encode,
-                sumcheck : options.sumcheck,
-            }
-        }
-
-        var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/put";
-
-        l9r.Ajax(url, {
-            method  : "POST",
-            timeout : 10000,
-            data    : JSON.stringify(req),
-            success : function(data) {
-                var rsj = JSON.parse(data);
-
-                if (rsj === undefined) {
-                    options.error(500, "Networking Error"); 
-                } else if (rsj.status == 200) {
-                    options.success(rsj.data);
-                } else {
-                    options.error(rsj.status, rsj.message);
-                }
-            },
-            error : function(xhr, textStatus, error) {
-                options.error(textStatus, error);
-            }
-        });
-
-        // $.ajax({
-        //     url     : url,
-        //     type    : "POST",
-        //     timeout : 10000,
-        //     data    : JSON.stringify(req),
-        //     success : function(rsp) {
-
-        //         var rsj = JSON.parse(rsp);
-
-        //         if (rsj === undefined) {
-        //             options.error(500, "Networking Error"); 
-        //         } else if (rsj.status == 200) {
-        //             options.success(rsj.data);
-        //         } else {
-        //             options.error(rsj.status, rsj.message);
-        //         }
-        //     },
-        //     error   : function(xhr, textStatus, error) {
-        //         options.error(textStatus, error);
-        //     }
-        // });
-    },
-
-    Rename: function(options) {
-
-        options = options || {};
-
-        if (typeof options.success !== "function") {
-            options.success = function(){};
-        }
-        
-        if (typeof options.error !== "function") {
-            options.error = function(){};
-        }
-
-        if (options.path === undefined) {
-            options.error(400, "path can not be null")
-            return;
-        }
-
-        if (options.pathset === undefined) {
-            options.error(400, "file can not be null")
-            return;
-        }
-
-        var req = {
-            data : {
-                path    : options.path,
-                pathset : options.pathset,
-            }
-        }
-
-        var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/rename";
-        l9r.Ajax(url, {
-            method  : "POST",
-            timeout : 10000,
-            data    : JSON.stringify(req),
-            success : function(data) {
-                var rsj = JSON.parse(data);
-
-                if (rsj === undefined) {
-                    options.error(500, "Networking Error"); 
-                } else if (rsj.status == 200) {
-                    options.success(rsj.data);
-                } else {
-                    options.error(rsj.status, rsj.message);
-                }
-            },
-            error : function(xhr, textStatus, error) {
-                options.error(textStatus, error);
-            }
-        });
-        // $.ajax({
-        //     url     : url,
-        //     type    : "POST",
-        //     timeout : 10000,
-        //     data    : JSON.stringify(req),
-        //     success : function(rsp) {
-
-        //         var rsj = JSON.parse(rsp);
-
-        //         if (rsj === undefined) {
-        //             options.error(500, "Networking Error"); 
-        //         } else if (rsj.status == 200) {
-        //             options.success(rsj.data);
-        //         } else {
-        //             options.error(rsj.status, rsj.message);
-        //         }
-        //     },
-        //     error   : function(xhr, textStatus, error) {
-        //         options.error(textStatus, error);
-        //     }
-        // });
-    },
-
-    Del: function(options) {
-
-        options = options || {};
-
-        if (typeof options.success !== "function") {
-            options.success = function(){};
-        }
-        
-        if (typeof options.error !== "function") {
-            options.error = function(){};
-        }
-
-        if (options.path === undefined) {
-            options.error(400, "path can not be null")
-            return;
-        }
-
-        var req = {
-            data : {
-                path    : options.path,
-            }
-        }
-
-        var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/del";
-
-        l9r.Ajax(url, {
-            method  : "POST",
-            timeout : 10000,
-            data    : JSON.stringify(req),
-            success : function(data) {
-                var rsj = JSON.parse(data);
-
-                if (rsj === undefined) {
-                    options.error(500, "Networking Error"); 
-                } else if (rsj.status == 200) {
-                    options.success(rsj.data);
-                } else {
-                    options.error(rsj.status, rsj.message);
-                }
-            },
-            error : function(xhr, textStatus, error) {
-                options.error(textStatus, error);
-            }
-        });
-        // $.ajax({
-        //     url     : url,
-        //     type    : "POST",
-        //     timeout : 10000,
-        //     data    : JSON.stringify(req),
-        //     success : function(rsp) {
-
-        //         var rsj = JSON.parse(rsp);
-
-        //         if (rsj === undefined) {
-        //             options.error(500, "Networking Error"); 
-        //         } else if (rsj.status == 200) {
-        //             options.success(rsj.data);
-        //         } else {
-        //             options.error(rsj.status, rsj.message);
-        //         }
-        //     },
-        //     error   : function(xhr, textStatus, error) {
-        //         options.error(textStatus, error);
-        //     }
-        // });
-    },
-
-    List: function(options) {
-        // Force options to be an object
-        options = options || {};
-        
-        if (options.path === undefined) {
-            return;
-        }
-
-        if (typeof options.success !== "function") {
-            options.success = function(){};
-        }
-        
-        if (typeof options.error !== "function") {
-            options.error = function(){};
-        }
-
-        var req = {
-            data : {
-                path   : options.path,
-            }
-        }
-
-        var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/list";
-
-        l9r.Ajax(url, {
-            method  : "POST",
-            timeout : 10000,
-            data    : JSON.stringify(req),
-            success : function(data) {
-                var rsj = JSON.parse(data);
-
-                if (rsj === undefined) {
-                    options.error(500, "Networking Error"); 
-                } else if (rsj.status == 200) {
-                    options.success(rsj.data);
-                } else {
-                    options.error(rsj.status, rsj.message);
-                }
-            },
-            error : function(xhr, textStatus, error) {
-                options.error(textStatus, error);
-            }
-        });
-
-        // $.ajax({
-        //     url     : url,
-        //     type    : "POST",
-        //     timeout : 10000,
-        //     data    : JSON.stringify(req),
-        //     success : function(rsp) {
-
-        //         var rsj = JSON.parse(rsp);
-
-        //         if (rsj === undefined) {
-        //             options.error(500, "Networking Error"); 
-        //         } else if (rsj.status == 200) {
-        //             options.success(rsj.data);
-        //         } else {
-        //             options.error(rsj.status, rsj.message);
-        //         }
-        //     },
-        //     error   : function(xhr, textStatus, error) {
-        //         options.error(textStatus, error);
-        //     }
-        // });
-    }
 }
 
-l9rPod.UtilResourceSizeFormat = function(size)
+l9rPodFs.Get = function(options)
 {
-    if (size > 1073741824) {
-        return (size / 1073741824).toFixed(0) + " <span>GB</span>";
-    } else if (size > 1048576) {
-        return (size / 1048576).toFixed(0) + " <span>MB</span>";
-    } else if (size > 1024) {
-        return (size / 1024).toFixed(0) + " <span>KB</span>";
+    // Force options to be an object
+    options = options || {};
+    
+    if (options.path === undefined) {
+        // console.log("undefined");
+        return;
     }
 
-    return size + " <span>Bytes</span>";
+    if (typeof options.success !== "function") {
+        options.success = function(){};
+    }
+    
+    if (typeof options.error !== "function") {
+        options.error = function(){};
+    }
+
+    var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/get";
+    // url += "?access_token="+ l4iCookie.Get("access_token");
+    url += "?path="+ options.path;
+
+
+    // console.log("box refresh:"+ url);
+    l9r.Ajax(url, {
+        success: function(data) {
+            var rsj = JSON.parse(data);
+
+            if (rsj === undefined) {
+                options.error(500, "Networking Error"); 
+            } else if (rsj.status == 200) {
+                options.success(rsj.data);
+            } else {
+                options.error(rsj.status, rsj.message);
+            }
+        },
+        error : function(xhr, textStatus, error) {
+            options.error(textStatus, error);
+        }
+    });
+}
+
+l9rPodFs.Post = function(options)
+{
+    options = options || {};
+
+    if (typeof options.success !== "function") {
+        options.success = function(){};
+    }
+    
+    if (typeof options.error !== "function") {
+        options.error = function(){};
+    }
+
+    if (options.path === undefined) {
+        options.error(400, "path can not be null")
+        return;
+    }
+
+    if (options.data === undefined) {
+        options.error(400, "data can not be null")
+        return;
+    }
+
+    if (options.encode === undefined) {
+        options.encode = "text";
+    }
+
+    var req = {
+        // requestId    : options.requestId,
+        data : {
+            path     : options.path,
+            body     : options.data,
+            encode   : options.encode,
+            sumcheck : options.sumcheck,
+        }
+    }
+
+    var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/put";
+
+    l9r.Ajax(url, {
+        method  : "POST",
+        timeout : 30000,
+        data    : JSON.stringify(req),
+        success : function(data) {
+            var rsj = JSON.parse(data);
+
+            if (rsj === undefined) {
+                options.error(500, "Networking Error"); 
+            } else if (rsj.status == 200) {
+                options.success(rsj.data);
+            } else {
+                options.error(rsj.status, rsj.message);
+            }
+        },
+        error : function(xhr, textStatus, error) {
+            options.error(textStatus, error);
+        }
+    });
+}
+
+l9rPodFs.Rename = function(options)
+{
+    options = options || {};
+
+    if (typeof options.success !== "function") {
+        options.success = function(){};
+    }
+    
+    if (typeof options.error !== "function") {
+        options.error = function(){};
+    }
+
+    if (options.path === undefined) {
+        options.error(400, "path can not be null")
+        return;
+    }
+
+    if (options.pathset === undefined) {
+        options.error(400, "file can not be null")
+        return;
+    }
+
+    var req = {
+        data : {
+            path    : options.path,
+            pathset : options.pathset,
+        }
+    }
+
+    var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/rename";
+    l9r.Ajax(url, {
+        method  : "POST",
+        timeout : 10000,
+        data    : JSON.stringify(req),
+        success : function(data) {
+            var rsj = JSON.parse(data);
+
+            if (rsj === undefined) {
+                options.error(500, "Networking Error"); 
+            } else if (rsj.status == 200) {
+                options.success(rsj.data);
+            } else {
+                options.error(rsj.status, rsj.message);
+            }
+        },
+        error : function(xhr, textStatus, error) {
+            options.error(textStatus, error);
+        }
+    });
+}
+
+l9rPodFs.Del = function(options)
+{
+    options = options || {};
+
+    if (typeof options.success !== "function") {
+        options.success = function(){};
+    }
+    
+    if (typeof options.error !== "function") {
+        options.error = function(){};
+    }
+
+    if (options.path === undefined) {
+        options.error(400, "path can not be null")
+        return;
+    }
+
+    var req = {
+        data : {
+            path    : options.path,
+        }
+    }
+
+    var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/del";
+
+    l9r.Ajax(url, {
+        method  : "POST",
+        timeout : 10000,
+        data    : JSON.stringify(req),
+        success : function(data) {
+            var rsj = JSON.parse(data);
+
+            if (rsj === undefined) {
+                options.error(500, "Networking Error"); 
+            } else if (rsj.status == 200) {
+                options.success(rsj.data);
+            } else {
+                options.error(rsj.status, rsj.message);
+            }
+        },
+        error : function(xhr, textStatus, error) {
+            options.error(textStatus, error);
+        }
+    });
+}
+
+l9rPodFs.List = function(options)
+{
+    // Force options to be an object
+    options = options || {};
+    
+    if (options.path === undefined) {
+        return;
+    }
+
+    if (typeof options.success !== "function") {
+        options.success = function(){};
+    }
+    
+    if (typeof options.error !== "function") {
+        options.error = function(){};
+    }
+
+    var req = {
+        data : {
+            path   : options.path,
+        }
+    }
+
+    var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/list";
+
+    l9r.Ajax(url, {
+        method  : "POST",
+        timeout : 10000,
+        data    : JSON.stringify(req),
+        success : function(data) {
+            var rsj = JSON.parse(data);
+
+            if (rsj === undefined) {
+                options.error(500, "Networking Error"); 
+            } else if (rsj.status == 200) {
+                options.success(rsj.data);
+            } else {
+                options.error(rsj.status, rsj.message);
+            }
+        },
+        error : function(xhr, textStatus, error) {
+            options.error(textStatus, error);
+        }
+    });
 }

@@ -63,6 +63,26 @@ func (c Index) IndexAction() {
 	c.ViewData["lessfly_api"] = conf.Config.LessFlyApi
 }
 
+func (c Index) DeskAction() {
+
+	c.ViewData["lc_version"] = conf.Config.Version
+
+	//
+	session, err := c.Session.SessionFetch()
+	if err != nil || session.Uid == 0 {
+		return
+	}
+
+	c.ViewData["nav_user"] = map[string]string{
+		"lessids_url":         lessids.ServiceUrl,
+		"lessids_url_signout": lessids.ServiceUrl + "/service/sign-out?access_token=" + session.AccessToken,
+		"access_token":        session.AccessToken,
+		"name":                session.Name,
+		"ukey":                session.Uuid,
+		"photo":               lessids.ServiceUrl + "/service/photo/" + session.Uuid,
+	}
+}
+
 func (c Index) WsAction() {
 
 	for {
@@ -126,25 +146,5 @@ func (c Index) WsAction() {
 		// 	c.Request.Websocket.Close()
 		// 	return
 		// }
-	}
-}
-
-func (c Index) DeskAction() {
-
-	c.ViewData["lc_version"] = conf.Config.Version
-
-	//
-	session, err := c.Session.SessionFetch()
-	if err != nil || session.Uid == 0 {
-		return
-	}
-
-	c.ViewData["nav_user"] = map[string]string{
-		"lessids_url":         lessids.ServiceUrl,
-		"lessids_url_signout": lessids.ServiceUrl + "/service/sign-out?access_token=" + session.AccessToken,
-		"access_token":        session.AccessToken,
-		"name":                session.Name,
-		"ukey":                session.Uuid,
-		"photo":               lessids.ServiceUrl + "/service/photo/" + session.Uuid,
 	}
 }

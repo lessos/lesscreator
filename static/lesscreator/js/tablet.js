@@ -203,7 +203,7 @@ l9rTab.Switch = function(urid)
                     l9rTab.frame[item.target].editor = null;
                 },
                 error: function(xhr, textStatus, error) {
-                    lcHeaderAlert("error", xhr.responseText);
+                    l9r.HeaderAlert("error", xhr.responseText);
                 }
             });
         }
@@ -231,7 +231,7 @@ l9rTab.Switch = function(urid)
                     item.success();
                 },
                 error: function(xhr, textStatus, error) {
-                    lcHeaderAlert("error", xhr.responseText);
+                    l9r.HeaderAlert("error", xhr.responseText);
                 }
             });
         } else {
