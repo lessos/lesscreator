@@ -79,7 +79,7 @@ function lcNavletMore(target)
 
     $('.lc-navlet-moreol').html(ls);
     
-    e = lessPosGet();
+    e = l4i.PosGet();
     w = 100;
     h = 100;
     
@@ -378,7 +378,7 @@ function h5cTabletMore(tg)
     }
     $('.pgtab-openfiles-ol').empty().html(ol);
     
-    e = lessPosGet();
+    e = l4i.PosGet();
     w = 100;
     h = 100;
     //console.log("event top:"+e.top+", left:"+e.left);

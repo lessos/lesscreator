@@ -42,7 +42,7 @@
     </tr>
     <tr>
       <td valign="top"><strong>Description</strong></td>
-      <td><textarea name="description" rows="3" style="width:400px;">{[=it.description]}</textarea></td>
+      <td><textarea name="description" rows="2" style="width:400px;">{[=it.description]}</textarea></td>
     </tr>
 
     <tr>

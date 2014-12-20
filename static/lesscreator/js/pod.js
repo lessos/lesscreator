@@ -12,9 +12,22 @@ var PodDestroy = "Destroy";
 
 l9rPod.Initialize = function(cb)
 {
+    // console.log(l4i.UriQuery().pod);
+    // console.log(l4i.UriQuery().proj2);
+
+    if (l4i.UriQuery().pod) {
+        l4iSession.Set("lessfly_pod", l4i.UriQuery().pod);
+    }
+
+    if (l4i.UriQuery().proj) {
+        l4iSession.Set("proj_current", l4i.UriQuery().proj);
+    }
+
     if (l4iSession.Get("lessfly_pod")) {
+        console.log("l9rPod.initOpen");
         l9rPod.initOpen(cb);
     } else {
+        console.log("l9rPod.initList");
         l9rPod.initList(cb);
     }
 }
@@ -209,12 +222,22 @@ l9rPod.ListSelector = function(tplid, data)
 
 l9rPod.UtilResourceSizeFormat = function(size)
 {
-    if (size > 1073741824) {
-        return (size / 1073741824).toFixed(0) + " <span>GB</span>";
-    } else if (size > 1048576) {
-        return (size / 1048576).toFixed(0) + " <span>MB</span>";
-    } else if (size > 1024) {
-        return (size / 1024).toFixed(0) + " <span>KB</span>";
+    var ms = [
+        [6, "EB"],
+        [5, "PB"],
+        [4, "TB"],
+        [3, "GB"],
+        [2, "MB"],
+        [1, "KB"],
+    ];
+    for (var i in ms) {
+        if (size > Math.pow(1024, ms[i][0])) {
+            return (size / Math.pow(1024, ms[i][0])).toFixed(0) +" <span>"+ ms[i][1] +"</span>";
+        }
+    }
+
+    if (size == 0) {
+        return size;
     }
 
     return size + " <span>Bytes</span>";
@@ -318,7 +341,6 @@ l9rPodFs.Get = function(options)
     var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/get";
     // url += "?access_token="+ l4iCookie.Get("access_token");
     url += "?path="+ options.path;
-
 
     // console.log("box refresh:"+ url);
     l9r.Ajax(url, {
@@ -512,19 +534,14 @@ l9rPodFs.List = function(options)
         options.error = function(){};
     }
 
-    var req = {
-        data : {
-            path   : options.path,
-        }
-    }
-
     var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/list";
+    url += "?path="+ options.path;
 
     l9r.Ajax(url, {
-        method  : "POST",
-        timeout : 10000,
-        data    : JSON.stringify(req),
+        method  : "GET",
+        timeout : 30000,
         success : function(data) {
+            
             var rsj = JSON.parse(data);
 
             if (rsj === undefined) {

@@ -40,7 +40,7 @@
                         </div>
                     </div>
 
-                    <div class="less-tile flatui-bg-nephritis" onclick="lcProjOpen()">
+                    <div class="less-tile flatui-bg-nephritis" onclick="l9rProj.NavOpen()">
                         <div class="lt-content icon">
                             <img src="/lesscreator/~/lesscreator/img/gen/pen0-48.png">
                         </div>

@@ -163,6 +163,14 @@ l9r.bootLoadDeps = function()
                             l9rLayout.BindRefresh();
                         });
 
+                        // document.onmouseover = function(event) {
+                        //     event = event || window.event;
+
+                        //     var mouseX = event.clientX;
+                        //     var mouseY = event.clientY;
+                        //     console.log(mouseX);
+                        // }
+
                         l9rLayout.Resize();
                         l9rLayout.BindRefresh();
 

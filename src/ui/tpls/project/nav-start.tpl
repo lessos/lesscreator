@@ -39,7 +39,7 @@
 </table>
 </a>
 
-<a class="j4soeo" href="#project-recent" onclick="l9rProj.NavRecent()">
+<a class="j4soeo" href="#project-recent" onclick="l9rProj.NavOpen()">
 <table>
     <tr class="line">
         <td width="64px"><img src="/lesscreator/~/lesscreator/img/proj/proj-new1.png" class="icon"></td>

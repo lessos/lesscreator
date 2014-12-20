@@ -488,7 +488,7 @@ function hdev_pgtab_openfiles()
     }
     $('.pgtab-openfiles-ol').html(ol);
     
-    e = lessPosGet();
+    e = l4i.PosGet();
     w = 100;
     h = 100;
     //console.log("event top:"+e.top+", left:"+e.left);

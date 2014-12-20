@@ -1,5 +1,5 @@
-
 var l9rProj = {
+    Current     : null,
     Info        : {},
     ProjectIndex: "/home/action/.lesscreator/projects.json",
     ProjectInfoDef: {
@@ -34,7 +34,7 @@ var l9rProj = {
 l9rProj.NavStart = function()
 {
     l4iModal.Open({
-        tpluri : l9r.base +"-/project/open-nav.tpl",
+        tpluri : l9r.base +"-/project/nav-start.tpl",
         width  : 700,
         height : 400,
         title  : "Start a Project from ...",
@@ -67,7 +67,8 @@ l9rProj.New = function()
         title  : "Create New Project",
         i18n   : true,
         data   : pinfo,
-        // width  : 800,
+        width  : 700,
+        height : 400,
         backEnable : true,
         buttons : [
             {
@@ -118,12 +119,12 @@ l9rProj.NewPut = function()
 
     var proj = "/home/action/projects/"+ pinfo.metadata.name;
 
+    //
     var req = {
         path    : proj +"/lcproject.json",
         data    : JSON.stringify(pinfo),
     }
-    // console.log(req);
-    // return;
+
     req.success = function(rsp) {
         l9r.HeaderAlert('success', "Successfully Created");
         l4i.InnerAlert("#l9rproj-newform-alert", "alert-success", "<p><strong>"+ l4i.T("Successfully Done") +"</strong> \
@@ -146,15 +147,50 @@ l9rProj.NewPut = function()
     l9rPodFs.Post(reqrd);
 }
 
-l9rProj.NavRecent = function()
+l9rProj.NavOpen = function()
 {
-    return alert("TODO"); // TODO
-    l4iModal.Open({
-        id     : "proj-nav-recent",
-        tpluri : l9r.base +"-/project/open-recent.tpl",
-        title  : "Open Project",
-        backEnable : true,
-    });
+    // console.log("open projects");
+
+    var tplid = "l9rproj-start";
+
+    var req = {
+        tpluri : l9r.base + "/-/project/nav-open.tpl",
+        width  : 800,
+        height : 400,
+        title  : "Open Project from an existing working directory",
+        close  : false,
+        i18n   : true,
+        buttons : [
+            {
+                onclick : "l4iModal.Close()",
+                title   : "Close"
+            }
+        ]
+    }
+
+    req.success = function() {
+
+        l9rProj.NavIndexGet(function(err, data) {
+            
+            if (err) {
+                data = {items: []};
+            }
+
+            l4iTemplate.Render({
+                dstid: tplid,
+                tplid: tplid +"-tpl",
+                data:  data,
+            });
+
+            if (data.items.length > 0) {
+                $("#"+ tplid +"-alert").hide();
+            } else {
+                $("#"+ tplid +"-alert").text("Not Project Found").show(100);
+            }
+        });
+    }
+
+    l4iModal.Open(req);
 }
 
 l9rProj.NavVerCtrl = function()
@@ -162,55 +198,199 @@ l9rProj.NavVerCtrl = function()
     return alert("TODO"); // TODO
 }
 
-// l9rProj.NewPut = function(options)
-// {
-//     options = options || {};
+l9rProj.NavIndexRefresh = function(projpath, pinfo)
+{
+    l9rProj.NavIndexGet(function(err, rsj) {
 
-//     if (typeof options.success !== "function") {
-//         options.success = function(){};
-//     }
+        if (err) {
+            return;
+        }
+
+        var ok = false, sync = false;
         
-//     if (typeof options.error !== "function") {
-//         options.error = function(){};
-//     }
-    
-//     if (options.name === undefined || options.name.length < 1) {
-//         options.error(400, "Project Name can not be null");
-//         return;
-//     }
+        for (var i in rsj.items) {
+            if (rsj.items[i].path === projpath) {
+                ok = true;
+                    
+                if (rsj.items[i].name != pinfo.metadata.name
+                    || rsj.items[i].summary != pinfo.summary) {
+                
+                    rsj.items[i].name = pinfo.metadata.name;
+                    rsj.items[i].summary = pinfo.summary;
+                        
+                    sync = true;
+                }
+            }
+        }
 
-//     var projinfo = this.ProjectInfoDef;
-//     projinfo.name = options.name;
+        if (!ok) {
+            rsj.items.push({
+                pid     : l4iString.CryptoMd5(projpath),
+                name    : pinfo.metadata.name,
+                summary : pinfo.summary,
+                path    : projpath,
+            });
+            sync = true;
+        }
+        // console.log(rsj);
+        // console.log(sync);
+        if (sync) {
+            l9rPodFs.Post({
+                path: l9rProj.ProjectIndex,
+                data: JSON.stringify(rsj),
+            });
+        }
+    });
+}
 
-//     if (options.grp_app !== undefined) {
-//         projinfo.grp_app = options.grp_app;
-//     }
-//     if (options.grp_dev !== undefined) {
-//         projinfo.grp_dev = options.grp_dev;
-//     }
-//     if (options.description !== undefined) {
-//         projinfo.description = options.description;
-//     }
+l9rProj.NavIndexGet = function(cb)
+{
+    l9rPodFs.Get({
+        path : l9rProj.ProjectIndex,
+        success : function(data) {
+            
+            if (!data || !data.body) {
+                cb(null, {items: []});
+            } else {
 
-//     // TODO valid options.name
-//     var projpath = "/home/action/projects/"+ options.name;
+                var rsj = JSON.parse(data.body);
 
-//     l9rPodFs.Post({
-//         path: projpath + "/lcproject.json",
-//         data: JSON.stringify(projinfo),
-//         success: function(rsp) {
-//             options.success({
-//                 path : projpath,
-//                 info : projinfo, 
-//             });
-//             l9rProj.Info = projinfo;
-//         },
-//         error: function(status, message) {
-//             options.error(status, message);
-//         }
-//     });
-// }
+                if (!rsj) {
+                    rsj = {};
+                }
 
+                if (!rsj.items) {
+                    rsj.items = [];
+                }
+
+                cb(null, rsj);
+            }
+        },
+        error : function(code, msg) {
+            if (code == "404") {
+                cb(null, {items: []});
+            } else {
+                cb(code, msg);
+            }
+        }
+    });
+}
+
+l9rProj.NavIndexDel = function(pathid, cb)
+{
+    if (!cb) {
+        cb = function(){};
+    }
+
+    l9rProj.NavIndexGet(function(err, rsj) {
+
+        if (err) {
+            return cb(err);
+        }
+
+        var idx = -1;
+
+        for (var i in rsj.items) {
+            
+            if (rsj.items[i].pid != pathid) {
+                continue;
+            }
+
+            idx = i;
+            break
+        }
+
+        if (idx > -1) {
+            rsj.items.splice(idx, 1);
+            // console.log(rsj.items.splice(idx, 1));
+            l9rPodFs.Post({
+                path    : l9rProj.ProjectIndex,
+                data    : JSON.stringify(rsj),
+                success : function(err) {
+                    cb(err);
+                },
+                error : function(err) {
+                    cb(err);
+                }
+            });
+        } else {
+            cb(null);
+        }
+    });
+}
+
+l9rProj.StartFsList = function(path)
+{
+    if (!path) {
+        path = "/home/action/projects";
+    }
+
+    var tplid = "l9rproj-start";
+    var home = "/home/action";
+
+    var req = {
+        path : path,
+    }
+
+    req.success = function(data) {
+
+        if (!data.items) {
+            data.items = [];
+        }
+
+        if (!data.path) {
+            data.path = home;
+        }
+
+        //
+        var items = [], dirs = [];
+        var path = l4i.StringTrim(l4i.StringTrim(data.path.replace(/\/+/g, "/"), home), "/");
+
+        //
+        if (path.length > 0) {
+            var ar = path.split("/"); 
+            var ppath = home;
+            for (var i in ar) {
+                ppath += "/"+ ar[i];
+                dirs.push({
+                    path   : ppath, 
+                 name   : ar[i],
+                });
+            }
+        }
+        data.navs = dirs;
+
+        //
+        for (var i in data.items) {
+
+            if (!data.items[i].isdir) {
+                data.items[i].isdir = false;
+            }
+
+            items.push({
+                path    : data.path +"/"+ data.items[i].name,
+                name    : data.items[i].name,
+                isdir   : data.items[i].isdir,
+            });
+        }
+        data.items = items;
+
+        //
+        l4iTemplate.Render({
+            dstid: tplid,
+            tplid: tplid +"fs-tpl",
+            data:  data,
+        });
+    }
+
+    req.error = function(err) {
+
+    }
+
+    l9rPodFs.List(req);
+}
+
+//
 l9rProj.notFound = function(proj)
 {
     l4iModal.Open({
@@ -258,21 +438,22 @@ l9rProj.Open = function(proj)
 
     var uri = "proj="+ proj;
 
-    if (projCurrent == proj) {
+    if (l9rProj.Current == proj) {
         // TODO
         return;
     }
 
-    // if (projCurrent != proj) {
-    //     if (projCurrent.split("/").pop(-1) != proj.split("/").pop(-1)) {
-    //         window.open(l9r.base + "index?"+ uri, '_blank');
-    //     }
-    //     return;
-    // }
+    if (l9rProj.Current && l9rProj.Current != proj) {
+        window.open(l9r.base + "?proj="+ proj +"&pod="+ l4iSession.Get("lessfly_pod"), '_blank');
+        return;
+    }
+
 
     var req = {
         path: proj +"/lcproject.json",
     }
+
+    
 
     req.error = function(status, message) {
 
@@ -288,11 +469,13 @@ l9rProj.Open = function(proj)
         if (file.size < 10) {
             return l9rProj.notFound(proj);
         }
-
+console.log(file.body);
         var pinfo = JSON.parse(file.body);
-        if (pinfo.metadata.name === undefined) {
+        if (pinfo.metadata === undefined || pinfo.metadata.name === undefined) {
             return l9rProj.notFound(proj);
         }
+
+        l9rProj.Current = proj;
 
         if (pinfo.runtime == undefined) {
             pinfo.runtime = {};
@@ -339,11 +522,13 @@ l9rProj.Open = function(proj)
                 l9rProjFs.UiTreeLoad(treeload);
             },
         });
+
+        // sync indexes
+        l9rProj.NavIndexRefresh(proj, pinfo);
     }
 
     l9rPodFs.Get(req);
 }
-
 
 l9rProj.OpenHistoryTabs = function()
 {

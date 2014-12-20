@@ -129,7 +129,7 @@ $(".b0hmqb").click(function() {
 
 function _proj_dataflow_grpnew_show()
 {
-    var p = lessPosGet();
+    var p = l4i.PosGet();
    
     var bw = $('body').width() - 30;
     var bh = $('body').height() - 50;
@@ -155,7 +155,7 @@ function _proj_dataflow_grpnew_show()
 
 function _proj_dataflow_actornew_show()
 {
-    var p = lessPosGet();
+    var p = l4i.PosGet();
    
     var bw = $('body').width() - 30;
     var bh = $('body').height() - 50;

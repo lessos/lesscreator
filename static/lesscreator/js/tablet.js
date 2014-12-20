@@ -382,7 +382,7 @@ l9rTab.TabletMore = function(tg)
     }
     $("#lctab-openfiles-ol").empty().html(ol);
     
-    e = lessPosGet();
+    e = l4i.PosGet();
     w = 100;
     h = 100;
     //console.log("event top:"+e.top+", left:"+e.left);
