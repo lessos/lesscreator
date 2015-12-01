@@ -1,9 +1,33 @@
 var l9rPod = {
-    Instance: null,
+    Instance : null,
+    Status   : null,
+    Zones    : null,
+    Cells    : null,
+    Specs    : null,
+    pod_def  : {
+        meta : {
+            id : "",
+            name : "",
+        },
+        status : {
+            desiredPhase : "Running",
+            placement : {
+                zoneid : "",
+                cellid : "",
+            }
+        },
+        spec : {
+            meta : {
+                id : "",
+            }
+        },
+    },
+    open_ticker : null,
+    open_retry  : 30,
 }
 
 // refer
-//  https://git.lessos.com/lessos/lessfly/blob/master/src/api/types.go
+//  https://git.lessos.com/lessos/lessmix/blob/master/src/api/types.go
 var PodPending = "Pending";
 var PodRunning = "Running";
 var PodStopped = "Stopped";
@@ -16,70 +40,168 @@ l9rPod.Initialize = function(cb)
     // console.log(l4i.UriQuery().proj2);
 
     if (l4i.UriQuery().pod) {
-        l4iSession.Set("lessfly_pod", l4i.UriQuery().pod);
+        l4iSession.Set("pandora_pod", l4i.UriQuery().pod);
     }
 
     if (l4i.UriQuery().proj) {
         l4iSession.Set("proj_current", l4i.UriQuery().proj);
     }
 
-    if (l4iSession.Get("lessfly_pod")) {
-        console.log("l9rPod.initOpen");
-        l9rPod.initOpen(cb);
-    } else {
-        console.log("l9rPod.initList");
-        l9rPod.initList(cb);
-    }
+    seajs.use(["ep"], function(EventProxy) {
+
+        var ep = EventProxy.create('zones', 'cells', 'specs', function (zones, cells, specs) {
+
+            //
+            var err = l9r.ErrorCheck(zones, "HostZoneList");
+            if (err) {
+                return alert(err.message);
+            }
+            if (!zones.items || zones.items.length < 1) {
+                return alert("Service Unavailable");
+            }
+
+            //
+            err = l9r.ErrorCheck(cells, "HostCellList");
+            if (err) {
+                return alert(err.message);
+            }
+            if (!cells.items || cells.items.length < 1) {
+                return alert("Service Unavailable");
+            }
+
+            //
+            err = l9r.ErrorCheck(specs, "PodSpecList");
+            if (err) {
+                return alert(err.message);
+            }
+            if (!specs.items || specs.items.length < 1) {
+                return alert("Service Unavailable");
+            }
+
+            // return l9rPod.Open("648fc606f12c", cb);
+
+            //
+            l9rPod.Zones = zones;
+            l9rPod.Cells = cells;
+            l9rPod.Specs = specs;
+
+            //
+            if (l4iSession.Get("pandora_pod")) {
+                l9rPod.initOpen(cb);
+            } else {
+                l9rPod.initList(cb);
+            }
+        });
+
+        ep.fail(function(err) {
+            alert("PodList: service is busy, please try again later");
+        });
+    
+        l9r.PandoraApiCmd("host/zone-list", {
+            callback: ep.done("zones"),
+        });
+    
+        l9r.PandoraApiCmd("host/cell-list", {
+            callback: ep.done("cells"),
+        });
+
+        l9r.PandoraApiCmd("spec/pod-list", {
+            callback: ep.done("specs"),
+        });
+    });
 }
 
-l9rPod.Open = function(id)
+l9rPod.Open = function(id, cb)
 {
-    var url = lessfly_api + "/pods/entry?id="+ id;
+    // l4iAlert.Open("info", "Connecting Pod", {close: false});
 
-    l9r.Ajax(url, {
-        callback: function(err, data) {
+    var cur_pod_id = l4iSession.Get("pandora_pod");
+    l9rPod.open_retry = 30;
 
+    if (cur_pod_id && cur_pod_id != id) {        
+        // TODO redirect
+        return;
+    }
+
+    l4iSession.Set("pandora_pod", id);
+
+    l4iModal.Open({
+        title  : "Connecting Pod",
+        tplid  : "l9r-pod-connecting",
+        width  : 700,
+        height : 200,
+        close  : false,
+        data   : {
+            _meta_id : id,
+        },
+        buttons : [],
+        success : function() {
+            l9rPod.open_status(cb);
+        },
+    });
+}
+
+l9rPod.open_status = function(cb)
+{
+    var statusid = "#l9r-pod-connecting-status";
+  
+    l9r.PandoraApiCmd("pod/status?id="+ l4iSession.Get("pandora_pod"), {
+        callback: function(err, rsj) {
+
+            var phase = "Pending";
+            err = err || l9r.ErrorCheck(rsj, "PodStatus");
             if (err) {
-                return alert(err);
+                phase = err.message;
             }
 
-            var rsj = JSON.parse(data);
-            if (!rsj) {
-                return alert("Network Connection Exception, please try again later");
+            if (rsj.phase) {
+                phase = rsj.phase;
             }
 
-            if (!rsj.kind || rsj.kind != "Pod") {
-                return alert("No Pod Found");
+            $(statusid).text(phase);
+
+
+            if (phase != "Running" || !rsj.placement || !rsj.placement.nodeid) {
+
+                if (l9rPod.open_retry > 0) {
+                    l9rPod.open_retry = l9rPod.open_retry - 1;
+                    return setTimeout(l9rPod.open_status, 1000);
+                }
+
+                return $(statusid).text("Failed to Connect to Pod Instance, please try again later");
             }
 
-            l4iSession.Set("lessfly_pod", rsj.metadata.id);
-            l9rPod.Instance = rsj;
-                 
-            $("#l9r-pod-status-msg").text(rsj.status.phase);
+            l9rPod.Status = rsj;
+
+            $("#l9r-pod-status-msg").text(phase);
             $("#l9r-pod-nav").show(100);
 
-            l4iModal.Close();
+            setTimeout(function() {
+                l4iModal.Close();
+                if (cb) {
+                    cb(null, null);
+                }
+            }, 500);
 
-            l9r.HeaderAlert("info", "Getting Project List");
+            // l9r.HeaderAlert("info", "Getting Project List");
 
-            l9rProj.Open();
+            // l9rProj.Open();
         },
     });
 }
 
 l9rPod.initOpen = function(cb)
 {
-    var url = lessfly_api + "/pods/entry";
-    url += "?id="+ l4iSession.Get("lessfly_pod");
+    var url = "pod/entry";
+    url += "?id="+ l4iSession.Get("pandora_pod");
 
-    l9r.Ajax(url, {
-        callback: function(err, data) {
+    l9r.PandoraApiCmd(url, {
+        callback: function(err, rsj) {
 
             if (err) {
                 return cb(err);
             }
 
-            var rsj = JSON.parse(data);
             if (!rsj) {
                 return cb("Network Connection Exception, please try again later");
             }
@@ -104,121 +226,252 @@ l9rPod.initOpen = function(cb)
 
 l9rPod.initList = function(cb)
 {
-    var url = lessfly_api + "/pods/list";
+    // console.log("initList");
+    l9r.PandoraApiCmd("pod/list", {
+        callback: function(err, data) {            
 
-    l9r.Ajax(url, {
-        callback: function(err, data) {
-
-            if (err || !data) {
-                return cb(err);
+            err = err || l9r.ErrorCheck(data, "PodList");
+            if (err) {
+                return cb(err.message);
             }
 
-            var rsj = JSON.parse(data);
-            if (!rsj) {
-                return cb("Network Connection Exception, please try again later");
-            }
+            // console.log(data.items.length);
 
-            if (!rsj.kind || rsj.kind != "PodList") {
-                return cb("Service is busy, please try again later");
+            if (!data.items) {
+                data.items = [];
             }
+            // data.items = []; // debug;
 
-            if (!rsj.items) {
-                rsj.items = [];
-            }
-
-            if (rsj.items.length < 1) {
-                // TODO New Instance
+            if (data.items.length < 1) {
+                l9rPod.PpWelcome();
             } else {
-                l9rPod.ListSelector(null, rsj);
+                l9rPod.ListSelector(null, data);
             }
         },
     });
 }
 
-l9rPod.ListSelector = function(tplid, data)
+l9rPod.ListSelector = function(err, data)
 {
-    // console.log("ListSelector");
+    if (data.items.length == 1) {
 
-    if (!tplid) {
-        tplid = "l9r-podls";
+        l4iSession.Set("pandora_pod", data.items[0].meta.id);
+
+        l9rPod.initOpen(function(){});
+
+        return;
+    }
+}
+
+l9rPod.PpWelcome = function()
+{
+    l4iModal.Open({
+        id     : "l9r-pod-init-pp",
+        tpluri : l9r.base + "/-/pod/welcome.tpl",
+        width  : 700,
+        height : 350,
+        close  : false,
+        title  : "Welcome"
+    });
+}
+
+l9rPod.PpNew = function()
+{
+    l9rPod.PpNewZoneSelector();
+}
+
+l9rPod.PpNewZoneSelector = function()
+{
+    if (!l9rPod.Zones || !l9rPod.Zones.items || l9rPod.Zones.items.length < 1) {
+        return alert("Service Unavailable");
     }
 
-    seajs.use(["ep"], function(EventProxy) {
+    if (l9rPod.Zones.items.length == 1) {
+        return l9rPod.PpNewZoneSelectEntry(l9rPod.Zones.items[0].meta.id);
+    }
 
-        var ep = EventProxy.create('tpl', 'data', function (tpl, data) {
+    l4iModal.Open({
+        id     : "l9r-pod-init-zone-selector",
+        tpluri : l9r.base + "/-/pod/zone-selector.tpl",
+        title  : "Select a Zone",
+        data   : l9rPod.Zones,
+    });
+}
 
-            var rsj = JSON.parse(data);
-            if (!rsj || !rsj.kind || rsj.kind != "PodList") {
-                return alert("Network Connection Exception, please try again later");
-            }
+l9rPod.PpNewZoneSelectEntry = function(zoneid)
+{
+    l4iSession.Set("l9r_pod_init_zone_active", zoneid);
+    l9rPod.PpNewCellSelector(zoneid)
+}
 
-            if (rsj.error !== undefined) {
-                
-                if (rsj.error.code == "401") {
-                    return l9r.Login();
-                }
+l9rPod.PpNewCellSelector = function(zoneid)
+{
+    if (!l9rPod.Cells || !l9rPod.Cells.items || l9rPod.Cells.items.length < 1) {
+        return alert("Service Unavailable");
+    }
 
-                return alert("Error ("+ rsj.error.code +") "+ rsj.error.message);
-            }
+    var cells = [];
+    for (var i in l9rPod.Cells.items) {
 
-            if (rsj.kind != "PodList" || rsj.items === undefined) {
-                rsj.items = [];
-            }
+        if (l9rPod.Cells.items[i].zoneid != zoneid) {
+            continue;
+        }
 
-            if (rsj.items.length > 0) {
-                $("#"+ tplid +"-alert").hide();
-            } else {
-                $("#"+ tplid +"-alert").text("Not Pod Found").show();
-            }
+        cells.push(l9rPod.Cells.items[i]);
+    }
 
-            for (var i in rsj.items) {
-                rsj.items[i].metadata.created = l4i.TimeParseFormat(rsj.items[i].metadata.created, "Y-m-d");
-                rsj.items[i].metadata.updated = l4i.TimeParseFormat(rsj.items[i].metadata.updated, "Y-m-d");
-            }
+    if (cells.length < 1) {
+        return alert("Not Cell Available");
+    }
 
-            l4iModal.Open({
-                tplsrc : tpl,
-                width  : 660,
-                height : 400,
-                title  : "Pod List",
-                close  : false,
-                // buttons : [
-                //     {
-                //         onclick : "l4iModal.Close()",
-                //         title   : "Close"
-                //     }
-                // ],
-                success : function() {
-                    l4iTemplate.Render({
-                        dstid: tplid,
-                        tplid: tplid +"-tpl",
-                        data:  rsj,
-                        success : function() {
-                            l4i.InnerAlert("#"+ tplid +"-alert", "alert-success", "Select a Pod as your Workspace ...");
-                        }
-                    });
-                },
-            });
-        });
+    if (cells.length == 1) { 
+        return l9rPod.PpNewCellSelectEntry(cells[0].meta.id);       
+    }
 
-        ep.fail(function(err) {
-            // TODO
-            alert("PodList: service is busy, please try again later");
-        });
+    l4iModal.Open({
+        id     : "l9r-pod-init-cell-selector",
+        tpluri : l9r.base + "/-/pod/cell-selector.tpl",
+        title  : "Select a Cell",
+        data   : {
+            items: cells,
+        },
+    });
+}
+
+l9rPod.PpNewCellSelectEntry = function(entryid)
+{
+    l4iSession.Set("l9r_pod_init_cell_active", entryid);
+    l9rPod.PpNewSpecSelector();
+}
+
+l9rPod.PpNewSpecSelector = function()
+{
+    if (!l9rPod.Specs || !l9rPod.Specs.items || l9rPod.Specs.items.length < 1) {
+        return alert("Service Unavailable");
+    }
+
+    if (l9rPod.Specs.items.length == 1) {
+        return l9rPod.PpNewSpecSelectEntry(l9rPod.Specs.items[0].meta.id);
+    }
+
+    l4iModal.Open({
+        id     : "l9r-pod-init-spec-selector",
+        tpluri : l9r.base + "/-/pod/spec-selector.tpl",
+        title  : "Select a Spec",
+        data   : l9rPod.Specs,
+        width  : 900,
+        height : 500,
+    });
+}
+
+l9rPod.PpNewSpecSelectEntry = function(entryid)
+{
+    l4iSession.Set("l9r_pod_init_spec_active", entryid);
+    l9rPod.PpNewConfirm();
+}
+
+
+l9rPod.PpNewConfirm = function()
+{
+    var pod = l4i.Clone(l9rPod.pod_def);
     
-        l9r.Ajax(l9r.base + "/-/pod/list.tpl", {
-            callback: ep.done('tpl'),
-        });
-    
-        if (!data) {
-            l9r.Ajax("/v1/pods/list", {
-                callback: ep.done('data'),           
-            });
-        } else {
-            ep.emit("data", JSON.stringify(data));
+    //
+    pod.status_placement_zoneid = l4iSession.Get("l9r_pod_init_zone_active");
+    for (var i in l9rPod.Zones.items) {
+        if (l9rPod.Zones.items[i].meta.id == pod.status_placement_zoneid) {
+            pod._zone_name = l9rPod.Zones.items[i].meta.name;
+            break;
+        }
+    }
+
+    //
+    pod.status_placement_cellid = l4iSession.Get("l9r_pod_init_cell_active");
+    for (var i in l9rPod.Cells.items) {
+        if (l9rPod.Cells.items[i].meta.id == pod.status_placement_cellid) {
+            pod._cell_name = l9rPod.Cells.items[i].meta.name;
+            break;
+        }
+    }
+
+    //
+    pod.spec_meta_id = l4iSession.Get("l9r_pod_init_spec_active");
+    for (var i in l9rPod.Specs.items) {
+        if (l9rPod.Specs.items[i].meta.id == pod.spec_meta_id) {
+            pod._spec_meta_name = l9rPod.Specs.items[i].meta.name;
+            break;
+        }
+    }
+
+    //
+    l4iModal.Open({
+        id     : "l9r-pod-init-new-confirm",
+        tpluri : l9r.base + "/-/pod/new-confirm.tpl",
+        title  : "New Pod Instance",
+        width  : 900,
+        height : 500,
+        data   : pod,
+        buttons : [{
+            title : "Create",
+            onclick : "l9rPod.PpNewCommit()",
+            style : "btn btn-primary",
+        }],
+    });
+}
+
+l9rPod.PpNewCommit = function()
+{
+    var form = $("#l9r-pod-new"),
+        alertid = "#l9r-pod-new-alert";
+
+    var req = {
+        meta : {
+            name : form.find("input[name=meta_name]").val(),
+        },
+        status : {
+            desiredPhase : "Running",
+            placement : {
+                zoneid : form.find("input[name=status_placement_zoneid]").val(),
+                cellid : form.find("input[name=status_placement_cellid]").val(),
+            }
+        },
+        spec : {
+            meta : {
+                id : form.find("input[name=spec_meta_id]").val(),
+            }
+        },
+    };
+
+    // return l4iModal.Close(function() {l9rPod.Open("648fc606f12c")});
+
+    if (!req.meta.name || req.meta.name == "") {
+        return l4i.InnerAlert(alertid, 'alert-danger', "Name Can not be Null");
+    }
+
+    $(alertid).hide();
+
+    l9r.PandoraApiCmd("pod/set", {
+        method  : "POST",
+        data    : JSON.stringify(req),
+        success : function(rsj) {
+
+            var err = l9r.ErrorCheck(rsj, "Pod");
+            if (err) {
+                return l4i.InnerAlert(alertid, 'alert-danger', err.message);
+            }
+
+            l4i.InnerAlert(alertid, 'alert-success', "Successfully Updated");
+
+            window.setTimeout(function(){
+                l4iModal.Close();
+                l9rPod.Open(rsj.meta.id);
+            }, 500);
+        },
+        error : function(xhr, textStatus, error) {
+            l4i.InnerAlert(alertid, 'alert-danger', textStatus+' '+xhr.responseText);
         }
     });
 }
+
 
 l9rPod.UtilResourceSizeFormat = function(size)
 {
@@ -230,6 +483,7 @@ l9rPod.UtilResourceSizeFormat = function(size)
         [2, "MB"],
         [1, "KB"],
     ];
+
     for (var i in ms) {
         if (size > Math.pow(1024, ms[i][0])) {
             return (size / Math.pow(1024, ms[i][0])).toFixed(0) +" <span>"+ ms[i][1] +"</span>";
@@ -240,7 +494,7 @@ l9rPod.UtilResourceSizeFormat = function(size)
         return size;
     }
 
-    return size + " <span>Bytes</span>";
+    return size + " <span>B</span>";
 }
 
 // l9rPod.ListRefresh = function(tplid)
@@ -266,18 +520,18 @@ l9rPod.UtilResourceSizeFormat = function(size)
 // //
 // function l9rPodRefresh()
 // {
-//     // console.log(l4iSession.Get("lessfly_pod"));
+//     // console.log(l4iSession.Get("pandora_pod"));
 
-//     if (l4iSession.Get("lessfly_pod") == null) {
+//     if (l4iSession.Get("pandora_pod") == null) {
 //         // alert("No Pod Found");
 //         l9r.HeaderAlert("error", "No Pod Found");
 //         // lcBoxList();
 //         return;
 //     }
 
-//     var url = lessfly_api + "/pods/entry";
+//     var url = pandora_endpoint + "/pod/entry";
 //     url += "?access_token="+ l4iCookie.Get("access_token");
-//     url += "&podid="+ l4iSession.Get("lessfly_pod");
+//     url += "&podid="+ l4iSession.Get("pandora_pod");
 //     // url += "&boxname=los.box.def";
 //     // console.log("box refresh:"+ url);
 
@@ -314,246 +568,3 @@ l9rPod.UtilResourceSizeFormat = function(size)
 //         }
 //     });
 // }
-
-
-var l9rPodFs = {
-
-}
-
-l9rPodFs.Get = function(options)
-{
-    // Force options to be an object
-    options = options || {};
-    
-    if (options.path === undefined) {
-        // console.log("undefined");
-        return;
-    }
-
-    if (typeof options.success !== "function") {
-        options.success = function(){};
-    }
-    
-    if (typeof options.error !== "function") {
-        options.error = function(){};
-    }
-
-    var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/get";
-    // url += "?access_token="+ l4iCookie.Get("access_token");
-    url += "?path="+ options.path;
-
-    // console.log("box refresh:"+ url);
-    l9r.Ajax(url, {
-        success: function(data) {
-            var rsj = JSON.parse(data);
-
-            if (rsj === undefined) {
-                options.error(500, "Networking Error"); 
-            } else if (rsj.status == 200) {
-                options.success(rsj.data);
-            } else {
-                options.error(rsj.status, rsj.message);
-            }
-        },
-        error : function(xhr, textStatus, error) {
-            options.error(textStatus, error);
-        }
-    });
-}
-
-l9rPodFs.Post = function(options)
-{
-    options = options || {};
-
-    if (typeof options.success !== "function") {
-        options.success = function(){};
-    }
-    
-    if (typeof options.error !== "function") {
-        options.error = function(){};
-    }
-
-    if (options.path === undefined) {
-        options.error(400, "path can not be null")
-        return;
-    }
-
-    if (options.data === undefined) {
-        options.error(400, "data can not be null")
-        return;
-    }
-
-    if (options.encode === undefined) {
-        options.encode = "text";
-    }
-
-    var req = {
-        // requestId    : options.requestId,
-        data : {
-            path     : options.path,
-            body     : options.data,
-            encode   : options.encode,
-            sumcheck : options.sumcheck,
-        }
-    }
-
-    var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/put";
-
-    l9r.Ajax(url, {
-        method  : "POST",
-        timeout : 30000,
-        data    : JSON.stringify(req),
-        success : function(data) {
-            var rsj = JSON.parse(data);
-
-            if (rsj === undefined) {
-                options.error(500, "Networking Error"); 
-            } else if (rsj.status == 200) {
-                options.success(rsj.data);
-            } else {
-                options.error(rsj.status, rsj.message);
-            }
-        },
-        error : function(xhr, textStatus, error) {
-            options.error(textStatus, error);
-        }
-    });
-}
-
-l9rPodFs.Rename = function(options)
-{
-    options = options || {};
-
-    if (typeof options.success !== "function") {
-        options.success = function(){};
-    }
-    
-    if (typeof options.error !== "function") {
-        options.error = function(){};
-    }
-
-    if (options.path === undefined) {
-        options.error(400, "path can not be null")
-        return;
-    }
-
-    if (options.pathset === undefined) {
-        options.error(400, "file can not be null")
-        return;
-    }
-
-    var req = {
-        data : {
-            path    : options.path,
-            pathset : options.pathset,
-        }
-    }
-
-    var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/rename";
-    l9r.Ajax(url, {
-        method  : "POST",
-        timeout : 10000,
-        data    : JSON.stringify(req),
-        success : function(data) {
-            var rsj = JSON.parse(data);
-
-            if (rsj === undefined) {
-                options.error(500, "Networking Error"); 
-            } else if (rsj.status == 200) {
-                options.success(rsj.data);
-            } else {
-                options.error(rsj.status, rsj.message);
-            }
-        },
-        error : function(xhr, textStatus, error) {
-            options.error(textStatus, error);
-        }
-    });
-}
-
-l9rPodFs.Del = function(options)
-{
-    options = options || {};
-
-    if (typeof options.success !== "function") {
-        options.success = function(){};
-    }
-    
-    if (typeof options.error !== "function") {
-        options.error = function(){};
-    }
-
-    if (options.path === undefined) {
-        options.error(400, "path can not be null")
-        return;
-    }
-
-    var req = {
-        data : {
-            path    : options.path,
-        }
-    }
-
-    var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/del";
-
-    l9r.Ajax(url, {
-        method  : "POST",
-        timeout : 10000,
-        data    : JSON.stringify(req),
-        success : function(data) {
-            var rsj = JSON.parse(data);
-
-            if (rsj === undefined) {
-                options.error(500, "Networking Error"); 
-            } else if (rsj.status == 200) {
-                options.success(rsj.data);
-            } else {
-                options.error(rsj.status, rsj.message);
-            }
-        },
-        error : function(xhr, textStatus, error) {
-            options.error(textStatus, error);
-        }
-    });
-}
-
-l9rPodFs.List = function(options)
-{
-    // Force options to be an object
-    options = options || {};
-    
-    if (options.path === undefined) {
-        return;
-    }
-
-    if (typeof options.success !== "function") {
-        options.success = function(){};
-    }
-    
-    if (typeof options.error !== "function") {
-        options.error = function(){};
-    }
-
-    var url = lessfly_api +"/pods/"+ l4iSession.Get("lessfly_pod") +"/fs/list";
-    url += "?path="+ options.path;
-
-    l9r.Ajax(url, {
-        method  : "GET",
-        timeout : 30000,
-        success : function(data) {
-            
-            var rsj = JSON.parse(data);
-
-            if (rsj === undefined) {
-                options.error(500, "Networking Error"); 
-            } else if (rsj.status == 200) {
-                options.success(rsj.data);
-            } else {
-                options.error(rsj.status, rsj.message);
-            }
-        },
-        error : function(xhr, textStatus, error) {
-            options.error(textStatus, error);
-        }
-    });
-}

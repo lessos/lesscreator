@@ -1,6 +1,7 @@
 var l9r = {
-    base   : "/lesscreator/",
-    basecm : "~/codemirror/4.11.0/",
+    base    : "/lesscreator/",
+    basecm  : "~/codemirror/4.11.0/",
+    basetpl : "/lesscreator/-/",
 }
 
 l9r.Boot = function()
@@ -23,8 +24,8 @@ l9r.Boot = function()
         var OS      = BrowserDetect.OS;
 
         if (!((browser == 'Chrome' && version >= 22)
-            || (browser == 'Firefox' && version >= 31.0))) { 
-            // || (browser == 'Safari' && version >= 5.0 && OS == 'Mac'))) {
+            || (browser == 'Firefox' && version >= 31.0) 
+            || (browser == 'Safari' && version >= 5.0 && OS == 'Mac'))) {
             $('body').load(l9r.base + "error/browser");
             return;
         }
@@ -38,7 +39,7 @@ l9r.Boot = function()
             l9r.basecm +"lib/codemirror.js",
             l9r.basecm +"lib/codemirror.css",
             
-            "~/twitter-bootstrap/2.3.2/css/bootstrap.min.css",
+            "~/twitter-bootstrap/3.3/css/bootstrap.min.css",
 
             // DEV
             // "~/lessui/less/lessui.less",
@@ -51,7 +52,7 @@ l9r.Boot = function()
             // "~/lesscreator/css/def.css?v={{.version}}",
             "~/lessui/js/eventproxy.js",
         ], function() {
-            l9r.bootLoadDeps();
+            l9r.initDepends();
         });
     });
 
@@ -60,7 +61,7 @@ l9r.Boot = function()
     }
 }
 
-l9r.bootLoadDeps = function()
+l9r.initDepends = function()
 {    
     $(".loading").hide(300);
     
@@ -86,6 +87,7 @@ l9r.bootLoadDeps = function()
 
         seajs.use([
             "~/lesscreator/js/pod.js?_="+ Math.random(),
+            "~/lesscreator/js/pod-fs.js?_="+ Math.random(),
             "~/lesscreator/js/tablet.js?_="+ Math.random(),
             "~/lesscreator/js/project.js?_="+ Math.random(),
             "~/lesscreator/js/project.fs.js?_="+ Math.random(),
@@ -138,46 +140,7 @@ l9r.bootLoadDeps = function()
             // TODO access_token getting issue
             
             //
-            lcData.Init(l4iCookie.Get("access_userid"), function(ret) {
-
-                if (!ret) {
-                    
-                    $(".load-progress").removeClass("progress-success").addClass("progress-danger");
-                    
-                    l4i.InnerAlert("#_load-alert", "alert-error", "Local database (IndexedDB) initialization failed");
-
-                    return;
-                }
-
-                l9r.Ajax("index/desk", {
-                    callback: function(err, data) {
-                        
-                        if (err) {
-                            return alert(err);
-                        }
-
-                        $("#body-content").html(data);
-
-                        $(window).resize(function() {
-                            l9rLayout.Resize();
-                            l9rLayout.BindRefresh();
-                        });
-
-                        // document.onmouseover = function(event) {
-                        //     event = event || window.event;
-
-                        //     var mouseX = event.clientX;
-                        //     var mouseY = event.clientY;
-                        //     console.log(mouseX);
-                        // }
-
-                        l9rLayout.Resize();
-                        l9rLayout.BindRefresh();
-
-                        l9r.Initialize();
-                    },
-                });
-            });
+            lcData.Init(l4iCookie.Get("access_userid"), l9r.loadDesk);
 
             // $(".load-progress-num").css({"width": "90%"});
             // $(".load-progress-msg").append("OK<br />Connecting lessOS Cloud Engine to get your boxes ... ");
@@ -188,6 +151,66 @@ l9r.bootLoadDeps = function()
     });
 }
 
+l9r.loadDesk = function(ret)
+{
+    if (!ret) {
+                    
+        $(".load-progress").removeClass("progress-success").addClass("progress-danger");
+        
+        l4i.InnerAlert("#_load-alert", "alert-error", "Local database (IndexedDB) initialization failed");
+
+        return;
+    }
+
+    l9r.Ajax("index/desk", {
+        callback: function(err, data) {
+            
+            if (err) {
+                return alert(err);
+            }
+
+            $("#body-content").html(data);
+
+            $(window).resize(function() {
+                l9rLayout.Resize();
+                l9rLayout.BindRefresh();
+            });
+
+            // document.onmouseover = function(event) {
+            //     event = event || window.event;
+
+            //     var mouseX = event.clientX;
+            //     var mouseY = event.clientY;
+            //     console.log(mouseX);
+            // }
+
+            l9rLayout.Resize();
+            l9rLayout.BindRefresh();
+
+            l9r.Initialize();
+        },
+    }); 
+}
+
+l9r.PandoraApiCmd = function(url, options)
+{
+    if (pandora_endpoint) {
+        l9r.Ajax(pandora_endpoint +"/"+ url, options);
+    } else {
+        l9r.Ajax("/pandora/v1/"+ url, options);
+    }
+}
+
+l9r.TemplatePath = function(path)
+{
+    return l9r.basetpl + path +".tpl";
+}
+
+l9r.TemplateCmd = function(url, options)
+{
+    l9r.Ajax(l9r.TemplatePath(url), options);
+}
+
 l9r.Initialize = function()
 {
     // // console.log("ExtInit");
@@ -196,13 +219,18 @@ l9r.Initialize = function()
     // }
 
     l9rPod.Initialize(function(err, data) {
-        console.log("l9r.ExtInit - l9rPod.Initialize");
+        if (err) {
+            return alert(err);
+        }
+        // console.log("l9r.ExtInit - l9rPod.Initialize");
+
+        l9rProj.Open();
     });
 }
 
 l9r.PodList = function()
 {
-    console.log("Pod List");
+    // console.log("Pod List");
 
     if (l4iCookie.Get("access_userid") == null) {
         return;
@@ -214,7 +242,7 @@ l9r.PodList = function()
         return;
     }
 
-    // var url = lessfly_api + "/pods?";
+    // var url = pandora_endpoint + "/pods?";
     // url += "access_token="+ l4iCookie.Get("access_token");
     // url += "&project=lesscreator";
 
@@ -284,7 +312,7 @@ l9r.Ajax = function(url, options)
     url += Math.random();
 
     //
-    url += "&access_token="+ l4iCookie.Get("access_token");
+    // url += "&access_token="+ l4iCookie.Get("access_token");
 
     // console.log(url);
 
@@ -315,10 +343,10 @@ l9r.Ajax = function(url, options)
         error: function(xhr, textStatus, error) {
             // console.log(xhr.responseText);
             if (typeof options.callback === "function") {
-                options.callback(xhr.responseText, null);
+                options.callback({code: textStatus, message: error}, null);
             }
             if (typeof options.error === "function") {
-                options.error(xhr, textStatus, error);
+                options.error({code: textStatus, message: error});
             }
         }
     });
@@ -326,13 +354,31 @@ l9r.Ajax = function(url, options)
 
 l9r.HeaderAlert = function(status, msg)
 {
-    console.log(status + msg);
+    // console.log(status + msg);
     $("#l9r-halert").removeClass().addClass(status).html(msg).fadeOut(200).fadeIn(200);
 }
 
 l9r.HeaderAlertClose = function()
 {
     $("#l9r-halert").fadeOut(300);
+}
+
+l9r.ErrorCheck = function(data, kind)
+{
+    if (!data || !data.kind) {
+        
+        if (data.error) {
+            return data.error;
+        }
+
+        return {code: "400", message: "Network Connection Exception, please try again later"};
+    }
+
+    if (data.kind != kind) {
+        return {code: "400", message: "Service Unavailable, please try again later"};
+    }
+
+    return undefined;
 }
 
 function l9rAjax(obj, url, cb)

@@ -1,1 +1,1 @@
-prefix = {{.lessfly_userdir}}/runtime/nodejs
+prefix = {{.pandora_userdir}}/runtime/nodejs

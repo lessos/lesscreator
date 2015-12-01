@@ -1,28 +1,30 @@
 
-var lcEditor = {};
-lcEditor.WebSocket = null;
-lcEditor.ToolTmpl = null;
-lcEditor.SaveAPI = "ws://"+window.location.hostname+":9531/lesscreator/index/ws";
-lcEditor.Config = {
-    'theme'         : 'monokai',
-    'tabSize'       : 4,
-    'lineWrapping'  : true,
-    'smartIndent'   : true,
-    'tabs2spaces'   : true,
-    'codeFolding'   : false,
-    'fontSize'      : 13,
-    'EditMode'      : "win",
-    'LangEditMode'  : 'Editor Mode Settings',
-    // 'TmpEditorZone' : 'w0',
-    'TmpScrollLeft' : 0,
-    'TmpScrollTop'  : 0,
-    'TmpCursorLine' : 0,
-    'TmpCursorCh'   : 0,
-    'TmpLine2Str'   : null,
-    'TmpUrid'       : null,
+var lcEditor = {
+    WebSocket : null,
+    ToolTmpl  : null,
+    Config    : {
+        'theme'         : 'monokai',
+        'tabSize'       : 4,
+        'lineWrapping'  : true,
+        'smartIndent'   : true,
+        'tabs2spaces'   : true,
+        'codeFolding'   : false,
+        'fontSize'      : 13,
+        'EditMode'      : "win",
+        'LangEditMode'  : 'Editor Mode Settings',
+        // 'TmpEditorZone' : 'w0',
+        'TmpScrollLeft' : 0,
+        'TmpScrollTop'  : 0,
+        'TmpCursorLine' : 0,
+        'TmpCursorCh'   : 0,
+        'TmpLine2Str'   : null,
+        'TmpUrid'       : null,
+    },
+    isInited   : false,
+    TabDefault : "lctab-default",
+    // SaveAPI    : "ws://"+window.location.hostname+":9531/lesscreator/index/ws",
 };
-lcEditor.isInited = false;
-lcEditor.TabDefault = "lctab-default";
+
 
 // lcEditor.MessageReply = function(cb, msg)
 // {
@@ -911,7 +913,7 @@ lcEditor.ConfigModal = function()
             {
                 onclick : "_lc_editorset_close()",
                 title   : "Save and Close",
-                style   : "btn-inverse"
+                style   : "btn-primary"
             },
             {
                 onclick : "l4iModal.Close()",
@@ -925,8 +927,8 @@ lcEditor.ConfigEditMode = function()
 {
     l4iModal.Open({
         title        : lcEditor.Config.LangEditMode,
-        tpluri       : l9r.base +"-/editor/editmode-set.tpl",
-        width        : 400,
+        tpluri       : l9r.TemplatePath("editor/editmode-set"),
+        width        : 500,
         height       : 300,
         data         : {
             current : lcEditor.Config.EditMode,

@@ -39,9 +39,8 @@ l9rProjFs.UiTreeLoad = function(options)
     // console.log("path reload "+ options.path);
 
     req.success = function(rs) {
-        
-        var ls = rs.items;
-        var lsfs = [];
+
+        var ls = rs.items, lsfs = [];
 
         for (var i in ls) {
             
@@ -58,7 +57,7 @@ l9rProjFs.UiTreeLoad = function(options)
 
             var ico = "page_white";
 
-            if (ls[i].isdir !== undefined && ls[i].isdir == true) {
+            if (ls[i].isdir && ls[i].isdir == true) {
 
                 ico = "folder";
                 ls[i].fstype = "dir";
@@ -129,7 +128,7 @@ l9rProjFs.UiTreeLoad = function(options)
             $("#ptp"+ ptdid).after("<div id=\"fstd"+ptdid+"\" style=\"padding-left:20px;\"></div>");
         }
 
-        l4iTemplate.RenderFromId("fstd"+ ptdid, "lcx-filenav-tree-tpl", lsfs);
+        l4iTemplate.RenderFromID("fstd"+ ptdid, "lcx-filenav-tree-tpl", lsfs);
         
         options.success();
 
@@ -158,6 +157,8 @@ l9rProjFs.UiTreeEventRefresh = function()
     //     $("#lcbind-laycol").before("<td width=\"10px\" class=\"lclay-col-resize\"></td>\
     //         <td id=\"lclay-col"+ 2 +"\" class=\"lcx-lay-colbg\">"+2+"</td>");
     // }
+
+    // console.log("l9rProjFs.UiTreeEventRefresh");
 
     // console.log("l9rProjFs.UiTreeEventRefresh");
     $(".lcx-fsitem").unbind();
@@ -269,7 +270,7 @@ l9rProjFs.LayoutResize = function(options)
 
 l9rProjFs.FileNew = function(type, path, file)
 {
-    if (path === undefined || path === null) {
+    if (!path) {
         path = l4iSession.Get("proj_current");
     }
 
@@ -278,8 +279,8 @@ l9rProjFs.FileNew = function(type, path, file)
     var req = {
         title        : (type == "dir") ? "New Folder" : "New File",
         position     : "cursor",
-        width        : 550,
-        height       : 160,
+        width        : 700,
+        height       : 220,
         tplid        : "lcbind-fstpl-filenew",
         data         : {
             formid   : formid,
@@ -291,7 +292,7 @@ l9rProjFs.FileNew = function(type, path, file)
             {
                 onclick : "l9rProjFs.FileNewSave(\""+ formid +"\")",
                 title   : "Create",
-                style   : "btn-inverse"
+                style   : "btn-primary"
             },
             {
                 onclick : "l4iModal.Close()",
@@ -311,7 +312,7 @@ l9rProjFs.FileNewSave = function(formid)
 {
     var path = $("#"+ formid +" :input[name=path]").val();
     var name = $("#"+ formid +" :input[name=name]").val();
-    if (name === undefined || name.length < 1) {
+    if (!name || name.length < 1) {
         alert("Filename can not be null"); // TODO
         return;
     }
@@ -455,7 +456,7 @@ function _fsUploadHander(evt)
 
 l9rProjFs.FileUpload = function(path)
 {
-    if (path === undefined || path === null) {
+    if (!path) {
         path = l4iSession.Get("proj_current");
         // alert("Path can not be null"); // TODO
         // return;
@@ -489,7 +490,7 @@ l9rProjFs.FileUpload = function(path)
             // {
             //     onclick : "l9rProjFs.FileUploadSave(\""+ reqid +"\",\""+ areaid +"\")",
             //     title   : "Commit",
-            //     style   : "btn-inverse"
+            //     style   : "btn-primary"
             // },
             {
                 onclick : "l4iModal.Close()",
@@ -532,7 +533,7 @@ l9rProjFs.FileUpload = function(path)
 
 l9rProjFs.FileRename = function(path)
 {
-    if (path === undefined || path === null) {
+    if (!path) {
         alert("Path can not be null"); // TODO
         return;
     }
@@ -542,8 +543,8 @@ l9rProjFs.FileRename = function(path)
     var req = {
         title        : "Rename File/Folder",
         position     : "cursor",
-        width        : 550,
-        height       : 160,
+        width        : 700,
+        height       : 220,
         tplid        : "lcbind-fstpl-filerename",
         data         : {
             formid   : formid,
@@ -553,7 +554,7 @@ l9rProjFs.FileRename = function(path)
             {
                 onclick : "l9rProjFs.FileRenameSave(\""+ formid +"\")",
                 title   : "Rename",
-                style   : "btn-inverse"
+                style   : "btn-primary"
             },
             {
                 onclick : "l4iModal.Close()",
@@ -608,7 +609,7 @@ l9rProjFs.FileRenameSave = function(formid)
 
 l9rProjFs.FileDel = function(path)
 {
-    if (path === undefined || path === null) {
+    if (!path) {
         alert("Path can not be null"); // TODO
         return;
     }
@@ -618,8 +619,8 @@ l9rProjFs.FileDel = function(path)
     var req = {
         title        : "Delete File or Folder",
         position     : "cursor",
-        width        : 550,
-        height       : 180,
+        width        : 700,
+        height       : 240,
         tplid        : "lcbind-fstpl-filedel",
         data         : {
             formid   : formid,
@@ -644,7 +645,7 @@ l9rProjFs.FileDel = function(path)
 l9rProjFs.FileDelSave = function(formid)
 {
     var path = $("#"+ formid +" :input[name=path]").val();
-    if (path === undefined || path.length < 1) {
+    if (!path || path.length < 1) {
         alert("Path can not be null"); // TODO
         return;
     }

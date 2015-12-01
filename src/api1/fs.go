@@ -805,7 +805,7 @@ func (this *Api) FsFileUpl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dir := this.Cfg.LessFlyDir + "/spot/" + sess.Uname + "/app/" + req.Data.ProjId
+	dir := this.Cfg.PandoraDir + "/spot/" + sess.Uname + "/app/" + req.Data.ProjId
 	//fmt.Println(dir)
 	if _, err := exec.Command("/bin/chmod", "-R", "+rx", dir).Output(); err != nil {
 

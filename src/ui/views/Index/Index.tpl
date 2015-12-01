@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <title>{{T . "Creator"}}</title>
-  <link href="/lesscreator/~/lesscreator/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-  <script src="/lesscreator/~/lessui/js/sea.js"></script>
-  <script src="/lesscreator/~/lesscreator/js/main.js"></script>
-  
-  <link href="/lesscreator/~/lessui/less/lessui.less" rel="stylesheet/less" />
-  <link href="/lesscreator/~/lesscreator/less/defx.less" rel="stylesheet/less" />
-  <script src="/lesscreator/~/lessui/less/less.min.js"></script>
-
+  <script src="{{HttpSrvBasePath "~/lessui/js/sea.js"}}"></script>
+  <script src="{{HttpSrvBasePath "~/lesscreator/js/main.js"}}"></script>  
+  <link href="{{HttpSrvBasePath "~/lessui/less/lessui.less"}}" rel="stylesheet/less" />
+  <link href="{{HttpSrvBasePath "~/lesscreator/less/defx.less"}}" rel="stylesheet/less" />
+  <script src="{{HttpSrvBasePath "~/lessui/less/less.min.js"}}"></script>
+  <link href="{{HttpSrvBasePath "~/lesscreator/img/favicon.ico"}}" rel="shortcut icon" type="image/x-icon" />
   <script type="text/javascript">
-    var lessfly_api = "{{.lessfly_api}}/v1";
-    var lessfly_ext = "{{.lessfly_api}}/ext";
+    var pandora_endpoint = "{{.pandora_endpoint}}/v1";
+    var pandora_ext = "{{.pandora_endpoint}}/ext";
     window.onload = l9r.Boot;
+    // var less = less || {};
+    // less.env = 'development';
+    // less.watch();
   </script>
 </head>
 <body>

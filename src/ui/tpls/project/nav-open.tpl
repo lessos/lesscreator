@@ -87,27 +87,4 @@ $("#l9rproj-start").on("click", ".fs-item-dir", function() {
     l9rProj.StartFsList($(this).attr("path"));
 });
 
-// function _proj_open_recent()
-// {
-//     var url = "/lesscreator/proj/open-recent?basedir="+ l4iSession.Get("basedir");
-
-//     if (lessModalPrevId() == l4iString.CryptoMd5("modal"+url)) {
-//         lessModalPrev();
-//     } else {
-//         lessModalNext(url, "{%Open Project%}", null);
-//     }
-// }
-
-// function _proj_open_fs(path, force)
-// {
-//     var url = "/lesscreator/proj/open-fs";
-//     url += "?basedir="+ l4iSession.Get("basedir");
-
-//     if (lessModalPrevId() == l4iString.CryptoMd5("modal"+url)) {
-//         lessModalPrev();
-//     } else {
-//         lessModalNext(url, "{%Open Project%}", null);
-//     }
-// }
-
 </script>

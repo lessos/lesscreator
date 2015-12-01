@@ -1,34 +1,48 @@
-package conf
+// Copyright 2015 lessOS.com, All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package config
 
 import (
 	"errors"
 	"fmt"
-	"github.com/lessos/lessgo/service/lessids"
-	"github.com/lessos/lessgo/service/lesskeeper"
-	"github.com/lessos/lessgo/utils"
 	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/lessos/lessgo/utils"
+	"github.com/lessos/lessids/idclient"
 )
 
-const VERSION string = "1.0.0"
+const VERSION string = "0.2.0.dev"
 
 var (
 	Config ConfigCommon
 )
 
 type ConfigCommon struct {
-	Version    string
-	Prefix     string
-	RunUser    string
-	ApiPort    string            `json:"apiport"`
-	LessFlyApi string            `json:"lessfly_api"`
-	LessIdsUrl string            `json:"lessids_url"`
-	LessKeeper lesskeeper.Client `json:"lesskeeper"`
-	LessFlyDir string            `json:"lessfly_dir"`
+	Version         string
+	InstanceID      string `json:"intance_id"`
+	Prefix          string
+	RunUser         string
+	HttpPort        uint16 `json:"http_port"`
+	PandoraEndpoint string `json:"pandora_endpoint"`
+	LessIdsUrl      string `json:"lessids_endpoint"`
+	PandoraDir      string `json:"pandora_dir"`
 }
 
 func Initialize(prefix string) error {
@@ -67,7 +81,7 @@ func Initialize(prefix string) error {
 	Config.Version = VERSION
 	Config.Prefix = prefix
 
-	lessids.ServiceUrl = Config.LessIdsUrl
+	idclient.ServiceUrl = Config.LessIdsUrl
 
 	return nil
 }

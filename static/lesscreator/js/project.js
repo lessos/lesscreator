@@ -38,7 +38,10 @@ l9rProj.NavStart = function()
         width  : 700,
         height : 400,
         title  : "Start a Project from ...",
-        i18n   : true,
+        // i18n   : true,
+        success : function() {
+            // console.log("FEEE");
+        },
         buttons : [
             {
                 onclick : "l4iModal.Close()",
@@ -67,14 +70,14 @@ l9rProj.New = function()
         title  : "Create New Project",
         i18n   : true,
         data   : pinfo,
-        width  : 700,
-        height : 400,
+        width  : 900,
+        height : 500,
         backEnable : true,
         buttons : [
             {
                 onclick : "l9rProj.NewPut()",
                 title   : "Confirm and Create",
-                style   : "btn-inverse",
+                style   : "btn-primary",
             }
         ],
     });
@@ -83,37 +86,48 @@ l9rProj.New = function()
 l9rProj.NewPut = function()
 {
     var pinfo = l4i.Clone(l9rProj.ProjectInfoDef),
-        nameRegex = /^[a-zA-Z]{1}[a-zA-Z0-9_-]{2,29}$/;
+        nameRegex = /^[a-zA-Z]{1}[a-zA-Z0-9_-]{2,29}$/,
+        alertid = "#l9rproj-newform-alert",
+        form = $("#l9rproj-newform");
 
-    pinfo.metadata.name = $("#l9rproj-newform :input[name=name]").val();
+    pinfo.metadata.name = form.find("input[name=name]").val();
     // TODO valid
     if (!pinfo.metadata.name) {
-        return l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", "Name Can Not be Null");
+        return l4i.InnerAlert(alertid, "alert-danger", "Name Can Not be Null");
     }
     if (pinfo.metadata.name.length < 3 || pinfo.metadata.name.length > 30) {
-        return l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", "Name must be between 3 and 30 characters long");
+        return l4i.InnerAlert(alertid, "alert-danger", "Name must be between 3 and 30 characters long");
     }
     if (!pinfo.metadata.name.match(nameRegex)) {
-        return l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", "Name must consist of letters, numbers, `_` or `-`, and begin with a letter");
+        return l4i.InnerAlert(alertid, "alert-danger", "Name must consist of letters, numbers, `_` or `-`, and begin with a letter");
     }
 
-    pinfo.summary = $("#l9rproj-newform :input[name=summary]").val();
+    pinfo.summary = form.find("input[name=summary]").val();
     if (!pinfo.summary) {
-        return l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", "Summary Can Not be Null");
+        return l4i.InnerAlert(alertid, "alert-danger", "Summary Can Not be Null");
     }
 
     var grp_app = [];
-    $("#l9rproj-newform :input[name=grp_app]:checked").each(function(){
-        grp_app.push($(this).val());
-    });
+    try {
+        form.find("input[name=grp_app]:checked").each(function(){
+            grp_app.push($(this).val());
+        });
+    } catch(err) {
+        //    
+    }
     if (grp_app.length < 1) {
-        return l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", "Group by Application Can Not be Null");
+        return l4i.InnerAlert(alertid, "alert-danger", "Group by Application Can Not be Null");
     }
 
     var grp_dev = [];
-    $("#l9rproj-newform :input[name=grp_dev]:checked").each(function(){
-        grp_dev.push($(this).val());
-    });
+    
+    try {
+        form.find("input[name=grp_dev]:checked").each(function(){
+            grp_dev.push($(this).val());
+        });
+    } catch(err) {
+        //    
+    }
     pinfo.grp_app = grp_app.join(",");
     pinfo.grp_dev = grp_dev.join(",");
 
@@ -127,14 +141,14 @@ l9rProj.NewPut = function()
 
     req.success = function(rsp) {
         l9r.HeaderAlert('success', "Successfully Created");
-        l4i.InnerAlert("#l9rproj-newform-alert", "alert-success", "<p><strong>"+ l4i.T("Successfully Done") +"</strong> \
+        l4i.InnerAlert(alertid, "alert-success", "<p><strong>"+ l4i.T("Successfully Done") +"</strong> \
             <button class=\"btn btn-success\" onclick=\"l9rProj.Open('"+ proj +"')\">"+ l4i.T("Open this Project") +"</button>");
         $("#l9rproj-newform").hide(200);
         // TODO
     }
     
     req.error = function(status, message) {
-        l4i.InnerAlert("#l9rproj-newform-alert", "alert-error", message);
+        l4i.InnerAlert(alertid, "alert-danger", message);
     }
 
     l9rPodFs.Post(req);
@@ -154,7 +168,7 @@ l9rProj.NavOpen = function()
     var tplid = "l9rproj-start";
 
     var req = {
-        tpluri : l9r.base + "/-/project/nav-open.tpl",
+        tpluri : l9r.TemplatePath("project/nav-open"),
         width  : 800,
         height : 400,
         title  : "Open Project from an existing working directory",
@@ -232,12 +246,13 @@ l9rProj.NavIndexRefresh = function(projpath, pinfo)
             });
             sync = true;
         }
-        // console.log(rsj);
+
         // console.log(sync);
         if (sync) {
             l9rPodFs.Post({
                 path: l9rProj.ProjectIndex,
                 data: JSON.stringify(rsj),
+                encode: "json",
             });
         }
     });
@@ -246,8 +261,10 @@ l9rProj.NavIndexRefresh = function(projpath, pinfo)
 l9rProj.NavIndexGet = function(cb)
 {
     l9rPodFs.Get({
-        path : l9rProj.ProjectIndex,
+        path    : l9rProj.ProjectIndex,
         success : function(data) {
+
+            // console.log(data);
             
             if (!data || !data.body) {
                 cb(null, {items: []});
@@ -405,7 +422,7 @@ l9rProj.notFound = function(proj)
             {
                 onclick : "l9rProj.NavStart()",
                 title   : "Create new Project",
-                style   : "btn-inverse"
+                style   : "btn-primary"
             },
             {
                 onclick : "l4iModal.Close()",
@@ -418,7 +435,7 @@ l9rProj.notFound = function(proj)
 l9rProj.Open = function(proj)
 {
     // TODO
-    l4iModal.Close();
+    // l4iModal.Close();
 
     var userid = l4iCookie.Get("access_userid");
     // console.log("userid"+ userid);
@@ -444,7 +461,7 @@ l9rProj.Open = function(proj)
     }
 
     if (l9rProj.Current && l9rProj.Current != proj) {
-        window.open(l9r.base + "?proj="+ proj +"&pod="+ l4iSession.Get("lessfly_pod"), '_blank');
+        window.open(l9r.base + "?proj="+ proj +"&pod="+ l4iSession.Get("pandora_pod"), '_blank');
         return;
     }
 
@@ -469,7 +486,7 @@ l9rProj.Open = function(proj)
         if (file.size < 10) {
             return l9rProj.notFound(proj);
         }
-console.log(file.body);
+        // console.log(file.body);
         var pinfo = JSON.parse(file.body);
         if (pinfo.metadata === undefined || pinfo.metadata.name === undefined) {
             return l9rProj.notFound(proj);
@@ -493,38 +510,47 @@ console.log(file.body);
         $("#l9r-proj-nav-status").text("loading");
         $("#l9r-proj-nav").show(100);
 
-        l4iTemplate.Render({
-            dstid  : "lcbind-proj-filenav",
-            tplurl : l9r.base + "-/project/file-nav.tpl",
-            i18n   : true,
-            success : function() {
+        l9r.TemplateCmd("project/file-nav", {
+            callback : function(err, data) {
+
+                l4iTemplate.Render({
+                    dstid  : "lcbind-proj-filenav",
+                    tplsrc : data,
+                    i18n   : true,
+                    success : function() {
                 
-                l9rLayout.ColumnSet({
-                    id   : "lcbind-proj-filenav",
-                    hook : l9rProjFs.LayoutResize
-                });
+                        l9rLayout.ColumnSet({
+                            id   : "lcbind-proj-filenav",
+                            hook : l9rProjFs.LayoutResize
+                        });
 
-                // console.log("open filenav");
+                        // console.log("open filenav");
 
-                var treeload = {
-                    path : proj,
-                }
+                        var treeload = {
+                            path : proj,
+                        }
 
-                treeload.success = function() {
+                        treeload.success = function() {
                     
-                    // console.log("open filenav, treeload.success");
+                            // console.log("open filenav, treeload.success");
 
-                    l9rProj.OpenHistoryTabs();
+                            l9r.HeaderAlertClose();
 
-                    l9rLayout.Resize();
-                }
+                            l9rProj.OpenHistoryTabs();
 
-                l9rProjFs.UiTreeLoad(treeload);
+                            l9rLayout.Resize();
+                        }
+
+                        l9rProjFs.UiTreeLoad(treeload);
+                    },
+                });
             },
         });
 
         // sync indexes
         l9rProj.NavIndexRefresh(proj, pinfo);
+
+        l4iModal.Close();
     }
 
     l9rPodFs.Get(req);
@@ -537,12 +563,12 @@ l9rProj.OpenHistoryTabs = function()
     // var last_tab_urid = l4iStorage.Set(l4iSession.Get("podid") +"."+ l4iSession.Get("proj_name") +".tab."+ item.target);
 
     lcData.Query("files", "projdir", l4iSession.Get("proj_current"), function(ret) {
-    
+
         // console.log("Query files");
         if (ret == null) {
             return;
         }
-        
+
         if (ret.value.id && ret.value.projdir == l4iSession.Get("proj_current")) {
 
             var icon = undefined;
@@ -590,7 +616,7 @@ l9rProj.OpenHistoryTabs = function()
 // https://github.com/peterbourgon/mergemap/blob/master/mergemap.go
 l9rProj.Set = function(proj)
 {
-    if (proj === undefined) {
+    if (!proj) {
         proj = l4iSession.Get("proj_current");
     }
 

@@ -1,12 +1,6 @@
 {
-    "apiport": "9531",
-    "lessids_url": "http://127.0.0.1:50101/ids",
-    "lesskeeper": {
-        "apiurl": "http://127.0.0.1:1777/keeper/v1",
-        "bucket": "sr5yqf",
-        "accessKey": "vy6gaadrhgax4jss",
-        "secretKey": "s2+M0RHQp7Ws9bUs3d5VlUn1R64P5Bx+"
-    },
-    "lessfly_api": "http://127.0.0.1:1779/lessfly",
-    "lessfly_dir": "/opt/src/m12/lessfly"
+    "http_port": 9529,
+    "lessids_endpoint": "http://dev.local.net/ids",
+    "pandora_endpoint": "http://dev.local.net/pandora",
+    "pandora_dir": "/opt/src/rel/ngx"
 }

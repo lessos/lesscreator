@@ -279,7 +279,7 @@ func (this *Api) TerminalWS(ws *websocket.Conn) {
 	if pid == 0 {
 
 		bashloc, err := exec.LookPath("bash")
-		bashargs := []string{"bash", "--rcfile", this.Cfg.LessFlyDir + "/spot/" + sess.Uname + "/.bashrc"}
+		bashargs := []string{"bash", "--rcfile", this.Cfg.PandoraDir + "/spot/" + sess.Uname + "/.bashrc"}
 
 		if err != nil {
 			//fmt.Fprintf(os.Stderr, "Could not find bash: %s\n", err)
@@ -289,8 +289,8 @@ func (this *Api) TerminalWS(ws *websocket.Conn) {
 
 		syscall.Setgid(ugid)
 		syscall.Setuid(uuid)
-		syscall.Chdir(this.Cfg.LessFlyDir + "/spot/" + sess.Uname)
-		syscall.Chroot(this.Cfg.LessFlyDir + "/spot/" + sess.Uname)
+		syscall.Chdir(this.Cfg.PandoraDir + "/spot/" + sess.Uname)
+		syscall.Chroot(this.Cfg.PandoraDir + "/spot/" + sess.Uname)
 		syscall.Exec(bashloc, bashargs, os.Environ())
 		panic("unreachable code")
 	}

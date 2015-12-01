@@ -93,7 +93,7 @@ l9rTab.Open = function(options)
 
     if (document.getElementById("lctab-box"+ options.target) == null) {
         
-        var tpl = l4iTemplate.RenderById("lctab-tpl", {tabid: l9rTab.def});
+        var tpl = l4iTemplate.RenderByID("lctab-tpl", {tabid: l9rTab.def});
         
         if (tpl == "") {
             return;
@@ -470,7 +470,7 @@ l9rTab.Close = function(urid, force)
                         {
                             onclick : "lcEditor.DialogChanges2SaveDone(\""+urid+"\")",
                             title   : "Save",
-                            style   : "btn-inverse"
+                            style   : "btn-primary"
                         },
                         {
                             onclick : "lcEditor.DialogChanges2SaveSkip(\""+urid+"\")",

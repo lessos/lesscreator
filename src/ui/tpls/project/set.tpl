@@ -10,6 +10,7 @@
       <td width="200px"><strong>Location</strong></td>
       <td>{[=it._projpath]}</td>
     </tr>
+
     <tr>
       <td><strong>Project Name</strong></td>
       <td>{[=it.metadata.name]}</td>
@@ -24,14 +25,6 @@
       </td>
     </tr>  
 
-    <!-- <tr>
-      <td><strong>Project Name</strong></td>
-      <td>
-        <input name="name" class="input-large" type="text" value="{[=it.name]}" />
-        <label class="label label-important">Required</label>
-        <span class="help-inline">Example: <strong>company-oa</strong></span>
-      </td>
-    </tr> -->
     <tr>
       <td><strong>Summary</strong></td>
       <td>
@@ -40,6 +33,7 @@
         <span class="help-inline">Example: <strong>Hello World</strong></span>
       </td>
     </tr>
+
     <tr>
       <td valign="top"><strong>Description</strong></td>
       <td><textarea name="description" rows="2" style="width:400px;">{[=it.description]}</textarea></td>
@@ -49,7 +43,7 @@
       <td><strong>Group by Application</strong></td>
       <td>
         {[~it._grpappd :v]}
-        <label class="lcproj-grpitem checkbox">
+        <label class="lcproj-grpitem checkbox-inline">
             <input type="checkbox" name="grp_app" value="{[=v.id]}" {[ if (it._grpapp.indexOf(v.id) > -1) { ]} checked {[ } ]}> {[=v.name]}
         </label>
         {[~]}
@@ -60,7 +54,7 @@
       <td><strong>Group by Develop</strong></td>
       <td>
         {[~it._grpdevd :v]}
-        <label class="lcproj-grpitem checkbox">
+        <label class="lcproj-grpitem checkbox-inline">
             <input type="checkbox" name="grp_dev" value="{[=v.id]}" {[ if (it._grpdev.indexOf(v.id) > -1) { ]} checked {[ } ]}> {[=v.name]}
         </label>
         {[~]}
@@ -80,12 +74,8 @@
     <tr>
       <td></td>
       <td>
-        <button class="btn btn-inverse" onclick="l9rProj.SetPut()">Save</button>
+        <button class="btn btn-primary" onclick="l9rProj.SetPut()">Save</button>
       </td>
     </tr>
   </table>
 </div>
-
-<script type="text/javascript">
-
-</script>

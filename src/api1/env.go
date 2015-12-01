@@ -83,13 +83,13 @@ func (this *Api) EnvPkgSetup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	pkgpath := fmt.Sprintf("%s/var/pkg/%s-%s-%s.%s.%s",
-		this.Cfg.LessFlyDir, req.Data.ProjId, pkg.Version, pkg.Release, pkg.Dist, pkg.Arch)
+		this.Cfg.PandoraDir, req.Data.ProjId, pkg.Version, pkg.Release, pkg.Dist, pkg.Arch)
 	if _, err := os.Stat(pkgpath); os.IsNotExist(err) {
 		rsp.Status = 404
 		rsp.Message = "Package Not Found"
 		return
 	}
-	userdir := this.Cfg.LessFlyDir + "/spot/" + sess.Uname
+	userdir := this.Cfg.PandoraDir + "/spot/" + sess.Uname
 	instdir := userdir + "/app/" + req.Data.ProjId
 
 	cmdrsync, err := exec.LookPath("rsync")
@@ -186,7 +186,7 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userpath := this.Cfg.LessFlyDir + "/spot/" + sess.Uname
+	userpath := this.Cfg.PandoraDir + "/spot/" + sess.Uname
 
 	// User ID
 	osuser := "lc" + sess.Uname
@@ -217,7 +217,7 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
 
 	//
 	if _, err := exec.Command("/bin/cp", "-rp",
-		this.Cfg.LessFlyDir+"/misc/php/user.index.php",
+		this.Cfg.PandoraDir+"/misc/php/user.index.php",
 		userpath+"/webpub/index.php").Output(); err != nil {
 
 		//return
@@ -227,8 +227,8 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
 		this.Cfg.Prefix+"/misc/bash/bashrc", userpath+"/.bashrc").Output(); err != nil {
 		// TODO
 	}
-	if _, err := exec.Command(this.Cfg.LessFlyDir+"/bin/lessfly-env-filter",
-		"--lessfly_dir="+this.Cfg.LessFlyDir,
+	if _, err := exec.Command(this.Cfg.PandoraDir+"/bin/pandora-env-filter",
+		"--pandora_dir="+this.Cfg.PandoraDir,
 		"--user="+sess.Uname,
 		"--file="+userpath+"/.bashrc").Output(); err != nil {
 		// TODO
@@ -238,8 +238,8 @@ func (this *Api) EnvInit(w http.ResponseWriter, r *http.Request) {
 		this.Cfg.Prefix+"/misc/nodejs/npmrc", userpath+"/.npmrc").Output(); err != nil {
 		// TODO
 	}
-	if _, err := exec.Command(this.Cfg.LessFlyDir+"/bin/lessfly-env-filter",
-		"--lessfly_dir="+this.Cfg.LessFlyDir,
+	if _, err := exec.Command(this.Cfg.PandoraDir+"/bin/pandora-env-filter",
+		"--pandora_dir="+this.Cfg.PandoraDir,
 		"--user="+sess.Uname,
 		"--file="+userpath+"/.npmrc").Output(); err != nil {
 		// TODO

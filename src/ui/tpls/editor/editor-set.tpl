@@ -1,73 +1,73 @@
 <div id="x17kwr" class="hide"></div>
 
-<table class="lc-editor-set-form" width="100%">
+<table class="l9r-modal-tableform" width="100%">
 
-  <tr class="l">
-    <td width="260px" class="t"><span></span>Tab Stops<span></span></td>
+  <tr>
+    <td width="220px"><span></span>Tab Stops<span></span></td>
     <td>
-      <div class="input-prepend">
-        <span class="add-on"><span></span>Tab width<span></span></span>
-        <input class="span1" id="tabSize" type="text" value="4" onchange="_lc_editorset_save('<span></span>Tab width<span></span>')">
+      <div class="input-group">
+        <span class="input-group-addon"><span></span>Tab width<span></span></span>
+        <input class="form-control" id="tabSize" type="text" value="4" onchange="_lc_editorset_save('<span></span>Tab width<span></span>')">
       </div>
-      <label class="checkbox">
+      <label class="checkbox-inline">
         <input type="checkbox" id="tabs2spaces" value="1" onchange="_lc_editorset_save('<span></span>Insert spaces instead of tabs<span></span>')" />
        <span></span>Insert spaces instead of tabs<span></span>
       </label>
     </td>
   </tr>
   
-  <tr class="l">
-    <td class="t"><span></span>Automatic Indentation<span></span></td>
+  <tr>
+    <td><span></span>Automatic Indentation<span></span></td>
     <td>
-      <label class="checkbox">
+      <label class="checkbox-inline">
         <input type="checkbox" id="smartIndent" value="1" onchange="_lc_editorset_save('<span></span>Enable automatic indentation<span></span>')" />
        <span></span>Enable automatic indentation<span></span>
       </label>
     </td>
   </tr>
   
-  <tr class="l">
-    <td class="t"><span></span>Text Wrapping<span></span></td>
+  <tr>
+    <td><span></span>Text Wrapping<span></span></td>
     <td>
-      <label class="checkbox">
+      <label class="checkbox-inline">
         <input type="checkbox" id="lineWrapping" value="1" onchange="_lc_editorset_save('<span></span>Enable text wrapping<span></span>')" />
        <span></span>Enable text wrapping<span></span>
       </label>
     </td>
   </tr>
 
-  <tr class="l">
-    <td class="t"><span></span>Code Folding<span></span></td>
+  <tr>
+    <td><span></span>Code Folding<span></span></td>
     <td>
-      <label class="checkbox">
+      <label class="checkbox-inline">
         <input type="checkbox" id="codeFolding" value="1" onchange="_lc_editorset_save('<span></span>Enable Code Folding<span></span>')" />
        <span></span>Enable Code Folding<span></span>
       </label>
     </td>
   </tr>
 
-  <tr class="l">
-    <td class="t"><span></span>Code Autocomplete<span></span></td>
+  <!-- <tr>
+    <td><span></span>Code Autocomplete<span></span></td>
     <td>
       <label><span></span>Press `shift + space` to activate autocompletion<span></span></label>
       <p class="alert alert-info"><span></span>editor-autocomplete-desc<span></span></p>
     </td>
-  </tr>
+  </tr> -->
 
-  <tr class="l">
-    <td class="t"><span></span>Font Size<span></span></td>
+  <tr>
+    <td><span></span>Font Size<span></span></td>
     <td>
-      <div class="input-append">
-        <input class="span1" id="fontSize" type="text" value="13">
-        <span class="add-on">px</span>
+      <div class="input-group">
+        <input class="form-control" id="fontSize" type="text" value="13">
+        <span class="input-group-addon">px</span>
       </div>
     </td>
   </tr>
 
-  <tr class="">
-    <td class="t"><span></span>Color Scheme<span></span></td>
+  <tr>
+    <td><span></span>Color Scheme<span></span></td>
     <td>
-      <select id="editor_theme" onchange="_lc_editorset_theme(this)">
+      <select id="editor_theme" onchange="_lc_editorset_theme(this)" class="form-control">
         <option value="default" selected="">classic</option>
         <option value="monokai">monokai</option>
         <option value="ambiance">ambiance</option>

@@ -1,7 +1,7 @@
 {
-    "cmd": "{lessfly_userdir}/app/lesscreator/bin/lesscreator",
+    "cmd": "{pandora_userdir}/app/lesscreator/bin/lesscreator",
     "args": [
-        "--prefix={lessfly_userdir}/app/lesscreator", "--config={lessfly_userdir}/conf/lesscreator/creator.json"
+        "--prefix={pandora_userdir}/app/lesscreator", "--config={pandora_userdir}/conf/lesscreator/creator.json"
     ],
     "exec_mode": 4 ,
     "exec_timeout": 0,

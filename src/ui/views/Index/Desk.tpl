@@ -13,10 +13,12 @@
             </div>
         </div>
 
-        <div class="lcx-start-well hide">
+        <div class="lcx-start-well" style="display:none">
 
             <div class="lc-head">
-                <div class="lc-logo"><img src="/lesscreator/~/lesscreator/img/gen/creator-white-96.png" /></div>
+                <div class="lc-logo">
+                    <img src="/lesscreator/~/lesscreator/img/gen/creator-white-96.png">
+                </div>
                 <div class="lc-title">less Creator <em id="lcbind-lc-version">{{.lc_version}}</em></div>
                 <div class="lc-close">&times;</div>
             </div>
@@ -50,7 +52,7 @@
                     </div>
 
                     <a class="less-tile flatui-bg-alizarin" 
-                        href="http://git.oschina.net/eryx/lesscreator/issues/new" target="_blank">
+                        href="https://github.com/lessos/lesscreator/issues/new" target="_blank">
                         <div class="lt-content icon">
                             <div class="lcx-icon-bug lcx-icon-white"></div>
                         </div>
@@ -60,7 +62,7 @@
                     </a>
 
                     <a class="less-tile flatui-bg-amethyst" 
-                        href="http://www.lesscompute.com" target="_blank">
+                        href="http://www.lesscompute.com/p/lesscreator" target="_blank">
                         <div class="lt-content icon">
                             <div class="lcx-icon-help lcx-icon-white"></div>
                         </div>
@@ -69,41 +71,21 @@
                         </div>
                     </a>
                 </div>
-
-                <!--
-                <div class="less-tile-group x3">
-
-                    <div class="ltg-title ">
-                        {{T . "Recent Projects"}}
-                    </div>
-
-                    <div class="less-tile w3 h2 flatui-bg-amethyst">
-                        <div class="lt-content icon">
-                            <img src="/lesscreator/~/lesscreator/img/gen/pen0-48.png">
-                        </div>
-                        <div class="lt-status">
-                            <div class="lts-name">New Project</div>
-                        </div>
-                    </div>
-
-                </div>
-                -->
            
             </div>
-
-      </div>
+        </div>
     </td>
 
     <td align="left">
         
-        <div id="l9r-pod-nav" class="lcx-nav-grp hide">
+        <div id="l9r-pod-nav" class="lcx-nav-grp">
             <div class="lcx-nav-itemex">
-                <div class="lni-label">Box</div>
+                <div class="lni-label">Pod</div>
                 <div class="lni-title" id="l9r-pod-status-msg">Connecting</div>
             </div>
         </div>
 
-        <div id="l9r-proj-nav" class="lcx-nav-grp hide">
+        <div id="l9r-proj-nav" class="lcx-nav-grp" style="display:none">
             <div class="lcx-nav-itemex">
                 <div class="lni-label">Project</div>
                 <div class="lni-title" id="l9r-proj-nav-status">Connecting</div>
@@ -127,16 +109,16 @@
         </div>
 
         <div id="lcext-nav" class="lcx-nav-grp"></div>
-        <div id="lcext-nav-tpl" class="hide">
+        <script id="lcext-nav-tpl" type="text/html">
             {[~it :v]}
             <div id="lcext-nav{[=v.name]}" class="lcx-nav-item" onclick="lcExt.RtSet('{[=v.name]}')">
                 <i class="lcico32-std" style="background-image:url(/lesscreator/+/{[=v.name]}/img/s32.png)"></i>
             </div>
             {[~]}
-        </div>
+        </script>
 
         <div class="lcx-nav-grp">
-            <div id="l9r-halert" class="hide"></div>
+            <div id="l9r-halert" style="display:none"></div>
         </div>
 
         <div id="lcbind-proj-navstart" class="lcx-proj-navbox"></div>
@@ -144,21 +126,20 @@
     
     <td align="right">      
       {{if .nav_user}}
-      <div id="lcx-nav-user-box">
-        <!-- <span class="lunb-name">{{.nav_user.name}}</span> -->
-        <span><img class="lnub-photo" src="{{.nav_user.photo}}" /></span>
+      <div id="l9r-nav-user-box">
+        <span><img class="nu-photo" src="{{.nav_user.photo}}" /></span>
       </div>
 
-      <div id="lcx-nav-user-modal" style="display:none;">
+      <div id="l9r-nav-user-pbox" style="display:none;">
 
-        <img class="lnum-photo" src="{{.nav_user.photo}}">
+        <img class="nu-photo" src="{{.nav_user.photo}}">
 
-        <div class="lnum-name">{{.nav_user.name}}</div>
+        <div class="nu-name">{{.nav_user.name}}</div>
 
         <div id="lcx-nav-user-alert" class="alert hide"></div>
 
-        <a class="btn btn-primary lnum-btn" href="{{.nav_user.lessids_url}}" target="_blank">Account Center</a>
-        <a class="btn btn-default lnum-btn" href="{{.nav_user.lessids_url_signout}}">Sign out</a>
+        <a class="btn btn-primary nu-btn" href="{{.nav_user.lessids_endpoint}}" target="_blank">Account Center</a>
+        <a class="btn btn-default nu-btn" href="{{.nav_user.lessids_endpoint_signout}}">Sign out</a>
 
       </div>
       {{end}}
@@ -170,60 +151,8 @@
 
 <div style="height:10px;"></div>
 
-<!--
-<table id="hdev_header" width="100%" border="0">
-  <tr>
-    <td width="10px"></td>
-
-    <td class="" width="300px">
-      <img class="lc_icon" src="/lesscreator/~/lesscreator/img/for-test/test.png" />
-    </td>
-
-    <td align="center">
-        <div class="hdev-header-alert border_radius_5 hdev_alert">workspace files, open files, run and debug, deploy, preferences</div>
-    </td>
-
-    <td align="right" style="">
-       
-        <div class="btn-group" style="margin-left:0;">
-            
-
-            <div class="btn btn-small dropdown-toggle " data-toggle="dropdown" href="#">
-                <i class="icon-user"></i>&nbsp;&nbsp;eryx&nbsp;&nbsp;<b class="caret"></b>
-            </div>
-
-            <ul class="dropdown-menu pull-right text-left">
-                <?php
-                /* $menus = Session::NavMenus('ue'); // TODO
-                $prev = false;
-                foreach ($menus as $menu) {
-                    echo "<li><a href=\"/{$menu->projid}\">{$menu->name}</a></li>";
-                    $prev = true;
-                }
-                if ($prev) {
-                    echo '<li class="divider"></li>';
-                }*/
-                ?> 
-                <li><a href="/user">{{T . "Account Settings"}}</a></li>
-                <li><a href="/lesscreator">{{T . "lessCreator"}}</a></li>
-                <li class="divider"></li>
-                <li><a href="/user/logout">{{T . "Logout"}}</a></li>
-            </ul>
-
-        </div>
-
-    </td>
-
-    <td width="10px"></td>
-  </tr>
-</table>
--->
-
 <table id="lcbind-layout" border="0" cellpadding="0" cellspacing="0" class="">
   <tr>
-    <!--
-    http://www.daqianduan.com/jquery-drag/
-    -->
     <td width="10px" class="lclay-colsep"></td>
     <td id="lcbind-proj-filenav" class="lcx-lay-colbg" width="220px"></td>
     <!-- <td id="lcx-proj-box" class="lcx-lay-colbg" valign="top" width="280px"></td> -->
@@ -248,7 +177,7 @@
               </div>
             </div>
 
-            <div id="h5c-tablet-toolbar-w0" class="hide"></div>
+            <div id="h5c-tablet-toolbar-w0" style="display:none"></div>
             <div id="h5c-tablet-body-w0" class="h5c_tablet_body less_scroll"></div>
 
           </td>
@@ -280,7 +209,7 @@
   </tr>
 </table>
 
-<div id="lc_editor_tools" class="hide">
+<div id="lc_editor_tools" style="display:none">
     <script type="text/text" id="lc_editor_tools"></script>
 
     <!-- <div class="editor_bar hdev-ws hdev-tabs hcr-pgbar-editor"> -->
@@ -346,7 +275,7 @@
     </div>
 </div>
 
-<div id="lctab-tpl" class="hide">
+<div id="lctab-tpl" style="display:none">
   <table id="lctab-box{[=it.tabid]}" class="lctab-box" width="100%" height="100%">
     <tr>
       <td class="" valign="top">
@@ -369,20 +298,27 @@
 
 <div id="lctab-openfiles-ol" class="less_scroll"></div>
 
+<script id="l9r-pod-connecting" type="text/html">
+<div style="text-align:center;font-size:20px">
+    <p>Connecting to Pod #{[=it._meta_id]} ...</p>
+    <p><span id="l9r-pod-connecting-status">*</span></p>
+</div>
+</script>
+
 <script>
 
-$("#lcx-nav-user-box").hover(
+$("#l9r-nav-user-box").hover(
     function() {
-        $("#lcx-nav-user-modal").fadeIn(300);
+        $("#l9r-nav-user-pbox").fadeIn(300);
     },
     function() {
     }
 );
-$("#lcx-nav-user-modal").hover(
+$("#l9r-nav-user-pbox").hover(
     function() {
     },
     function() {
-        $("#lcx-nav-user-modal").fadeOut(300);
+        $("#l9r-nav-user-pbox").fadeOut(300);
     }
 );
 
@@ -407,13 +343,6 @@ $(".lcx-start-well").click(function() {
 //    "-webkit-filter": blur(2px) contrast(0.4) brightness(1.4)
 //});
 
-var opt = {
-    'img': '/lesscreator/~/lesscreator/img/app-t3-16.png',
-    'title': 'Quick Start',
-    'close': '1',
-};
-//h5cTabOpen("/lesscreator/app/quick-start?", 'w0', 'html', opt);
-
 function _lc_nav_terminal()
 {
     var domobj = document.getElementById("lc-terminal");
@@ -431,12 +360,5 @@ function _lc_nav_terminal()
     }
 }
 // lcWebTerminal(0);
-
-
-// l9rLayout.Resize();
-// l9rLayout.BindRefresh();
-
-// setTimeout(l9rLayout.Resize, 3000)
-// l9rPodRefresh();
 
 </script>

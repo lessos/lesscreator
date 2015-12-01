@@ -6,7 +6,7 @@
     <ul class="lfn-menus">
         <li class="lfnm-item">
             
-            <i class="icon-plus-sign icon-white lfnm-item-ico"></i>
+            <span class="glyphicon glyphicon-plus-sign lfnm-item-ico"></span>
             
             <ul class="lfnm-item-submenu">
                 <li>
@@ -33,7 +33,7 @@
         <li class="lfnm-item">
             <a href="#fs/file-upl" 
                 onclick="_fs_tree_dir('', 1)" 
-                class="icon-refresh icon-white lfnm-item-ico" title="Refresh">
+                class="glyphicon glyphicon-refresh lfnm-item-ico" title="Refresh">
             </a>
         </li>
     </ul>
@@ -47,7 +47,7 @@
 
 
 <!--- TPL: File Item -->
-<div id="lcx-filenav-tree-tpl" class="hide">
+<script id="lcx-filenav-tree-tpl" type="text/html">
 {[~it :v]}
 <div id="ptp{[=v.fsid]}" class="lcx-fsitem" 
   lc-fspath="{[=v.path]}" lc-fstype="{[=v.fstype]}" lc-fsico="{[=v.ico]}">
@@ -55,11 +55,11 @@
     <a href="#" class="anoline">{[=v.name]}</a>
 </div>
 {[~]}
-</div>
+</script>
 
 
 <!--- TPL: File Right Click Menu -->
-<div id="lcbind-fsnav-rcm" class="hide">
+<div id="lcbind-fsnav-rcm" style="display:none">
   
   <div class="lcbind-fsrcm-item fsrcm-isdir" lc-fsnav="new-file">
     <div class="rcico">
@@ -98,14 +98,14 @@
 
 
 <!-- TPL : File New -->
-<div id="lcbind-fstpl-filenew" class="hide"> 
+<div id="lcbind-fstpl-filenew" style="display:none"> 
 <form id="{[=it.formid]}" action="#" onsubmit="l9rProjFs.FileNewSave('{[=it.formid]}');return false;">
-  <div class="input-prepend" style="margin-left:2px">
-    <span class="add-on">
-        <img src="/lesscreator/~/lesscreator/img/folder_add.png" class="h5c_icon">
+  <div class="input-group">
+    <span class="input-group-addon">
+        <img src="/lesscreator/~/lesscreator/img/page_white_add.png" class="h5c_icon">
         {[=it.path]}/
     </span>
-    <input type="text" name="name" value="{[=it.file]}" class="span2">
+    <input type="text" name="name" value="{[=it.file]}" class="form-control">
     <input type="hidden" name="path" value="{[=it.path]}">
     <input type="hidden" name="type" value="{[=it.type]}">
   </div>
@@ -114,13 +114,13 @@
 
 
 <!-- TPL : File Rename -->
-<div id="lcbind-fstpl-filerename" class="hide"> 
+<div id="lcbind-fstpl-filerename" style="display:none"> 
 <form id="{[=it.formid]}" action="#" onsubmit="l9rProjFs.FileRenameSave('{[=it.formid]}');return false;">
-  <div class="input-prepend" style="margin-left:2px">
-    <span class="add-on">
+  <div class="input-group">
+    <span class="input-group-addon">
         <img src="/lesscreator/~/lesscreator/img/folder_edit.png" class="h5c_icon">
     </span>
-    <input type="text" name="pathset" value="{[=it.path]}" style="width:500px;">
+    <input type="text" name="pathset" value="{[=it.path]}" class="form-control">
     <input type="hidden" name="path" value="{[=it.path]}">
   </div>
 </form>
@@ -128,9 +128,9 @@
 
 
 <!-- TPL : File Delete -->
-<div id="lcbind-fstpl-filedel" class="hide"> 
+<div id="lcbind-fstpl-filedel" style="display:none"> 
 <form id="{[=it.formid]}" action="#" onsubmit="l9rProjFs.FileDelSave('{[=it.formid]}');return false;">
-  <input type="hidden" name="path" value="{[=it.path]}">
+  <input type="hidden" name="path" value="{[=it.path]}" class="form-control">
   <div class="alert alert-danger" role="alert">
     <p>Are you sure to delete this file or folder?</p>
     <p><strong>{[=it.path]}</strong><p>
@@ -142,7 +142,7 @@
 <!-- TPL : File Upload -->
 <style type="text/css">
 .lsarea {
-    margin: 0;
+    margin: 5px 0;
     display: inline-block;
     height: 160px;
     width: 100%;
@@ -158,12 +158,12 @@
             box-sizing: border-box;
 }
 </style>
-<div id="lcbind-fstpl-fileupload" class="hide">
+<div id="lcbind-fstpl-fileupload" style="display:none">
 <div id="{[=it.reqid]}">
   <div>{%The target of Upload directory%}</div>
-  <div class="input-prepend">
-    <span class="add-on"><img src="/lesscreator/~/lesscreator/img/page_white_get.png" align="absmiddle"></span>
-    <input style="width:400px;" name="path" type="text" value="{[=it.path]}">
+  <div class="input-group">
+    <span class="input-group-addon"><img src="/lesscreator/~/lesscreator/img/page_white_get.png" align="absmiddle"></span>
+    <input class="form-control" name="path" type="text" value="{[=it.path]}">
     <button class="btn hide" type="button" onclick="_fs_upl_chgdir()">{%Change directory%}</button>
   </div>
   <div id="{[=it.areaid]}" class="lsarea">

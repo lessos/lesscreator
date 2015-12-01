@@ -5,13 +5,13 @@ export PS4='+ '
 export LANG=en_US.UTF-8
 export TERM=linux
 export USER=`whoami`
-export HOME={{.lessfly_userdir}}
+export HOME={{.pandora_userdir}}
 
-export GOROOT={{.lessfly_dir}}/rt/go/go11
-export GOPATH={{.lessfly_userdir}}/runtime/gopath
+export GOROOT={{.pandora_dir}}/rt/go/go11
+export GOPATH={{.pandora_userdir}}/runtime/gopath
 export GOBIN=$GOPATH/bin
 
-export NODEJSROOT={{.lessfly_dir}}/rt/nodejs/v0.10
+export NODEJSROOT={{.pandora_dir}}/rt/nodejs/v0.10
 
 export PATH=$PATH:$GOPATH/bin:$GOROOT/bin:$NODEJSROOT/bin
 

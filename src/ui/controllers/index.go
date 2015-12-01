@@ -1,85 +1,95 @@
 package controllers
 
 import (
-	"../../conf"
 	"fmt"
-	"github.com/lessos/lessgo/pagelet"
-	"github.com/lessos/lessgo/service/lessids"
-	"net/http"
+
+	"github.com/lessos/lessgo/httpsrv"
+	"github.com/lessos/lessids/idclient"
+
+	"../../config"
 )
 
 type Index struct {
-	*pagelet.Controller
+	*httpsrv.Controller
 }
 
 func (c Index) IndexAction() {
 
-	c.ViewData["version"] = conf.Config.Version
+	c.Data["version"] = config.Config.Version
 
 	//
-	session, err := c.Session.SessionFetch()
-	if err != nil || session.Uid == 0 {
-		c.RenderRedirect(lessids.LoginUrl(c.Request.RawAbsUrl()))
+	if !idclient.SessionIsLogin(c.Session) {
+		c.Redirect(idclient.AuthServiceUrl(
+			config.Config.InstanceID,
+			fmt.Sprintf("//%s%s/auth/cb", c.Request.Host, config.HttpSrvBasePath("")),
+			c.Request.RawAbsUrl()))
 		return
 	}
+
+	// //
+	// session, err := idclient.SessionInstance(c.Session)
+	// if err != nil || session.Uid == 0 {
+	// 	c.RenderRedirect(idclient.LoginUrl(c.Request.RawAbsUrl()))
+	// 	return
+	// }
 
 	// fmt.Println(session)
 
-	ck := &http.Cookie{
-		Name:  "access_userid",
-		Value: session.Uuid,
-		Path:  "/",
-		// HttpOnly: true,
-		Expires: session.Expired.UTC(),
-	}
-	http.SetCookie(c.Response.Out, ck)
+	// ck := &http.Cookie{
+	// 	Name:  "access_userid",
+	// 	Value: session.Uuid,
+	// 	Path:  "/",
+	// 	// HttpOnly: true,
+	// 	Expires: session.Expired.UTC(),
+	// }
+	// http.SetCookie(c.Response.Out, ck)
 
-	ck = &http.Cookie{
-		Name:  "access_token",
-		Value: session.AccessToken,
-		Path:  "/",
-		// HttpOnly: true,
-		Expires: session.Expired.UTC(),
-	}
-	http.SetCookie(c.Response.Out, ck)
-
-	//
-	if c.Params.Get("access_token") != "" {
-
-		ck = &http.Cookie{
-			Name:  "access_token",
-			Value: session.AccessToken,
-			Path:  "/",
-			//HttpOnly: true,
-			Expires: session.Expired.UTC(),
-		}
-		http.SetCookie(c.Response.Out, ck)
-
-		c.RenderRedirect("/lesscreator")
-		return
-	}
+	// ck = &http.Cookie{
+	// 	Name:  "access_token",
+	// 	Value: session.AccessToken,
+	// 	Path:  "/",
+	// 	// HttpOnly: true,
+	// 	Expires: session.Expired.UTC(),
+	// }
+	// http.SetCookie(c.Response.Out, ck)
 
 	//
-	c.ViewData["lessfly_api"] = conf.Config.LessFlyApi
+	// if c.Params.Get("access_token") != "" {
+
+	// 	ck = &http.Cookie{
+	// 		Name:  "access_token",
+	// 		Value: session.AccessToken,
+	// 		Path:  "/",
+	// 		//HttpOnly: true,
+	// 		Expires: session.Expired.UTC(),
+	// 	}
+	// 	http.SetCookie(c.Response.Out, ck)
+
+	// 	c.RenderRedirect("/lesscreator")
+	// 	return
+	// }
+
+	//
+	c.Data["pandora_endpoint"] = config.Config.PandoraEndpoint
 }
 
 func (c Index) DeskAction() {
 
-	c.ViewData["lc_version"] = conf.Config.Version
+	c.Data["lc_version"] = config.Config.Version
 
 	//
-	session, err := c.Session.SessionFetch()
-	if err != nil || session.Uid == 0 {
+	session, err := idclient.SessionInstance(c.Session)
+	if err != nil || !session.IsLogin() {
 		return
 	}
 
-	c.ViewData["nav_user"] = map[string]string{
-		"lessids_url":         lessids.ServiceUrl,
-		"lessids_url_signout": lessids.ServiceUrl + "/service/sign-out?access_token=" + session.AccessToken,
-		"access_token":        session.AccessToken,
-		"name":                session.Name,
-		"ukey":                session.Uuid,
-		"photo":               lessids.ServiceUrl + "/service/photo/" + session.Uuid,
+	c.Data["nav_user"] = map[string]string{
+		"lessids_endpoint":         idclient.ServiceUrl,
+		"lessids_endpoint_signout": idclient.ServiceUrl + "/service/sign-out?access_token=" + session.AccessToken,
+		"access_token":             session.AccessToken,
+		"name":                     session.Name,
+		"ukey":                     session.UserID,
+		"photo":                    idclient.ServiceUrl + "/v1/service/photo/" + session.UserID,
 	}
 }
 
@@ -138,7 +148,7 @@ func (c Index) WsAction() {
 
 		fmt.Println("WsAction back")
 
-		if err := c.Request.WebSocket.JsonSend(ret); err != nil {
+		if err := c.Request.WebSocket.SendJson(ret); err != nil {
 			return
 		}
 

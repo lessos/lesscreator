@@ -1,67 +1,69 @@
 package store
 
-import (
-	"../conf"
-	"errors"
-	"github.com/lessos/lessgo/service/lesskeeper"
-	"sync"
-)
+// import (
+// 	"errors"
+// 	"sync"
 
-var (
-	locker sync.Mutex
-	conns  map[string]*lesskeeper.Client
-	err    error
-	Keeper lesskeeper.Client
-)
+// 	"github.com/lessos/lessgo/service/lesskeeper"
 
-func Initialize() error {
+// 	"../config"
+// )
 
-	conns = map[string]*lesskeeper.Client{}
+// var (
+// 	locker sync.Mutex
+// 	conns  map[string]*lesskeeper.Client
+// 	err    error
+// 	Keeper lesskeeper.Client
+// )
 
-	Keeper, err = lesskeeper.NewClient(
-		conf.Config.LessKeeper.ApiUrl,
-		conf.Config.LessKeeper.Bucket,
-		conf.Config.LessKeeper.AccessKey,
-		conf.Config.LessKeeper.SecretKey)
+// func Initialize() error {
 
-	return err
-}
+// 	conns = map[string]*lesskeeper.Client{}
 
-func Register(key string, cfg lesskeeper.Client) (*lesskeeper.Client, error) {
+// 	Keeper, err = lesskeeper.NewClient(
+// 		conf.Config.LessKeeper.ApiUrl,
+// 		conf.Config.LessKeeper.Bucket,
+// 		conf.Config.LessKeeper.AccessKey,
+// 		conf.Config.LessKeeper.SecretKey)
 
-	locker.Lock()
-	defer locker.Unlock()
+// 	return err
+// }
 
-	if c, ok := conns[key]; ok {
-		if c.ApiUrl == cfg.ApiUrl &&
-			c.Bucket == cfg.Bucket &&
-			c.AccessKey == cfg.AccessKey &&
-			c.SecretKey == cfg.SecretKey {
-			return c, nil
-		}
-	}
+// func Register(key string, cfg lesskeeper.Client) (*lesskeeper.Client, error) {
 
-	c, err := lesskeeper.NewClient(
-		cfg.ApiUrl,
-		cfg.Bucket,
-		cfg.AccessKey,
-		cfg.SecretKey)
+// 	locker.Lock()
+// 	defer locker.Unlock()
 
-	// c.Timeout(10)
+// 	if c, ok := conns[key]; ok {
+// 		if c.ApiUrl == cfg.ApiUrl &&
+// 			c.Bucket == cfg.Bucket &&
+// 			c.AccessKey == cfg.AccessKey &&
+// 			c.SecretKey == cfg.SecretKey {
+// 			return c, nil
+// 		}
+// 	}
 
-	if err == nil {
-		conns[key] = &c
-	}
+// 	c, err := lesskeeper.NewClient(
+// 		cfg.ApiUrl,
+// 		cfg.Bucket,
+// 		cfg.AccessKey,
+// 		cfg.SecretKey)
 
-	return &c, err
-}
+// 	// c.Timeout(10)
 
-func Pull(key string) (*lesskeeper.Client, error) {
+// 	if err == nil {
+// 		conns[key] = &c
+// 	}
 
-	c, ok := conns[key]
-	if ok {
-		return c, nil
-	}
+// 	return &c, err
+// }
 
-	return c, errors.New("---")
-}
+// func Pull(key string) (*lesskeeper.Client, error) {
+
+// 	c, ok := conns[key]
+// 	if ok {
+// 		return c, nil
+// 	}
+
+// 	return c, errors.New("---")
+// }

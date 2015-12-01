@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"github.com/lessos/lessgo/pagelet"
+	"github.com/lessos/lessgo/httpsrv"
 )
 
 type Error struct {
-	*pagelet.Controller
+	*httpsrv.Controller
 }
 
 func (c Error) BrowserAction() {

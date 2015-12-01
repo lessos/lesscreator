@@ -607,19 +607,6 @@ textarea {
     border-bottom: 1px solid #cfd4d7;
 }
 
-.lc-editor-set-form tr td {
-   padding: 6px 0;  vertical-align: top;
-}
-.lc-editor-set-form .t {
-    font-weight: bold;
-}
-.lc-editor-set-form .l td {
-    border-bottom: 1px solid #ccc;
-}
-.lc-editor-set-form select {
-    margin: 5px 0;
-}
-
 .h5c_resize_row {
     cursor: row-resize;
     background: url(/lesscreator/static/img/handle-h.png) center no-repeat;
