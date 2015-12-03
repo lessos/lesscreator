@@ -2,15 +2,11 @@
 bin/lesscreator*
 *~
 
-static/lesscreator/img/*
-static/lesscreator/img/3d/*
-static/lesscreator/js/pyte/
-static/lesscreator/js/angular*
-static/codemirror
-static/jquery
-static/twitter-bootstrap
-static/lesscreator/js/eventproxy.js
-
-src/gokeeper.go
-deps/fsnotify
-
+webui/lesscreator/img/*
+webui/lesscreator/img/3d/*
+webui/lesscreator/js/pyte/
+webui/lesscreator/js/angular*
+webui/codemirror
+webui/jquery
+webui/twitter-bootstrap
+webui/lesscreator/js/eventproxy.js

@@ -1,13 +1,13 @@
 #!/bin/bash
 
-files=`find ./src -type f -name "*.go" |xargs`
+files=`find . -type f -name "*.go" |xargs`
 for file in $files; do
     gofmt -w=true ${file}
 done
 
 rm -f ./bin/lesscreator
 
-go build -ldflags "-w -s" -o ./bin/lesscreator ./src/main.go
+go build -ldflags "-w -s" -o ./bin/lesscreator ./main.go
 
 ./bin/lesscreator 
 
