@@ -13,9 +13,6 @@
     var pandora_endpoint = "{{.pandora_endpoint}}/v1";
     var pandora_ext = "{{.pandora_endpoint}}/ext";
     window.onload = l9r.Boot;
-    // var less = less || {};
-    // less.env = 'development';
-    // less.watch();
   </script>
 </head>
 <body>

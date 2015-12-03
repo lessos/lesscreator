@@ -68,10 +68,14 @@ foreach ($lyrs as $lyr) {
         $outfile = $lyr;
     }
 
+    // if ($outfile != "creator") {
+    //     continue;
+    // }
+
     $outfile = $dir ."/../tmp/{$outfile}-{$size}.png";
     if (file_exists($outfile)) {
         echo "\tICON SKIP\n";
-        continue;
+        // continue;
     }
 
 
@@ -108,17 +112,30 @@ foreach ($lyrs as $lyr) {
     $width = 0;
     foreach ($colors as $color) {
 
-        if (count($colors) < 2 && in_array($color, array("000", "00000"))) {
+        if (count($colors) < 2 && in_array($color, array("000", "000000"))) {
 
             copy($outfile, "merge.png");
 
         } else {
 
-            $colorize = "80%";
-            if (in_array($color, array("fff", "ffffff"))) {
-                $colorize = "95%";
-            }
-            $cmd = "convert {$outfile} -fill '#{$color}' -colorize {$colorize} tmp.png";
+            // $colorize = "80%";
+            // if (in_array($color, array("000", "000000"))) {
+            // 	// $colorize = "0%";
+            // } else if (in_array($color, array("fff", "ffffff"))) {
+            //     $colorize = "95%";
+            // }
+
+            // $colorize = "80%";
+
+            // convert -negate foo.png bar.png
+            // if ($color == "fff") {
+            //     $cmd = "convert {$outfile} -fill '#{$color}' -opaque '#000' tmp.png";
+            // } else {
+            //     $cmd = "convert {$outfile} -fill '#{$color}' -colorize {$colorize} -background transparent tmp.png";
+            // }
+
+            $cmd = "convert {$outfile} -fuzz 80% -fill '#{$color}' -opaque '#000' tmp.png";
+
             shell_exec($cmd);
 
 

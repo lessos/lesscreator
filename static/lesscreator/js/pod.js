@@ -39,12 +39,12 @@ l9rPod.Initialize = function(cb)
     // console.log(l4i.UriQuery().pod);
     // console.log(l4i.UriQuery().proj2);
 
-    if (l4i.UriQuery().pod) {
-        l4iSession.Set("pandora_pod", l4i.UriQuery().pod);
+    if (l4i.UriQuery().pod_id) {
+        l4iSession.Set("l9r_pandora_pod_id", l4i.UriQuery().pod_id);
     }
 
     if (l4i.UriQuery().proj) {
-        l4iSession.Set("proj_current", l4i.UriQuery().proj);
+        l4iSession.Set("l9r_proj_active", l4i.UriQuery().proj);
     }
 
     seajs.use(["ep"], function(EventProxy) {
@@ -86,7 +86,7 @@ l9rPod.Initialize = function(cb)
             l9rPod.Specs = specs;
 
             //
-            if (l4iSession.Get("pandora_pod")) {
+            if (l4iSession.Get("l9r_pandora_pod_id")) {
                 l9rPod.initOpen(cb);
             } else {
                 l9rPod.initList(cb);
@@ -115,7 +115,7 @@ l9rPod.Open = function(id, cb)
 {
     // l4iAlert.Open("info", "Connecting Pod", {close: false});
 
-    var cur_pod_id = l4iSession.Get("pandora_pod");
+    var cur_pod_id = l4iSession.Get("l9r_pandora_pod_id");
     l9rPod.open_retry = 30;
 
     if (cur_pod_id && cur_pod_id != id) {        
@@ -123,7 +123,7 @@ l9rPod.Open = function(id, cb)
         return;
     }
 
-    l4iSession.Set("pandora_pod", id);
+    l4iSession.Set("l9r_pandora_pod_id", id);
 
     l4iModal.Open({
         title  : "Connecting Pod",
@@ -141,11 +141,58 @@ l9rPod.Open = function(id, cb)
     });
 }
 
+l9rPod.Status = function(id)
+{
+    if (!id) {
+        id = l4iSession.Get("l9r_pandora_pod_id");
+    }
+
+    l4iModal.Open({
+        tpluri : l9r.base + "/-/pod/status.tpl",
+        title  : "Pod Status",
+        width  : 700,
+        height : 400,
+        buttons : [{
+            onclick : "l4iModal.Close()",
+            title   : "Close"
+        }],
+        success : function() {
+            l9rPod.status_refresh(id);    
+        },
+    });
+}
+
+l9rPod.status_refresh = function(id)
+{
+    var alertid = "#l9r-pod-status-alert";
+
+    l9r.PandoraApiCmd("pod/status?id="+ id, {
+        callback: function(err, rsj) {
+
+            err = err || l9r.ErrorCheck(rsj, "PodStatus");
+            if (err) {
+                return l4i.InnerAlert(alertid, 'alert-danger', err);
+            }
+
+            if (!rsj.phase) {
+                return l4i.InnerAlert(alertid, 'alert-danger', "Failed on Connect to Pod Instance");
+            }
+
+            var pod = l4i.Clone(l9rPod.Instance);
+            pod.status = rsj;
+
+            $("#l9r-pod-status-alert").hide(500);
+
+            l4iTemplate.RenderFromID("l9r-pod-status", "l9r-pod-status-tpl", pod);
+        },
+    }); 
+}
+
 l9rPod.open_status = function(cb)
 {
     var statusid = "#l9r-pod-connecting-status";
   
-    l9r.PandoraApiCmd("pod/status?id="+ l4iSession.Get("pandora_pod"), {
+    l9r.PandoraApiCmd("pod/status?id="+ l4iSession.Get("l9r_pandora_pod_id"), {
         callback: function(err, rsj) {
 
             var phase = "Pending";
@@ -181,21 +228,18 @@ l9rPod.open_status = function(cb)
                 if (cb) {
                     cb(null, null);
                 }
-            }, 500);
+            }, 300);
 
             // l9r.HeaderAlert("info", "Getting Project List");
 
-            // l9rProj.Open();
+            l9rProj.Open();
         },
     });
 }
 
 l9rPod.initOpen = function(cb)
 {
-    var url = "pod/entry";
-    url += "?id="+ l4iSession.Get("pandora_pod");
-
-    l9r.PandoraApiCmd(url, {
+    l9r.PandoraApiCmd("pod/entry?id="+ l4iSession.Get("l9r_pandora_pod_id"), {
         callback: function(err, rsj) {
 
             if (err) {
@@ -207,13 +251,15 @@ l9rPod.initOpen = function(cb)
             }
 
             if (!rsj.kind || rsj.kind != "Pod") {
-                return l9rPod.initList();
+                return l9rPod.initList(cb);
             }
 
             l9rPod.Instance = rsj;
             
-            cb(null);
-            
+            if (cb) {
+                cb(null);
+            }
+
             $("#l9r-pod-status-msg").text("Connecting");
             $("#l9r-pod-nav").show(100);
 
@@ -247,6 +293,10 @@ l9rPod.initList = function(cb)
             } else {
                 l9rPod.ListSelector(null, data);
             }
+
+            if (cb) {
+                cb(null);
+            }
         },
     });
 }
@@ -255,12 +305,31 @@ l9rPod.ListSelector = function(err, data)
 {
     if (data.items.length == 1) {
 
-        l4iSession.Set("pandora_pod", data.items[0].meta.id);
+        l4iSession.Set("l9r_pandora_pod_id", data.items[0].meta.id);
 
-        l9rPod.initOpen(function(){});
+        l9rPod.initOpen();
 
         return;
     }
+
+    // console.log(data);
+
+    l4iModal.Open({
+        tpluri : l9r.base + "/-/pod/list.tpl",
+        width  : 660,
+        height : 400,
+        title  : "Select one Pod Instance to Launch ...",
+        buttons : [
+            {
+                onclick : "l4iModal.Close()",
+                title   : "Close"
+            }
+        ],
+        success: function() {
+            $("#l9r-podls-alert").css({"display": "none"});
+            l4iTemplate.RenderFromID("l9r-podls", "l9r-podls-tpl", data);
+        },
+    });
 }
 
 l9rPod.PpWelcome = function()
@@ -520,9 +589,9 @@ l9rPod.UtilResourceSizeFormat = function(size)
 // //
 // function l9rPodRefresh()
 // {
-//     // console.log(l4iSession.Get("pandora_pod"));
+//     // console.log(l4iSession.Get("l9r_pandora_pod_id"));
 
-//     if (l4iSession.Get("pandora_pod") == null) {
+//     if (l4iSession.Get("l9r_pandora_pod_id") == null) {
 //         // alert("No Pod Found");
 //         l9r.HeaderAlert("error", "No Pod Found");
 //         // lcBoxList();
@@ -531,7 +600,7 @@ l9rPod.UtilResourceSizeFormat = function(size)
 
 //     var url = pandora_endpoint + "/pod/entry";
 //     url += "?access_token="+ l4iCookie.Get("access_token");
-//     url += "&podid="+ l4iSession.Get("pandora_pod");
+//     url += "&podid="+ l4iSession.Get("l9r_pandora_pod_id");
 //     // url += "&boxname=los.box.def";
 //     // console.log("box refresh:"+ url);
 

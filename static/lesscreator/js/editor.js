@@ -98,7 +98,7 @@ lcEditor.TabletOpen = function(urid, callback)
 
             var entry = {
                 id       : urid,
-                projdir  : l4iSession.Get("proj_current"),
+                projdir  : l4iSession.Get("l9r_proj_active"),
                 filepth  : item.url,
                 ctn0_src : file.body,
                 ctn0_sum : l4iString.CryptoMd5(file.body),

@@ -21,7 +21,7 @@ l9rPodFs.Get = function(options)
         options.error = function(){};
     }
 
-    var url = "pod/"+ l4iSession.Get("pandora_pod") +"/fs/get";
+    var url = "pod/"+ l4iSession.Get("l9r_pandora_pod_id") +"/fs/get";
     // url += "?access_token="+ l4iCookie.Get("access_token");
     url += "?path="+ options.path;
 
@@ -76,7 +76,7 @@ l9rPodFs.Post = function(options)
         sumcheck : options.sumcheck,
     }
 
-    var url = "pod/"+ l4iSession.Get("pandora_pod") +"/fs/put";
+    var url = "pod/"+ l4iSession.Get("l9r_pandora_pod_id") +"/fs/put";
 
     l9r.PandoraApiCmd(url, {
         method  : "POST",
@@ -125,7 +125,7 @@ l9rPodFs.Rename = function(options)
         pathset : options.pathset,
     }
 
-    var url = "pod/"+ l4iSession.Get("pandora_pod") +"/fs/rename";
+    var url = "pod/"+ l4iSession.Get("l9r_pandora_pod_id") +"/fs/rename";
     l9r.PandoraApiCmd(url, {
         method  : "POST",
         timeout : 10000,
@@ -167,7 +167,7 @@ l9rPodFs.Del = function(options)
         path    : options.path,
     }
 
-    var url = "pod/"+ l4iSession.Get("pandora_pod") +"/fs/del";
+    var url = "pod/"+ l4iSession.Get("l9r_pandora_pod_id") +"/fs/del";
 
     l9r.PandoraApiCmd(url, {
         method  : "POST",
@@ -206,7 +206,7 @@ l9rPodFs.List = function(options)
         options.error = function(){};
     }
 
-    var url = "pod/"+ l4iSession.Get("pandora_pod") +"/fs/list";
+    var url = "pod/"+ l4iSession.Get("l9r_pandora_pod_id") +"/fs/list";
     url += "?path="+ options.path;
 
     l9r.PandoraApiCmd(url, {

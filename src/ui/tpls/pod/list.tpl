@@ -41,15 +41,15 @@
 
 <script id="l9r-podls-tpl" type="text/html">
 {[~it.items :v]}
-<a class="pod-item" href="#pod/{[=v.metadata.id]}" onclick="l9rPod.Open('{[=v.metadata.id]}')">
+<a class="pod-item" href="#pod/{[=v.meta.id]}" onclick="l9rPod.Open('{[=v.meta.id]}')">
 <table>
   <tr>
     <td width="40px"><img class="licon" src="/lesscreator/~/lesscreator/img/gen/box01.png" /></td>
     <td>
-        <div class="title">{[=v.metadata.name]}</div>
-        <div class="spec">
+        <div class="title">{[=v.meta.name]}</div>
+        <div class="spec" label="TODO">
             {[~v.spec.boxes :vb]}
-                CPU: {[=vb.resource.cpu]}, Memory: {[=l9rPod.UtilResourceSizeFormat(vb.resource.memory)]}, Storage: 100 MB
+            CPU: {[=vb.resource.cpu_num]}, Memory: {[=l9rPod.UtilResourceSizeFormat(vb.resource.mem_size)]}, Storage: {[=vb.resource.stor_size]} MB
             {[~]}
         </div>
     </td>

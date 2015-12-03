@@ -23,7 +23,7 @@ l9rProjFs.UiTreeLoad = function(options)
     }
 
     var ptdid = l4iString.CryptoMd5(options.path);
-    if (options.path == l4iSession.Get("proj_current")) {
+    if (options.path == l4iSession.Get("l9r_proj_active")) {
         ptdid = "root";
     }
 
@@ -33,7 +33,7 @@ l9rProjFs.UiTreeLoad = function(options)
     }
 
     var req = {
-        path: options.path,// l4iSession.Get("proj_current"),
+        path: options.path,// l4iSession.Get("l9r_proj_active"),
     }
 
     // console.log("path reload "+ options.path);
@@ -135,7 +135,7 @@ l9rProjFs.UiTreeLoad = function(options)
         setTimeout(function() {
             l9rProjFs.UiTreeEventRefresh();
             l9rLayout.Resize();
-            $("#l9r-proj-nav-status").text(l4iSession.Get("proj_current_name"));
+            $("#l9r-proj-nav-status").text(l4iSession.Get("l9r_proj_name"));
         }, 10);
     }
 
@@ -271,7 +271,7 @@ l9rProjFs.LayoutResize = function(options)
 l9rProjFs.FileNew = function(type, path, file)
 {
     if (!path) {
-        path = l4iSession.Get("proj_current");
+        path = l4iSession.Get("l9r_proj_active");
     }
 
     var formid = Math.random().toString(36).slice(2);
@@ -457,7 +457,7 @@ function _fsUploadHander(evt)
 l9rProjFs.FileUpload = function(path)
 {
     if (!path) {
-        path = l4iSession.Get("proj_current");
+        path = l4iSession.Get("l9r_proj_active");
         // alert("Path can not be null"); // TODO
         // return;
     }

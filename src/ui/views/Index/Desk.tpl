@@ -82,7 +82,13 @@
             <div class="lcx-nav-itemex">
                 <div class="lni-label">Pod</div>
                 <div class="lni-title" id="l9r-pod-status-msg">Connecting</div>
-            </div>
+            </div><ul class="lcnav-tile-group" style="margin:0">
+                <li class="">
+                    <a href="javascript:l9rPod.Status()" title="Pod Status">
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/box-32.png)"></i>
+                    </a>
+                </li>
+            </ul>
         </div>
 
         <div id="l9r-proj-nav" class="lcx-nav-grp" style="display:none">

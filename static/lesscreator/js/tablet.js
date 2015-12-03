@@ -256,7 +256,7 @@ l9rTab.Switch = function(urid)
             l9rTab.TabletTitleImage(urid);
             l9rTab.frame[item.target].urid = urid;
             // l4iStorage.Set("tab.fra.urid."+ item.target, urid);
-            // l4iStorage.Set(l4iSession.Get("podid") +"."+ l4iSession.Get("proj_name") +".cab."+ item.target, urid);
+            // l4iStorage.Set(l4iSession.Get("podid") +"."+ l4iSession.Get("l9r_proj_name") +".cab."+ item.target, urid);
         
             item.success();
         });

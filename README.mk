@@ -1,4 +1,4 @@
-Less Creator
+## less Creator
 
     Online development environment that lets you build custom business 
     applications as quickly as possible
@@ -7,7 +7,7 @@ Less Creator
     - Similar to Cloud9 IDE http://c9.io
 
 
-The third party software of this product includes or reference
+## The third party software of this product includes or reference
 
     CodeMirror
         http://codemirror.net (License: MIT)
@@ -20,7 +20,7 @@ The third party software of this product includes or reference
     R Lang Studio
         http://rstudio.org/
 
-Install
+## Install
     
     This project is in development and alpha testing, will open the installation
     when first release

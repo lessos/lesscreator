@@ -441,11 +441,11 @@ l9rProj.Open = function(proj)
     // console.log("userid"+ userid);
     
     if (!proj) {
-        proj = l4iSession.Get("proj_current");
+        proj = l4iSession.Get("l9r_proj_active");
     }
 
     if (!proj) {
-        proj = l4iStorage.Get(userid +"_proj_current");
+        proj = l4iStorage.Get(userid +"_l9r_proj_active");
     }
 
     if (!proj) {
@@ -461,16 +461,14 @@ l9rProj.Open = function(proj)
     }
 
     if (l9rProj.Current && l9rProj.Current != proj) {
-        window.open(l9r.base + "?proj="+ proj +"&pod="+ l4iSession.Get("pandora_pod"), '_blank');
+        window.open(l9r.base + "?proj="+ proj +"&pod_id="+ l4iSession.Get("l9r_pandora_pod_id"), '_blank');
         return;
     }
 
-
+    //
     var req = {
         path: proj +"/lcproject.json",
     }
-
-    
 
     req.error = function(status, message) {
 
@@ -498,10 +496,9 @@ l9rProj.Open = function(proj)
             pinfo.runtime = {};
         }
 
-        l4iSession.Set("proj_name", pinfo.metadata.name);
-        l4iSession.Set("proj_current_name", pinfo.metadata.name);
-        l4iSession.Set("proj_current", proj);
-        l4iStorage.Set(userid +"_proj_current", proj);
+        l4iSession.Set("l9r_proj_name", pinfo.metadata.name);
+        l4iSession.Set("l9r_proj_active", proj);
+        l4iStorage.Set(userid +"_l9r_proj_active", proj);
         // console.log(pinfo);
         l9rProj.Info = pinfo;
 
@@ -560,16 +557,16 @@ l9rProj.OpenHistoryTabs = function()
 {
     // console.log("l9rProj.OpenHistoryTabs");
 
-    // var last_tab_urid = l4iStorage.Set(l4iSession.Get("podid") +"."+ l4iSession.Get("proj_name") +".tab."+ item.target);
+    // var last_tab_urid = l4iStorage.Set(l4iSession.Get("podid") +"."+ l4iSession.Get("l9r_proj_name") +".tab."+ item.target);
 
-    lcData.Query("files", "projdir", l4iSession.Get("proj_current"), function(ret) {
+    lcData.Query("files", "projdir", l4iSession.Get("l9r_proj_active"), function(ret) {
 
         // console.log("Query files");
         if (ret == null) {
             return;
         }
 
-        if (ret.value.id && ret.value.projdir == l4iSession.Get("proj_current")) {
+        if (ret.value.id && ret.value.projdir == l4iSession.Get("l9r_proj_active")) {
 
             var icon = undefined;
             if (ret.value.icon) {
@@ -582,7 +579,7 @@ l9rProj.OpenHistoryTabs = function()
                 cab = l9rTab.frame[l9rTab.def];
             }
 
-            var tabLastActive = l4iStorage.Get(l4iSession.Get("podid") +"."+ l4iSession.Get("proj_name") +".cab."+ ret.value.cabid);
+            var tabLastActive = l4iStorage.Get(l4iSession.Get("podid") +"."+ l4iSession.Get("l9r_proj_name") +".cab."+ ret.value.cabid);
             // console.log("tabLastActive: "+ tabLastActive);
 
             var titleOnly = true;
@@ -617,7 +614,7 @@ l9rProj.OpenHistoryTabs = function()
 l9rProj.Set = function(proj)
 {
     if (!proj) {
-        proj = l4iSession.Get("proj_current");
+        proj = l4iSession.Get("l9r_proj_active");
     }
 
     var req = {
