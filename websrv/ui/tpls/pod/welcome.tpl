@@ -36,7 +36,8 @@
 <a class="pod-item" href="http://www.lessos.com/p/pandora" target="_blank">
 <table>
   <tr>
-    <td width="40px"></td>
+    <td width="40px">
+    </td>
     <td>
         <div class="title">Help</div>
         <div class="spec">If you are the first time to use less Creator and want to know what it is or how to use it ?
@@ -55,7 +56,7 @@
     <td width="40px"><img class="licon" src="/lesscreator/~/lesscreator/img/gen/box01.png" /></td>
     <td>
         <div class="title">Create Pod Instance</div>
-        <div class="spec">less Creator running on the Containerized environment, a Pod is a group of containers engined by Docker
+        <div class="spec">less Creator running in the Containerized environment, a Pod is a group of containers engined by Docker
         </div>
     </td>
     <td width="30px" align="right">

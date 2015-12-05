@@ -140,7 +140,7 @@ l9rTab.Switch = function(urid)
     //     var prevEditorScrollInfo = l9rTab.frame[item.target].editor.getScrollInfo();
     //     var prevEditorCursorInfo = l9rTab.frame[item.target].editor.getCursor();
 
-    //     lcData.Get("files", l9rTab.frame[item.target].urid, function(prevEntry) {
+    //     l9rData.Get("files", l9rTab.frame[item.target].urid, function(prevEntry) {
 
     //         if (!prevEntry) {
     //             return;
@@ -151,7 +151,7 @@ l9rTab.Switch = function(urid)
     //         prevEntry.curlin = prevEditorCursorInfo.line;
     //         prevEntry.curch  = prevEditorCursorInfo.ch;
 
-    //         lcData.Put("files", prevEntry, function() {
+    //         l9rData.Put("files", prevEntry, function() {
     //             // TODO
     //         });
     //     });
@@ -512,7 +512,7 @@ l9rTab.CloseClean = function(urid)
 
         if (i == urid) {
             
-            lcData.Del("files", urid, function(rs) {
+            l9rData.Del("files", urid, function(rs) {
                 //console.log("del: "+ rs);
             });
 

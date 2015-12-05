@@ -42,9 +42,19 @@ func NewModule() httpsrv.Module {
 		StaticPath: config.Config.Prefix + "/ext",
 	})
 
+	module.RouteSet(httpsrv.Route{
+		Type: httpsrv.RouteTypeBasic,
+		Path: "pod/:pod_id",
+		Params: map[string]string{
+			"controller": "pod",
+			"action":     "index",
+		},
+	})
+
 	module.TemplatePathSet(config.Config.Prefix + "/websrv/ui/views")
 
 	module.ControllerRegister(new(Auth))
+	module.ControllerRegister(new(Pod))
 	module.ControllerRegister(new(Index))
 	module.ControllerRegister(new(Error))
 

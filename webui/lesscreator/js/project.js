@@ -559,7 +559,7 @@ l9rProj.OpenHistoryTabs = function()
 
     // var last_tab_urid = l4iStorage.Set(l4iSession.Get("podid") +"."+ l4iSession.Get("l9r_proj_name") +".tab."+ item.target);
 
-    lcData.Query("files", "projdir", l4iSession.Get("l9r_proj_active"), function(ret) {
+    l9rData.Query("files", "projdir", l4iSession.Get("l9r_proj_active"), function(ret) {
 
         // console.log("Query files");
         if (ret == null) {

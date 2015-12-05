@@ -193,7 +193,7 @@ function h5cTabSwitch(urid)
         var prevEditorScrollInfo = h5cTabletFrame[item.target].editor.getScrollInfo();
         var prevEditorCursorInfo = h5cTabletFrame[item.target].editor.getCursor();
 
-        lcData.Get("files", h5cTabletFrame[item.target].urid, function(prevEntry) {
+        l9rData.Get("files", h5cTabletFrame[item.target].urid, function(prevEntry) {
 
             if (!prevEntry) {
                 return;
@@ -204,7 +204,7 @@ function h5cTabSwitch(urid)
             prevEntry.curlin = prevEditorCursorInfo.line;
             prevEntry.curch  = prevEditorCursorInfo.ch;
 
-            lcData.Put("files", prevEntry, function() {
+            l9rData.Put("files", prevEntry, function() {
                 // TODO
             });
         });
@@ -476,7 +476,7 @@ function _lcTabCloseClean(urid)
 
         if (i == urid) {
             
-            lcData.Del("files", urid, function(rs) {
+            l9rData.Del("files", urid, function(rs) {
                 //console.log("del: "+ rs);
             });
 
@@ -752,161 +752,3 @@ function lcWebTerminal(force)
 
     h5cTabOpen("/lesscreator/term/index?", 'w1', 'webterm', opt);
 }
-
-////////////////////////////////////////////////////////////////////////////////
-//prefixes of implementation that we want to test
-window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-
-//prefixes of window.IDB objects
-window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
-window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
-
-if (!window.indexedDB) {
-    window.alert("Your browser doesn't support a stable version of IndexedDB.")
-}
-
-var lcData = {};
-lcData.db = null;
-lcData.version = 11;
-lcData.schema = [
-    {
-        name: "files",
-        pri: "id",
-        idx: ["projdir"]
-    },
-    {
-        name: "config",
-        pri: "id",
-        idx: ["type"]
-    }
-];
-lcData.Init = function(dbname, cb)
-{
-    var req = indexedDB.open(dbname, lcData.version);  
-
-    req.onsuccess = function (event) {
-        lcData.db = event.target.result;
-        cb(true);
-    };
-
-    req.onerror = function (event) {
-        //console.log("IndexedDB error: " + event.target.errorCode);
-        cb(true);
-    };
-
-    req.onupgradeneeded = function (event) {
-        
-        lcData.db = event.target.result;
-
-        for (var i in lcData.schema) {
-            
-            var tbl = lcData.schema[i];
-            
-            if (lcData.db.objectStoreNames.contains(tbl.name)) {
-                lcData.db.deleteObjectStore(tbl.name);
-            }
-
-            var objectStore = lcData.db.createObjectStore(tbl.name, {keyPath: tbl.pri});
-
-            for (var j in tbl.idx) {
-                objectStore.createIndex(tbl.idx[j], tbl.idx[j], {unique: false});
-            }
-        }
-        cb(true);
-    };
-}
-
-lcData.Put = function(tbl, entry, cb)
-{    
-    if (lcData.db == null) {
-        return;
-    }
-
-    //console.log("put: "+ entry.id);
-
-    var req = lcData.db.transaction([tbl], "readwrite").objectStore(tbl).put(entry);
-
-    req.onsuccess = function(event) {
-        if (cb != null && cb != undefined) {
-            cb(true);
-        }
-    };
-
-    req.onerror = function(event) {
-        if (cb != null && cb != undefined) {
-            cb(false);
-        }
-    }
-}
-
-lcData.Get = function(tbl, key, cb)
-{
-    if (lcData.db == null) {
-        return;
-    }
-
-    var req = lcData.db.transaction([tbl]).objectStore(tbl).get(key);
-
-    req.onsuccess = function(event) {
-        cb(req.result);
-    };
-
-    req.onerror = function(event) {
-        cb(req.result);
-    }
-}
-
-lcData.Query = function(tbl, column, value, cb)
-{
-    if (lcData.db == null) {
-        //console.log("lcData is NULL");
-        return;
-    }
-    var req = lcData.db.transaction([tbl]).objectStore(tbl).index(column).openCursor();
-
-    req.onsuccess = function(event) {
-        cb(event.target.result);
-    };
-
-    req.onerror = function(event) {
-        //
-    }
-}
-
-lcData.Del = function(tbl, key, cb)
-{
-    if (lcData.db == null) {
-        return;
-    }
-
-    var req = lcData.db.transaction([tbl], "readwrite").objectStore(tbl).delete(key);
-
-    req.onsuccess = function(event) {
-        cb(true);
-    };
-
-    req.onerror = function(event) {
-        cb(false);
-    }
-}
-
-lcData.List = function(tbl, cb)
-{
-    if (lcData.db == null) {
-        return;
-    }
-
-    var req = lcData.db.transaction([tbl], "readwrite").objectStore(tbl).openCursor();
-
-    req.onsuccess = function(event) {
-        var cursor = event.target.result;
-        if (cursor) {
-            cb(cursor);
-        }
-    };
-
-    req.onerror = function(event) {
-
-    }
-}
-

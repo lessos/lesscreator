@@ -49,9 +49,9 @@ lcEditor.TabletOpen = function(urid, callback)
     // console.log("lcEditor.TabletOpen 2: "+ urid);
     // console.log(item);
 
-    lcData.Get("files", urid, function(ret) {
+    l9rData.Get("files", urid, function(ret) {
 
-        // console.log("lcData.Get.files");
+        // console.log("l9rData.Get.files");
 
         if (ret && urid == ret.id
             && ((ret.ctn1_sum && ret.ctn1_sum.length > 30)
@@ -111,7 +111,7 @@ lcEditor.TabletOpen = function(urid, callback)
                 entry.icon = item.icon;
             }
 
-            lcData.Put("files", entry, function(ret) {
+            l9rData.Put("files", entry, function(ret) {
                 
                 if (ret) {
                     $("#lctab-bar"+ item.target).empty();
@@ -355,7 +355,7 @@ lcEditor.Changed = function(urid)
         return;
     }
 
-    lcData.Get("files", urid, function(entry) {
+    l9rData.Get("files", urid, function(entry) {
                         
         if (!entry || entry.id != urid) {
             return;
@@ -364,7 +364,7 @@ lcEditor.Changed = function(urid)
         entry.ctn1_src = l9rTab.frame[item.target].editor.getValue();
         entry.ctn1_sum = l4iString.CryptoMd5(entry.ctn1_src);
 
-        lcData.Put("files", entry, function(ret) {
+        l9rData.Put("files", entry, function(ret) {
             // TODO
             // console.log(entry);
         });
@@ -395,7 +395,7 @@ lcEditor.EntrySave = function(options)
         return;
     }
 
-    lcData.Get("files", options.urid, function(ret) {
+    l9rData.Get("files", options.urid, function(ret) {
 
         if (ret.id == undefined || options.urid != ret.id) {
             options.error(options);
@@ -450,7 +450,7 @@ lcEditor.EntrySave = function(options)
             // $("#pgtab"+ options.urid +" .chg").hide();
             // $("#pgtab"+ options.urid +" .pgtabtitle").removeClass("chglight");
 
-            lcData.Get("files", options.urid, function(entry) {
+            l9rData.Get("files", options.urid, function(entry) {
                 
                 if (!entry || entry.id != options.urid) {
                     options.error(options);
@@ -463,7 +463,7 @@ lcEditor.EntrySave = function(options)
                 entry.ctn1_src = "";
                 entry.ctn1_sum = "";
 
-                lcData.Put("files", entry, function(ret) {
+                l9rData.Put("files", entry, function(ret) {
 
                     if (!ret) {
                         l9r.HeaderAlert("error", "Failed on write Local.IndexedDB");
@@ -496,7 +496,7 @@ lcEditor.EntrySave = function(options)
     });
 
 
-    // lcData.Get("files", urid, function(ret) {
+    // l9rData.Get("files", urid, function(ret) {
 
     //     if (urid != ret.id) {
     //         return lcEditor.MessageReplyStatus(cb, 200, null);
@@ -611,7 +611,7 @@ lcEditor.DialogChanges2SaveDone = function(urid)
                     
 //                     console.log("onmessage ok 200");
 
-//                     // lcData.Get("files", obj.data.urid, function(entry) {
+//                     // l9rData.Get("files", obj.data.urid, function(entry) {
                         
 //                     //     if (!entry || entry.id != obj.data.urid) {
 //                     //         return;
@@ -623,7 +623,7 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 //                     //     entry.ctn1_src = "";
 //                     //     entry.ctn1_sum = "";
 
-//                     //     lcData.Put("files", entry, function(ret) {
+//                     //     l9rData.Put("files", entry, function(ret) {
 
 //                     //         //console.log("onmessage ok 2");
 
@@ -674,7 +674,7 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 
 lcEditor.IsSaved = function(urid, cb)
 {
-    lcData.Get("files", urid, function(ret) {
+    l9rData.Get("files", urid, function(ret) {
 
         if (ret == undefined) {
             cb(true);
@@ -700,7 +700,7 @@ lcEditor.HookOnBeforeUnload = function()
         var prevEditorScrollInfo = l9rTab.frame[lcEditor.TabDefault].editor.getScrollInfo();
         var prevEditorCursorInfo = l9rTab.frame[lcEditor.TabDefault].editor.getCursor();
 
-        lcData.Get("files", l9rTab.frame[lcEditor.TabDefault].urid, function(prevEntry) {
+        l9rData.Get("files", l9rTab.frame[lcEditor.TabDefault].urid, function(prevEntry) {
 
             if (!prevEntry) {
                 return;
@@ -711,7 +711,7 @@ lcEditor.HookOnBeforeUnload = function()
             prevEntry.curlin = prevEditorCursorInfo.line;
             prevEntry.curch  = prevEditorCursorInfo.ch;
 
-            lcData.Put("files", prevEntry, function() {
+            l9rData.Put("files", prevEntry, function() {
                 // TODO
             });
         });
