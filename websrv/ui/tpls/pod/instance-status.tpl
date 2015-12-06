@@ -1,5 +1,5 @@
 
-<div id="l9r-pod-status-alert" class="alert alert-info">
+<div id="l9r-pod-status-alert" class="alert alert-info" style="display:none">
 	Getting your Pod Instance Status ...
 </div>
 

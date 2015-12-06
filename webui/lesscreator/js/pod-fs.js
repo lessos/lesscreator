@@ -76,6 +76,10 @@ l9rPodFs.Post = function(options)
         sumcheck : options.sumcheck,
     }
 
+    if (options.isdir) {
+        req.isdir = true;
+    }
+
     var url = "pod/"+ l4iSession.Get("l9r_pandora_pod_id") +"/fs/put";
 
     l9r.PandoraApiCmd(url, {

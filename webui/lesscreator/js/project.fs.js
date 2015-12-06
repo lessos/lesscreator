@@ -310,16 +310,20 @@ l9rProjFs.FileNew = function(type, path, file)
 
 l9rProjFs.FileNewSave = function(formid)
 {
-    var path = $("#"+ formid +" :input[name=path]").val();
-    var name = $("#"+ formid +" :input[name=name]").val();
+    var form = $("#"+ formid);
+    var path = form.find("input[name=path]").val();
+    var name = form.find("input[name=name]").val();
     if (!name || name.length < 1) {
         alert("Filename can not be null"); // TODO
         return;
     }
 
+    var isdir = form.find("input[name=type]").val() == "dir" ? true : false;
+
     l9rPodFs.Post({
         path    : path +"/"+ name,
         data    : "\n",
+        isdir   : isdir,
         success : function(rsp) {
 
             // hdev_header_alert('success', "{{T . "Successfully Done"}}");
@@ -357,11 +361,11 @@ function _fsUploadTraverseTree(reqid, item, path)
             
             //console.log("File:", path + file.name);
             if (file.size > 10 * 1024 * 1024) {
-                $("#"+ reqid +" .state").show().append("<div>"+ path +" Failed: File is too large to upload</div>");
+                $("#"+ reqid +" .status").show().append("<div>Error : File is too large to upload "+ path +" </div>");
                 return;
             }
 
-            _fsUploadCommit(reqid, file);
+            _fsUploadCommit(reqid, path, file);
         });
 
     } else if (item.isDirectory) {
@@ -391,7 +395,7 @@ function _fsUploadHanderDragOver(evt)
     evt.preventDefault();
 }
 
-function _fsUploadCommit(reqid, file)
+function _fsUploadCommit(reqid, folder, file)
 {
     var reader = new FileReader();
     
@@ -407,13 +411,13 @@ function _fsUploadCommit(reqid, file)
             // console.log("upload path: "+ ppath);
 
             l9rPodFs.Post({
-                path    : ppath +"/"+ file.name,
+                path    : ppath +"/"+ folder +"/"+ file.name,
                 size    : file.size,
                 data    : e.target.result,
                 encode  : "base64",
                 success : function(rsp) {
 
-                    $("#"+ reqid +" .state").show().append("<div>"+ file.name +" OK</div>");
+                    $("#"+ reqid +" .status").show().append("<div>OK : "+ folder +"/"+ file.name +"</div>");
 
                     // console.log(rsp);
                     // hdev_header_alert('success', "{{T . "Successfully Done"}}");
@@ -427,8 +431,8 @@ function _fsUploadCommit(reqid, file)
                 },
                 error: function(status, message) {
 
-                    $("#"+ reqid +" .state").show().append("<div>"+ file.name +" Failed</div>");
-                    console.log(status, message);
+                    $("#"+ reqid +" .status").show().append("<div>Error : "+ folder +"/"+ file.name +"</div>");
+                    // console.log(status, message);
                     // hdev_header_alert('error', textStatus+' '+xhr.responseText);
                 }
             });
@@ -443,6 +447,8 @@ function _fsUploadHander(evt)
 {            
     evt.stopPropagation();
     evt.preventDefault();
+
+    $("#"+ _fsUploadRequestId +" .status").empty();
 
     var items = evt.dataTransfer.items;
     for (var i = 0; i < items.length; i++) {
@@ -478,8 +484,8 @@ l9rProjFs.FileUpload = function(path)
     var req = {
         title        : "Upload File From Location",
         position     : "cursor",
-        width        : 600,
-        height       : 400,
+        width        : 800,
+        height       : 500,
         tplid        : "lcbind-fstpl-fileupload",
         data         : {
             areaid   : areaid,

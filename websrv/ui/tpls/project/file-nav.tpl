@@ -142,9 +142,9 @@
 <!-- TPL : File Upload -->
 <style type="text/css">
 .lsarea {
-    margin: 5px 0;
+    margin: 15px 0;
     display: inline-block;
-    height: 160px;
+    height: 120px;
     width: 100%;
     color: #333;
     font-size: 18px;
@@ -169,6 +169,6 @@
   <div id="{[=it.areaid]}" class="lsarea">
     {%Drag and Drop your files or folders to here%}
   </div>
-  <div class="alert alert-info hide lsstate" style="width:430px;"></div>
+  <div class="alert alert-info status" style="display:none;"></div>
 </div>
 </div>

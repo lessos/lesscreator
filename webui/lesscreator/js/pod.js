@@ -23,7 +23,7 @@ var l9rPod = {
         },
     },
     open_ticker : null,
-    open_retry  : 30,
+    open_retry  : 0,
     status_refresh_lock : false,
 }
 
@@ -38,13 +38,23 @@ var PodDestroy = "Destroy";
 
 l9rPod.panic_alert = function(err, opts)
 {
+    l9rPod._alert("error", err, opts);
+}
+
+l9rPod.info_alert = function(err, opts)
+{
+    l9rPod._alert("info", err, opts);
+}
+
+l9rPod._alert = function(etype, err, opts)
+{
     opts = opts || {close: false};
 
     if (!opts.close) {
         opts.close = false;
     }
 
-    l4iAlert.Open("error", err, opts);
+    l4iAlert.Open(etype, err, opts);
 }
 
 l9rPod.Initialize = function()
@@ -94,8 +104,6 @@ l9rPod.Initialize = function()
                 return l9rPod.panic_alert("Service Unavailable, Please try again later");
             }
 
-            // return l9rPod.Open("648fc606f12c", cb);
-
             //
             l9rPod.Zones = zones;
             l9rPod.Cells = cells;
@@ -111,23 +119,7 @@ l9rPod.Initialize = function()
                 return l9rPod.initList();
             }
 
-            // var prev_pod = l4iCookie.Get("l9r_pod_active");
-            // if (prev_pod && prev_pod.length > 2 && prev_pod == l9r_pod_active) {
-            //     return l9rPod.panic_alert("The Pod #"+ l9r_pod_active +" already opened", {
-            //         buttons: [{
-            //             onclick : "window.close()",
-            //             title   : "Close",
-            //         }]
-            //     });
-            // }
-
             l9rPod.initOpen();
-
-            // if (l4iSession.Get("l9r_pandora_pod_id")) {
-            //     l9rPod.initOpen();
-            // } else {
-            //     l9rPod.initList();
-            // }
         });
 
         ep.fail(function(err) {
@@ -157,17 +149,8 @@ l9rPod.initOpen = function()
         });
     }
 
-    // //
-    // var prev_pod = l4iCookie.Get("l9r_pod_active");
-    // if (prev_pod && prev_pod.length > 2 && prev_pod == l9r_pod_active) {
-    //     return l9rPod.panic_alert("The Pod #"+ l9r_pod_active +" already opened", {
-    //         buttons: [],
-    //     });
-    // }
-
     //
     l4iSession.Set("l9r_pandora_pod_id", l9r_pod_active);
-    // l4iCookie.Set("l9r_pod_active", l9r_pod_active, null, l9r.base +"pod/"+ l9r_pod_active);
 
     //
     l9r.PandoraApiCmd("pod/entry?id="+ l4iSession.Get("l9r_pandora_pod_id"), {
@@ -191,11 +174,12 @@ l9rPod.initOpen = function()
             }
 
             l9rPod.Instance = rsj;
-            l9rPod.StatusRefresh();
 
-            // l9rPod.statusls.push("l9r-pod-connecting-status");
+            l9rPod.info_alert("Connecting to Pod #"+ l4iSession.Get("l9r_pandora_pod_id"));
 
-            l9rPod.initOpenProj();
+            l9rPod.StatusRefresh(function() {
+                l9rPod.initOpenProj();
+            });
         },
     });
 }
@@ -207,17 +191,28 @@ l9rPod.OpenErrorAndSelectAnother = function()
 
 l9rPod.initOpenProj = function()
 {
-    $("#l9r-pod-status-msg").text("Connecting");
+    if (!l9rPod.Instance.status || l9rPod.Instance.status.phase != "Running") {
+        
+        l9rPod.open_retry++;
+
+        l9rPod.panic_alert("Connecting to Pod #"+ l4iSession.Get("l9r_pandora_pod_id") +", Retry "+ l9rPod.open_retry);
+        
+        setTimeout(l9rPod.initOpenProj, 3000);
+
+        return;
+    }
+
+    $("#l9r-pod-status-msg").text("Running");
     $("#l9r-pod-nav").show(100);
 
-    l9r.HeaderAlert("info", "Getting Project List");
+    l9r.HeaderAlertClose();
 
+    l4iAlert.Close();
     l9rProj.Open();
 }
 
 l9rPod.initList = function()
 {    
-    // console.log("list");
     l9r.PandoraApiCmd("pod/list", {
         callback: function(err, data) {            
 
@@ -229,9 +224,6 @@ l9rPod.initList = function()
             if (!data.items) {
                 data.items = [];
             }
-
-            // // data.items = []; // debug
-            // return l9rPod.ListSelector(data); // debug
 
             if (data.items.length < 1) {
                 l9rPod.PpWelcome();
@@ -245,7 +237,6 @@ l9rPod.initList = function()
 
 l9rPod.Open = function(pod_id, cb)
 {
-    // l4iAlert.Open("info", "Connecting Pod");
     if (!pod_id) {
         return l9rPod.panic_alert("No Pod Found", {
             buttons: [{
@@ -262,53 +253,18 @@ l9rPod.Open = function(pod_id, cb)
     if (l9r_pod_active != pod_id) {
         return window.open(l9r.base +"pod/"+ pod_id, "_blank"); 
     }
-
-    // var prev_pod = l4iCookie.Get("l9r_pod_active");
-    // if (prev_pod && prev_pod.length > 2 && prev_pod == pod_id) {
-    //     return l9rPod.panic_alert("The Pod #"+ pod_id +" already opened", {
-    //         buttons: [{
-    //             onclick : "window.close()",
-    //             title   : "Close",
-    //         }]
-    //     });
-    // }
-
-    //
-    // l4iCookie.Set("l9r_pod_active", pod_id, null, l9r.base +"pod/"+ pod_id);
-    // l4iSession.Set("l9r_pandora_pod_id", pod_id);
-
-    // l9rPod.StatusRefresh();
-
-    // //
-    // l4iModal.Open({
-    //     title  : "Connecting Pod",
-    //     tplid  : "l9r-pod-connecting",
-    //     width  : 700,
-    //     height : 200,
-    //     close  : false,
-    //     data   : {
-    //         _meta_id : pod_id,
-    //     },
-    //     buttons : [],
-    //     success : function() {
-    //         // l9rPod.open_status(cb);
-    //         // l9rPod.status_refresh(pod_id, function() {
-    //             l4iModal.Close();
-    //         // });
-    //     },
-    // });
 }
 
-l9rPod.Status = function(id)
+l9rPod.EntryStatus = function(id)
 {
-    if (!id) {
-        id = l4iSession.Get("l9r_pandora_pod_id");
-    }
+    // if (!id) {
+    //     id = l4iSession.Get("l9r_pandora_pod_id");
+    // }
 
-    var alertid = "#l9r-pod-status-alert";
+    // var alertid = "#l9r-pod-status-alert";
 
     l4iModal.Open({
-        tpluri : l9r.TemplatePath("pod/status"),
+        tpluri : l9r.TemplatePath("pod/instance-status"),
         title  : "Pod Status",
         width  : 700,
         height : 400,
@@ -317,34 +273,35 @@ l9rPod.Status = function(id)
             title   : "Close"
         }],
         success : function() {
-            $(alertid).hide(500);
             l4iTemplate.RenderFromID("l9r-pod-status", "l9r-pod-status-tpl", l9rPod.Instance);
         },
     });
 }
 
-l9rPod.StatusRefresh = function()
+l9rPod.StatusRefresh = function(cb)
 {
+    cb = cb || function(){};
+
     if (l9rPod.status_refresh_lock) {
-        return;
+        return cb();
     }
     l9rPod.status_refresh_lock = true;
 
     //
-    l9rPod.status_refresh();
+    l9rPod.status_refresh(cb);
 }
 
-l9rPod.status_refresh = function()
+l9rPod.status_refresh = function(cb)
 {
     var alertid = "#l9r-pod-status-alert";
     var statusid = "#l9r-pod-status-msg";
 
     if (!l9r_pod_active) {
-        return;
+        return cb();
     }
 
     if (!l9rPod.Instance) {
-        return;
+        return cb();
     }
 
     if (!l9rPod.Instance.status) {
@@ -352,6 +309,7 @@ l9rPod.status_refresh = function()
     }
 
     l9r.PandoraApiCmd("pod/status?id="+ l9r_pod_active, {
+        success : cb,
         callback: function(err, rsj) {
 
             try {
@@ -376,11 +334,18 @@ l9rPod.status_refresh = function()
 
             } catch (err) {                
                 l4i.InnerAlert(alertid, 'alert-danger', err);
-            }           
+            }
 
             // console.log("status:"+ l9rPod.Instance.status.phase);
 
             $(statusid).text(l9rPod.Instance.status.phase);
+
+            if (l9rPod.Instance.status.phase != "Running" &&
+                l9rPod.Instance.status.phase != "Pending") {
+                l9r.HeaderAlert("error", "Failed to connect to the Pod, waiting for retry ...");
+            } else {
+                l9r.HeaderAlertClose();
+            }
 
             setTimeout(l9rPod.status_refresh, 12000);
         },
@@ -690,4 +655,10 @@ l9rPod.UtilResourceSizeFormat = function(size)
     }
 
     return size + " <span>B</span>";
+}
+
+
+l9rPod.WebTermOpen = function()
+{
+    
 }

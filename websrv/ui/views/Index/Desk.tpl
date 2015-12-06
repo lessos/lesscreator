@@ -84,8 +84,13 @@
                 <div class="lni-title" id="l9r-pod-status-msg">Connecting</div>
             </div><ul class="lcnav-tile-group" style="margin:0">
                 <li class="">
-                    <a href="javascript:l9rPod.Status()" title="Pod Status">
+                    <a href="javascript:l9rPod.EntryStatus()" title="Pod Status">
                     <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/box-32.png)"></i>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="javascript:l9rPod.WebTermOpen()" title="Web Terminal">
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/term-32.png)"></i>
                     </a>
                 </li>
             </ul>
@@ -106,11 +111,11 @@
                     <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/ext-32.png)"></i>
                     </a>
                 </li>
-                <li class="">
+                <!-- <li class="">
                     <a href="javascript:l9rProj.Run()" title="Run this Project">
                     <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/play-32.png)"></i>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
 

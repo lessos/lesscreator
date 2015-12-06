@@ -471,12 +471,8 @@ l9rProj.Open = function(proj)
     }
 
     req.error = function(status, message) {
-
-        if (status == 404) {
-            // TODO
-        }
-        // alert("Can Not Found Project: "+ proj +"/lcproject.json, Error:"+ message);
-        return l9rProj.notFound(proj);
+        return l9rPod.panic_alert("Server Error, Please try again later")
+        // return l9rProj.notFound(proj);
     }
 
     req.success = function(file) {
