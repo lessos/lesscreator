@@ -41,7 +41,7 @@ lcEditor.TabletOpen = function(urid, callback)
 {
     // console.log("lcEditor.TabletOpen 1: "+ urid);
     var item = l9rTab.pool[urid];
-    if (l9rTab.frame[item.target].urid == urid) {
+    if (l9rTab.cols[item.target].urid == urid) {
         callback(true);
         return;
     }
@@ -200,9 +200,9 @@ lcEditor.LoadInstance = function(entry)
         break;
     }
 
-    //l9rTab.frame[item.target].urid = entry.id;
+    //l9rTab.cols[item.target].urid = entry.id;
 
-    if (l9rTab.frame[item.target].editor != null) {        
+    if (l9rTab.cols[item.target].editor != null) {        
         $("#lctab-body"+ item.target).empty();
         $("#lctab-bar"+ item.target).empty();
     }
@@ -279,7 +279,7 @@ lcEditor.LoadInstance = function(entry)
 
     //     return;
 
-    l9rTab.frame[item.target].editor = CodeMirror(
+    l9rTab.cols[item.target].editor = CodeMirror(
         document.getElementById("lctab-body"+ item.target), {
         
         value         : src,
@@ -314,17 +314,17 @@ lcEditor.LoadInstance = function(entry)
     });
 
     // CodeMirror.modeURL = l9r.basecm +"mode/%N/%N.js";
-    // CodeMirror.autoLoadMode(l9rTab.frame[item.target].editor, mode);
+    // CodeMirror.autoLoadMode(l9rTab.cols[item.target].editor, mode);
 
     if (lcEditor.Config.EditMode != "win") {
-        l9rTab.frame[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
+        l9rTab.cols[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
         $('.lc-editor-editmode img').attr("src", 
             "/lesscreator/~/lesscreator/img/editor/mode-"+lcEditor.Config.EditMode+"-48.png");
     } else {
-        l9rTab.frame[item.target].editor.setOption("keyMap", "sublime");
+        l9rTab.cols[item.target].editor.setOption("keyMap", "sublime");
     }
 
-    l9rTab.frame[item.target].editor.on("change", function(cm) {
+    l9rTab.cols[item.target].editor.on("change", function(cm) {
         lcEditor.Changed(entry.id);
     });
 
@@ -351,7 +351,7 @@ lcEditor.Changed = function(urid)
     }
     var item = l9rTab.pool[urid];
 
-    if (urid != l9rTab.frame[item.target].urid) {
+    if (urid != l9rTab.cols[item.target].urid) {
         return;
     }
 
@@ -361,7 +361,7 @@ lcEditor.Changed = function(urid)
             return;
         }
 
-        entry.ctn1_src = l9rTab.frame[item.target].editor.getValue();
+        entry.ctn1_src = l9rTab.cols[item.target].editor.getValue();
         entry.ctn1_sum = l4iString.CryptoMd5(entry.ctn1_src);
 
         l9rData.Put("files", entry, function(ret) {
@@ -376,7 +376,7 @@ lcEditor.Changed = function(urid)
 
 lcEditor.SaveCurrent = function()
 {
-    lcEditor.EntrySave({urid: l9rTab.frame[lcEditor.TabDefault].urid});
+    lcEditor.EntrySave({urid: l9rTab.cols[lcEditor.TabDefault].urid});
 }
 
 lcEditor.EntrySave = function(options)
@@ -409,9 +409,9 @@ lcEditor.EntrySave = function(options)
 
         var item = l9rTab.pool[options.urid];
 
-        if (options.urid == l9rTab.frame[item.target].urid) {
+        if (options.urid == l9rTab.cols[item.target].urid) {
 
-            var ctn = l9rTab.frame[item.target].editor.getValue();
+            var ctn = l9rTab.cols[item.target].editor.getValue();
             if (ctn == ret.ctn0_src) {
                 
                 $("#pgtab"+ options.urid +" .chg").hide();
@@ -512,9 +512,9 @@ lcEditor.EntrySave = function(options)
     //     }
 
     //     var item = l9rTab.pool[urid];
-    //     if (urid == l9rTab.frame[item.target].urid) {
+    //     if (urid == l9rTab.cols[item.target].urid) {
             
-    //         var ctn = l9rTab.frame[item.target].editor.getValue();
+    //         var ctn = l9rTab.cols[item.target].editor.getValue();
     //         if (ctn == ret.ctn0_src) {
                 
     //             $("#pgtab"+ urid +" .chg").hide();
@@ -694,13 +694,13 @@ lcEditor.IsSaved = function(urid, cb)
 
 lcEditor.HookOnBeforeUnload = function()
 {
-    if (l9rTab.frame[lcEditor.TabDefault].editor != null 
-        && l9rTab.frame[lcEditor.TabDefault].urid == lcEditor.Config.TmpUrid) {
+    if (l9rTab.cols[lcEditor.TabDefault].editor != null 
+        && l9rTab.cols[lcEditor.TabDefault].urid == lcEditor.Config.TmpUrid) {
         
-        var prevEditorScrollInfo = l9rTab.frame[lcEditor.TabDefault].editor.getScrollInfo();
-        var prevEditorCursorInfo = l9rTab.frame[lcEditor.TabDefault].editor.getCursor();
+        var prevEditorScrollInfo = l9rTab.cols[lcEditor.TabDefault].editor.getScrollInfo();
+        var prevEditorCursorInfo = l9rTab.cols[lcEditor.TabDefault].editor.getCursor();
 
-        l9rData.Get("files", l9rTab.frame[lcEditor.TabDefault].urid, function(prevEntry) {
+        l9rData.Get("files", l9rTab.cols[lcEditor.TabDefault].urid, function(prevEntry) {
 
             if (!prevEntry) {
                 return;
@@ -745,25 +745,25 @@ lcEditor.ConfigSet = function(key, val)
 
 lcEditor.Undo = function()
 {
-    if (!l9rTab.frame[lcEditor.TabDefault].editor) {
+    if (!l9rTab.cols[lcEditor.TabDefault].editor) {
         return;
     }
 
-    l9rTab.frame[lcEditor.TabDefault].editor.undo();
+    l9rTab.cols[lcEditor.TabDefault].editor.undo();
 }
 
 lcEditor.Redo = function()
 {
-    if (!l9rTab.frame[lcEditor.TabDefault].editor) {
+    if (!l9rTab.cols[lcEditor.TabDefault].editor) {
         return;
     }
     
-    l9rTab.frame[lcEditor.TabDefault].editor.redo();
+    l9rTab.cols[lcEditor.TabDefault].editor.redo();
 }
 
 lcEditor.Theme = function(theme)
 {
-    if (l9rTab.frame[lcEditor.TabDefault].editor) {
+    if (l9rTab.cols[lcEditor.TabDefault].editor) {
 
         // console.log("~/codemirror/3.21.0/theme/"+ theme +".min.css");
         seajs.use("~/codemirror/3.21.0/theme/"+ theme +".min.css", function() {
@@ -771,7 +771,7 @@ lcEditor.Theme = function(theme)
             lcEditor.Config.theme = theme;
             l4iCookie.SetByDay("editor_theme", theme, 365);
 
-            l9rTab.frame[lcEditor.TabDefault].editor.setOption("theme", theme);
+            l9rTab.cols[lcEditor.TabDefault].editor.setOption("theme", theme);
 
             l9rLayout.Resize();
         });        
@@ -815,9 +815,9 @@ lcEditor.SearchNext = function(rev)
     if (search_state_query != query) {
         lcEditor.SearchClean();
         
-        for (var cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
+        for (var cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
 
-            search_state_marked.push(l9rTab.frame[lcEditor.TabDefault].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
+            search_state_marked.push(l9rTab.cols[lcEditor.TabDefault].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
             
             search_state_posFrom = cursor.from();
             search_state_posTo = cursor.to();
@@ -826,22 +826,22 @@ lcEditor.SearchNext = function(rev)
         search_state_query = query;
     }
     
-    var cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(
+    var cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(
         search_state_query, 
         rev ? search_state_posFrom : search_state_posTo,
         matchcase);
     
     if (!cursor.find(rev)) {
-        cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(
+        cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(
             search_state_query, 
-            rev ? {line: l9rTab.frame[lcEditor.TabDefault].editor.lineCount() - 1} : {line: 0, ch: 0},
+            rev ? {line: l9rTab.cols[lcEditor.TabDefault].editor.lineCount() - 1} : {line: 0, ch: 0},
             matchcase);
         if (!cursor.find(rev)) {
             return;
         }
     }
     
-    l9rTab.frame[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
+    l9rTab.cols[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
     search_state_posFrom = cursor.from(); 
     search_state_posTo = cursor.to();
 }
@@ -861,9 +861,9 @@ lcEditor.SearchReplace = function(all)
     
     if (all) {
 
-        for (var cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
+        for (var cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
             if (typeof search_state_query != "string") {
-                var match = l9rTab.frame[lcEditor.TabDefault].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
+                var match = l9rTab.cols[lcEditor.TabDefault].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
                 cursor.replace(text.replace(/\$(\d)/, function(w, i) {return match[i];}));
             } else {
                 cursor.replace(text);
@@ -872,16 +872,16 @@ lcEditor.SearchReplace = function(all)
 
     } else {
           
-        var cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, l9rTab.frame[lcEditor.TabDefault].editor.getCursor(), matchcase);
+        var cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, l9rTab.cols[lcEditor.TabDefault].editor.getCursor(), matchcase);
 
         var start = cursor.from(), match;
         if (!(match = cursor.findNext())) {
-            cursor = l9rTab.frame[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase);
+            cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase);
             if (!(match = cursor.findNext()) ||
                 (cursor.from().line == start.line && cursor.from().ch == start.ch)) {return;
             }
         }
-        l9rTab.frame[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
+        l9rTab.cols[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
         
         cursor.replace(typeof search_state_query == "string" ? text :
             text.replace(/\$(\d)/, function(w, i) {return match[i];}));
@@ -963,17 +963,17 @@ lcEditor.ConfigEditModeSave = function(mode)
 
     var icosrc = l9r.base +"~/lesscreator/img/editor/mode-";
 
-    if (l9rTab.frame[l9rTab.def].editor != null) {
+    if (l9rTab.cols[l9rTab.col_def].editor != null) {
 
         if (mode == "win") {
             
-            l9rTab.frame[l9rTab.def].editor.removeKeyMap("vim");
-            l9rTab.frame[l9rTab.def].editor.removeKeyMap("emacs");
-            l9rTab.frame[l9rTab.def].editor.setOption("keyMap", "sublime");
+            l9rTab.cols[l9rTab.col_def].editor.removeKeyMap("vim");
+            l9rTab.cols[l9rTab.col_def].editor.removeKeyMap("emacs");
+            l9rTab.cols[l9rTab.col_def].editor.setOption("keyMap", "sublime");
 
         } else {
 
-            l9rTab.frame[l9rTab.def].editor.setOption("keyMap", mode);
+            l9rTab.cols[l9rTab.col_def].editor.setOption("keyMap", mode);
         }
 
         icosrc += mode;

@@ -255,16 +255,16 @@ l9rProjFs.UiTreeEventRefresh = function()
     });
 }
 
-
-
 l9rProjFs.LayoutResize = function(options)
 {
     var fsp = $("#lcbind-fsnav-fstree").position();
     if (fsp) {
-        // $(".lcx-fsnav").width((l9rLayout.width * options.width / 100));
+
         // console.log((l9rLayout.width * options.width / 100));
-        $("#lcbind-fsnav-fstree").width((l9rLayout.width * options.width / 100));
+        // $("#lcbind-fsnav-fstree").width((l9rLayout.width * options.width / 100));
         $("#lcbind-fsnav-fstree").height(l9rLayout.height - (fsp.top - l9rLayout.postop));
+
+        // console.log(l9rLayout.height - (fsp.top - l9rLayout.postop));
     }
 }
 

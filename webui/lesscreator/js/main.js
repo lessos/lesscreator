@@ -52,7 +52,7 @@ l9r.Boot = function()
         seajs.use([
             "~/lessui/js/lessui.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/c.js?v={{.version}}",
-            "~/lesscreator/js/gen.js?v={{.version}}",
+            "~/lesscreator/js/gen.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/editor.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/db.js?v={{.version}}&_="+ l9r.Version(),
             l9r.basecm +"lib/codemirror.js?v={{.version}}",
@@ -70,6 +70,8 @@ l9r.Boot = function()
 
             // "~/lesscreator/css/def.css?v={{.version}}",
             "~/lessui/js/eventproxy.js?v={{.version}}",
+
+            "~/lesscreator/js/term.js?v={{.version}}&_="+ l9r.Version(),
         ], function() {
             l9r.bootDepends();
         });
@@ -112,7 +114,16 @@ l9r.bootDepends = function()
             "~/lesscreator/js/project.fs.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/ext.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/layout.js?v={{.version}}&_="+ l9r.Version(),
-            
+            // "~/lesscreator/js/term.js?v={{.version}}&_="+ l9r.Version(),
+
+            // "~/lesscreator/js/pyte/js/charsets.js",
+            // "~/lesscreator/js/pyte/js/control.js",
+            // "~/lesscreator/js/pyte/js/escape.js",
+            // "~/lesscreator/js/pyte/js/graphics.js",
+            // "~/lesscreator/js/pyte/js/modes.js",
+            // "~/lesscreator/js/pyte/js/screens.js",
+            // "~/lesscreator/js/pyte/js/streams.js",
+
             // "~/codemirror/3.21.0/codemirror.min.css?v={{.version}}",
             // "~/codemirror/3.21.0/addon/hint/show-hint.min.css?v={{.version}}",
             // "~/codemirror/3.21.0/addon/mode/loadmode.min.js?v={{.version}}",
@@ -153,8 +164,7 @@ l9r.bootDepends = function()
             l9r.basecm +"mode/all.min.js?v={{.version}}",
 
             l9r.basecm +"theme/monokai.css?v={{.version}}",
-
-            "~/lesscreator/js/term.js?v={{.version}}",
+            
         ], function() {
 
             // TODO access_token getting issue

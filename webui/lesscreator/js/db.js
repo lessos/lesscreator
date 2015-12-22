@@ -7,7 +7,7 @@ window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.ms
 
 var l9rData = {
     db      : null,
-    version : 11,
+    version : 12,
     schema  : [{
         name: "files",
         pri: "id",
@@ -25,14 +25,17 @@ l9rData.Init = function(dbname, cb)
         return cb("Your browser doesn't support a stable version of IndexedDB.");
     }
 
-    var req = indexedDB.open(dbname, l9rData.version);  
+    var req = window.indexedDB.open(dbname, l9rData.version);
 
     req.onsuccess = function (event) {
         l9rData.db = event.target.result;
         cb(null);
     };
 
+    // console.log(dbname);
+
     req.onerror = function (event) {
+        // console.log(event);
         cb("IndexedDB error: " + event.target.errorCode);
     };
 

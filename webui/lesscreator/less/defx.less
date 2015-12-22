@@ -1,5 +1,6 @@
 @import "variables.less";
 
+@import "layout.less";
 @import "icons.less";
 @import "nav.less";
 @import "project.less";
@@ -9,17 +10,19 @@
 @import "editor.less";
 @import "package.less";
 @import "ext.less";
+@import "webterm.less";
 
+// 
 body {
     background-color: #eee;
     /*background-repeat: repeat;*/
     background-image: url("@{url-img}/gen/grid-hexagons.png"), linear-gradient(10deg, #222, #999);
     /*background-image: url("@{url-img}/gen/grid-hexagons.png"), radial-gradient(circle, #ccc, #666);*/
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    // -moz-user-select: none;
+    // -khtml-user-select: none;
+    // -webkit-user-select: none;
+    // -ms-user-select: none;
+    // user-select: none;
 }
 
 .l9r-loadwell {
@@ -125,13 +128,12 @@ body {
 }
 
 
-
-
 .lcx-header {
     width: 100%;
     height: 50px;
     position: relative;
     //background-color: fade(#fff, 10%);
+    margin-bottom: 10px;
 }
 
 

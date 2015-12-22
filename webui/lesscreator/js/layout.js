@@ -1,18 +1,20 @@
 var l9rLayout = {
     init   : false,
-    colsep : 0,
-    width  : 0,
-    height : 0,
+    width  : 1000,
+    height : 600,
     postop : 0,
+    colsep : 10,
     cols   : [
         {
-            id       : "lcbind-proj-filenav",
+            id       : "filenav",
             width    : 15,
-            minWidth : 200
+            minWidth : 180,
+            maxWidth : 600,
         },
         {
-            id    : "lclay-colmain",
-            width : 85
+            id       : "main",
+            width    : 85,
+            minWidth : 400,
         }
     ]
 }
@@ -25,7 +27,7 @@ l9rLayout.Initialize = function()
 
     for (var i in l9rLayout.cols) {
         
-        var wl = l4iStorage.Get(l4iSession.Get("l9r_proj_name") +"_laysize_"+ l9rLayout.cols[i].id);
+        var wl = l4iStorage.Get(l9r_pod_active +"_laysize_"+ l9rLayout.cols[i].id);
 
         if (wl !== undefined && parseInt(wl) > 0) {
             l9rLayout.cols[i].width = parseInt(wl);
@@ -37,12 +39,21 @@ l9rLayout.Initialize = function()
             }
         }
     }
+
+    l9rLayout.init = true;
 }
+
+l9rLayout.BindRefreshLock = false;
 
 l9rLayout.BindRefresh = function()
 {
+    if (l9rLayout.BindRefreshLock) {
+        return;
+    }
+    l9rLayout.BindRefreshLock = true;
+
     $(".lclay-col-resize").bind("mousedown", function(e) {
-        
+
         var layid = $(this).attr("lc-layid");
 
         // console.log("lclay-col-resize mousedown: "+ layid);
@@ -71,7 +82,7 @@ l9rLayout.BindRefresh = function()
             leftIndexId = rightIndexId;
         }
 
-        var leftStart = $("#"+ leftLayId).position().left;
+        var leftStart = $("#lclay-col"+ leftLayId).position().left;
 
         // $("#lcbind-col-rsline").remove();
         // $("body").append("<div id='lcbind-col-rsline'></div>");
@@ -83,9 +94,22 @@ l9rLayout.BindRefresh = function()
 
         var posLast = e.pageX;
 
-        $("#lcbind-layout").bind("mousemove", function(e) {
+        $(document).bind('mouseup', function() {
+
+            $("#lcbind-layout").unbind("mousemove");
+            $(document).unbind('mouseup');
+
+            l9rLayout.Resize();
+
+            setTimeout(function() {
+                l9rLayout.Resize();
+            }, 10);
+        });
+
+        //
+        $("#lcbind-layout").on("mousemove", function(e) {
             
-            // console.log("lcbind-layout mousemove: "+ e.pageX);
+            // console.log("lcbind-layout mousemove");
             
             // $("#lcbind-col-rsline").css({left: e.pageX});
 
@@ -102,13 +126,15 @@ l9rLayout.BindRefresh = function()
                 return;
             }
 
+            return;
+
             l9rLayout.cols[leftIndexId].width = leftWidthNew;
             l9rLayout.cols[rightIndexId].width = rightWidthNew;
 
-            l4iStorage.Set(l4iSession.Get("l9r_proj_name") +"_laysize_"+ leftLayId, leftWidthNew);
-            l4iSession.Set("laysize_"+ leftLayId, leftWidthNew);
-            l4iStorage.Set(l4iSession.Get("l9r_proj_name") +"_laysize_"+ rightLayId, rightWidthNew);
-            l4iSession.Set("laysize_"+ rightLayId, rightWidthNew);
+            // l4iStorage.Set(l4iSession.Get("l9r_proj_name") +"_laysize_"+ leftLayId, leftWidthNew);
+            // l4iSession.Set("laysize_"+ leftLayId, leftWidthNew);
+            // l4iStorage.Set(l4iSession.Get("l9r_proj_name") +"_laysize_"+ rightLayId, rightWidthNew);
+            // l4iSession.Set("laysize_"+ rightLayId, rightWidthNew);
 
             setTimeout(function() {
                 l9rLayout.Resize();
@@ -116,147 +142,178 @@ l9rLayout.BindRefresh = function()
         });
     });
 
-    $(document).bind('mouseup', function() {
+    // $(document).bind('mouseup', function() {
 
-        $("#lcbind-layout").unbind("mousemove");
-        // $("#lcbind-col-rsline").remove();
-        
-        l9rLayout.Resize();
+    //     $("#lcbind-layout").unbind("mousemove");
+    //     // $("#lcbind-col-rsline").remove();
 
-        setTimeout(function() {
-            l9rLayout.Resize();
-        }, 10);
-    });
+    //     l9rLayout.Resize();
+
+    //     setTimeout(function() {
+    //         l9rLayout.Resize();
+    //     }, 10);
+    // });
 }
 
 l9rLayout.ColumnSet = function(options)
 {
     options = options || {};
 
-    if (typeof options.success !== "function") {
-        options.success = function(){};
-    }
-        
-    if (typeof options.error !== "function") {
-        options.error = function(){};
+    if (!options.callback || typeof options.callback !== "function") {
+        options.callback = function(){};
     }
 
-    if (options.id === undefined) {
-        options.error(400, "ID can not be null");
+    if (!options.id) {
+        options.callback("ID can not be null");
         return;
+    }
+
+    if (!options.width) {
+        options.width = 20;
     }
 
     var exist = false;
     for (var i in l9rLayout.cols) {
+
         if (l9rLayout.cols[i].id == options.id) {
+
             exist = true;
 
-            if (options.hook !== undefined && options.hook != l9rLayout.cols[i].hook) {
+            if (options.hook && !l9rLayout.cols[i].hook) {
                 l9rLayout.cols[i].hook = options.hook;
             }
+
+            break;
         }
     }
 
     if (!exist) {
-        
-        colSet = {
-            id     : options.id, // Math.random().toString(36).slice(2),
-            width  : 15
+
+        var set = {
+            id    : options.id, // Math.random().toString(36).slice(2),
+            width : parseInt(options.width),
+        }
+    
+        if (options.minWidth) {
+            set.minWidth = options.minWidth;
         }
 
-        if (options.width !== undefined) {
-            colSet.width = options.width;
+        if (set.width > 50) {
+            set.width = 50;
+        } else if (set.width < 10) {
+            set.width = 10;
         }
 
-        if (options.minWidth !== undefined) {
-            colSet.minWidth = options.minWidth;
+        //
+        var refix = (100 - set.width) / 100, range_used = 0;
+
+        for (var i in l9rLayout.cols) {
+            l9rLayout.cols[i].width = parseInt(refix * l9rLayout.cols[i].width);
+            range_used += l9rLayout.cols[i].width;
         }
 
-        l9rLayout.cols.push(colSet);
+        set.width = 100 - range_used;
+
+        if (options.hook) {
+            set.hook = options.hook;
+        }
+
+        //
+        $("#lcbind-laycol").before('\
+            <div class="colsep lclay-col-resize" lc-layid="lclay-col'+ options.id +'"></div>\
+            <div id="lclay-col'+ options.id +'" class="lcx-lay-colbg"></div>');
+
+
+        l9rLayout.cols.push(set);
 
         l9rLayout.BindRefresh();
+
+        l9rLayout.Resize(options.callback);
+    } else {
+        options.callback();
     }
 }
 
-l9rLayout.Resize = function()
+l9rLayout.Resize = function(cb)
 {
+    cb = cb || function(){};
+
     l9rLayout.Initialize();
 
-    var colSep = 10;
-    
-    //
-    var bodyHeight = $("body").height();
-    var bodyWidth = $("body").width();
-    if (bodyWidth != l9rLayout.width) {
-        l9rLayout.width = bodyWidth;
-        $("#lcbind-layout").width(l9rLayout.width);
+    if (!l9rLayout.postop) {
+        l9rLayout.postop = $("#lcbind-layout").position().top;
     }
 
     //
-    var lyo_p = $("#lcbind-layout").position();
-    if (!lyo_p) {
-        return;
-    }
-    var lyo_h = bodyHeight - lyo_p.top - colSep;
-    l9rLayout.postop = lyo_p.top;
-    if (lyo_h < 400) {
-        lyo_h = 400;
-    }
-    if (lyo_h != l9rLayout.height) {
-        l9rLayout.height = lyo_h;
-        $("#lcbind-layout").height(l9rLayout.height);
+    l9rLayout.width  = $("body").width();
+    l9rLayout.height = $("body").height() - l9rLayout.postop - l9rLayout.colsep;
+
+    if (l9rLayout.height < 400) {
+        l9rLayout.height = 400;
     }
 
-    //
-    var colSep1 = 100 * (colSep / l9rLayout.width);
-    if (colSep1 != l9rLayout.colsep) {
-        l9rLayout.colsep = colSep1;
-        $(".lclay-colsep").width(l9rLayout.colsep +"%");
-    }
-    // console.log("colSep1: "+ colSep1);
-
-    //
-    // console.log("l9rLayout.cols.length: "+ l9rLayout.cols.length)
-    var colSepAll = (l9rLayout.cols.length + 1) * colSep1;
-
-    var rangeUsed = 0.0;
+    var rangeUsed = 0,
+        last_col = l9rLayout.cols.length - 1;
     for (var i in l9rLayout.cols) {
 
-        if (l9rLayout.cols[i].minWidth !== undefined) {
-            if ((l9rLayout.cols[i].width * l9rLayout.width / 100) < l9rLayout.cols[i].minWidth) {
-                l9rLayout.cols[i].width = 100 * ((l9rLayout.cols[i].minWidth + 50) / l9rLayout.width);
+        if (i == last_col) {
+
+            l9rLayout.cols[i].width = 100 - rangeUsed;
+            
+        } else {
+
+            var to_w = l9rLayout.width * (l9rLayout.cols[i].width / 100),
+                to_fix = 0;
+
+            if (l9rLayout.cols[i].minWidth && to_w < l9rLayout.cols[i].minWidth) {
+                to_fix = l9rLayout.cols[i].minWidth;
+            } else if (l9rLayout.cols[i].maxWidth && to_w > l9rLayout.cols[i].maxWidth) {
+                to_fix = l9rLayout.cols[i].maxWidth;
+            }
+
+            if (to_fix > 0) {
+                l9rLayout.cols[i].width = parseInt((to_fix / l9rLayout.width) * 100);
             }
         }
 
         if (l9rLayout.cols[i].width < 10) {
-            l9rLayout.cols[i].width = 15;
+            l9rLayout.cols[i].width = 10;
         } else if (l9rLayout.cols[i].width > 90) {
-            l9rLayout.cols[i].width = 80;
-        }        
+            l9rLayout.cols[i].width = 90;
+        }
 
         rangeUsed += l9rLayout.cols[i].width;
     }
-    // console.log("rangeUsed: "+ rangeUsed);
-    // for (var i in l9rLayout.cols) {
-    //     console.log("2 id: "+ l9rLayout.cols[i].id +", width: "+ l9rLayout.cols[i].width); 
-    // }
-
-    var fixRate = (100 - colSepAll) / 100;
-    var fixRateSpace = rangeUsed / 100;
-    
+   
+    //
     for (var i in l9rLayout.cols) {
-        l9rLayout.cols[i].width = (l9rLayout.cols[i].width / fixRateSpace) * fixRate;
+
+        // if (l9rLayout.cols[i].width === l9rLayout.cols[i].widthed
+        //     && l9rLayout.height === l9rLayout.heighted) {
+        //     continue;
+        // }
         
-        $("#"+ l9rLayout.cols[i].id).width(l9rLayout.cols[i].width + "%");
+        $("#lclay-col"+ l9rLayout.cols[i].id).css({
+            "-webkit-flex" : l9rLayout.cols[i].width.toString(),
+            "flex"         : l9rLayout.cols[i].width.toString(),
+            "height"       : l9rLayout.height +"px",
+        });
+    }
+
+    //
+    for (var i in l9rLayout.cols) {
+
+        l9rLayout.cols[i].widthed = l9rLayout.cols[i].width;
 
         if (typeof l9rLayout.cols[i].hook === "function") {
             l9rLayout.cols[i].hook(l9rLayout.cols[i]);
         }
     }
 
-    // for (var i in l9rLayout.cols) {
-    //     console.log("3 id: "+ l9rLayout.cols[i].id +", width: "+ l9rLayout.cols[i].width); 
-    // }
+    //
+    l9rLayout.heighted = l9rLayout.height;
+
+    cb();
 }
 
 // function lcxLayoutResize()
@@ -366,7 +423,7 @@ l9rLayout.Resize = function()
 //     // $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(ctn_w - 20);
 
 //     // // project start box
-//     $("#lcbind-proj-filenav").width(left_w);
+//     $("#lclay-colfilenav").width(left_w);
 //     var sf_p = $("#lcbind-fsnav-fstree").position();
 //     if (sf_p) {
 //         $("#lcbind-fsnav-fstree").width(left_w);

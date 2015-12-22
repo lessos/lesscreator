@@ -521,7 +521,7 @@ function l9rLayoutWebTermSizeFix()
         return;
     }
 
-    var obj = JSON.parse(rsp);
+    // var obj = JSON.parse(rsp);
     
     var pnew = JSON.stringify($("#lc-terminal").position());
     if (l9rLayoutWebTermPos == pnew) {

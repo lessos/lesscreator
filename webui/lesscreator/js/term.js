@@ -1646,6 +1646,8 @@ function lc_terminal_conn(termid, wsurl)
             winW = domobj.offsetWidth;
             winH = domobj.offsetHeight;
         }
+
+        // console.log(termid +", "+ Math.floor(winW / 9) +", "+ Math.floor( winH / 16));
    
         return [Math.floor(winW / 9), Math.floor( winH / 16)]
     }
@@ -1736,7 +1738,8 @@ function lc_terminal_conn(termid, wsurl)
             ws.send('w' + indent(colsrows[0], 8) + indent(colsrows[1], 8))  
         }
     }
-    
+
+   
     var colsrows = window_cols_rows();
     var newData = false;
     var scrollOffset = 0;
@@ -1754,7 +1757,8 @@ function lc_terminal_conn(termid, wsurl)
         handle_scroll(lc_terminal_scr, e.detail);
     });
 
-    lc_terminal_ws = new WebSocket(wsurl, "term");
+    // lc_terminal_ws = new WebSocket(wsurl, "term");
+    lc_terminal_ws = new WebSocket(wsurl);
 
     lc_terminal_ws.onopen = function() {
         var req = {
@@ -1764,10 +1768,12 @@ function lc_terminal_conn(termid, wsurl)
         lc_terminal_ws.send(indent(colsrows[0], 8))
         lc_terminal_ws.send(indent(colsrows[1], 8))
     }
+    
     lc_terminal_ws.onmessage = function(ev) {
         stream.feed(ev.data)
         newData = true
     }
+    
     lc_terminal_ws.onclose = function() {
         stream.feed("Connection closed\n")
         newData = true
@@ -1829,6 +1835,8 @@ function lc_terminal_conn(termid, wsurl)
 
     lc_terminal_conn.Resize = function()
     {
+        // console.log("lc_terminal_conn.Resize");
+
         if (!document.getElementById(termid)) {
             return;
         }
@@ -1837,16 +1845,19 @@ function lc_terminal_conn(termid, wsurl)
     }
 
     lc_terminal_conn.IsOk = function() {
-        if (!document.getElementById(termid)) {
-            return false;
-        }
 
         if (lc_terminal_ws == null) {
             return false;
         }
 
+        if (!document.getElementById(termid)) {
+            return false;
+        }
+
         return true;
     }
+
+    // console.log("TTT");
 
     lc_terminal_conn.CloseAll = function() {
         term.stopEventHandler();

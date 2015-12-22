@@ -10,3 +10,8 @@ webui/codemirror
 webui/jquery
 webui/twitter-bootstrap
 webui/lesscreator/js/eventproxy.js
+webui/lesscreator/js/jquery.src.js
+webui/lesscreator/js/zepto.src.js
+
+misc/bash/bashrc.cd
+

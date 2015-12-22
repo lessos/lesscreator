@@ -1,4 +1,4 @@
-<table class="lcx-header">
+<table id="lclay-header" class="lcx-header">
   <tr>
     <td width="10px"></td>
 
@@ -160,65 +160,18 @@
   </tr>  
 </table>
 
-<div style="height:10px;"></div>
+<div id="lcbind-layout">
+    <div class="colsep"></div>    
+    <div id="lclay-colfilenav"></div>
 
-<table id="lcbind-layout" border="0" cellpadding="0" cellspacing="0" class="">
-  <tr>
-    <td width="10px" class="lclay-colsep"></td>
-    <td id="lcbind-proj-filenav" class="lcx-lay-colbg" width="220px"></td>
-    <!-- <td id="lcx-proj-box" class="lcx-lay-colbg" valign="top" width="280px"></td> -->
+    <div class="colsep"></div>
+    <div id="lclay-colmain"></div>
 
-    <td width="10px" class="lclay-colsep lclay-col-resize" lc-layid="lclay-colmain"></td>
-    <td id="lclay-colmain" class="lcx-lay-colbg"></div></td>
+    <div id="lcbind-laycol" class="colsep"></div>
+</div>
 
-    <!-- column blank 2 -->
-    <!-- <td width="10px" id="h5c-lyo-col-w-ctrl" class="h5c_resize_col"></td>
-    
-    <td id="h5c-lyo-col-w" valign="top" class="lcx-lay-colbg">
-      <table width="100%" height="100%">
-        <tr>
-          <td id="h5c-tablet-framew0" class="hdev-layout-container hide" valign="top">
-            
-            <div id="h5c-tablet-tabs-framew0" class="h5c_tablet_tabs_frame">
-              <div class="h5c_tablet_tabs_lm">
-                <div id="h5c-tablet-tabs-w0" class="h5c_tablet_tabs"></div>
-              </div>
-              <div class="h5c_tablet_tabs_lr">
-                <div class="pgtab_more lc_pgtab_more" href="#w0"></div>
-              </div>
-            </div>
 
-            <div id="h5c-tablet-toolbar-w0" style="display:none"></div>
-            <div id="h5c-tablet-body-w0" class="h5c_tablet_body less_scroll"></div>
-
-          </td>
-        </tr>
-
-        <tr><td height="10px" id="h5c-resize-roww0" class="h5c_resize_row hide"></td></tr>
-        
-        <tr>
-          <td id="h5c-tablet-framew1" class="hdev-layout-container hide" valign="top">
-            
-            <div id="h5c-tablet-tabs-framew1" class="h5c_tablet_tabs_frame pgtabs_frame">
-              <div class="h5c_tablet_tabs_lm">
-                <div id="h5c-tablet-tabs-w1" class="h5c_tablet_tabs"></div>
-              </div>
-              <div class="h5c_tablet_tabs_lr">
-              </div>
-            </div>
-
-            <div id="h5c-tablet-body-w1" class="h5c_tablet_body less_scroll"></div>
-
-          </td>
-        </tr>
-      
-      </table>
-    </td> -->
-
-    <td width="10px" id="lcbind-laycol"></td>
-
-  </tr>
-</table>
+<audio src="/lesscreator/~/lesscreator/media/bell.ogg" id="bell" style="display: none;"></audio>
 
 <div id="lc_editor_tools" style="display:none">
     <script type="text/text" id="lc_editor_tools"></script>

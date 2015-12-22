@@ -293,6 +293,8 @@ l9rPod.StatusRefresh = function(cb)
 
 l9rPod.status_refresh = function(cb)
 {
+    cb = cb || function(){};
+
     var alertid = "#l9r-pod-status-alert";
     var statusid = "#l9r-pod-status-msg";
 
@@ -657,8 +659,74 @@ l9rPod.UtilResourceSizeFormat = function(size)
     return size + " <span>B</span>";
 }
 
+var l9r_term = false;
 
-l9rPod.WebTermOpen = function()
+l9rPod.WebTermOpen = function(force)
 {
-    
+    force = true; // debug
+
+    if (!force) {
+        force = false;
+    }
+
+    var def_colid = "col01", def_width = 45, term_id = "lc-terminal";
+
+    l9rLayout.ColumnSet({
+        id       : def_colid,
+        width    : def_width,
+        hook     : l9rPod.WebTermLayoutResize,
+        callback : function(err) {
+            
+            l9rTab.Open({
+                target : def_colid,
+                uri    : "wty://"+ term_id,
+                type   : "webterm",
+                title  : "Terminal 0",
+                data   : '<div id="'+term_id+'" class="l9r-webterm-item less_scroll">Connecting</div>',
+                success: function() {
+
+
+                    var _body_h = l9rLayout.height - $("#lctab-nav"+ def_colid).height();
+                    $("#lctab-body"+ def_colid).height(_body_h);
+
+                    var box = $("#lclay-col"+ def_colid).find(".l9r-webterm-item");
+                    box.height(_body_h);
+
+                    //
+                    var apiurl = 'ws' + pandora_endpoint.substr(4) +'/pod/'+ l9r_pod_active +'/terminal/wsopen';
+
+                    lc_terminal_conn('lc-terminal', apiurl);
+                    // l4iStorage.Set("lcWebTerminal0", "1");
+                    // l9rLayoutWebTermInterv = setInterval(l9rLayoutWebTermSizeFix, 1000);
+                    // l9rPod.WebTermLayoutResize
+
+                    l9r_term = true;
+
+                    lc_terminal_conn.Resize();
+                },
+            });
+        },
+    })
+}
+
+
+l9rPod.WebTermLayoutResize = function(options)
+{
+    if (!l9r_term) {
+        return;
+    }
+
+    // console.log("Resize");
+
+    var _body_h = l9rLayout.height - $("#lctab-nav"+ options.id).height();
+    $("#lctab-body"+ options.id).height(_body_h);
+
+    //
+    var box = $("#lclay-col"+ options.id).find(".l9r-webterm-item");
+    box.height(_body_h);
+
+
+    if (lc_terminal_conn.IsOk()) {
+        lc_terminal_conn.Resize();
+    }
 }

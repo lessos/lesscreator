@@ -974,9 +974,9 @@ a.h5c_block:focus {
     /* -webkit-filter: grayscale(1); */
 }
 
-#lc-terminal-frame {
+/*#lc-terminal-frame {
     margin: 0; padding: 0; background: #272822;
-}
+}*/
 .lc-terminal {
     margin: 0px;
     padding: 0px;
