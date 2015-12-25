@@ -550,7 +550,14 @@ l9rProj.Open = function(proj)
 
     l9rPodFs.Get(req);
 
-    l9rPod.WebTermOpen();
+    l9rPod.WebTermOpen("main2", "tt2");
+
+    setTimeout(function() {
+
+        l9rPod.WebTermOpen("main", "tt3");
+
+    }, 1000);
+    
 }
 
 l9rProj.OpenHistoryTabs = function()

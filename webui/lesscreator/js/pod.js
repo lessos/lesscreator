@@ -659,74 +659,56 @@ l9rPod.UtilResourceSizeFormat = function(size)
     return size + " <span>B</span>";
 }
 
-var l9r_term = false;
 
-l9rPod.WebTermOpen = function(force)
+l9rPod.WebTermOpen = function(col_name, term_id)
 {
-    force = true; // debug
-
-    if (!force) {
-        force = false;
+    if (!col_name) {
+        col_name = "col01";
     }
 
-    var def_colid = "col01", def_width = 45, term_id = "lc-terminal";
+    if (!term_id) {
+        term_id = "lc-terminal";
+    }
+
+    var def_width = 45;
 
     l9rLayout.ColumnSet({
-        id       : def_colid,
+        id       : col_name,
         width    : def_width,
-        hook     : l9rPod.WebTermLayoutResize,
+        hook     : l9rWebTerminal.Resize,
         callback : function(err) {
-            
+
             l9rTab.Open({
-                target : def_colid,
-                uri    : "wty://"+ term_id,
+                target : col_name,
+                uri    : "wt://"+ term_id,
                 type   : "webterm",
-                title  : "Terminal 0",
-                data   : '<div id="'+term_id+'" class="l9r-webterm-item less_scroll">Connecting</div>',
+                title  : "Terminal "+ (l9rWebTerminal.counter++),
+                data   : '<div id="webterm-'+term_id+'" class="l9r-webterm-item less_scroll">Connecting</div>',
                 success: function() {
 
+                    var _body_h = l9rLayout.height - $("#lctab-nav"+ col_name).height();
+                    $("#lctab-body"+ col_name).height(_body_h);
 
-                    var _body_h = l9rLayout.height - $("#lctab-nav"+ def_colid).height();
-                    $("#lctab-body"+ def_colid).height(_body_h);
-
-                    var box = $("#lclay-col"+ def_colid).find(".l9r-webterm-item");
+                    var box = $("#lclay-col"+ col_name).find(".l9r-webterm-item");
                     box.height(_body_h);
 
                     //
-                    var apiurl = 'ws' + pandora_endpoint.substr(4) +'/pod/'+ l9r_pod_active +'/terminal/wsopen';
+                    var apiurl = 'ws' + pandora_endpoint.substr(4) +'/pod/'+ l9r_pod_active +'/terminal/wsopen?id='+ term_id;
 
-                    lc_terminal_conn('lc-terminal', apiurl);
+                    l9rWebTerminal.Open(term_id, apiurl, function(err) {
+                        if (err) {
+                            // TODO
+                        }
+                    });
+
                     // l4iStorage.Set("lcWebTerminal0", "1");
                     // l9rLayoutWebTermInterv = setInterval(l9rLayoutWebTermSizeFix, 1000);
                     // l9rPod.WebTermLayoutResize
 
-                    l9r_term = true;
-
-                    lc_terminal_conn.Resize();
+                    // l9r_term.Resize();                    
                 },
             });
         },
     })
 }
 
-
-l9rPod.WebTermLayoutResize = function(options)
-{
-    if (!l9r_term) {
-        return;
-    }
-
-    // console.log("Resize");
-
-    var _body_h = l9rLayout.height - $("#lctab-nav"+ options.id).height();
-    $("#lctab-body"+ options.id).height(_body_h);
-
-    //
-    var box = $("#lclay-col"+ options.id).find(".l9r-webterm-item");
-    box.height(_body_h);
-
-
-    if (lc_terminal_conn.IsOk()) {
-        lc_terminal_conn.Resize();
-    }
-}

@@ -464,9 +464,9 @@ l9rTab.Close = function(urid, force)
         l9rTab.CloseClean(urid);
         break;
     case 'webterm':
-        $('#lctab-nav-w1').hide();
         l9rTab.CloseClean(urid);
-        l4iStorage.Set("lcWebTerminal0", "0");
+        l9rWebTerminal.Close(item.url.substr(5));
+        // l4iStorage.Set("lcWebTerminal0", "0");
         break;
     case 'editor':
 

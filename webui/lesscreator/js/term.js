@@ -1335,7 +1335,6 @@ Stream.prototype.csi[HPA] = "cursor_to_column";
 /* add the bind function if not present */
 if (!Function.prototype.bind) {
 	Function.prototype.bind = function(obj) {
-        //console.log("Function.prototype.bind");
 		var slice1 = [].slice,
 		args = slice1.call(arguments, 1),
 		self = this,
@@ -1353,228 +1352,6 @@ if (!Function.prototype.bind) {
 	};
 }
 
-var TermVarHandler = null;
-var TermVarIsMac = null;
-var TermVarKeyRepState = null;
-var TermVarKeyRepStr = null;
-
-function Term(ca) {
-    TermVarHandler = ca;
-    TermVarIsMac = (navigator.userAgent.indexOf("Mac") >= 0) ? true : false;
-    TermVarKeyRepState = 0;
-    TermVarKeyRepStr = "";
-
-	//this.handler = ca;
-	//this.is_mac = (navigator.userAgent.indexOf("Mac") >= 0) ? true : false;
-	//this.key_rep_state = 0;
-	//TermVarKeyRepStr = "";
-}
-Term.prototype.open = function (termid) {
-
-    //console.log("Term.prototype.open");
-
-    lc_terminal_keymap_opened = true;
-
-	document.addEventListener("keydown", keyDownHandler, false);
-	document.addEventListener("keypress", keyPressHandler, false);
-
-    if (blinkInterv != null) {
-        return;
-    }
-    blinkInterv = setInterval(function() {
-        var el = document.getElementById('cursor');
-        if (!el) return;
-        cursor_is_visible = !cursor_is_visible;
-        el.style.backgroundColor = cursor_is_visible ? 'grey' : '';
-    }, 500);
-};
-Term.prototype.stopEventHandler = function() {
-
-    if (!lc_terminal_keymap_opened) {
-        return;
-    }
-
-    //console.log("stopHandler");
-    //document.removeEventListener("keydown", this._debug_test, false);
-    document.removeEventListener("keydown", keyDownHandler, false);
-    document.removeEventListener("keypress", keyPressHandler, false);
-
-    lc_terminal_keymap_opened = false;
-    clearInterval(blinkInterv);
-    blinkInterv = null;
-}
-
-function keyDownHandler(ev) {
-	//console.log("Term.prototype.keyDownHandler");
-    var seq;
-	seq = "";
-	switch (ev.keyCode) {
-		case 8: // backspace
-			seq = "\x08";
-			break;
-		case 9: // tab
-			seq = "\t";
-			break;
-		case 13: // enter
-			seq = "\r";
-			break;
-		case 27: // esc
-			seq = "\x1b";
-			break;
-		case 37: // arrow left
-			if (ev.altKey) seq = "\x1bb";
-			else		   seq = "\x1b[D";
-			break;
-		case 39: // arrow right
-			if (ev.altKey) seq = "\x1bf";
-			else		   seq = "\x1b[C";
-			break;
-		case 38: // arrow up
-			seq = "\x1b[A";
-			break;
-		case 40: // arrow down
-			seq = "\x1b[B";
-			break;
-		case 46: // delete
-			seq = "\x1b[3~";
-			break;
-		case 45: // insert
-			seq = "\x1b[2~";
-			break;
-		case 36: // home
-			seq = "\x1bOH";
-			break;
-		case 35: // end
-			seq = "\x1bOF";
-			break;
-		case 33: // page up
-			seq = "\x1b[5~";
-			break;
-		case 34: // page down
-			seq = "\x1b[6~";
-			break;
-		case 112: // F1
-			seq = "\x1b[[A";
-			break;
-		case 113: // F2
-			seq = "\x1b[[B";
-			break;
-		case 114: // F3
-			seq = "\x1b[[C";
-			break;
-		case 115: // F4
-			seq = "\x1b[[D";
-			break;
-		case 116: // F5
-			seq = "\x1b[15~";
-			break;
-		case 117: // F6
-			seq = "\x1b[17~";
-			break;
-		case 118: // F7
-			seq = "\x1b[18~";
-			break;
-		case 119: // F8
-			seq = "\x1b[19~";
-			break;
-		case 120: // F9
-			seq = "\x1b[20~";
-			break;
-		case 121: // F10
-			seq = "\x1b[21~";
-			break;
-		case 122: // F11
-			seq = "\x1b[23~";
-			break;
-		case 123: // F12
-			seq = "\x1b[24~";
-			break;
-		default:
-			if (ev.ctrlKey) {
-				if (ev.keyCode >= 65 && ev.keyCode <= 90) {
-					seq = String.fromCharCode(ev.keyCode - 64);
-				} else if (ev.keyCode == 32) {
-					seq = String.fromCharCode(0);
-				}
-			} else if ((!TermVarIsMac && ev.altKey) || (TermVarIsMac && ev.metaKey)) {
-				if (ev.keyCode >= 65 && ev.keyCode <= 90) {
-					seq = "\x1b" + String.fromCharCode(ev.keyCode + 32);
-				}
-			}
-			break;
-	}
-	if (seq) {
-		if (ev.stopPropagation) ev.stopPropagation();
-		if (ev.preventDefault) ev.preventDefault();
-		TermVarKeyRepState = 1;
-		TermVarKeyRepStr = seq;
-		TermVarHandler(seq);
-		return false;
-	} else {
-		TermVarKeyRepState = 0;
-		return true;
-	}
-};
-function keyPressHandler(ev) {
-    //console.log("Term.prototype.keyPressHandler");
-	var tagName = ev.target && ev.target.tagName;
-	if (tagName == 'INPUT' || tagName == 'TEXTAREA') return;
-
-	var seq, code;
-	if (ev.stopPropagation) ev.stopPropagation();
-	if (ev.preventDefault) ev.preventDefault();
-	seq = "";
-	if (!("charCode" in ev)) {
-		code = ev.keyCode;
-		if (TermVarKeyRepState == 1) {
-			TermVarKeyRepState = 2;
-			return false;
-		} else if (TermVarKeyRepState == 2) {
-			TermVarHandler(TermVarKeyRepStr);
-			return false;
-		}
-	} else {
-		code = ev.charCode;
-	}
-	if (code != 0) {
-		if (!ev.ctrlKey && ((!TermVarIsMac && !ev.altKey) || (TermVarIsMac && !ev.metaKey))) {
-			seq = String.fromCharCode(code);
-		}
-	}
-	if (seq) {
-		TermVarHandler(seq);
-		return false;
-	} else {
-		return true;
-	}
-};
-
-
-
-function indent(str, len) {
-	str = '' + str
-	while (str.length < 8) str += ' '
-	return str
-}
-
-function paste() {
-	var el = document.getElementById('paste-buf');
-	send_cmd(el.value+"\n");
-	el.value = '';
-	//--try { document.body.focus(); } catch(e) { }
-	//--try { document.focus(); } catch(e) { }
-	//--try { window.focus(); } catch(e) { }
-}
-
-var cursor_is_visible = true;
-var cursor = {x: 0, y: 0};
-var blinkInterv = null;/*setInterval(function() {
-	var el = document.getElementById('cursor');
-	if (!el) return;
-	cursor_is_visible = !cursor_is_visible;
-	el.style.backgroundColor = cursor_is_visible ? 'grey' : '';
-}, 1000);*/
-
 var html_esc = {
 	'<': '&lt;',
 	'>': '&gt;',
@@ -1582,7 +1359,6 @@ var html_esc = {
 	' ': '&nbsp;'
 };
 
-var drawn_lines = [];
 var fg_color_map = {
 	'default': 'default',
 	'black': 'black',
@@ -1594,6 +1370,7 @@ var fg_color_map = {
 	'cyan': '#2cb5e9',
 	'white': '#ffffff'
 };
+
 var bg_color_map = {
 	'default': 'black',
 	'black': 'black',
@@ -1605,6 +1382,7 @@ var bg_color_map = {
 	'cyan': '#2cb5e9',
 	'white': '#ffffff'
 };
+
 var default_fg_bg = {
 	'default': 'white',
 	'black': 'white',
@@ -1617,27 +1395,300 @@ var default_fg_bg = {
 	'white': 'black'
 };
 
-window.LessTerminal = (function() {
-    
-    "use strict";
+function string_utf8_len(str)
+{
+    var len = 0, l = str.length;
 
-    var insts = {};
-
-    var instCtrlCurrent = null;
-
-    function LessTerminal(termid, wsurl) {
-
+    for (var i = 0; i < l; i++) {
+        var c = str.charCodeAt(i);
+        if (c <= 0x0000007F) len++;
+        else if (c >= 0x00000080 && c <= 0x000007FF) len += 2;
+        else if (c >= 0x00000800 && c <= 0x0000FFFF) len += 3;
+        else len += 4;
     }
 
-})();
+    return len;
+}
 
-var lc_terminal_keymap_opened = false;
-var lc_terminal_scr = null;
-var lc_terminal_ws = null;
-function lc_terminal_conn(termid, wsurl)
+function indent(str, len) {
+    str = '' + str
+    while (str.length < 8) str += ' '
+    return str
+}
+
+//
+var l9rWebTerminal = {
+    counter           : 0,
+    active            : null,
+    keymap_opened     : false,
+    blinkInterv       : null,
+    cursor_is_visible : true,
+    key_rep_state     : 0,
+    key_rep_str       : "",
+    is_mac            : (navigator.userAgent.indexOf("Mac") >= 0) ? true : false,
+    instances         : [],
+}
+
+l9rWebTerminal.Open = function(termid, url, cb)
 {
-    "use strict";
-    var domobj = document.getElementById(termid);    
+    for (var i in l9rWebTerminal.instances) {
+
+        if (l9rWebTerminal.instances[i].termid == termid) {
+            return cb(null);
+        }
+    }
+
+    web_terminal(termid, url, cb);
+}
+
+l9rWebTerminal.Close = function(termid)
+{
+    for (var i in l9rWebTerminal.instances) {
+
+        if (l9rWebTerminal.instances[i] != termid) {
+            continue;
+        }
+
+        if (l9rWebTerminal.active && l9rWebTerminal.active.termid == termid) {
+            l9rWebTerminal.active = null;
+        }
+
+        l9rWebTerminal.instances.splice(i, 1);
+
+        break;
+    }
+}
+
+l9rWebTerminal.Resize = function(options)
+{
+    for (var i in l9rWebTerminal.instances) {
+
+        if (options.id != l9rWebTerminal.instances[i].col_name) {
+            continue;
+        }
+
+        var _body_h = l9rLayout.height - $("#lctab-nav"+ options.id).height();
+        $("#lctab-body"+ options.id).height(_body_h);
+
+        //
+        var box = $("#lclay-col"+ options.id).find(".l9r-webterm-item");
+        box.height(_body_h);
+
+        if (l9rWebTerminal.instances[i].instance.IsOk()) {
+            l9rWebTerminal.instances[i].instance.Resize();
+        }
+   
+        break;
+    }
+}
+
+l9rWebTerminal.openEventHandler = function()
+{
+    if (l9rWebTerminal.keymap_opened) {
+        return;
+    }
+
+    l9rWebTerminal.stopEventHandler();
+
+    if (!l9rWebTerminal.active) {
+        return;
+    }
+
+    //
+    if (l9rWebTerminal.blinkInterv) {
+        return;
+    }
+
+    document.addEventListener("keydown", l9rWebTerminal.keyDownHandler, false);
+    document.addEventListener("keypress", l9rWebTerminal.keyPressHandler, false);
+
+    l9rWebTerminal.blinkInterv = setInterval(function() {
+        var el = document.getElementById(l9rWebTerminal.active.prefix +'_cursor');
+        if (!el) {
+            return;
+        }
+        l9rWebTerminal.cursor_is_visible = !l9rWebTerminal.cursor_is_visible;
+        el.style.backgroundColor = l9rWebTerminal.cursor_is_visible ? 'grey' : '';
+    }, 500);
+
+    l9rWebTerminal.keymap_opened = true;
+}
+
+l9rWebTerminal.stopEventHandler = function()
+{
+    document.removeEventListener("keydown", l9rWebTerminal.keyDownHandler, false);
+    document.removeEventListener("keypress", l9rWebTerminal.keyPressHandler, false);
+
+    if (l9rWebTerminal.blinkInterv) {
+        clearInterval(l9rWebTerminal.blinkInterv);
+        l9rWebTerminal.blinkInterv = null;
+    }
+
+    l9rWebTerminal.keymap_opened = false;
+}
+
+l9rWebTerminal.keyDownHandler = function(ev)
+{
+    if (!l9rWebTerminal.active) {
+        return;
+    }
+
+    var seq;
+    seq = "";
+    switch (ev.keyCode) {
+        case 8: // backspace
+            seq = "\x08";
+            break;
+        case 9: // tab
+            seq = "\t";
+            break;
+        case 13: // enter
+            seq = "\r";
+            break;
+        case 27: // esc
+            seq = "\x1b";
+            break;
+        case 37: // arrow left
+            if (ev.altKey) seq = "\x1bb";
+            else           seq = "\x1b[D";
+            break;
+        case 39: // arrow right
+            if (ev.altKey) seq = "\x1bf";
+            else           seq = "\x1b[C";
+            break;
+        case 38: // arrow up
+            seq = "\x1b[A";
+            break;
+        case 40: // arrow down
+            seq = "\x1b[B";
+            break;
+        case 46: // delete
+            seq = "\x1b[3~";
+            break;
+        case 45: // insert
+            seq = "\x1b[2~";
+            break;
+        case 36: // home
+            seq = "\x1bOH";
+            break;
+        case 35: // end
+            seq = "\x1bOF";
+            break;
+        case 33: // page up
+            seq = "\x1b[5~";
+            break;
+        case 34: // page down
+            seq = "\x1b[6~";
+            break;
+        case 112: // F1
+            seq = "\x1b[[A";
+            break;
+        case 113: // F2
+            seq = "\x1b[[B";
+            break;
+        case 114: // F3
+            seq = "\x1b[[C";
+            break;
+        case 115: // F4
+            seq = "\x1b[[D";
+            break;
+        case 116: // F5
+            seq = "\x1b[15~";
+            break;
+        case 117: // F6
+            seq = "\x1b[17~";
+            break;
+        case 118: // F7
+            seq = "\x1b[18~";
+            break;
+        case 119: // F8
+            seq = "\x1b[19~";
+            break;
+        case 120: // F9
+            seq = "\x1b[20~";
+            break;
+        case 121: // F10
+            seq = "\x1b[21~";
+            break;
+        case 122: // F11
+            seq = "\x1b[23~";
+            break;
+        case 123: // F12
+            seq = "\x1b[24~";
+            break;
+        default:
+            if (ev.ctrlKey) {
+                if (ev.keyCode >= 65 && ev.keyCode <= 90) {
+                    seq = String.fromCharCode(ev.keyCode - 64);
+                } else if (ev.keyCode == 32) {
+                    seq = String.fromCharCode(0);
+                }
+            } else if ((!l9rWebTerminal.is_mac && ev.altKey) || (l9rWebTerminal.is_mac && ev.metaKey)) {
+                if (ev.keyCode >= 65 && ev.keyCode <= 90) {
+                    seq = "\x1b" + String.fromCharCode(ev.keyCode + 32);
+                }
+            }
+            break;
+    }
+
+    if (seq) {
+        if (ev.stopPropagation) ev.stopPropagation();
+        if (ev.preventDefault) ev.preventDefault();
+        l9rWebTerminal.key_rep_state = 1;
+        l9rWebTerminal.key_rep_str = seq;
+        l9rWebTerminal.active.handler(seq);
+        
+        return false;
+    } else {
+        l9rWebTerminal.key_rep_state = 0;
+        return true;
+    }
+};
+
+
+l9rWebTerminal.keyPressHandler = function(ev)
+{
+    var tagName = ev.target && ev.target.tagName;
+    if (tagName == 'INPUT' || tagName == 'TEXTAREA') return;
+
+    var seq, code;
+    if (ev.stopPropagation) ev.stopPropagation();
+    if (ev.preventDefault) ev.preventDefault();
+    seq = "";
+    if (!("charCode" in ev)) {
+        code = ev.keyCode;
+        if (l9rWebTerminal.key_rep_state == 1) {
+            l9rWebTerminal.key_rep_state = 2;
+            return false;
+        } else if (l9rWebTerminal.key_rep_state == 2) {
+            l9rWebTerminal.active.handler(l9rWebTerminal.key_rep_str);
+            return false;
+        }
+    } else {
+        code = ev.charCode;
+    }
+    if (code != 0) {
+        if (!ev.ctrlKey && ((!l9rWebTerminal.is_mac && !ev.altKey) || (l9rWebTerminal.is_mac && !ev.metaKey))) {
+            seq = String.fromCharCode(code);
+        }
+    }
+    if (seq) {
+        l9rWebTerminal.active.handler(seq);
+        return false;
+    } else {
+        return true;
+    }
+};
+
+
+//
+function web_terminal(termid, wsurl, cb)
+{
+    var prefix = "webterm-"+ termid;
+    var domobj = document.getElementById(prefix);
+
+    var drawn_lines = [];
+    var cursor = {x: 0, y: 0};
 
     var window_cols_rows = function()
     {
@@ -1647,8 +1698,6 @@ function lc_terminal_conn(termid, wsurl)
             winH = domobj.offsetHeight;
         }
 
-        // console.log(termid +", "+ Math.floor(winW / 9) +", "+ Math.floor( winH / 16));
-   
         return [Math.floor(winW / 9), Math.floor( winH / 16)]
     }
 
@@ -1686,7 +1735,7 @@ function lc_terminal_conn(termid, wsurl)
                 res.push('</span><span style="' + style + '">');
             }
     
-            if (cursor.x == i && cursor.y == line) res.push('<span id="cursor" style="background-color: grey;">');
+            if (cursor.x == i && cursor.y == line) res.push('<span id="'+prefix+'_cursor" style="background-color: grey;">');
     
             res.push(html_esc[ch.data] || ch.data);
     
@@ -1699,12 +1748,11 @@ function lc_terminal_conn(termid, wsurl)
         return res.join('');
     }
     
-    
     var redraw_line = function(screen, drawn_line)
     {
         var line = drawn_line + scrollOffset;
         cursor = screen.cursor;
-        var el = document.getElementById('row' + drawn_line);
+        var el = document.getElementById(prefix +'_row' + drawn_line);
         var chars = line >= 0 ? screen[line] : screen.history[screen.history.length + line];
         var line_html = get_line_html(chars, line);
     
@@ -1726,7 +1774,7 @@ function lc_terminal_conn(termid, wsurl)
         var colsrows = window_cols_rows();
         var rows = [];
         for(var i = 0; i < colsrows[1]; i++) {
-            rows.push("<div id='row" + i + "' class='outputrow'>&nbsp;</div>")
+            rows.push("<div id='"+prefix+"_row" + i + "' class='outputrow'>&nbsp;</div>")
         }
 
         domobj.innerHTML = rows.join("\n");
@@ -1739,246 +1787,137 @@ function lc_terminal_conn(termid, wsurl)
         }
     }
 
-   
+    //
     var colsrows = window_cols_rows();
     var newData = false;
     var scrollOffset = 0;
     var stream = new Stream();
-    lc_terminal_scr = new Screen(colsrows[0], colsrows[1]);
-    stream.attach(lc_terminal_scr);
+    var webterm_scr = new Screen(colsrows[0], colsrows[1]);
+    stream.attach(webterm_scr);
 
     domobj.addEventListener('mousewheel', function (e) {
         var delta = e.wheelDeltaY || e.wheelDelta;
-        handle_scroll(lc_terminal_scr, -delta);
+        handle_scroll(webterm_scr, -delta);
     });
 
     domobj.addEventListener('MozMousePixelScroll', function (e) {
         if (!e.VERTICAL_AXIS) return;
-        handle_scroll(lc_terminal_scr, e.detail);
+        handle_scroll(webterm_scr, e.detail);
     });
 
-    // lc_terminal_ws = new WebSocket(wsurl, "term");
-    lc_terminal_ws = new WebSocket(wsurl);
+    var webterm_ws = new WebSocket(wsurl);
+    if (!webterm_ws) {
+        return cb("?");
+    }
 
-    lc_terminal_ws.onopen = function() {
+    webterm_ws.onopen = function() {
+
         var req = {
-            "access_token": l4iCookie.Get("access_token"),
+            "access_token": l4iCookie.Get("access_token"), // TODO
         }
-        lc_terminal_ws.send(JSON.stringify(req))
-        lc_terminal_ws.send(indent(colsrows[0], 8))
-        lc_terminal_ws.send(indent(colsrows[1], 8))
+        webterm_ws.send(JSON.stringify(req))
+        
+        webterm_ws.send(indent(colsrows[0], 8))
+        webterm_ws.send(indent(colsrows[1], 8))
+
+        _resize(webterm_scr, webterm_ws, true);
+
+        l9rWebTerminal.instances.push(termid);
+
+        return cb(null);
     }
     
-    lc_terminal_ws.onmessage = function(ev) {
+    webterm_ws.onmessage = function(ev) {
         stream.feed(ev.data)
         newData = true
     }
     
-    lc_terminal_ws.onclose = function() {
+    webterm_ws.onclose = function() {
         stream.feed("Connection closed\n")
         newData = true
 
-        term.stopEventHandler();
-
-        //clearInterval(blinkInterv);
-        //--window.close();
-        //--window.name = "closed";
+        l9rWebTerminal.stopEventHandler();
     }
-    
-    var term = new Term(send_cmd);
-    //term.open(termid);
 
     domobj.onmousedown = function(ev) {
-        term.open(termid);
+        l9rWebTerminal.active = {
+            handler : send_cmd,
+            termid  : termid,
+            prefix  : prefix,
+        };
+        l9rWebTerminal.openEventHandler();
     }
-    $("#"+ termid).mouseleave(function() {
-        term.stopEventHandler();
+
+    // domobj.mouseleave = function(ev) {
+    //     console.log("domobj.mouseleave "+ termid);
+    //     term.stopEventHandler();
+    // }
+    
+    $("#"+ prefix).mouseleave(function() {
+        l9rWebTerminal.stopEventHandler();
     });
     
     function send_cmd(val) {
-        //console.log("send_cmd:"+ val);
-        lc_terminal_ws.send('i' + indent(string_utf8_len(val + ''), 8) + val)
-    }
-
-    lc_terminal_conn.SendCmd = function(val)
-    {
-        send_cmd(val);
-    }
+        webterm_ws.send('i' + indent(string_utf8_len(val + ''), 8) + val)
+    }  
     
     function redraw() {
-        for (var i = 0; i < lc_terminal_scr.lines; i++) {
-            redraw_line(lc_terminal_scr, i);
+        for (var i = 0; i < webterm_scr.lines; i++) {
+            redraw_line(webterm_scr, i);
         }
     }
     
     var redDataInterv = setInterval(function() {
-        //console.log("Asdfasd");
         if (newData) {
             redraw()
             newData = false
         }
-    }, 16);
-    
+    }, 16);    
 
     var uiCheckInterv = setInterval(function() {
         
-        if (document.getElementById(termid)) {
+        if (document.getElementById(prefix)) {
             return;
         }
 
-        lc_terminal_ws.close();
+        webterm_ws.close();
         
         clearInterval(redDataInterv);
         clearInterval(uiCheckInterv);
 
     }, 3000);
 
-    lc_terminal_conn.Resize = function()
+    this.SendCmd = function(val)
     {
-        // console.log("lc_terminal_conn.Resize");
+        send_cmd(val);
+    }
 
-        if (!document.getElementById(termid)) {
+    this.Resize = function()
+    {
+        if (!document.getElementById(prefix)) {
             return;
         }
 
-        _resize(lc_terminal_scr, lc_terminal_ws);
+        _resize(webterm_scr, webterm_ws);
     }
 
-    lc_terminal_conn.IsOk = function() {
+    this.IsOk = function() {
 
-        if (lc_terminal_ws == null) {
+        if (!webterm_ws) {
             return false;
         }
 
-        if (!document.getElementById(termid)) {
+        if (!document.getElementById(prefix)) {
             return false;
         }
 
         return true;
     }
 
-    // console.log("TTT");
+    this.Close = function() {
+        l9rWebTerminal.stopEventHandler();
+        webterm_ws.close();
+    }    
 
-    lc_terminal_conn.CloseAll = function() {
-        term.stopEventHandler();
-        lc_terminal_ws.close();
-    }
-
-    _resize(lc_terminal_scr, lc_terminal_ws, true);
-}
-
-/*
-function get_line_html(chars, line)
-{
-	var fg, bg;
-	var res = ['<span>'];
-	var ch;
-	var prev_style = '', style, i;
-	for (i = 0; i < chars.length; i++) {
-		ch = chars[i];
-
-		style = '';
-		if (ch.reverse) {
-			fg = fg_color_map[ch.bg];
-			bg = bg_color_map[ch.fg];
-			if (bg == 'default') bg = default_fg_bg[fg];
-		} else {
-			fg = fg_color_map[ch.fg];
-			bg = bg_color_map[ch.bg];
-			if (fg == 'default') fg = default_fg_bg[bg];
-		}
-		if (fg == 'black' && bg == 'black') fg = 'gray';
-
-		if (fg != 'white') style += 'color: ' + fg + '; ';
-		if (bg != 'black') style += 'background-color: ' + bg + '; ';
-
-		if (ch.bold) style += 'font-weight: bold; ';
-		if (ch.italics) style += 'font-style: italic; ';
-		if (ch.underscore || ch.strikethrough) {
-			style += 'font-decoration: '+(ch.underscore ? 'underline ' : '')+' '+(ch.underscore ? 'line-through ' : '')+'; ';
-		}
-
-		if (style != prev_style) {
-			res.push('</span><span style="' + style + '">');
-		}
-
-		if (cursor.x == i && cursor.y == line) res.push('<span id="cursor" style="background-color: grey;">');
-
-		res.push(html_esc[ch.data] || ch.data);
-
-		if (cursor.x == i && cursor.y == line) res.push('</span>');
-
-		prev_style = style;
-	}
-	res.push('</span>');
-
-	return res.join('');
-}
-
-function redraw_line(screen, drawn_line) {
-
-	var line = drawn_line + scrollOffset;
-	cursor = screen.cursor;
-	var el = document.getElementById('row' + drawn_line);
-	var chars = line >= 0 ? screen[line] : screen.history[screen.history.length + line];
-	var line_html = get_line_html(chars, line);
-
-	if (!drawn_lines[drawn_line] || drawn_lines[drawn_line] != line_html) el.innerHTML = line_html;
-	drawn_lines[drawn_line] = line_html;
-}
-
-function handle_scroll(screen, delta) {
-	scrollOffset += delta;
-	scrollOffset = Math.min(0, Math.max(-screen.history.length, scrollOffset));
-	newData = true;
-}
-
-function window_cols_rows(termid) {
-	var domobj = document.getElementById(termid);
-    var winW = 630, winH = 460;
-	if (domobj && domobj.offsetWidth) {
-		winW = domobj.offsetWidth;
-		winH = domobj.offsetHeight;
-	}
-	if (document.compatMode == 'CSS1Compat' && document.documentElement && document.documentElement.offsetWidth) {
-		winW = document.documentElement.offsetWidth;
-		winH = document.documentElement.offsetHeight;
-	}
-	if (window.innerWidth && window.innerHeight) {
-		winW = window.innerWidth;
-		winH = window.innerHeight;
-	}
-
-	return [Math.floor(winW / 9), Math.floor( winH / 16)]
-}
-
-function resize(termid, scr, ws, initonly) {
-	var domobj = document.getElementById(termid);
-    var colsrows = window_cols_rows(termid);
-	var rows = [];
-	for(var i = 0; i < colsrows[1]; i++) {
-		rows.push("<div id='row" + i + "' class='outputrow'>&nbsp;</div>");
-	}
-	domobj.innerHTML = rows.join("\n")
-	if (!initonly) {
-		scr.resize(colsrows[1], colsrows[0])
-		drawn_lines = []
-		newData = true;
-
-		ws.send('w' + indent(colsrows[0], 8) + indent(colsrows[1], 8))
-	}
-}
-*/
-function string_utf8_len(str) {
-	var len = 0, l = str.length;
-
-	for (var i = 0; i < l; i++) {
-		var c = str.charCodeAt(i);
-		if (c <= 0x0000007F) len++;
-		else if (c >= 0x00000080 && c <= 0x000007FF) len += 2;
-		else if (c >= 0x00000800 && c <= 0x0000FFFF) len += 3;
-		else len += 4;
-	}
-
-	return len;
+    return this;
 }
