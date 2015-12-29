@@ -164,7 +164,7 @@
     <div class="colsep"></div>
     <div id="lclay-colfilenav"></div>
 
-    <div class="colsep"></div>
+    <div class="colsep lclay-col-resize" lc-layid="main"></div>
     <div id="lclay-colmain"></div>
 
     <div id="lcbind-laycol" class="colsep"></div>

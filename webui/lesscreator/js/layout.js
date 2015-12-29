@@ -4,37 +4,24 @@ var l9rLayout = {
     height : 600,
     postop : 0,
     colsep : 10,
+    density: 400,
+    col_min: parseInt(this.density * 0.1),
+    col_max: parseInt(this.density * 0.9),
+    col_def: parseInt(this.density * 0.5),
     Columns : [
         {
             id       : "filenav",
-            width    : 15,
+            width    : parseInt(this.density * 0.15),
             minWidth : 180,
             maxWidth : 600,
         },
         {
             id       : "main",
-            width    : 85,
-            minWidth : 400,
+            width    : parseInt(this.density * 0.85),
+            minWidth : 500,
         }
     ],
 }
-
-// Array.prototype.insert = function(index, item)
-// {
-//     this.splice(index, 0, item);
-// }
-
-// l9rLayout.ColumnGet = function(id)
-// {
-//     for (var i in l9rLayout.Columns) {
-
-//         if (l9rLayout.Columns[i].id == id) {
-//             return l9rLayout.Columns[i];
-//         }
-//     }
-
-//     return null;
-// }
 
 l9rLayout.Initialize = function(cb)
 {
@@ -48,12 +35,12 @@ l9rLayout.Initialize = function(cb)
         
         var wl = l4iStorage.Get(l9r_pod_active +"_laysize_"+ l9rLayout.Columns[i].id);
 
-        if (wl !== undefined && parseInt(wl) > 0) {
+        if (wl && parseInt(wl) > 0) {
             l9rLayout.Columns[i].width = parseInt(wl);
         } else {
 
             var ws = l4iSession.Get("laysize_"+ l9rLayout.Columns[i].id);
-            if (ws !== undefined && parseInt(ws) > 0) {
+            if (ws && parseInt(ws) > 0) {
                 l9rLayout.Columns[i].width = parseInt(ws);
             }
         }
@@ -70,23 +57,23 @@ l9rLayout.Initialize = function(cb)
     }
 
     l9rLayout.init = true;
+    l9rLayout._bind_refresh();
 
     cb(null);
 }
 
-l9rLayout.BindRefreshLock = false;
-
-l9rLayout.BindRefresh = function()
+l9rLayout._bind_refresh = function()
 {
-    if (l9rLayout.BindRefreshLock) {
-        return;
-    }
-    l9rLayout.BindRefreshLock = true;
+    $("#lcbind-layout").unbind("mousemove");
+    $(document).unbind('mouseup');
 
     $(".lclay-col-resize").bind("mousedown", function(e) {
 
         var layid = $(this).attr("lc-layid");
 
+        var sep_width = $("#lcbind-layout > .colsep").length * l9rLayout.colsep;
+        var per_width = (l9rLayout.width - sep_width) / l9rLayout.density;
+        // console.log("sep_width: "+ sep_width +", per width: "+ per_width);
         // console.log("lclay-col-resize mousedown: "+ layid);
 
         var leftLayId = "", rightLayId = "";
@@ -97,11 +84,16 @@ l9rLayout.BindRefresh = function()
             
             rightLayId = l9rLayout.Columns[i].id;
             rightWidth = l9rLayout.Columns[i].width;
-            rightMinWidth = 100 * 200 / l9rLayout.width;
-            rightIndexId = i;
-            if (l9rLayout.Columns[i].minWidth !== undefined) {
-                rightMinWidth = 100 * l9rLayout.Columns[i].minWidth / l9rLayout.width;
+            
+            if (l9rLayout.Columns[i].minWidth) {
+                rightMinWidth = parseInt(l9rLayout.Columns[i].minWidth / per_width);
             }
+
+            if (rightMinWidth < 15) {
+                rightMinWidth = 15;
+            }
+
+            rightIndexId = i;
 
             if (rightLayId == layid) {
                 break;
@@ -134,7 +126,7 @@ l9rLayout.BindRefresh = function()
 
             setTimeout(function() {
                 l9rLayout.Resize();
-            }, 10);
+            }, 16);
         });
 
         //
@@ -144,28 +136,28 @@ l9rLayout.BindRefresh = function()
             
             // $("#lcbind-col-rsline").css({left: e.pageX});
 
-            if (Math.abs(posLast - e.pageX) < 4) {
+            if (Math.abs(posLast - e.pageX) < per_width) {
                 return;
             }
             posLast = e.pageX;
 
-            var leftWidthNew = 100 * (e.pageX - 5 - leftStart) / l9rLayout.width;
-            // var fixWidthRate = leftWidthNew - leftWidth;
-            var rightWidthNew = rightWidth - leftWidthNew + leftWidth;
+            var leftWidthNew = parseInt((e.pageX - leftStart - 5) / per_width),
+                rightWidthNew = rightWidth - (leftWidthNew - leftWidth);
+
+            // console.log("leftWidthNew: "+ leftWidthNew);
+            
             
             if (leftWidthNew <= leftMinWidth || rightWidthNew <= rightMinWidth) {
                 return;
             }
 
-            return;
-
             l9rLayout.Columns[leftIndexId].width = leftWidthNew;
             l9rLayout.Columns[rightIndexId].width = rightWidthNew;
 
-            // l4iStorage.Set(l4iSession.Get("l9r_proj_name") +"_laysize_"+ leftLayId, leftWidthNew);
-            // l4iSession.Set("laysize_"+ leftLayId, leftWidthNew);
-            // l4iStorage.Set(l4iSession.Get("l9r_proj_name") +"_laysize_"+ rightLayId, rightWidthNew);
-            // l4iSession.Set("laysize_"+ rightLayId, rightWidthNew);
+            l4iStorage.Set(l9r_pod_active +"_laysize_"+ leftLayId, leftWidthNew);
+            l4iSession.Set("laysize_"+ leftLayId, leftWidthNew);
+            l4iStorage.Set(l9r_pod_active +"_laysize_"+ rightLayId, rightWidthNew);
+            l4iSession.Set("laysize_"+ rightLayId, rightWidthNew);          
 
             setTimeout(function() {
                 l9rLayout.Resize();
@@ -200,7 +192,7 @@ l9rLayout.ColumnSet = function(options)
     }
 
     if (!options.width) {
-        options.width = 20;
+        options.width = 40;
     }
 
     var exist = false;
@@ -229,21 +221,21 @@ l9rLayout.ColumnSet = function(options)
             set.minWidth = options.minWidth;
         }
 
-        if (set.width > 50) {
-            set.width = 50;
-        } else if (set.width < 10) {
-            set.width = 10;
+        if (set.width > l9rLayout.col_def) {
+            set.width = l9rLayout.col_def;
+        } else if (set.width < l9rLayout.col_min) {
+            set.width = l9rLayout.col_min;
         }
 
         //
-        var refix = (100 - set.width) / 100, range_used = 0;
+        var refix = (l9rLayout.density - set.width) / l9rLayout.density, range_used = 0;
 
         for (var i in l9rLayout.Columns) {
             l9rLayout.Columns[i].width = parseInt(refix * l9rLayout.Columns[i].width);
             range_used += l9rLayout.Columns[i].width;
         }
 
-        set.width = 100 - range_used;
+        set.width = l9rLayout.density - range_used;
 
         if (options.hook) {
             set.hook = options.hook;
@@ -251,13 +243,13 @@ l9rLayout.ColumnSet = function(options)
 
         //
         $("#lcbind-laycol").before('\
-            <div class="colsep lclay-col-resize" lc-layid="lclay-col'+ options.id +'"></div>\
+            <div class="colsep lclay-col-resize" lc-layid="'+ options.id +'"></div>\
             <div id="lclay-col'+ options.id +'" class="lcx-lay-colbg"></div>');
 
 
         l9rLayout.Columns.push(set);
 
-        l9rLayout.BindRefresh();
+        l9rLayout._bind_refresh();
 
         l9rLayout.Resize(options.callback);
     } else {
@@ -292,11 +284,11 @@ l9rLayout.Resize = function(cb)
 
         if (i == last_col) {
 
-            l9rLayout.Columns[i].width = 100 - rangeUsed;
+            l9rLayout.Columns[i].width = l9rLayout.density - rangeUsed;
             
         } else {
 
-            var to_w = l9rLayout.width * (l9rLayout.Columns[i].width / 100),
+            var to_w = l9rLayout.width * (l9rLayout.Columns[i].width / l9rLayout.density),
                 to_fix = 0;
 
             if (l9rLayout.Columns[i].minWidth && to_w < l9rLayout.Columns[i].minWidth) {
@@ -306,14 +298,14 @@ l9rLayout.Resize = function(cb)
             }
 
             if (to_fix > 0) {
-                l9rLayout.Columns[i].width = parseInt((to_fix / l9rLayout.width) * 100);
+                l9rLayout.Columns[i].width = parseInt((to_fix / l9rLayout.width) * l9rLayout.density);
             }
         }
 
-        if (l9rLayout.Columns[i].width < 10) {
-            l9rLayout.Columns[i].width = 10;
-        } else if (l9rLayout.Columns[i].width > 90) {
-            l9rLayout.Columns[i].width = 90;
+        if (l9rLayout.Columns[i].width < l9rLayout.col_min) {
+            l9rLayout.Columns[i].width = l9rLayout.col_min;
+        } else if (l9rLayout.Columns[i].width > l9rLayout.col_max) {
+            l9rLayout.Columns[i].width = l9rLayout.col_max;
         }
 
         rangeUsed += l9rLayout.Columns[i].width;

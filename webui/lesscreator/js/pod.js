@@ -663,18 +663,16 @@ l9rPod.UtilResourceSizeFormat = function(size)
 l9rPod.WebTermOpen = function(col_name, term_id)
 {
     if (!col_name) {
-        col_name = "col01";
+        col_name = "c02";
     }
 
     if (!term_id) {
         term_id = "lc-terminal";
     }
 
-    var def_width = 45;
-
     l9rLayout.ColumnSet({
         id       : col_name,
-        width    : def_width,
+        width    : parseInt(l9rLayout.density * 0.4),
         callback : function(err) {
 
             l9rTab.Open({

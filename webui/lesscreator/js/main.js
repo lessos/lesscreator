@@ -196,11 +196,9 @@ l9r.bootDesk = function()
 
             $(window).resize(function() {
                 l9rLayout.Resize();
-                l9rLayout.BindRefresh();
             });
 
             l9rLayout.Resize();
-            l9rLayout.BindRefresh();
 
             l9rPod.Initialize();
         });
