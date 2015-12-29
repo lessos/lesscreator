@@ -512,8 +512,6 @@ l9rProj.Open = function(proj)
                     i18n   : true,
                     success : function() {
 
-                        // console.log("FE");
-                
                         l9rLayout.ColumnSet({
                             id   : "filenav",
                             hook : l9rProjFs.LayoutResize
@@ -613,10 +611,15 @@ l9rProj.OpenHistoryTabs = function()
 
     setTimeout(function() {
 
+        var pglp = $('#lctab-navtabs'+ l9rTab.col_def +' .pgtab').last().position();
+
+        if (!pglp) {
+            return;
+        }
+
         var pg = $('#lctab-nav'+ l9rTab.col_def +' .lctab-navm').innerWidth();
 
-        var pgl = $('#lctab-navtabs'+ l9rTab.col_def +' .pgtab').last().position().left 
-            + $('#lctab-navtabs'+ l9rTab.col_def +' .pgtab').last().outerWidth(true);
+        var pgl = pglp.left + $('#lctab-navtabs'+ l9rTab.col_def +' .pgtab').last().outerWidth(true);
     
         if (pgl > pg) {
             $('#lctab-nav'+ l9rTab.col_def +' .lcpg-tab-more').html("»");

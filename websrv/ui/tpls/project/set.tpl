@@ -4,7 +4,7 @@
   <input name="projpath" type="hidden" value="{[=it._projpath]}" />
   <input name="proj_name" type="hidden" value="{[=it.name]}" />
 
-  <table class="table table-condensed" width="100%">
+  <table class="table table-condensed" style="min-width:600px" width="100%">
 
     <tr class="lcproj-bordernil">
       <td width="200px"><strong>Location</strong></td>

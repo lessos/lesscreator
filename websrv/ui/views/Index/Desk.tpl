@@ -161,7 +161,7 @@
 </table>
 
 <div id="lcbind-layout">
-    <div class="colsep"></div>    
+    <div class="colsep"></div>
     <div id="lclay-colfilenav"></div>
 
     <div class="colsep"></div>
@@ -240,7 +240,7 @@
 </div>
 
 <div id="lctab-tpl" style="display:none">
-  <table id="lctab-box{[=it.tabid]}" class="lctab-box" width="100%" height="100%">
+  <table id="lctab-box{[=it.tabid]}" class="lctab-box" style="width:100%;height:100%">
     <tr>
       <td class="" valign="top">
 
@@ -306,23 +306,5 @@ $(".lcx-start-well").click(function() {
 //$(body).css({
 //    "-webkit-filter": blur(2px) contrast(0.4) brightness(1.4)
 //});
-
-function _lc_nav_terminal()
-{
-    var domobj = document.getElementById("lc-terminal");
-    if (!domobj) {
-        lcWebTerminal(1);
-        return;
-    }
-
-    if (!lc_terminal_conn.IsOk()) {
-        lcWebTerminal(1);
-    } else if (lc_terminal_conn.IsOk()) {
-        lc_terminal_conn.CloseAll();
-        var urid = l4iString.CryptoMd5("/lesscreator/term/index?");
-        lcTabClose(urid, 1);
-    }
-}
-// lcWebTerminal(0);
 
 </script>

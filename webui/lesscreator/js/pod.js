@@ -675,7 +675,6 @@ l9rPod.WebTermOpen = function(col_name, term_id)
     l9rLayout.ColumnSet({
         id       : col_name,
         width    : def_width,
-        hook     : l9rWebTerminal.Resize,
         callback : function(err) {
 
             l9rTab.Open({
@@ -695,7 +694,7 @@ l9rPod.WebTermOpen = function(col_name, term_id)
                     //
                     var apiurl = 'ws' + pandora_endpoint.substr(4) +'/pod/'+ l9r_pod_active +'/terminal/wsopen?id='+ term_id;
 
-                    l9rWebTerminal.Open(term_id, apiurl, function(err) {
+                    l9rWebTerminal.Open(col_name, term_id, apiurl, function(err) {
                         if (err) {
                             // TODO
                         }

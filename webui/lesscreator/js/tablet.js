@@ -9,6 +9,7 @@ var l9rTab = {
             target  : "main",
             urid    : "",
             actived : false,
+            type    : null,
         }
     },
 
@@ -48,7 +49,7 @@ l9rTab.Open = function(options)
             urid   : 0,
             target : options.target,
             editor : null,
-            state  : ""
+            state  : "",
         };
     }
 
@@ -87,8 +88,8 @@ l9rTab.Open = function(options)
         } 
     }
 
-    if (document.getElementById("lctab-box"+ options.target) == null) {
-       
+    if (!document.getElementById("lctab-box"+ options.target)) {
+
         var tpl = l4iTemplate.RenderByID("lctab-tpl", {tabid: options.target});
         if (tpl == "") {
             return;
@@ -97,8 +98,7 @@ l9rTab.Open = function(options)
         $("#lclay-col"+ options.target).append(tpl);
        
         l9rLayout.ColumnSet({
-            id   : options.target,
-            hook : l9rTab.LayoutResize,
+            id       : options.target,
             callback : function() {
                 // $("#"+ options.target).append(tpl);
             },
@@ -190,6 +190,7 @@ l9rTab.Switch = function(urid)
 
                     l9rTab.TabletTitleImage(urid);
                     l9rTab.cols[item.target].urid = urid;
+                    l9rTab.cols[item.target].type = item.type;
 
                     $("#lctab-bar"+ item.target).hide();
                     $("#lctab-body"+ item.target).empty().html(l9rTab.pool[urid].data);
@@ -231,6 +232,7 @@ l9rTab.Switch = function(urid)
                     l9rTab.TabletTitleImage(urid);
                     l9rTab.cols[item.target].urid = urid;
                     l9rTab.cols[item.target].editor = null;
+                    l9rTab.cols[item.target].type = item.type;
 
                     $("#lctab-bar"+ item.target).hide();
                     $("#lctab-body"+ item.target).empty().html(rsp);
@@ -248,6 +250,7 @@ l9rTab.Switch = function(urid)
             
             l9rTab.TabletTitleImage(urid);
             l9rTab.cols[item.target].urid = urid;
+            l9rTab.cols[item.target].type = item.type;
             
             $("#lctab-bar"+ item.target).empty();
             $("#lctab-body"+ item.target).empty().html(item.data);
@@ -270,6 +273,7 @@ l9rTab.Switch = function(urid)
             //console.log("lcEditor.TabletOpen OK");
             l9rTab.TabletTitleImage(urid);
             l9rTab.cols[item.target].urid = urid;
+            l9rTab.cols[item.target].type = item.type;
             // l4iStorage.Set("tab.fra.urid."+ item.target, urid);
             
             // TODO
@@ -293,8 +297,8 @@ l9rTab.TabletTitleImage = function(urid, imgsrc)
 {
     var item = l9rTab.pool[urid];
 
-    if (imgsrc === undefined && item.icon !== undefined) {
-        
+    if (!imgsrc && item.icon) {
+
         if (item.icon.slice(0, 1) == "/") {
             imgsrc = item.icon;
         } else {
@@ -302,7 +306,7 @@ l9rTab.TabletTitleImage = function(urid, imgsrc)
         }
     }
 
-    if (imgsrc !== undefined) {
+    if (imgsrc) {
         $("#pgtab"+ urid +" .ico img").attr("src", imgsrc);
     }
 }
@@ -596,83 +600,51 @@ l9rTab.LayoutResize = function(options)
             continue;
         }
 
+        var _body_w = $("#lclay-col"+ i).outerWidth(true);
+
+        $("#lctab-box"+ i).css({
+            // width  : _body_w +"px",
+            height : l9rLayout.height +"px",
+        });
+
+        //
         var _body_h = l9rLayout.height - $("#lctab-nav"+ i).height();
         if ($("#lctab-bar"+ i).is(":visible")) {
             _body_h = _body_h - $("#lctab-bar"+ i).height();
         }
-        $("#lctab-body"+ i).height(_body_h);
+        $("#lctab-body"+ i).css({
+            width  : _body_w +"px",
+            height : _body_h +"px",
+        });
 
         //
-        if (l9rTab.cols[i].editor) {
+        switch (l9rTab.cols[i].type) {
 
-            if ($("#lctab-body"+ i +" > .CodeMirror").length > 0) {
-                // $("#lctab-body"+ i +" > .CodeMirror").width(_w);
-                $("#lctab-body"+ i +" > .CodeMirror").height(_body_h);
-            }
+        case "html":
+
+            break;
+
+        case "webterm":
+           
+            $("#lclay-col"+ options.id).find(".l9r-webterm-item").css({
+                // width  : _body_w +"px",
+                height : _body_h +"px",
+            });
+
+            l9rWebTerminal.Resize(options);
+
+            break;
+
+        case "editor":
+            $("#lctab-body"+ i +" > .CodeMirror").css({
+                // width  : _body_w +"px",
+                height : _body_h +"px",
+            });
+
+            break;
+
+        default:
+            //
         }
     }
-
-    // return;
-    // var ctn0_tab_h = $('# h5c-tablet-tabs-colsw0').height();
-    // var ctn0_tool_h = $('#h5c-tablet-toolbar-w0').height();
-
-    // if ($('#h5c-tablet-colsw1').is(":visible")) {
-
-    //     $('#h5c-resize-roww0').show();
-
-    //     toset = l4iSession.Get('lcLyoCtn0H');
-    //     if (toset == 0 || toset == null) {
-    //         toset = l4iStorage.Get('lcLyoCtn0H');
-    //     }
-    //     if (toset == 0 || toset == null) {
-    //         toset = 0.7;
-    //         l4iStorage.Set("lcLyoCtn0H", toset);
-    //         l4iSession.Set("lcLyoCtn0H", toset);
-    //     }
-
-    //     var ctn1_tab_h = $('#h5c-tablet-tabs-colsw1').height();
-
-    //     var ctn0_h = toset * (lyo_h - 10);
-    //     if ((ctn0_h + ctn1_tab_h + 10) > lyo_h) {
-    //         ctn0_h = lyo_h - ctn1_tab_h - 10;   
-    //     }
-    //     var ctn0b_h = ctn0_h - ctn0_tab_h - ctn0_tool_h;
-    //     if (ctn0b_h < 0) {
-    //         ctn0b_h = 0;
-    //         ctn0_h = ctn0_tab_h;
-    //     } 
-    //     $('#h5c-tablet-body-w0').height(ctn0b_h);  
-    //     if ($('.h5c_tablet_body .CodeMirror').length) {
-    //         $('.h5c_tablet_body .CodeMirror').width(ctn_w);
-    //         $('.h5c_tablet_body .CodeMirror').height(ctn0b_h);
-    //     }
-        
-    //     var ctn1_h = lyo_h - ctn0_h - 10;
-    //     var ctn1b_h = ctn1_h - ctn1_tab_h;
-    //     if (ctn1b_h < 0) {
-    //         ctn1b_h = 0;
-    //     }
-    //     $('#h5c-tablet-body-w1').width(ctn_w);
-    //     $('#h5c-tablet-body-w1').height(ctn1b_h);
-    //     if (document.getElementById("lc-terminal")) {
-    //         $('#lc-terminal').height(ctn1b_h);
-    //         $('#lc-terminal').width(ctn_w - 16);
-    //         lc_terminal_conn.Resize();
-    //     }
-
-    // } else {
-
-    //     $('#h5c-resize-roww0').hide();
-
-    //     $('#h5c-tablet-body-w0').height(lyo_h - ctn0_tab_h - ctn0_tool_h);  
-        
-    //     if ($('.h5c_tablet_body .CodeMirror').length) {
-    //         $('.h5c_tablet_body .CodeMirror').width(ctn_w);
-    //         $('.h5c_tablet_body .CodeMirror').height(lyo_h - ctn0_tab_h - ctn0_tool_h);
-    //     }
-    // }
-
-    // //
-    // $('#h5c-tablet-tabs-colsw0').width(ctn_w);
-    // $('#h5c-tablet-colsw0 .h5c_tablet_tabs_lm').width(ctn_w - 20);
 }

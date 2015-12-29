@@ -4,7 +4,7 @@ var l9rLayout = {
     height : 600,
     postop : 0,
     colsep : 10,
-    cols   : [
+    Columns : [
         {
             id       : "filenav",
             width    : 15,
@@ -16,31 +16,62 @@ var l9rLayout = {
             width    : 85,
             minWidth : 400,
         }
-    ]
+    ],
 }
 
-l9rLayout.Initialize = function()
+// Array.prototype.insert = function(index, item)
+// {
+//     this.splice(index, 0, item);
+// }
+
+// l9rLayout.ColumnGet = function(id)
+// {
+//     for (var i in l9rLayout.Columns) {
+
+//         if (l9rLayout.Columns[i].id == id) {
+//             return l9rLayout.Columns[i];
+//         }
+//     }
+
+//     return null;
+// }
+
+l9rLayout.Initialize = function(cb)
 {
+    cb = cb || function(){};
+
     if (l9rLayout.init) {
-        return;
+        return cb(null);
     }
 
-    for (var i in l9rLayout.cols) {
+    for (var i in l9rLayout.Columns) {
         
-        var wl = l4iStorage.Get(l9r_pod_active +"_laysize_"+ l9rLayout.cols[i].id);
+        var wl = l4iStorage.Get(l9r_pod_active +"_laysize_"+ l9rLayout.Columns[i].id);
 
         if (wl !== undefined && parseInt(wl) > 0) {
-            l9rLayout.cols[i].width = parseInt(wl);
+            l9rLayout.Columns[i].width = parseInt(wl);
         } else {
 
-            var ws = l4iSession.Get("laysize_"+ l9rLayout.cols[i].id);
+            var ws = l4iSession.Get("laysize_"+ l9rLayout.Columns[i].id);
             if (ws !== undefined && parseInt(ws) > 0) {
-                l9rLayout.cols[i].width = parseInt(ws);
+                l9rLayout.Columns[i].width = parseInt(ws);
             }
+        }
+
+        if (l9rLayout.Columns[i].id != "filenav") {
+
+            var tpl = l4iTemplate.RenderByID("lctab-tpl", {tabid: l9rLayout.Columns[i].id});
+            if (tpl == "") {
+                continue;
+            }
+
+            $("#lclay-col"+ l9rLayout.Columns[i].id).append(tpl);
         }
     }
 
     l9rLayout.init = true;
+
+    cb(null);
 }
 
 l9rLayout.BindRefreshLock = false;
@@ -62,14 +93,14 @@ l9rLayout.BindRefresh = function()
         var leftIndexId = 0, rightIndexId = 1;
         var leftWidth = 0, rightWidth = 0;
         var leftMinWidth = 0, rightMinWidth = 0;
-        for (var i in l9rLayout.cols) {
+        for (var i in l9rLayout.Columns) {
             
-            rightLayId = l9rLayout.cols[i].id;
-            rightWidth = l9rLayout.cols[i].width;
+            rightLayId = l9rLayout.Columns[i].id;
+            rightWidth = l9rLayout.Columns[i].width;
             rightMinWidth = 100 * 200 / l9rLayout.width;
             rightIndexId = i;
-            if (l9rLayout.cols[i].minWidth !== undefined) {
-                rightMinWidth = 100 * l9rLayout.cols[i].minWidth / l9rLayout.width;
+            if (l9rLayout.Columns[i].minWidth !== undefined) {
+                rightMinWidth = 100 * l9rLayout.Columns[i].minWidth / l9rLayout.width;
             }
 
             if (rightLayId == layid) {
@@ -128,8 +159,8 @@ l9rLayout.BindRefresh = function()
 
             return;
 
-            l9rLayout.cols[leftIndexId].width = leftWidthNew;
-            l9rLayout.cols[rightIndexId].width = rightWidthNew;
+            l9rLayout.Columns[leftIndexId].width = leftWidthNew;
+            l9rLayout.Columns[rightIndexId].width = rightWidthNew;
 
             // l4iStorage.Set(l4iSession.Get("l9r_proj_name") +"_laysize_"+ leftLayId, leftWidthNew);
             // l4iSession.Set("laysize_"+ leftLayId, leftWidthNew);
@@ -173,14 +204,14 @@ l9rLayout.ColumnSet = function(options)
     }
 
     var exist = false;
-    for (var i in l9rLayout.cols) {
+    for (var i in l9rLayout.Columns) {
 
-        if (l9rLayout.cols[i].id == options.id) {
+        if (l9rLayout.Columns[i].id == options.id) {
 
             exist = true;
 
-            if (options.hook && !l9rLayout.cols[i].hook) {
-                l9rLayout.cols[i].hook = options.hook;
+            if (options.hook && !l9rLayout.Columns[i].hook) {
+                l9rLayout.Columns[i].hook = options.hook;
             }
 
             break;
@@ -207,9 +238,9 @@ l9rLayout.ColumnSet = function(options)
         //
         var refix = (100 - set.width) / 100, range_used = 0;
 
-        for (var i in l9rLayout.cols) {
-            l9rLayout.cols[i].width = parseInt(refix * l9rLayout.cols[i].width);
-            range_used += l9rLayout.cols[i].width;
+        for (var i in l9rLayout.Columns) {
+            l9rLayout.Columns[i].width = parseInt(refix * l9rLayout.Columns[i].width);
+            range_used += l9rLayout.Columns[i].width;
         }
 
         set.width = 100 - range_used;
@@ -224,7 +255,7 @@ l9rLayout.ColumnSet = function(options)
             <div id="lclay-col'+ options.id +'" class="lcx-lay-colbg"></div>');
 
 
-        l9rLayout.cols.push(set);
+        l9rLayout.Columns.push(set);
 
         l9rLayout.BindRefresh();
 
@@ -244,70 +275,77 @@ l9rLayout.Resize = function(cb)
         l9rLayout.postop = $("#lcbind-layout").position().top;
     }
 
+
     //
     l9rLayout.width  = $("body").width();
     l9rLayout.height = $("body").height() - l9rLayout.postop - l9rLayout.colsep;
+
+    // console.log(l9rLayout.postop);
 
     if (l9rLayout.height < 400) {
         l9rLayout.height = 400;
     }
 
     var rangeUsed = 0,
-        last_col = l9rLayout.cols.length - 1;
-    for (var i in l9rLayout.cols) {
+        last_col = l9rLayout.Columns.length - 1;
+    for (var i in l9rLayout.Columns) {
 
         if (i == last_col) {
 
-            l9rLayout.cols[i].width = 100 - rangeUsed;
+            l9rLayout.Columns[i].width = 100 - rangeUsed;
             
         } else {
 
-            var to_w = l9rLayout.width * (l9rLayout.cols[i].width / 100),
+            var to_w = l9rLayout.width * (l9rLayout.Columns[i].width / 100),
                 to_fix = 0;
 
-            if (l9rLayout.cols[i].minWidth && to_w < l9rLayout.cols[i].minWidth) {
-                to_fix = l9rLayout.cols[i].minWidth;
-            } else if (l9rLayout.cols[i].maxWidth && to_w > l9rLayout.cols[i].maxWidth) {
-                to_fix = l9rLayout.cols[i].maxWidth;
+            if (l9rLayout.Columns[i].minWidth && to_w < l9rLayout.Columns[i].minWidth) {
+                to_fix = l9rLayout.Columns[i].minWidth;
+            } else if (l9rLayout.Columns[i].maxWidth && to_w > l9rLayout.Columns[i].maxWidth) {
+                to_fix = l9rLayout.Columns[i].maxWidth;
             }
 
             if (to_fix > 0) {
-                l9rLayout.cols[i].width = parseInt((to_fix / l9rLayout.width) * 100);
+                l9rLayout.Columns[i].width = parseInt((to_fix / l9rLayout.width) * 100);
             }
         }
 
-        if (l9rLayout.cols[i].width < 10) {
-            l9rLayout.cols[i].width = 10;
-        } else if (l9rLayout.cols[i].width > 90) {
-            l9rLayout.cols[i].width = 90;
+        if (l9rLayout.Columns[i].width < 10) {
+            l9rLayout.Columns[i].width = 10;
+        } else if (l9rLayout.Columns[i].width > 90) {
+            l9rLayout.Columns[i].width = 90;
         }
 
-        rangeUsed += l9rLayout.cols[i].width;
+        rangeUsed += l9rLayout.Columns[i].width;
     }
    
     //
-    for (var i in l9rLayout.cols) {
+    for (var i in l9rLayout.Columns) {
 
-        // if (l9rLayout.cols[i].width === l9rLayout.cols[i].widthed
+        // if (l9rLayout.Columns[i].width === l9rLayout.Columns[i].widthed
         //     && l9rLayout.height === l9rLayout.heighted) {
         //     continue;
         // }
+
+        // console.log(l9rLayout.Columns[i]);
         
-        $("#lclay-col"+ l9rLayout.cols[i].id).css({
-            "-webkit-flex" : l9rLayout.cols[i].width.toString(),
-            "flex"         : l9rLayout.cols[i].width.toString(),
+        $("#lclay-col"+ l9rLayout.Columns[i].id).css({
+            "-webkit-flex" : l9rLayout.Columns[i].width.toString(),
+            "flex"         : l9rLayout.Columns[i].width.toString(),
             "height"       : l9rLayout.height +"px",
         });
     }
 
     //
-    for (var i in l9rLayout.cols) {
+    for (var i in l9rLayout.Columns) {
 
-        l9rLayout.cols[i].widthed = l9rLayout.cols[i].width;
+        l9rLayout.Columns[i].widthed = l9rLayout.Columns[i].width;
 
-        if (typeof l9rLayout.cols[i].hook === "function") {
-            l9rLayout.cols[i].hook(l9rLayout.cols[i]);
+        if (typeof l9rLayout.Columns[i].hook === "function") {
+            l9rLayout.Columns[i].hook(l9rLayout.Columns[i]);
         }
+
+        l9rTab.LayoutResize(l9rLayout.Columns[i]);
     }
 
     //
@@ -315,120 +353,3 @@ l9rLayout.Resize = function(cb)
 
     cb();
 }
-
-// function lcxLayoutResize()
-// {
-//     alert("lcxLayoutResize");
-//     return;
-//     // console.log(l9rLayout.cols);
-
-//     var spacecol = 10;
-
-//     var bh = $('body').height();
-//     var bw = $('body').width();
-
-//     $("#hdev_layout").width(bw);
-    
-//     var toset = l4iSession.Get('lcLyoLeftW');
-//     if (toset == 0 || toset == null) {   
-//         toset = l4iStorage.Get('lcLyoLeftW');
-//     }
-//     if (toset == 0 || toset == null) {
-//         toset = 0.1;
-//         l4iStorage.Set("lcLyoLeftW", toset);
-//         l4iSession.Set("lcLyoLeftW", toset);
-//     }
-
-//     var left_w = (bw - (3 * spacecol)) * toset;
-//     if (left_w < 200) {
-//         left_w = 200;
-//     } else if (left_w > 600) {
-//         left_w = 600;
-//     } else if ((left_w + 200) > bw) {
-//         left_w = bw - 200;
-//     }
-//     // var ctn_w = (bw - (3 * spacecol)) - left_w;
-//     // $("#lc-proj-start").width(left_w);
-
-
-//     var lyo_p = $('#hdev_layout').position();
-//     var lyo_h = bh - lyo_p.top - spacecol;
-//     if (lyo_h < 400) {
-//         lyo_h = 400;
-//     }
-//     $('#hdev_layout').height(lyo_h);
-
-//     // // content
-//     // var ctn0_tab_h = $('#h5c-tablet-tabs-framew0').height();
-//     // var ctn0_tool_h = $('#h5c-tablet-toolbar-w0').height();
-
-//     // if ($('#h5c-tablet-framew1').is(":visible")) {
-
-//     //     $('#h5c-resize-roww0').show();
-
-//     //     toset = l4iSession.Get('lcLyoCtn0H');
-//     //     if (toset == 0 || toset == null) {
-//     //         toset = l4iStorage.Get('lcLyoCtn0H');
-//     //     }
-//     //     if (toset == 0 || toset == null) {
-//     //         toset = 0.7;
-//     //         l4iStorage.Set("lcLyoCtn0H", toset);
-//     //         l4iSession.Set("lcLyoCtn0H", toset);
-//     //     }
-
-//     //     var ctn1_tab_h = $('#h5c-tablet-tabs-framew1').height();
-
-//     //     var ctn0_h = toset * (lyo_h - 10);
-//     //     if ((ctn0_h + ctn1_tab_h + 10) > lyo_h) {
-//     //         ctn0_h = lyo_h - ctn1_tab_h - 10;   
-//     //     }
-//     //     var ctn0b_h = ctn0_h - ctn0_tab_h - ctn0_tool_h;
-//     //     if (ctn0b_h < 0) {
-//     //         ctn0b_h = 0;
-//     //         ctn0_h = ctn0_tab_h;
-//     //     } 
-//     //     $('#h5c-tablet-body-w0').height(ctn0b_h);  
-//     //     if ($('.h5c_tablet_body .CodeMirror').length) {
-//     //         $('.h5c_tablet_body .CodeMirror').width(ctn_w);
-//     //         $('.h5c_tablet_body .CodeMirror').height(ctn0b_h);
-//     //     }
-        
-//     //     var ctn1_h = lyo_h - ctn0_h - 10;
-//     //     var ctn1b_h = ctn1_h - ctn1_tab_h;
-//     //     if (ctn1b_h < 0) {
-//     //         ctn1b_h = 0;
-//     //     }
-//     //     $('#h5c-tablet-body-w1').width(ctn_w);
-//     //     $('#h5c-tablet-body-w1').height(ctn1b_h);
-//     //     if (document.getElementById("lc-terminal")) {
-//     //         $('#lc-terminal').height(ctn1b_h);
-//     //         $('#lc-terminal').width(ctn_w - 16);
-//     //         lc_terminal_conn.Resize();
-//     //     }
-
-//     // } else {
-
-//     //     $('#h5c-resize-roww0').hide();
-
-//     //     $('#h5c-tablet-body-w0').height(lyo_h - ctn0_tab_h - ctn0_tool_h);  
-        
-//     //     if ($('.h5c_tablet_body .CodeMirror').length) {
-//     //         $('.h5c_tablet_body .CodeMirror').width(ctn_w);
-//     //         $('.h5c_tablet_body .CodeMirror').height(lyo_h - ctn0_tab_h - ctn0_tool_h);
-//     //     }
-//     // }
-
-//     // //
-//     // $('#h5c-tablet-tabs-framew0').width(ctn_w);
-//     // $('#h5c-tablet-framew0 .h5c_tablet_tabs_lm').width(ctn_w - 20);
-
-//     // // project start box
-//     $("#lclay-colfilenav").width(left_w);
-//     var sf_p = $("#lcbind-fsnav-fstree").position();
-//     if (sf_p) {
-//         $("#lcbind-fsnav-fstree").width(left_w);
-//         $("#lcbind-fsnav-fstree").height(lyo_h - (sf_p.top - lyo_p.top));
-//     }
-
-//     // TODO rightbar
-// }

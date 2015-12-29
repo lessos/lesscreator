@@ -1426,59 +1426,42 @@ var l9rWebTerminal = {
     key_rep_state     : 0,
     key_rep_str       : "",
     is_mac            : (navigator.userAgent.indexOf("Mac") >= 0) ? true : false,
-    instances         : [],
+    instances         : {},
 }
 
-l9rWebTerminal.Open = function(termid, url, cb)
+l9rWebTerminal.Open = function(laycol, termid, url, cb)
 {
-    for (var i in l9rWebTerminal.instances) {
-
-        if (l9rWebTerminal.instances[i].termid == termid) {
-            return cb(null);
-        }
+    var ele = l9rWebTerminal.instances[termid];
+    if (ele) {
+        return cb(null);
     }
 
-    web_terminal(termid, url, cb);
+    web_terminal(laycol, termid, url, cb);
 }
 
 l9rWebTerminal.Close = function(termid)
 {
-    for (var i in l9rWebTerminal.instances) {
-
-        if (l9rWebTerminal.instances[i] != termid) {
-            continue;
-        }
-
-        if (l9rWebTerminal.active && l9rWebTerminal.active.termid == termid) {
-            l9rWebTerminal.active = null;
-        }
-
-        l9rWebTerminal.instances.splice(i, 1);
-
-        break;
+    if (l9rWebTerminal.active && l9rWebTerminal.active.termid == termid) {
+        l9rWebTerminal.active = null;
     }
+
+    var ele = l9rWebTerminal.instances[termid];
+    if (!ele) {
+        return;
+    }
+
+    delete l9rWebTerminal.instances[termid];
+
+    l9rWebTerminal.counter = Object.keys(l9rWebTerminal.instances).length;
 }
 
 l9rWebTerminal.Resize = function(options)
 {
     for (var i in l9rWebTerminal.instances) {
 
-        if (options.id != l9rWebTerminal.instances[i].col_name) {
-            continue;
+        if (options.id == l9rWebTerminal.instances[i].laycol) {
+            l9rWebTerminal.instances[i].resize();
         }
-
-        var _body_h = l9rLayout.height - $("#lctab-nav"+ options.id).height();
-        $("#lctab-body"+ options.id).height(_body_h);
-
-        //
-        var box = $("#lclay-col"+ options.id).find(".l9r-webterm-item");
-        box.height(_body_h);
-
-        if (l9rWebTerminal.instances[i].instance.IsOk()) {
-            l9rWebTerminal.instances[i].instance.Resize();
-        }
-   
-        break;
     }
 }
 
@@ -1682,7 +1665,7 @@ l9rWebTerminal.keyPressHandler = function(ev)
 
 
 //
-function web_terminal(termid, wsurl, cb)
+function web_terminal(laycol, termid, wsurl, cb)
 {
     var prefix = "webterm-"+ termid;
     var domobj = document.getElementById(prefix);
@@ -1779,10 +1762,10 @@ function web_terminal(termid, wsurl, cb)
 
         domobj.innerHTML = rows.join("\n");
         if (!initonly) {
-            scr.resize(colsrows[1], colsrows[0])
-            drawn_lines = []
+            scr.resize(colsrows[1], colsrows[0]);
+            drawn_lines = [];
             newData = true;
-    
+
             ws.send('w' + indent(colsrows[0], 8) + indent(colsrows[1], 8))  
         }
     }
@@ -1815,25 +1798,32 @@ function web_terminal(termid, wsurl, cb)
         var req = {
             "access_token": l4iCookie.Get("access_token"), // TODO
         }
-        webterm_ws.send(JSON.stringify(req))
+        webterm_ws.send(JSON.stringify(req));
         
-        webterm_ws.send(indent(colsrows[0], 8))
-        webterm_ws.send(indent(colsrows[1], 8))
+        webterm_ws.send(indent(colsrows[0], 8));
+        webterm_ws.send(indent(colsrows[1], 8));
 
         _resize(webterm_scr, webterm_ws, true);
 
-        l9rWebTerminal.instances.push(termid);
+        // console.log("OK");
 
-        return cb(null);
+        l9rWebTerminal.instances[termid] = {
+            laycol : laycol,
+            resize : function() {
+                _resize(webterm_scr, webterm_ws, false);
+            },
+        }
+
+        cb(null);
     }
     
     webterm_ws.onmessage = function(ev) {
-        stream.feed(ev.data)
-        newData = true
+        stream.feed(ev.data);
+        newData = true;
     }
     
     webterm_ws.onclose = function() {
-        stream.feed("Connection closed\n")
+        stream.feed("Connection closed\n");
         newData = true
 
         l9rWebTerminal.stopEventHandler();
@@ -1858,7 +1848,7 @@ function web_terminal(termid, wsurl, cb)
     });
     
     function send_cmd(val) {
-        webterm_ws.send('i' + indent(string_utf8_len(val + ''), 8) + val)
+        webterm_ws.send('i' + indent(string_utf8_len(val + ''), 8) + val);
     }  
     
     function redraw() {
@@ -1866,13 +1856,13 @@ function web_terminal(termid, wsurl, cb)
             redraw_line(webterm_scr, i);
         }
     }
-    
+
     var redDataInterv = setInterval(function() {
         if (newData) {
             redraw()
             newData = false
         }
-    }, 16);    
+    }, 16);
 
     var uiCheckInterv = setInterval(function() {
         

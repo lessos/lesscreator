@@ -14,6 +14,7 @@ l9r.Version = function()
     return l9r._version;
 }
 
+
 l9r.Boot = function()
 {
     seajs.config({
@@ -109,11 +110,12 @@ l9r.bootDepends = function()
         seajs.use([
             "~/lesscreator/js/pod.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/pod-fs.js?v={{.version}}&_="+ l9r.Version(),
+            "~/lesscreator/js/layout.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/tablet.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/project.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/project.fs.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/ext.js?v={{.version}}&_="+ l9r.Version(),
-            "~/lesscreator/js/layout.js?v={{.version}}&_="+ l9r.Version(),
+
             // "~/lesscreator/js/term.js?v={{.version}}&_="+ l9r.Version(),
 
             // "~/lesscreator/js/pyte/js/charsets.js",
@@ -190,15 +192,18 @@ l9r.bootDesk = function()
 
         $("#body-content").html(data);
 
-        $(window).resize(function() {
+        l9rLayout.Initialize(function() {
+
+            $(window).resize(function() {
+                l9rLayout.Resize();
+                l9rLayout.BindRefresh();
+            });
+
             l9rLayout.Resize();
             l9rLayout.BindRefresh();
+
+            l9rPod.Initialize();
         });
-
-        l9rLayout.Resize();
-        l9rLayout.BindRefresh();
-
-        l9rPod.Initialize();
     }});
 }
 
@@ -304,3 +309,5 @@ l9r.ErrorCheck = function(data, kind)
 
     return undefined;
 }
+
+
