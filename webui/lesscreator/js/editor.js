@@ -114,8 +114,8 @@ lcEditor.TabletOpen = function(urid, callback)
             l9rData.Put("files", entry, function(ret) {
                 
                 if (ret) {
-                    $("#lctab-bar"+ item.target).empty();
-                    $("#lctab-body"+ item.target).empty();
+                    // $("#lctab-bar"+ item.target).empty();
+                    // $("#lctab-body"+ item.target).empty();
 
                     //l9rTab.pool[urid].mime = obj.data.mime;
                     lcEditor.LoadInstance(entry);
@@ -202,10 +202,11 @@ lcEditor.LoadInstance = function(entry)
 
     //l9rTab.cols[item.target].urid = entry.id;
 
-    if (l9rTab.cols[item.target].editor != null) {        
-        $("#lctab-body"+ item.target).empty();
-        $("#lctab-bar"+ item.target).empty();
-    }
+    // TODO
+    // if (l9rTab.cols[item.target].editor != null) {        
+    //     $("#lctab-body"+ item.target).empty();
+    //     $("#lctab-bar"+ item.target).empty();
+    // }
 
     // styling
     $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize +"px"});
@@ -268,7 +269,8 @@ lcEditor.LoadInstance = function(entry)
         lcEditor.isInited = true;
     }
 
-    $("#lctab-body"+ item.target).empty();
+    // TODO
+    // $("#lctab-body"+ item.target).empty();
 
     // seajs.use(l9r.basecm +"mode/"+ mode +"/"+ mode +".js");
 

@@ -1667,7 +1667,7 @@ l9rWebTerminal.keyPressHandler = function(ev)
 //
 function web_terminal(laycol, termid, wsurl, cb)
 {
-    var prefix = "webterm-"+ termid;
+    var prefix = "tbitem-"+ termid;
     var domobj = document.getElementById(prefix);
 
     var drawn_lines = [];

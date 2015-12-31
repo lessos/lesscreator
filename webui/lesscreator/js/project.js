@@ -548,7 +548,7 @@ l9rProj.Open = function(proj)
 
     l9rPodFs.Get(req);
 
-    // l9rPod.WebTermOpen("main2", "tt2");
+    l9rPod.WebTermOpen("main", "tt2");
 
     // setTimeout(function() {
 

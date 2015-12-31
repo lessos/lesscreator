@@ -680,7 +680,6 @@ l9rPod.WebTermOpen = function(col_name, term_id)
                 uri    : "wt://"+ term_id,
                 type   : "webterm",
                 title  : "Terminal "+ (l9rWebTerminal.counter++),
-                data   : '<div id="webterm-'+term_id+'" class="l9r-webterm-item less_scroll">Connecting</div>',
                 success: function() {
 
                     var _body_h = l9rLayout.height - $("#lctab-nav"+ col_name).height();
@@ -692,7 +691,7 @@ l9rPod.WebTermOpen = function(col_name, term_id)
                     //
                     var apiurl = 'ws' + pandora_endpoint.substr(4) +'/pod/'+ l9r_pod_active +'/terminal/wsopen?id='+ term_id;
 
-                    l9rWebTerminal.Open(col_name, term_id, apiurl, function(err) {
+                    l9rWebTerminal.Open(col_name, l4iString.CryptoMd5("wt://"+ term_id), apiurl, function(err) {
                         if (err) {
                             // TODO
                         }

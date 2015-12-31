@@ -192,6 +192,42 @@ l9r.bootDesk = function()
 
         $("#body-content").html(data);
 
+        $("#l9r-nav-user-box").hover(
+            function() {
+                $("#l9r-nav-user-pbox").fadeIn(300);
+            },
+            function() {
+            }
+        );
+        $("#l9r-nav-user-pbox").hover(
+            function() {
+            },
+            function() {
+                $("#l9r-nav-user-pbox").fadeOut(300);
+            }
+        );
+
+
+        $("#lcx-start-entry").click(function() {
+            $("#lcx-start-entry").fadeOut(150);
+            $(".lcx-start-well").show(150);
+        });
+        $("#lcx-start-entry").hover(function() {  
+            $("#lcx-start-entry").fadeOut(150);
+            $(".lcx-start-well").show(150);
+        });
+        $(".lcx-start-well").click(function() {
+            $("#lcx-start-entry").fadeIn(300);
+            $(".lcx-start-well").hide(300);
+        });
+
+
+        //$("#lcx-start-entry").fadeOut(150);
+        //$(".lcx-start-well").show(150);
+        //$(body).css({
+        //    "-webkit-filter": blur(2px) contrast(0.4) brightness(1.4)
+        //});
+
         l9rLayout.Initialize(function() {
 
             $(window).resize(function() {

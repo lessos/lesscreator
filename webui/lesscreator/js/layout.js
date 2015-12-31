@@ -1,23 +1,24 @@
+var _l9r_layout_density = 100;
 var l9rLayout = {
     init   : false,
     width  : 1000,
     height : 600,
     postop : 0,
     colsep : 10,
-    density: 400,
-    col_min: parseInt(this.density * 0.1),
-    col_max: parseInt(this.density * 0.9),
-    col_def: parseInt(this.density * 0.5),
+    density: _l9r_layout_density,
+    col_min: parseInt(_l9r_layout_density * 0.1),
+    col_max: parseInt(_l9r_layout_density * 0.9),
+    col_def: parseInt(_l9r_layout_density * 0.5),
     Columns : [
         {
             id       : "filenav",
-            width    : parseInt(this.density * 0.15),
+            width    : parseInt(_l9r_layout_density * 0.15),
             minWidth : 180,
             maxWidth : 600,
         },
         {
             id       : "main",
-            width    : parseInt(this.density * 0.85),
+            width    : parseInt(_l9r_layout_density * 0.85),
             minWidth : 500,
         }
     ],
@@ -30,19 +31,25 @@ l9rLayout.Initialize = function(cb)
     if (l9rLayout.init) {
         return cb(null);
     }
-
+   
     for (var i in l9rLayout.Columns) {
         
-        var wl = l4iStorage.Get(l9r_pod_active +"_laysize_"+ l9rLayout.Columns[i].id);
+        var wl = parseInt(l4iStorage.Get(l9r_pod_active +"_laysize_"+ l9rLayout.Columns[i].id));
 
-        if (wl && parseInt(wl) > 0) {
-            l9rLayout.Columns[i].width = parseInt(wl);
+        if (wl > 0) {
+            l9rLayout.Columns[i].width = wl;
         } else {
 
-            var ws = l4iSession.Get("laysize_"+ l9rLayout.Columns[i].id);
-            if (ws && parseInt(ws) > 0) {
-                l9rLayout.Columns[i].width = parseInt(ws);
+            var ws = parseInt(l4iSession.Get("laysize_"+ l9rLayout.Columns[i].id));
+            if (ws > 0) {
+                l9rLayout.Columns[i].width = ws;
             }
+        }
+
+
+
+        if (l9rLayout.Columns[i].width < l9rLayout.col_min) {
+            l9rLayout.Columns[i].width = l9rLayout.col_min;
         }
 
         if (l9rLayout.Columns[i].id != "filenav") {
@@ -157,7 +164,7 @@ l9rLayout._bind_refresh = function()
             l4iStorage.Set(l9r_pod_active +"_laysize_"+ leftLayId, leftWidthNew);
             l4iSession.Set("laysize_"+ leftLayId, leftWidthNew);
             l4iStorage.Set(l9r_pod_active +"_laysize_"+ rightLayId, rightWidthNew);
-            l4iSession.Set("laysize_"+ rightLayId, rightWidthNew);          
+            l4iSession.Set("laysize_"+ rightLayId, rightWidthNew);
 
             setTimeout(function() {
                 l9rLayout.Resize();
@@ -282,6 +289,8 @@ l9rLayout.Resize = function(cb)
         last_col = l9rLayout.Columns.length - 1;
     for (var i in l9rLayout.Columns) {
 
+        // console.log(l9rLayout.Columns[i].width);
+
         if (i == last_col) {
 
             l9rLayout.Columns[i].width = l9rLayout.density - rangeUsed;
@@ -310,7 +319,7 @@ l9rLayout.Resize = function(cb)
 
         rangeUsed += l9rLayout.Columns[i].width;
     }
-   
+
     //
     for (var i in l9rLayout.Columns) {
 
@@ -319,6 +328,7 @@ l9rLayout.Resize = function(cb)
         //     continue;
         // }
 
+        // console.log("layout col width: "+ l9rLayout.Columns[i]);
         // console.log(l9rLayout.Columns[i]);
         
         $("#lclay-col"+ l9rLayout.Columns[i].id).css({
