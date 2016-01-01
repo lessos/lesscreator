@@ -1885,7 +1885,7 @@ function web_terminal(laycol, termid, wsurl, cb)
             prefix  : prefix,
         };
 
-        l9rWebTerminal.openEventHandler();
+        // l9rWebTerminal.openEventHandler();
     }
 
     domobj.onmousedown = function(ev) {
@@ -1963,7 +1963,7 @@ function web_terminal(laycol, termid, wsurl, cb)
         webterm_ws.close();
     }
 
-    _active_refresh();  
+    // _active_refresh();
 
     return this;
 }
