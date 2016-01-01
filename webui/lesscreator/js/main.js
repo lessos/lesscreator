@@ -108,6 +108,7 @@ l9r.bootDepends = function()
         });
 
         seajs.use([
+            "~/lesscreator/js/alert.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/pod.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/pod-fs.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/layout.js?v={{.version}}&_="+ l9r.Version(),

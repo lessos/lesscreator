@@ -1655,13 +1655,30 @@ l9rWebTerminal.keyPressHandler = function(ev)
             seq = String.fromCharCode(code);
         }
     }
-    if (seq) {
+
+    if (l9rWebTerminal.active && seq) {
         l9rWebTerminal.active.handler(seq);
         return false;
     } else {
         return true;
     }
 };
+
+l9rWebTerminal.ReOpen = function(termid)
+{
+    var ins = l9rWebTerminal.instances[termid];
+    if (!ins) {
+        return;
+    }
+
+    l9rWebTerminal.Close(termid);
+
+    l9rAlert.LayerClose("lctab-body"+ ins.laycol);
+
+    setTimeout(function() {
+        l9rWebTerminal.Open(ins.laycol, termid, ins.wsurl);
+    }, 200);
+}
 
 
 //
@@ -1673,15 +1690,18 @@ function web_terminal(laycol, termid, wsurl, cb)
     var drawn_lines = [];
     var cursor = {x: 0, y: 0};
 
+    cb = cb || function(){};
+
+
     var window_cols_rows = function()
     {
-        var winW = 630, winH = 460;
+        var winW = 640, winH = 460;
         if (domobj && domobj.offsetWidth) {
             winW = domobj.offsetWidth;
             winH = domobj.offsetHeight;
         }
 
-        return [Math.floor(winW / 8), Math.floor( winH / 15)]
+        return [Math.floor(winW / 8), Math.floor( winH / 16)]
     }
 
     var get_line_html = function(chars, line)
@@ -1730,7 +1750,7 @@ function web_terminal(laycol, termid, wsurl, cb)
     
         return res.join('');
     }
-    
+
     var redraw_line = function(screen, drawn_line)
     {
         var line = drawn_line + scrollOffset;
@@ -1754,6 +1774,10 @@ function web_terminal(laycol, termid, wsurl, cb)
 
     var _resize = function(scr, ws, initonly)
     {
+        if (!ws) {
+            return;
+        }
+
         var colsrows = window_cols_rows();
         var rows = [];
         for(var i = 0; i < colsrows[1]; i++) {
@@ -1775,7 +1799,9 @@ function web_terminal(laycol, termid, wsurl, cb)
     var newData = false;
     var scrollOffset = 0;
     var stream = new Stream();
+    
     var webterm_scr = new Screen(colsrows[0], colsrows[1]);
+
     stream.attach(webterm_scr);
 
     domobj.addEventListener('mousewheel', function (e) {
@@ -1799,7 +1825,7 @@ function web_terminal(laycol, termid, wsurl, cb)
             "access_token": l4iCookie.Get("access_token"), // TODO
         }
         webterm_ws.send(JSON.stringify(req));
-        
+    
         webterm_ws.send(indent(colsrows[0], 8));
         webterm_ws.send(indent(colsrows[1], 8));
 
@@ -1809,12 +1835,17 @@ function web_terminal(laycol, termid, wsurl, cb)
 
         l9rWebTerminal.instances[termid] = {
             laycol : laycol,
+            wsurl  : wsurl,
             resize : function() {
                 _resize(webterm_scr, webterm_ws, false);
             },
         }
 
         cb(null);
+
+        // setTimeout(function() {
+        //     webterm_ws.close();
+        // }, 1000);
     }
     
     webterm_ws.onmessage = function(ev) {
@@ -1827,15 +1858,31 @@ function web_terminal(laycol, termid, wsurl, cb)
         newData = true
 
         l9rWebTerminal.stopEventHandler();
+
+        l9rAlert.LayerError("lctab-body"+ laycol, "Connection closed", {
+            buttons: [{
+                title   : "Re Connect",
+                onclick : 'l9rWebTerminal.ReOpen("'+termid+'")',
+            }],
+        });
     }
 
-    domobj.onmousedown = function(ev) {
+    function _active_refresh() {
+
+        l9rWebTerminal.stopEventHandler();
+
         l9rWebTerminal.active = {
             handler : send_cmd,
             termid  : termid,
             prefix  : prefix,
         };
+
+       
         l9rWebTerminal.openEventHandler();
+    }
+
+    domobj.onmousedown = function(ev) {
+        _active_refresh();
     }
 
     // domobj.mouseleave = function(ev) {
@@ -1907,7 +1954,9 @@ function web_terminal(laycol, termid, wsurl, cb)
     this.Close = function() {
         l9rWebTerminal.stopEventHandler();
         webterm_ws.close();
-    }    
+    }
+
+    _active_refresh();  
 
     return this;
 }

@@ -12,6 +12,7 @@ webui/twitter-bootstrap
 webui/lesscreator/js/eventproxy.js
 webui/lesscreator/js/jquery.src.js
 webui/lesscreator/js/zepto.src.js
+webui/lesscreator/js/socket.io.js
 
 misc/bash/bashrc.cd
 

@@ -161,13 +161,13 @@ l9rTab.Switch = function(urid)
 
         case "apidriven":
         case "html":
-            console.log("cache html");
+            // console.log("cache html");
             l9rTab.pool[l9rTab.cols[item.target].urid].data = $("#tbitem-"+ l9rTab.cols[item.target].urid).html();
             $("#tbitem-"+ l9rTab.cols[item.target].urid).remove();
             break;
    
         case "webterm":
-            console.log("display webterm "+ l9rTab.cols[item.target].urid);
+            // console.log("display webterm "+ l9rTab.cols[item.target].urid);
             $("#tbitem-"+ l9rTab.cols[item.target].urid).css({"display": "none"});
             break;
 
