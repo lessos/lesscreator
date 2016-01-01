@@ -1681,7 +1681,7 @@ function web_terminal(laycol, termid, wsurl, cb)
             winH = domobj.offsetHeight;
         }
 
-        return [Math.floor(winW / 9), Math.floor( winH / 16)]
+        return [Math.floor(winW / 8), Math.floor( winH / 15)]
     }
 
     var get_line_html = function(chars, line)
