@@ -173,7 +173,10 @@ l9rTab.Switch = function(urid)
 
         case "editor":
             // $("#lctab-body"+ item.target).empty();
-            $("#lctab-body"+ item.target).find(".CodeMirror").remove();
+            
+            if (item.type != "editor") {
+                $("#lctab-body"+ item.target).find(".CodeMirror").remove();
+            }
 
         default:
             //

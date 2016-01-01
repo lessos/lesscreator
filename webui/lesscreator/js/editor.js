@@ -281,6 +281,21 @@ l9rEditor.LoadInstance = function(entry)
 
     //     return;
 
+    if (l9rTab.cols[item.target].editor) {
+
+        l9rTab.cols[item.target].editor.setValue(src);
+
+        l9rTab.cols[item.target].editor.setOption({
+            "mode": mode,
+            "extraKeys": {
+                "Ctrl-S" : function() {
+                    l9rEditor.EntrySave({urid: entry.id});
+                },
+            },
+        });
+
+    } else {
+
     l9rTab.cols[item.target].editor = CodeMirror(
         document.getElementById("lctab-body"+ item.target), {
         
@@ -314,6 +329,7 @@ l9rEditor.LoadInstance = function(entry)
             }
         }
     });
+    }
 
     // CodeMirror.modeURL = l9r.basecm +"mode/%N/%N.js";
     // CodeMirror.autoLoadMode(l9rTab.cols[item.target].editor, mode);
