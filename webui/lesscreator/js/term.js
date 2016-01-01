@@ -1877,7 +1877,6 @@ function web_terminal(laycol, termid, wsurl, cb)
             prefix  : prefix,
         };
 
-       
         l9rWebTerminal.openEventHandler();
     }
 

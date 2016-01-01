@@ -211,6 +211,8 @@ l9rTab.Switch = function(urid)
 
             l9rTab.cols[item.target].editor = null;
 
+            $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
+
 
             l9rLayout.Resize();
 
@@ -239,10 +241,13 @@ l9rTab.Switch = function(urid)
 
                     $("#lctab-bar"+ item.target).hide();
                     $("#lctab-body"+ item.target).append(l9rTab.cols[item.target].data);
+                    $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
+
+
                     l9rLayout.Resize();
                     setTimeout(l9rLayout.Resize, 10);
 
-                    // $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
+                    
 
                     l9rTab.cols[item.target].editor = null;
                 },
@@ -283,9 +288,10 @@ l9rTab.Switch = function(urid)
 
                     $("#lctab-bar"+ item.target).hide();
                     $("#lctab-body"+ item.target).append(l9rTab.cols[item.target].data);
-                    l9rLayout.Resize();
 
                     $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
+
+                    l9rLayout.Resize();
 
                     item.success();
                 },
@@ -305,6 +311,10 @@ l9rTab.Switch = function(urid)
             
             $("#lctab-bar"+ item.target).empty();
             $("#lctab-body"+ item.target).append(item.data);
+
+            $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
+
+
             l9rLayout.Resize();
 
             item.success();
