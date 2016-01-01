@@ -20,7 +20,7 @@
     <img class="itemimg" src="/lesscreator/~/lesscreator/img/editor/mode-{[=v.id]}-128.png">
     <label class="radio">
       <input type="radio" name="cfg_editor_mode" value="{[=v.id]}" 
-        onclick="lcEditor.ConfigEditModeSave('{[=v.id]}')" 
+        onclick="l9rEditor.ConfigEditModeSave('{[=v.id]}')" 
         {[ if (v.id == it.current) { ]} checked {[ } ]}> {[=v.name]}
     </label>
   </td>

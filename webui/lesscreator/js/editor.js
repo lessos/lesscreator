@@ -1,5 +1,5 @@
 
-var lcEditor = {
+var l9rEditor = {
     WebSocket : null,
     ToolTmpl  : null,
     Config    : {
@@ -26,27 +26,27 @@ var lcEditor = {
 };
 
 
-// lcEditor.MessageReply = function(cb, msg)
+// l9rEditor.MessageReply = function(cb, msg)
 // {
 //     if (cb != null && cb.length > 0) {
 //         eval(cb +"(msg)");
 //     }
 // }
-// lcEditor.MessageReplyStatus = function(cb, status, message)
+// l9rEditor.MessageReplyStatus = function(cb, status, message)
 // {
-//     lcEditor.MessageReply(cb, {status: status, message: message});
+//     l9rEditor.MessageReply(cb, {status: status, message: message});
 // }
 
-lcEditor.TabletOpen = function(urid, callback)
+l9rEditor.TabletOpen = function(urid, callback)
 {
-    // console.log("lcEditor.TabletOpen 1: "+ urid);
+    // console.log("l9rEditor.TabletOpen 1: "+ urid);
     var item = l9rTab.pool[urid];
     if (l9rTab.cols[item.target].urid == urid) {
         callback(true);
         return;
     }
 
-    // console.log("lcEditor.TabletOpen 2: "+ urid);
+    // console.log("l9rEditor.TabletOpen 2: "+ urid);
     // console.log(item);
 
     l9rData.Get("files", urid, function(ret) {
@@ -60,7 +60,7 @@ lcEditor.TabletOpen = function(urid, callback)
             //l9rTab.pool[urid].data = ret.ctn1_src;
             //l9rTab.pool[urid].hash = l4iString.CryptoMd5(ret.ctn1_src);
             // console.log(ret);
-            lcEditor.LoadInstance(ret);
+            l9rEditor.LoadInstance(ret);
             callback(true);
             return;
         }
@@ -118,7 +118,7 @@ lcEditor.TabletOpen = function(urid, callback)
                     // $("#lctab-body"+ item.target).empty();
 
                     //l9rTab.pool[urid].mime = obj.data.mime;
-                    lcEditor.LoadInstance(entry);
+                    l9rEditor.LoadInstance(entry);
                     // l9r.HeaderAlert('success', "OK");
                     callback(true);
                 } else {
@@ -135,7 +135,7 @@ lcEditor.TabletOpen = function(urid, callback)
     });
 }
 
-lcEditor.LoadInstance = function(entry)
+l9rEditor.LoadInstance = function(entry)
 {
     var item = l9rTab.pool[entry.id];
 
@@ -209,41 +209,41 @@ lcEditor.LoadInstance = function(entry)
     // }
 
     // styling
-    $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize +"px"});
+    $(".CodeMirror-lines").css({"font-size": l9rEditor.Config.fontSize +"px"});
 
-    if (lcEditor.ToolTmpl == null) {
-        lcEditor.ToolTmpl = $("#lc_editor_tools .lceditor-tools").parent().html();
+    if (l9rEditor.ToolTmpl == null) {
+        l9rEditor.ToolTmpl = $("#lc_editor_tools .lceditor-tools").parent().html();
     }
     // TODO
-    $("#lctab-bar"+ item.target).html(lcEditor.ToolTmpl).show(0, function() {
+    $("#lctab-bar"+ item.target).html(l9rEditor.ToolTmpl).show(0, function() {
         l9rLayout.Resize();
     });
 
     var src = (entry.ctn1_sum.length > 30 ? entry.ctn1_src : entry.ctn0_src);
     //console.log(entry);
 
-    lcEditor.Config.TmpLine2Str = null;
+    l9rEditor.Config.TmpLine2Str = null;
     if (item.editor_strto && item.editor_strto.length > 1) {
-        lcEditor.Config.TmpLine2Str = item.editor_strto;
+        l9rEditor.Config.TmpLine2Str = item.editor_strto;
         l9rTab.pool[entry.id].editor_strto = null;
     }
 
-    lcEditor.Config.TmpScrollLeft = isNaN(entry.scrlef) ? 0 : parseInt(entry.scrlef);
-    lcEditor.Config.TmpScrollTop  = isNaN(entry.scrtop) ? 0 : parseInt(entry.scrtop);
-    lcEditor.Config.TmpCursorLine = isNaN(entry.curlin) ? 0 : parseInt(entry.curlin);
-    lcEditor.Config.TmpCursorCH   = isNaN(entry.curch)  ? 0 : parseInt(entry.curch);
-    lcEditor.Config.TmpUrid       = entry.id;
+    l9rEditor.Config.TmpScrollLeft = isNaN(entry.scrlef) ? 0 : parseInt(entry.scrlef);
+    l9rEditor.Config.TmpScrollTop  = isNaN(entry.scrtop) ? 0 : parseInt(entry.scrtop);
+    l9rEditor.Config.TmpCursorLine = isNaN(entry.curlin) ? 0 : parseInt(entry.curlin);
+    l9rEditor.Config.TmpCursorCH   = isNaN(entry.curch)  ? 0 : parseInt(entry.curch);
+    l9rEditor.Config.TmpUrid       = entry.id;
 
-    if (!lcEditor.isInited) {
+    if (!l9rEditor.isInited) {
 
         CodeMirror.defineInitHook(function(cminst) {
     
             l9rLayout.Resize();
 
-            if (lcEditor.Config.TmpLine2Str != null) {
+            if (l9rEditor.Config.TmpLine2Str != null) {
                 
-                //console.log("line to"+ lcEditor.Config.TmpLine2Str);
-                var crs = cminst.getSearchCursor(lcEditor.Config.TmpLine2Str, cminst.getCursor(), null);
+                //console.log("line to"+ l9rEditor.Config.TmpLine2Str);
+                var crs = cminst.getSearchCursor(l9rEditor.Config.TmpLine2Str, cminst.getCursor(), null);
                 
                 if (crs.findNext()) {
                 
@@ -256,17 +256,17 @@ lcEditor.LoadInstance = function(entry)
                 }
             }
 
-            if (lcEditor.Config.TmpScrollLeft > 0 || lcEditor.Config.TmpScrollTop > 0) {
-                cminst.scrollTo(lcEditor.Config.TmpScrollLeft, lcEditor.Config.TmpScrollTop);
+            if (l9rEditor.Config.TmpScrollLeft > 0 || l9rEditor.Config.TmpScrollTop > 0) {
+                cminst.scrollTo(l9rEditor.Config.TmpScrollLeft, l9rEditor.Config.TmpScrollTop);
             }
 
-            if (lcEditor.Config.TmpCursorLine > 0 || lcEditor.Config.TmpCursorCH > 0) {
+            if (l9rEditor.Config.TmpCursorLine > 0 || l9rEditor.Config.TmpCursorCH > 0) {
                 cminst.focus();
-                cminst.setCursor(lcEditor.Config.TmpCursorLine, lcEditor.Config.TmpCursorCH);
+                cminst.setCursor(l9rEditor.Config.TmpCursorLine, l9rEditor.Config.TmpCursorCH);
             }
         });
         
-        lcEditor.isInited = true;
+        l9rEditor.isInited = true;
     }
 
     // TODO
@@ -289,12 +289,12 @@ lcEditor.LoadInstance = function(entry)
         matchBrackets : true,
         undoDepth     : 1000,
         mode          : mode,
-        indentUnit    : lcEditor.Config.tabSize,
-        tabSize       : lcEditor.Config.tabSize,
-        theme         : lcEditor.Config.theme,
-        smartIndent   : lcEditor.Config.smartIndent,
-        lineWrapping  : lcEditor.Config.lineWrapping,
-        foldGutter    : lcEditor.Config.codeFolding,
+        indentUnit    : l9rEditor.Config.tabSize,
+        tabSize       : l9rEditor.Config.tabSize,
+        theme         : l9rEditor.Config.theme,
+        smartIndent   : l9rEditor.Config.smartIndent,
+        lineWrapping  : l9rEditor.Config.lineWrapping,
+        foldGutter    : l9rEditor.Config.codeFolding,
         gutters       : ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
         rulers        : [{color: "#777", column: 80, lineStyle: "dashed"}],
         autoCloseTags : true,
@@ -303,14 +303,14 @@ lcEditor.LoadInstance = function(entry)
         styleActiveLine         : true,        
         extraKeys : {
             Tab : function(cm) {
-                if (lcEditor.Config.tabs2spaces) {
+                if (l9rEditor.Config.tabs2spaces) {
                     var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
                     cm.replaceSelection(spaces, "end", "+input");
                 }
             },
             "Shift-Space" : "autocomplete",
             "Ctrl-S" : function() {
-                lcEditor.EntrySave({urid: entry.id});
+                l9rEditor.EntrySave({urid: entry.id});
             }
         }
     });
@@ -318,20 +318,20 @@ lcEditor.LoadInstance = function(entry)
     // CodeMirror.modeURL = l9r.basecm +"mode/%N/%N.js";
     // CodeMirror.autoLoadMode(l9rTab.cols[item.target].editor, mode);
 
-    if (lcEditor.Config.EditMode != "win") {
-        l9rTab.cols[item.target].editor.setOption("keyMap", lcEditor.Config.EditMode);
+    if (l9rEditor.Config.EditMode != "win") {
+        l9rTab.cols[item.target].editor.setOption("keyMap", l9rEditor.Config.EditMode);
         $('.lc-editor-editmode img').attr("src", 
-            "/lesscreator/~/lesscreator/img/editor/mode-"+lcEditor.Config.EditMode+"-48.png");
+            "/lesscreator/~/lesscreator/img/editor/mode-"+l9rEditor.Config.EditMode+"-48.png");
     } else {
         l9rTab.cols[item.target].editor.setOption("keyMap", "sublime");
     }
 
     l9rTab.cols[item.target].editor.on("change", function(cm) {
-        lcEditor.Changed(entry.id);
+        l9rEditor.Changed(entry.id);
     });
 
     CodeMirror.commands.find = function(cm) {
-        lcEditor.Search();
+        l9rEditor.Search();
     };
 
     CodeMirror.commands.autocomplete = function(cm) {
@@ -344,9 +344,9 @@ lcEditor.LoadInstance = function(entry)
 }
 
 
-lcEditor.Changed = function(urid)
+l9rEditor.Changed = function(urid)
 {
-    //console.log("lcEditor.Changed:"+ urid);
+    //console.log("l9rEditor.Changed:"+ urid);
 
     if (!l9rTab.pool[urid]) {
         return;
@@ -376,12 +376,12 @@ lcEditor.Changed = function(urid)
     $("#pgtab"+ urid +" .pgtabtitle").addClass("chglight");
 }
 
-lcEditor.SaveCurrent = function()
+l9rEditor.SaveCurrent = function()
 {
-    lcEditor.EntrySave({urid: l9rTab.cols[lcEditor.TabDefault].urid});
+    l9rEditor.EntrySave({urid: l9rTab.cols[l9rEditor.TabDefault].urid});
 }
 
-lcEditor.EntrySave = function(options)
+l9rEditor.EntrySave = function(options)
 {
     options = options || {};
 
@@ -438,7 +438,7 @@ lcEditor.EntrySave = function(options)
         
         } else if (ret.ctn1_src == ret.ctn0_src) {
 
-            //console.log("lcEditor.EntrySave 2");
+            //console.log("l9rEditor.EntrySave 2");
             $("#pgtab"+ options.urid +" .chg").hide();
             $("#pgtab"+ options.urid +" .pgtabtitle").removeClass("chglight");
 
@@ -488,20 +488,20 @@ lcEditor.EntrySave = function(options)
             options.error(options);
         }
 
-        // console.log("lcEditor.EntrySave Send: "+ options.urid);
+        // console.log("l9rEditor.EntrySave Send: "+ options.urid);
         // console.log(req);
 
         l9rPodFs.Post(req);
         
         // req.msgreply = cb;
-        // lcEditor.WebSocketSend(req)
+        // l9rEditor.WebSocketSend(req)
     });
 
 
     // l9rData.Get("files", urid, function(ret) {
 
     //     if (urid != ret.id) {
-    //         return lcEditor.MessageReplyStatus(cb, 200, null);
+    //         return l9rEditor.MessageReplyStatus(cb, 200, null);
     //     }
 
     //     var req = {
@@ -522,14 +522,14 @@ lcEditor.EntrySave = function(options)
     //             $("#pgtab"+ urid +" .chg").hide();
     //             $("#pgtab"+ urid +" .pgtabtitle").removeClass("chglight");
 
-    //             return lcEditor.MessageReplyStatus(cb, 200, null);
+    //             return l9rEditor.MessageReplyStatus(cb, 200, null);
     //         }
 
     //         req.data.body = ctn;
     //         req.data.sumcheck = l4iString.CryptoMd5(ctn);
     //     } else if (ret.ctn1_sum.length < 30) {
             
-    //         return lcEditor.MessageReplyStatus(cb, 200, null);
+    //         return l9rEditor.MessageReplyStatus(cb, 200, null);
 
     //     } else if (ret.ctn1_src != ret.ctn0_src) {
 
@@ -538,30 +538,30 @@ lcEditor.EntrySave = function(options)
         
     //     } else if (ret.ctn1_src == ret.ctn0_src) {
 
-    //         //console.log("lcEditor.EntrySave 2");
+    //         //console.log("l9rEditor.EntrySave 2");
     //         $("#pgtab"+ urid +" .chg").hide();
     //         $("#pgtab"+ urid +" .pgtabtitle").removeClass("chglight");
 
-    //         return lcEditor.MessageReplyStatus(cb, 200, null);
+    //         return l9rEditor.MessageReplyStatus(cb, 200, null);
     //     }
 
-    //     console.log("lcEditor.EntrySave Send: "+ urid);
+    //     console.log("l9rEditor.EntrySave Send: "+ urid);
         
     //     req.msgreply = cb;
-    //     lcEditor.WebSocketSend(req);
+    //     l9rEditor.WebSocketSend(req);
     // });
 }
 
-lcEditor.DialogChanges2SaveSkip = function(urid)
+l9rEditor.DialogChanges2SaveSkip = function(urid)
 {
     l9rTab.Close(urid, 1);
     l4iModal.Close();
 }
 
-lcEditor.DialogChanges2SaveDone = function(urid)
+l9rEditor.DialogChanges2SaveDone = function(urid)
 {
-    //console.log(lcEditor.MessageReply(0, "ok"));
-    lcEditor.EntrySave({
+    //console.log(l9rEditor.MessageReply(0, "ok"));
+    l9rEditor.EntrySave({
         urid    : urid,
         success : function() {
             l9rTab.Close(urid, 1);
@@ -574,13 +574,13 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 }
 
 
-// lcEditor.WebSocketSend = function(req)
+// l9rEditor.WebSocketSend = function(req)
 // {
 //     //console.log(req);
 
-//     if (lcEditor.WebSocket == null) {
+//     if (l9rEditor.WebSocket == null) {
 
-//         //console.log("lcEditor.WebSocket == null");
+//         //console.log("l9rEditor.WebSocket == null");
 
 //         if (!("WebSocket" in window)) {
 //             l9r.HeaderAlert('error', 'WebSocket Open Failed');
@@ -589,20 +589,20 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 
 //         try {
 
-//             lcEditor.WebSocket = new WebSocket(lcEditor.SaveAPI);
+//             l9rEditor.WebSocket = new WebSocket(l9rEditor.SaveAPI);
 
-//             lcEditor.WebSocket.onopen = function() {
+//             l9rEditor.WebSocket.onopen = function() {
 //                 // console.log("connected to " + wsuri);
 //                 console.log("ws.send: "+ JSON.stringify(req));
-//                 lcEditor.WebSocket.send(JSON.stringify(req));
+//                 l9rEditor.WebSocket.send(JSON.stringify(req));
 //             }
 
-//             lcEditor.WebSocket.onclose = function(e) {
+//             l9rEditor.WebSocket.onclose = function(e) {
 //                 console.log("connection closed (" + e.code + ")");
-//                 lcEditor.WebSocket = null;
+//                 l9rEditor.WebSocket = null;
 //             }
 
-//             lcEditor.WebSocket.onmessage = function(e) {
+//             l9rEditor.WebSocket.onmessage = function(e) {
 
 //                 console.log("on onmessage ...");
 
@@ -630,7 +630,7 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 //                     //         //console.log("onmessage ok 2");
 
 //                     //         if (!ret) {
-//                     //             lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
+//                     //             l9rEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
 //                     //             return;
 //                     //         }
 
@@ -640,12 +640,12 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 
 //                     //         l9r.HeaderAlert('success', "OK");
 
-//                     //         lcEditor.MessageReply(obj.msgreply, obj);
+//                     //         l9rEditor.MessageReply(obj.msgreply, obj);
 
 //                     //         //console.log(obj);
 //                     //     });
 //                     // });
-//                     lcEditor.MessageReply(obj.msgreply, obj);
+//                     l9rEditor.MessageReply(obj.msgreply, obj);
 
 //                     //l9rTab.pool[urid].hash = obj.sumcheck;
 
@@ -653,11 +653,11 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 //                     //console.log("onmessage errot");
 //                     l9r.HeaderAlert('error', obj.message);
 
-//                     lcEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
+//                     l9rEditor.MessageReplyStatus(obj.msgreply, 1, "Internal Server Error");
 //                 }
 
 //                 //if ($("#vtknd6").length == 0) {
-//                 //    lcEditor.WebSocket.close();
+//                 //    l9rEditor.WebSocket.close();
 //                 //}
 //             }
 
@@ -669,12 +669,12 @@ lcEditor.DialogChanges2SaveDone = function(urid)
 //     } else {
 
 //         console.log("ws.send"+ JSON.stringify(req));
-//         lcEditor.WebSocket.send(JSON.stringify(req));
+//         l9rEditor.WebSocket.send(JSON.stringify(req));
 //     }
 // }
 
 
-lcEditor.IsSaved = function(urid, cb)
+l9rEditor.IsSaved = function(urid, cb)
 {
     l9rData.Get("files", urid, function(ret) {
 
@@ -694,15 +694,15 @@ lcEditor.IsSaved = function(urid, cb)
 }
 
 
-lcEditor.HookOnBeforeUnload = function()
+l9rEditor.HookOnBeforeUnload = function()
 {
-    if (l9rTab.cols[lcEditor.TabDefault].editor != null 
-        && l9rTab.cols[lcEditor.TabDefault].urid == lcEditor.Config.TmpUrid) {
+    if (l9rTab.cols[l9rEditor.TabDefault].editor != null 
+        && l9rTab.cols[l9rEditor.TabDefault].urid == l9rEditor.Config.TmpUrid) {
         
-        var prevEditorScrollInfo = l9rTab.cols[lcEditor.TabDefault].editor.getScrollInfo();
-        var prevEditorCursorInfo = l9rTab.cols[lcEditor.TabDefault].editor.getCursor();
+        var prevEditorScrollInfo = l9rTab.cols[l9rEditor.TabDefault].editor.getScrollInfo();
+        var prevEditorCursorInfo = l9rTab.cols[l9rEditor.TabDefault].editor.getCursor();
 
-        l9rData.Get("files", l9rTab.cols[lcEditor.TabDefault].urid, function(prevEntry) {
+        l9rData.Get("files", l9rTab.cols[l9rEditor.TabDefault].urid, function(prevEntry) {
 
             if (!prevEntry) {
                 return;
@@ -721,7 +721,7 @@ lcEditor.HookOnBeforeUnload = function()
 }
 
 
-lcEditor.ConfigSet = function(key, val)
+l9rEditor.ConfigSet = function(key, val)
 {
     if (key == "editor_autosave") {
         if (l4iCookie.Get('editor_autosave') == "on") {
@@ -741,39 +741,39 @@ lcEditor.ConfigSet = function(key, val)
         }
         msg = "Setting Editor::Search Match case "+l4iCookie.Get('editor_search_case');
         l9r.HeaderAlert("success", msg);
-        lcEditor.SearchClean();
+        l9rEditor.SearchClean();
     }
 }
 
-lcEditor.Undo = function()
+l9rEditor.Undo = function()
 {
-    if (!l9rTab.cols[lcEditor.TabDefault].editor) {
+    if (!l9rTab.cols[l9rEditor.TabDefault].editor) {
         return;
     }
 
-    l9rTab.cols[lcEditor.TabDefault].editor.undo();
+    l9rTab.cols[l9rEditor.TabDefault].editor.undo();
 }
 
-lcEditor.Redo = function()
+l9rEditor.Redo = function()
 {
-    if (!l9rTab.cols[lcEditor.TabDefault].editor) {
+    if (!l9rTab.cols[l9rEditor.TabDefault].editor) {
         return;
     }
     
-    l9rTab.cols[lcEditor.TabDefault].editor.redo();
+    l9rTab.cols[l9rEditor.TabDefault].editor.redo();
 }
 
-lcEditor.Theme = function(theme)
+l9rEditor.Theme = function(theme)
 {
-    if (l9rTab.cols[lcEditor.TabDefault].editor) {
+    if (l9rTab.cols[l9rEditor.TabDefault].editor) {
 
         // console.log("~/codemirror/3.21.0/theme/"+ theme +".min.css");
         seajs.use("~/codemirror/3.21.0/theme/"+ theme +".min.css", function() {
             
-            lcEditor.Config.theme = theme;
+            l9rEditor.Config.theme = theme;
             l4iCookie.SetByDay("editor_theme", theme, 365);
 
-            l9rTab.cols[lcEditor.TabDefault].editor.setOption("theme", theme);
+            l9rTab.cols[l9rEditor.TabDefault].editor.setOption("theme", theme);
 
             l9rLayout.Resize();
         });        
@@ -787,7 +787,7 @@ var search_state_posFrom = null;
 var search_state_posTo   = null;
 var search_state_marked  = [];
 
-lcEditor.Search = function()
+l9rEditor.Search = function()
 {
     $(".lc_editor_searchbar").toggle(0, function(){
         l9rLayout.Resize();
@@ -806,20 +806,20 @@ lcEditor.Search = function()
         }
     });
 
-    lcEditor.SearchNext();
+    l9rEditor.SearchNext();
 }
 
-lcEditor.SearchNext = function(rev)
+l9rEditor.SearchNext = function(rev)
 {
     var query = $(".lc_editor_searchbar").find("input[name=find]").val();
     var matchcase = (l4iCookie.Get('editor_search_case') == "on") ? false : null;
     
     if (search_state_query != query) {
-        lcEditor.SearchClean();
+        l9rEditor.SearchClean();
         
-        for (var cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
+        for (var cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
 
-            search_state_marked.push(l9rTab.cols[lcEditor.TabDefault].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
+            search_state_marked.push(l9rTab.cols[l9rEditor.TabDefault].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
             
             search_state_posFrom = cursor.from();
             search_state_posTo = cursor.to();
@@ -828,27 +828,27 @@ lcEditor.SearchNext = function(rev)
         search_state_query = query;
     }
     
-    var cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(
+    var cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(
         search_state_query, 
         rev ? search_state_posFrom : search_state_posTo,
         matchcase);
     
     if (!cursor.find(rev)) {
-        cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(
+        cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(
             search_state_query, 
-            rev ? {line: l9rTab.cols[lcEditor.TabDefault].editor.lineCount() - 1} : {line: 0, ch: 0},
+            rev ? {line: l9rTab.cols[l9rEditor.TabDefault].editor.lineCount() - 1} : {line: 0, ch: 0},
             matchcase);
         if (!cursor.find(rev)) {
             return;
         }
     }
     
-    l9rTab.cols[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
+    l9rTab.cols[l9rEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
     search_state_posFrom = cursor.from(); 
     search_state_posTo = cursor.to();
 }
 
-lcEditor.SearchReplace = function(all)
+l9rEditor.SearchReplace = function(all)
 {
     if (!search_state_query) {
         return;
@@ -863,9 +863,9 @@ lcEditor.SearchReplace = function(all)
     
     if (all) {
 
-        for (var cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
+        for (var cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
             if (typeof search_state_query != "string") {
-                var match = l9rTab.cols[lcEditor.TabDefault].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
+                var match = l9rTab.cols[l9rEditor.TabDefault].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
                 cursor.replace(text.replace(/\$(\d)/, function(w, i) {return match[i];}));
             } else {
                 cursor.replace(text);
@@ -874,23 +874,23 @@ lcEditor.SearchReplace = function(all)
 
     } else {
           
-        var cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, l9rTab.cols[lcEditor.TabDefault].editor.getCursor(), matchcase);
+        var cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(search_state_query, l9rTab.cols[l9rEditor.TabDefault].editor.getCursor(), matchcase);
 
         var start = cursor.from(), match;
         if (!(match = cursor.findNext())) {
-            cursor = l9rTab.cols[lcEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase);
+            cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase);
             if (!(match = cursor.findNext()) ||
                 (cursor.from().line == start.line && cursor.from().ch == start.ch)) {return;
             }
         }
-        l9rTab.cols[lcEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
+        l9rTab.cols[l9rEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
         
         cursor.replace(typeof search_state_query == "string" ? text :
             text.replace(/\$(\d)/, function(w, i) {return match[i];}));
     }
 }
 
-lcEditor.SearchClean = function()
+l9rEditor.SearchClean = function()
 {
     search_state_query   = null;
     search_state_posFrom = null;
@@ -903,7 +903,7 @@ lcEditor.SearchClean = function()
     search_state_marked.length = 0;
 }
 
-lcEditor.ConfigModal = function()
+l9rEditor.ConfigModal = function()
 {
     l4iModal.Open({
         title        : "Editor Settings",
@@ -925,15 +925,15 @@ lcEditor.ConfigModal = function()
     });
 }
 
-lcEditor.ConfigEditMode = function()
+l9rEditor.ConfigEditMode = function()
 {
     l4iModal.Open({
-        title        : lcEditor.Config.LangEditMode,
+        title        : l9rEditor.Config.LangEditMode,
         tpluri       : l9r.TemplatePath("editor/editmode-set"),
         width        : 500,
         height       : 300,
         data         : {
-            current : lcEditor.Config.EditMode,
+            current : l9rEditor.Config.EditMode,
             list : [
                 {id: "win", name: "Default"},
                 {id: "vim", name: "Vim"},
@@ -950,7 +950,7 @@ lcEditor.ConfigEditMode = function()
     });
 }
 
-lcEditor.ConfigEditModeSave = function(mode)
+l9rEditor.ConfigEditModeSave = function(mode)
 {
     switch (mode) {
     case "win":
@@ -983,7 +983,7 @@ lcEditor.ConfigEditModeSave = function(mode)
 
     $(".lc-editor-editmode img").attr("src", icosrc +"-48.png");
 
-    lcEditor.Config.EditMode = mode;
+    l9rEditor.Config.EditMode = mode;
     l4iStorage.Set("editor_editmode", mode);
 
     if (mode == "win") {

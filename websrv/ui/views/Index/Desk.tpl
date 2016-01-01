@@ -179,38 +179,38 @@
     <!-- <div class="editor_bar hdev-ws hdev-tabs hcr-pgbar-editor"> -->
     <div class="lceditor-tools">
         
-        <div class="let-menu-item" onclick="lcEditor.SaveCurrent()">
+        <div class="let-menu-item" onclick="l9rEditor.SaveCurrent()">
             <div class="ctn"><i class="icon-hdd"></i> {{T . "Save"}}</div>
         </div>
 
         <div class="navline"></div>
-        <div class="let-menu-item" onclick="lcEditor.Search()">
+        <div class="let-menu-item" onclick="l9rEditor.Search()">
             <div class="ctn"><i class="icon-search"></i> {{T . "Search"}}</div>
         </div>
 
         <div class="navline"></div>
-        <div class="let-menu-item" onclick="lcEditor.Undo()">
+        <div class="let-menu-item" onclick="l9rEditor.Undo()">
             <div class="ctn"><i class="icon-chevron-left"></i> {{T . "Undo"}}</div>
         </div>
 
-        <div class="let-menu-item" onclick="lcEditor.Redo()">
+        <div class="let-menu-item" onclick="l9rEditor.Redo()">
             <div class="ctn"><i class="icon-chevron-right"></i> {{T . "Redo"}}</div>
         </div>
         
         <!-- <div class="navline"></div>
         <div class="let-menu-item">
             <div class="ico"><img src="/lesscreator/~/lesscreator/img/disk.png" align="absmiddle" /></div>
-            <div class="ctn"><input onclick="lcEditor.ConfigSet('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
+            <div class="ctn"><input onclick="l9rEditor.ConfigSet('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div> -->
 
         <div class="navline"></div>
-        <div class="let-menu-item" onclick="lcEditor.ConfigEditMode()">
+        <div class="let-menu-item" onclick="l9rEditor.ConfigEditMode()">
             <div class="ico lc-editor-editmode"><img src="/lesscreator/~/lesscreator/img/editor/mode-win-48.png" class="_h5c_icon" /></div>
             <div class="ctn">{{T . "Editor Mode"}}</div>
         </div>
 
         <div class="navline"></div>
-        <div class="let-menu-item" onclick="lcEditor.ConfigModal()">
+        <div class="let-menu-item" onclick="l9rEditor.ConfigModal()">
             <div class="ctn"><i class="icon-cog"></i> {{T . "Setting"}}</div>
         </div>
     </div>
@@ -219,23 +219,23 @@
         <div class="input-prepend input-append">
             <span class="add-on"><i class="icon-search"></i></span>
             <input class="input-small" type="text" name="find" value="{{T . "Find Word"}}" />
-            <button class="btn" onclick="lcEditor.SearchNext()">{{T . "Search"}}</button>
+            <button class="btn" onclick="l9rEditor.SearchNext()">{{T . "Search"}}</button>
         </div>
 
         <label class="inline"> {{T . "or"}} </label>
         
         <div class="input-append">
             <input class="input-small" name="replace" type="text" value="{{T . "Replace with"}}">
-            <button class="btn" type="button" onclick="lcEditor.SearchReplace(false)">{{T . "Replace"}}</button>
-            <button class="btn" type="button" onclick="lcEditor.SearchReplace(true)">{{T . "Replace All"}}</button>
+            <button class="btn" type="button" onclick="l9rEditor.SearchReplace(false)">{{T . "Replace"}}</button>
+            <button class="btn" type="button" onclick="l9rEditor.SearchReplace(true)">{{T . "Replace All"}}</button>
         </div>
         
         <!-- <label class="checkbox inline">
-          <input onclick="lcEditor.ConfigSet('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" />
+          <input onclick="l9rEditor.ConfigSet('editor_search_case')" type="checkbox" id="editor_search_case" name="editor_search_case" value="on" />
           Match case
         </label> -->
 
-        <button type="button" class="close" onclick="lcEditor.Search()">&times;</button>
+        <button type="button" class="close" onclick="l9rEditor.Search()">&times;</button>
     </div>
 </div>
 

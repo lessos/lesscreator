@@ -336,13 +336,13 @@ l9rTab.Switch = function(urid)
 
     case "editor":
 
-        lcEditor.TabletOpen(urid, function(ret) {
+        l9rEditor.TabletOpen(urid, function(ret) {
             
             if (!ret) {
                 return;
             }
 
-            //console.log("lcEditor.TabletOpen OK");
+            //console.log("l9rEditor.TabletOpen OK");
             l9rTab.TabletTitleImage(urid);
             l9rTab.cols[item.target].urid = urid;
             l9rTab.cols[item.target].type = item.type;
@@ -554,7 +554,7 @@ l9rTab.Close = function(urid, force)
 
         } else {
 
-            lcEditor.IsSaved(urid, function(ret) {
+            l9rEditor.IsSaved(urid, function(ret) {
                 
                 if (ret) {
                     l9rTab.CloseClean(urid);
@@ -570,12 +570,12 @@ l9rTab.Close = function(urid, force)
                     position     : "center",
                     buttons      : [
                         {
-                            onclick : "lcEditor.DialogChanges2SaveDone(\""+urid+"\")",
+                            onclick : "l9rEditor.DialogChanges2SaveDone(\""+urid+"\")",
                             title   : "Save",
                             style   : "btn-primary"
                         },
                         {
-                            onclick : "lcEditor.DialogChanges2SaveSkip(\""+urid+"\")",
+                            onclick : "l9rEditor.DialogChanges2SaveSkip(\""+urid+"\")",
                             title   : "Close without Saving",
                         },
                         {

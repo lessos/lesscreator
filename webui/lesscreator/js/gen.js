@@ -15,14 +15,14 @@ function lcInitSetting()
         l4iCookie.SetByDay("editor_theme", "monokai", 365);
         theme = "monokai";
     }
-    lcEditor.Config.theme = theme;
+    l9rEditor.Config.theme = theme;
     if (theme != "default") {
         seajs.use("/lesscreator/~/codemirror3/3.21.0/theme/"+theme+".css");
     }
     
     var editor_editmode = l4iStorage.Get('editor_editmode');
     if (editor_editmode == 'vim' || editor_editmode == 'emacs') {
-        lcEditor.Config.EditMode = editor_editmode;
+        l9rEditor.Config.EditMode = editor_editmode;
     }
         
     var search_case = l4iCookie.Get('editor_search_case');
@@ -36,21 +36,21 @@ function lcInitSetting()
     
     var tabSize = l4iCookie.Get('editor_tabSize');
     if (tabSize != null) {
-        lcEditor.Config.tabSize = parseInt(tabSize);
+        l9rEditor.Config.tabSize = parseInt(tabSize);
     }
 
     var fontSize = l4iCookie.Get('editor_fontSize');
     if (fontSize != null) {
-        lcEditor.Config.fontSize = parseInt(fontSize);
+        l9rEditor.Config.fontSize = parseInt(fontSize);
     }
     
-    lcEditor.Config.tabs2spaces = (l4iCookie.Get('editor_tabs2spaces') == 'false') ? false : true;
+    l9rEditor.Config.tabs2spaces = (l4iCookie.Get('editor_tabs2spaces') == 'false') ? false : true;
     
-    lcEditor.Config.smartIndent = (l4iCookie.Get('editor_smartIndent') == 'false') ? false : true;
+    l9rEditor.Config.smartIndent = (l4iCookie.Get('editor_smartIndent') == 'false') ? false : true;
     
-    lcEditor.Config.lineWrapping = (l4iCookie.Get('editor_lineWrapping') == 'false') ? false : true;
+    l9rEditor.Config.lineWrapping = (l4iCookie.Get('editor_lineWrapping') == 'false') ? false : true;
 
-    lcEditor.Config.codeFolding = (l4iCookie.Get('editor_codeFolding') == 'true') ? true : false;
+    l9rEditor.Config.codeFolding = (l4iCookie.Get('editor_codeFolding') == 'true') ? true : false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -211,7 +211,7 @@ function h5cTabSwitch(urid)
     }
 
     if (h5cTabletFrame[item.target].urid != urid) {
-        //lcEditor.Save(lcEditor.urid, 1);
+        //l9rEditor.Save(l9rEditor.urid, 1);
         h5cTabletFrame[item.target].urid = 0;
     }
 
@@ -257,13 +257,13 @@ function h5cTabSwitch(urid)
 
     case 'editor':
 
-        lcEditor.TabletOpen(urid, function(ret) {
+        l9rEditor.TabletOpen(urid, function(ret) {
             
             if (!ret) {
                 return;
             }
 
-            //console.log("lcEditor.TabletOpen OK");
+            //console.log("l9rEditor.TabletOpen OK");
             h5cTabletTitleImage(urid);
             h5cTabletFrame[item.target].urid = urid;
             l4iStorage.Set("tab.fra.urid."+ item.target, urid);
@@ -438,7 +438,7 @@ function lcTabClose(urid, force)
 
         } else {
 
-            lcEditor.IsSaved(urid, function(ret) {
+            l9rEditor.IsSaved(urid, function(ret) {
                 
                 if (ret) {
                     _lcTabCloseClean(urid);

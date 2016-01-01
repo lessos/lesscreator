@@ -94,33 +94,33 @@ function _lc_editorset_close()
 
 function _lc_editorset_save(title)
 {
-    lcEditor.Config.tabSize = parseInt($("#tabSize").val());
-    if (lcEditor.Config.tabSize > 12 || lcEditor.Config.tabSize < 1) {
-        lcEditor.Config.tabSize = 4;
+    l9rEditor.Config.tabSize = parseInt($("#tabSize").val());
+    if (l9rEditor.Config.tabSize > 12 || l9rEditor.Config.tabSize < 1) {
+        l9rEditor.Config.tabSize = 4;
     }
 
-    lcEditor.Config.fontSize = parseInt($("#fontSize").val());
-    if (lcEditor.Config.fontSize > 50) {
-        lcEditor.Config.fontSize = 50;
+    l9rEditor.Config.fontSize = parseInt($("#fontSize").val());
+    if (l9rEditor.Config.fontSize > 50) {
+        l9rEditor.Config.fontSize = 50;
     }
-    if (lcEditor.Config.fontSize < 8) {
-        lcEditor.Config.fontSize = 8;
+    if (l9rEditor.Config.fontSize < 8) {
+        l9rEditor.Config.fontSize = 8;
     }
-    l4iCookie.SetByDay('editor_fontSize', lcEditor.Config.fontSize, 365);
-    $("#fontSize").val(lcEditor.Config.fontSize);
-    $(".CodeMirror-lines").css({"font-size": lcEditor.Config.fontSize+"px"});
+    l4iCookie.SetByDay('editor_fontSize', l9rEditor.Config.fontSize, 365);
+    $("#fontSize").val(l9rEditor.Config.fontSize);
+    $(".CodeMirror-lines").css({"font-size": l9rEditor.Config.fontSize+"px"});
 
-    lcEditor.Config.tabs2spaces = $("#tabs2spaces").prop('checked') ? true : false;
-    l4iCookie.SetByDay('editor_tabs2spaces', lcEditor.Config.tabs2spaces, 365);
+    l9rEditor.Config.tabs2spaces = $("#tabs2spaces").prop('checked') ? true : false;
+    l4iCookie.SetByDay('editor_tabs2spaces', l9rEditor.Config.tabs2spaces, 365);
     
-    lcEditor.Config.smartIndent = $("#smartIndent").prop('checked') ? true : false;
-    l4iCookie.SetByDay('editor_smartIndent', lcEditor.Config.smartIndent, 365);
+    l9rEditor.Config.smartIndent = $("#smartIndent").prop('checked') ? true : false;
+    l4iCookie.SetByDay('editor_smartIndent', l9rEditor.Config.smartIndent, 365);
     
-    lcEditor.Config.lineWrapping = $("#lineWrapping").prop('checked') ? true : false;
-    l4iCookie.SetByDay('editor_lineWrapping', lcEditor.Config.lineWrapping, 365);
+    l9rEditor.Config.lineWrapping = $("#lineWrapping").prop('checked') ? true : false;
+    l4iCookie.SetByDay('editor_lineWrapping', l9rEditor.Config.lineWrapping, 365);
 
-    lcEditor.Config.codeFolding = $("#codeFolding").prop('checked') ? true : false;
-    l4iCookie.SetByDay('editor_codeFolding', lcEditor.Config.codeFolding, 365);
+    l9rEditor.Config.codeFolding = $("#codeFolding").prop('checked') ? true : false;
+    l4iCookie.SetByDay('editor_codeFolding', l9rEditor.Config.codeFolding, 365);
     
     if (title.length > 0) {
         title = '"'+title+'"';
@@ -131,32 +131,32 @@ function _lc_editorset_save(title)
 function _lc_editorset_theme(node)
 {
     var theme = node.options[node.selectedIndex].value;
-    lcEditor.Theme(theme);
+    l9rEditor.Theme(theme);
 }
 
 function _lc_editorset_init()
 {
-    $("#tabSize").val(lcEditor.Config.tabSize);
-    $("#fontSize").val(lcEditor.Config.fontSize);
+    $("#tabSize").val(l9rEditor.Config.tabSize);
+    $("#fontSize").val(l9rEditor.Config.fontSize);
 
-    if (lcEditor.Config.tabs2spaces) {
+    if (l9rEditor.Config.tabs2spaces) {
 
         $("#tabs2spaces").prop("checked", true);
     }
     
-    if (lcEditor.Config.smartIndent) {
+    if (l9rEditor.Config.smartIndent) {
         $("#smartIndent").prop("checked", true);
     }
 
-    if (lcEditor.Config.lineWrapping) {
+    if (l9rEditor.Config.lineWrapping) {
         $("#lineWrapping").prop("checked", true);
     }
 
-    if (lcEditor.Config.codeFolding) {
+    if (l9rEditor.Config.codeFolding) {
         $("#codeFolding").prop("checked", true);
     }
 
-    var theme = lcEditor.Config.theme;
+    var theme = l9rEditor.Config.theme;
     $("#editor_theme option:contains('"+theme+"')").prop("selected", true);       
 }
 
