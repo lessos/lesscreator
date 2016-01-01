@@ -1689,19 +1689,19 @@ function web_terminal(laycol, termid, wsurl, cb)
 
     var drawn_lines = [];
     var cursor = {x: 0, y: 0};
+    var window_w = 0, window_h = 0;
 
     cb = cb || function(){};
 
-
     var window_cols_rows = function()
     {
-        var winW = 640, winH = 460;
-        if (domobj && domobj.offsetWidth) {
-            winW = domobj.offsetWidth;
-            winH = domobj.offsetHeight;
-        }
+        // var window_w = 640, window_h = 460;
+        // if (domobj && domobj.offsetWidth) {
+        //     window_w = domobj.offsetWidth;
+        //     window_h = domobj.offsetHeight;
+        // }
 
-        return [Math.floor(winW / 8), Math.floor( winH / 16)]
+        return [Math.floor(domobj.offsetWidth / 8), Math.floor(domobj.offsetHeight / 16)]
     }
 
     var get_line_html = function(chars, line)
@@ -1774,9 +1774,15 @@ function web_terminal(laycol, termid, wsurl, cb)
 
     var _resize = function(scr, ws, initonly)
     {
-        if (!ws) {
+        if (!ws || !domobj.offsetWidth) {
             return;
         }
+
+        if (window_w == domobj.offsetWidth && window_h == domobj.offsetHeight) {
+            return;
+        }
+
+        // console.log("resizing "+ window_w +","+ domobj.offsetWidth +","+ window_h +","+ domobj.offsetHeight);
 
         var colsrows = window_cols_rows();
         var rows = [];
@@ -1792,6 +1798,8 @@ function web_terminal(laycol, termid, wsurl, cb)
 
             ws.send('w' + indent(colsrows[0], 8) + indent(colsrows[1], 8))  
         }
+
+        window_w = domobj.offsetWidth, window_h = domobj.offsetHeight; 
     }
 
     //
