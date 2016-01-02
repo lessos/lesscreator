@@ -4,10 +4,6 @@ bin/lesscreator*
 
 webui/lesscreator/img/*
 webui/lesscreator/img/3d/*
-webui/lesscreator/js/angular*
-webui/lesscreator/js/jquery.src.js
-webui/lesscreator/js/zepto.src.js
-webui/lesscreator/js/socket.io.js
 
 misc/bash/bashrc.cd
 
