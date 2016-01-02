@@ -202,17 +202,16 @@ l9rTab.Switch = function(urid)
 
         if (item.data) {
 
-            $("#lctab-bar"+ item.target).empty();
-            $("#lctab-body"+ item.target).append(item.data);
-
             l9rTab.cols[item.target].urid = urid;
             l9rTab.cols[item.target].type = item.type;
             l9rTab.cols[item.target].data = item.data;
 
             l9rTab.cols[item.target].editor = null;
 
-            $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
+            $("#lctab-bar"+ item.target).empty();
+            $("#lctab-body"+ item.target).append("<div id=\"tbitem-"+ urid +"\" class=\"l9r-tab-body-item-html\">"+ item.data +"</div>");
 
+            $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
 
             l9rLayout.Resize();
 
@@ -235,12 +234,12 @@ l9rTab.Switch = function(urid)
                     l9rTab.TabletTitleImage(urid);
                     l9rTab.cols[item.target].urid = urid;
                     l9rTab.cols[item.target].type = item.type;
-                    l9rTab.cols[item.target].data = "<div id=\"tbitem-"+ urid +"\" class=\"l9r-tab-body-item-html\">"+ l9rTab.pool[urid].data +"</div>";
+                    l9rTab.cols[item.target].data = l9rTab.pool[urid].data;
 
                     l9rTab.cols[item.target].editor = null;
 
                     $("#lctab-bar"+ item.target).hide();
-                    $("#lctab-body"+ item.target).append(l9rTab.cols[item.target].data);
+                    $("#lctab-body"+ item.target).append("<div id=\"tbitem-"+ urid +"\" class=\"l9r-tab-body-item-html\">"+ l9rTab.pool[urid].data +"</div>");
                     $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
 
 
@@ -282,12 +281,12 @@ l9rTab.Switch = function(urid)
                     l9rTab.TabletTitleImage(urid);
                     l9rTab.cols[item.target].urid = urid;                    
                     l9rTab.cols[item.target].type = item.type;
-                    l9rTab.cols[item.target].data = "<div id=\"tbitem-"+ urid +"\" class=\"l9r-tab-body-item-html\">"+ rsp +"</div>";
+                    l9rTab.cols[item.target].data = rsp;
 
                     l9rTab.cols[item.target].editor = null;
 
                     $("#lctab-bar"+ item.target).hide();
-                    $("#lctab-body"+ item.target).append(l9rTab.cols[item.target].data);
+                    $("#lctab-body"+ item.target).append("<div id=\"tbitem-"+ urid +"\" class=\"l9r-tab-body-item-html\">"+ rsp +"</div>");
 
                     $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
 
@@ -301,7 +300,7 @@ l9rTab.Switch = function(urid)
             });
 
         } else {
-            
+
             l9rTab.TabletTitleImage(urid);
             l9rTab.cols[item.target].urid = urid;
             l9rTab.cols[item.target].type = item.type;
@@ -310,7 +309,7 @@ l9rTab.Switch = function(urid)
             l9rTab.cols[item.target].editor = null;
             
             $("#lctab-bar"+ item.target).empty();
-            $("#lctab-body"+ item.target).append(item.data);
+            $("#lctab-body"+ item.target).append("<div id=\"tbitem-"+ urid +"\" class=\"l9r-tab-body-item-html\">"+ item.data +"</div>");
 
             $("#lctab-body"+ item.target).addClass("lctab-body-bg-light");
 
