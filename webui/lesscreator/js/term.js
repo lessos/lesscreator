@@ -1884,12 +1884,11 @@ function web_terminal(laycol, termid, wsurl, cb)
             termid  : termid,
             prefix  : prefix,
         };
-
-        // l9rWebTerminal.openEventHandler();
     }
 
     domobj.onmousedown = function(ev) {
         _active_refresh();
+        l9rWebTerminal.openEventHandler();
     }
 
     // domobj.mouseleave = function(ev) {
@@ -1962,8 +1961,6 @@ function web_terminal(laycol, termid, wsurl, cb)
         l9rWebTerminal.stopEventHandler();
         webterm_ws.close();
     }
-
-    // _active_refresh();
 
     return this;
 }
