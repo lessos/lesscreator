@@ -2,7 +2,7 @@ var l9r = {
     _version : "0.0.1",
     base     : "/lesscreator/",
     basetpl  : "/lesscreator/-/",
-    basecm   : "~/codemirror/4.11.0/",
+    basecm   : "~/codemirror/5/",
 }
 
 l9r.Version = function()
@@ -20,7 +20,7 @@ l9r.Boot = function()
     seajs.config({
         base: l9r.base,
         alias: {
-            cm: l9r.basecm +"lib/codemirror.js?v={{.version}}",
+            // cm: l9r.basecm +"lib/codemirror.js?v={{.version}}",
             ep: "~/lessui/js/eventproxy.js?v={{.version}}"
         },
     });
@@ -56,8 +56,8 @@ l9r.Boot = function()
             "~/lesscreator/js/gen.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/editor.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/db.js?v={{.version}}&_="+ l9r.Version(),
-            l9r.basecm +"lib/codemirror.js?v={{.version}}",
-            l9r.basecm +"lib/codemirror.css?v={{.version}}",
+            l9r.basecm +"lib/codemirror.js?v={{.version}}&_="+ l9r.Version(),
+            l9r.basecm +"lib/codemirror.css?v={{.version}}&_="+ l9r.Version(),
             
             "~/twitter-bootstrap/3.3/css/bootstrap.min.css?v={{.version}}",
 
@@ -117,16 +117,6 @@ l9r.bootDepends = function()
             "~/lesscreator/js/project.fs.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/ext.js?v={{.version}}&_="+ l9r.Version(),
 
-            // "~/lesscreator/js/term.js?v={{.version}}&_="+ l9r.Version(),
-
-            // "~/lesscreator/js/pyte/js/charsets.js",
-            // "~/lesscreator/js/pyte/js/control.js",
-            // "~/lesscreator/js/pyte/js/escape.js",
-            // "~/lesscreator/js/pyte/js/graphics.js",
-            // "~/lesscreator/js/pyte/js/modes.js",
-            // "~/lesscreator/js/pyte/js/screens.js",
-            // "~/lesscreator/js/pyte/js/streams.js",
-
             // "~/codemirror/3.21.0/codemirror.min.css?v={{.version}}",
             // "~/codemirror/3.21.0/addon/hint/show-hint.min.css?v={{.version}}",
             // "~/codemirror/3.21.0/addon/mode/loadmode.min.js?v={{.version}}",
@@ -143,30 +133,31 @@ l9r.bootDepends = function()
             // "~/codemirror/3.21.0/addon/dialog/dialog.min.css?v={{.version}}",
             // "~/codemirror/3.21.0/theme/monokai.min.css?v={{.version}}",
 
-            l9r.basecm +"keymap/vim.js?v={{.version}}",
-            l9r.basecm +"keymap/emacs.js?v={{.version}}",
+            // TODO
+            // l9r.basecm +"keymap/vim.js?v={{.version}}",
+            // l9r.basecm +"keymap/emacs.js?v={{.version}}",
             l9r.basecm +"keymap/sublime.js?v={{.version}}",
 
-            l9r.basecm +"addon/hint/show-hint.css?v={{.version}}",
-            // l9r.basecm +"addon/mode/loadmode.js?v={{.version}}",
-            l9r.basecm +"addon/mode/simple.js?v={{.version}}",
-            l9r.basecm +"addon/search/searchcursor.js?v={{.version}}",
-            l9r.basecm +"addon/fold/foldcode.js?v={{.version}}",
-            l9r.basecm +"addon/fold/foldgutter.js?v={{.version}}",
-            l9r.basecm +"addon/fold/brace-fold.js?v={{.version}}",
-            l9r.basecm +"addon/hint/show-hint.js?v={{.version}}",
-            l9r.basecm +"addon/hint/javascript-hint.js?v={{.version}}",            
-            l9r.basecm +"addon/dialog/dialog.js?v={{.version}}",
-            l9r.basecm +"addon/dialog/dialog.css?v={{.version}}",
-            l9r.basecm +"addon/selection/active-line.js?v={{.version}}",
-            l9r.basecm +"addon/display/rulers.js?v={{.version}}",
-            l9r.basecm +"addon/edit/closetag.js?v={{.version}}",
-            l9r.basecm +"addon/edit/closebrackets.js?v={{.version}}",
-            l9r.basecm +"addon/comment/comment.js?v={{.version}}",
+            // l9r.basecm +"addon/hint/show-hint.css?v={{.version}}",
+            // l9r.basecm +"addon/mode/loadmode.js?v={{.version}}&_="+ l9r.Version(),
+            l9r.basecm +"addon/mode/simple.js?v={{.version}}&_="+ l9r.Version(),
+            // l9r.basecm +"addon/search/searchcursor.js?v={{.version}}",
+            // l9r.basecm +"addon/fold/foldcode.js?v={{.version}}",
+            // l9r.basecm +"addon/fold/foldgutter.js?v={{.version}}",
+            // l9r.basecm +"addon/fold/brace-fold.js?v={{.version}}",
+            // l9r.basecm +"addon/hint/show-hint.js?v={{.version}}",
+            // l9r.basecm +"addon/hint/javascript-hint.js?v={{.version}}",            
+            // l9r.basecm +"addon/dialog/dialog.js?v={{.version}}",
+            // l9r.basecm +"addon/dialog/dialog.css?v={{.version}}",
+            // l9r.basecm +"addon/selection/active-line.js?v={{.version}}",
+            // l9r.basecm +"addon/display/rulers.js?v={{.version}}",
+            // l9r.basecm +"addon/edit/closetag.js?v={{.version}}",
+            // l9r.basecm +"addon/edit/closebrackets.js?v={{.version}}",
+            // l9r.basecm +"addon/comment/comment.js?v={{.version}}",
 
-            l9r.basecm +"mode/all.min.js?v={{.version}}",
+            l9r.basecm +"mode/modes.js?v={{.version}}&_="+ l9r.Version(),
 
-            l9r.basecm +"theme/monokai.css?v={{.version}}",
+            l9r.basecm +"theme/monokai.css?v={{.version}}&_="+ l9r.Version(),
             
         ], function() {
 

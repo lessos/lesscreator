@@ -155,7 +155,7 @@ l9rTab.Switch = function(urid)
     //     });
     // }
 
-    if (l9rTab.cols[item.target].urid && l9rTab.cols[item.target].urid != urid) {
+    if (l9rTab.cols[item.target].urid) {
         
         switch (l9rTab.cols[item.target].type) {
 
@@ -182,10 +182,7 @@ l9rTab.Switch = function(urid)
             //
         }
 
-        l9rTab.cols[item.target].urid = 0;
-
-    } else {
-        $("#lctab-body"+ item.target).find(".CodeMirror").remove();
+        // l9rTab.cols[item.target].urid = 0;
     }
 
     l9rTab.TabletTitle(urid, true);

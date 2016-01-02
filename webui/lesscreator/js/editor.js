@@ -21,7 +21,7 @@ var l9rEditor = {
         'TmpUrid'       : null,
     },
     isInited   : false,
-    TabDefault : "lctab-default",
+    active_cm  : "main",
     // SaveAPI    : "ws://"+window.location.hostname+":9531/lesscreator/index/ws",
 };
 
@@ -114,6 +114,7 @@ l9rEditor.TabletOpen = function(urid, callback)
             l9rData.Put("files", entry, function(ret) {
                 
                 if (ret) {
+                    console.log("put.indexeded: "+ urid);
                     // $("#lctab-bar"+ item.target).empty();
                     // $("#lctab-body"+ item.target).empty();
 
@@ -269,6 +270,8 @@ l9rEditor.LoadInstance = function(entry)
         l9rEditor.isInited = true;
     }
 
+    
+
     // TODO
     // $("#lctab-body"+ item.target).empty();
 
@@ -279,58 +282,54 @@ l9rEditor.LoadInstance = function(entry)
     //     l9r.basecm +"mode/"+ mode +"/"+ mode +".js",
     // ], function() {
 
-    //     return;
+
+    l9rEditor.active_cm = item.target;
 
     if (l9rTab.cols[item.target].editor) {
 
-        l9rTab.cols[item.target].editor.setValue(src);
+        l9rTab.cols[item.target].editor.off("change", l9rEditor.Changed);
 
-        l9rTab.cols[item.target].editor.setOption({
-            "mode": mode,
-            "extraKeys": {
-                "Ctrl-S" : function() {
-                    l9rEditor.EntrySave({urid: entry.id});
-                },
-            },
-        });
+        l9rTab.cols[item.target].editor.setOption("mode", mode);
+        l9rTab.cols[item.target].editor.setValue(src);
 
     } else {
 
-    l9rTab.cols[item.target].editor = CodeMirror(
-        document.getElementById("lctab-body"+ item.target), {
-        
-        value         : src,
-        lineNumbers   : true,
-        matchBrackets : true,
-        undoDepth     : 1000,
-        mode          : mode,
-        indentUnit    : l9rEditor.Config.tabSize,
-        tabSize       : l9rEditor.Config.tabSize,
-        theme         : l9rEditor.Config.theme,
-        smartIndent   : l9rEditor.Config.smartIndent,
-        lineWrapping  : l9rEditor.Config.lineWrapping,
-        foldGutter    : l9rEditor.Config.codeFolding,
-        gutters       : ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-        rulers        : [{color: "#777", column: 80, lineStyle: "dashed"}],
-        autoCloseTags : true,
-        autoCloseBrackets       : true,
-        showCursorWhenSelecting : true,
-        styleActiveLine         : true,        
-        extraKeys : {
-            Tab : function(cm) {
-                if (l9rEditor.Config.tabs2spaces) {
-                    var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-                    cm.replaceSelection(spaces, "end", "+input");
+        l9rTab.cols[item.target].editor = CodeMirror(
+            document.getElementById("lctab-body"+ item.target), {
+
+            value         : src,
+            lineNumbers   : true,
+            matchBrackets : true,
+            undoDepth     : 1000,
+            mode          : mode,
+            indentUnit    : l9rEditor.Config.tabSize,
+            tabSize       : l9rEditor.Config.tabSize,
+            theme         : l9rEditor.Config.theme,
+            smartIndent   : l9rEditor.Config.smartIndent,
+            lineWrapping  : l9rEditor.Config.lineWrapping,
+            foldGutter    : l9rEditor.Config.codeFolding,
+            gutters       : ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+            rulers        : [{color: "#777", column: 80, lineStyle: "dashed"}],
+            autoCloseTags : true,
+            autoCloseBrackets       : true,
+            showCursorWhenSelecting : true,
+            styleActiveLine         : true,        
+            extraKeys : {
+                Tab : function(cm) {
+                    if (l9rEditor.Config.tabs2spaces) {
+                        var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+                        cm.replaceSelection(spaces, "end", "+input");
+                    }
+                },
+                "Shift-Space" : "autocomplete",
+                "Ctrl-S" : function() {
+                    l9rEditor.SaveCurrent();
                 }
-            },
-            "Shift-Space" : "autocomplete",
-            "Ctrl-S" : function() {
-                l9rEditor.EntrySave({urid: entry.id});
             }
-        }
-    });
+        });
     }
 
+    // auto load modes
     // CodeMirror.modeURL = l9r.basecm +"mode/%N/%N.js";
     // CodeMirror.autoLoadMode(l9rTab.cols[item.target].editor, mode);
 
@@ -342,40 +341,38 @@ l9rEditor.LoadInstance = function(entry)
         l9rTab.cols[item.target].editor.setOption("keyMap", "sublime");
     }
 
-    l9rTab.cols[item.target].editor.on("change", function(cm) {
-        l9rEditor.Changed(entry.id);
-    });
+    l9rTab.cols[item.target].editor.on("change", l9rEditor.Changed);
 
-    CodeMirror.commands.find = function(cm) {
-        l9rEditor.Search();
-    };
+    // CodeMirror.commands.find = function(cm) {
+    //     l9rEditor.Search();
+    // };
 
-    CodeMirror.commands.autocomplete = function(cm) {
-        CodeMirror.showHint(cm, CodeMirror.hint.javascript);
-    }
+    // CodeMirror.commands.autocomplete = function(cm) {
+    //     CodeMirror.showHint(cm, CodeMirror.hint.javascript);
+    // }
 
     setTimeout(l9rLayout.Resize, 200);
 
     // });
 }
 
-
-l9rEditor.Changed = function(urid)
+l9rEditor.Changed = function()
 {
-    //console.log("l9rEditor.Changed:"+ urid);
+    console.log("ADFASD");
 
-    if (!l9rTab.pool[urid]) {
-        return;
-    }
-    var item = l9rTab.pool[urid];
-
-    if (urid != l9rTab.cols[item.target].urid) {
+    var citem = l9rTab.cols[l9rEditor.active_cm];
+    if (!citem || !citem.urid) {
         return;
     }
 
-    l9rData.Get("files", urid, function(entry) {
+    var item = l9rTab.pool[citem.urid];
+    if (!item) {
+        return;
+    }
+
+    l9rData.Get("files", citem.urid, function(entry) {
                         
-        if (!entry || entry.id != urid) {
+        if (!entry || entry.id != citem.urid) {
             return;
         }
 
@@ -388,13 +385,13 @@ l9rEditor.Changed = function(urid)
         });
     });
     
-    $("#pgtab"+ urid +" .chg").show();
-    $("#pgtab"+ urid +" .pgtabtitle").addClass("chglight");
+    $("#pgtab"+ citem.urid +" .chg").show();
+    $("#pgtab"+ citem.urid +" .pgtabtitle").addClass("chglight");
 }
 
 l9rEditor.SaveCurrent = function()
 {
-    l9rEditor.EntrySave({urid: l9rTab.cols[l9rEditor.TabDefault].urid});
+    l9rEditor.EntrySave({urid: l9rTab.cols[l9rEditor.active_cm].urid});
 }
 
 l9rEditor.EntrySave = function(options)
@@ -412,6 +409,8 @@ l9rEditor.EntrySave = function(options)
     if (options.urid === undefined) {
         return;
     }
+
+    // console.log("l9rEditor.EntrySave: "+ options.urid);
 
     l9rData.Get("files", options.urid, function(ret) {
 
@@ -712,13 +711,13 @@ l9rEditor.IsSaved = function(urid, cb)
 
 l9rEditor.HookOnBeforeUnload = function()
 {
-    if (l9rTab.cols[l9rEditor.TabDefault].editor != null 
-        && l9rTab.cols[l9rEditor.TabDefault].urid == l9rEditor.Config.TmpUrid) {
+    if (l9rTab.cols[l9rEditor.active_cm].editor != null 
+        && l9rTab.cols[l9rEditor.active_cm].urid == l9rEditor.Config.TmpUrid) {
         
-        var prevEditorScrollInfo = l9rTab.cols[l9rEditor.TabDefault].editor.getScrollInfo();
-        var prevEditorCursorInfo = l9rTab.cols[l9rEditor.TabDefault].editor.getCursor();
+        var prevEditorScrollInfo = l9rTab.cols[l9rEditor.active_cm].editor.getScrollInfo();
+        var prevEditorCursorInfo = l9rTab.cols[l9rEditor.active_cm].editor.getCursor();
 
-        l9rData.Get("files", l9rTab.cols[l9rEditor.TabDefault].urid, function(prevEntry) {
+        l9rData.Get("files", l9rTab.cols[l9rEditor.active_cm].urid, function(prevEntry) {
 
             if (!prevEntry) {
                 return;
@@ -763,33 +762,34 @@ l9rEditor.ConfigSet = function(key, val)
 
 l9rEditor.Undo = function()
 {
-    if (!l9rTab.cols[l9rEditor.TabDefault].editor) {
+    if (!l9rTab.cols[l9rEditor.active_cm].editor) {
         return;
     }
 
-    l9rTab.cols[l9rEditor.TabDefault].editor.undo();
+    l9rTab.cols[l9rEditor.active_cm].editor.undo();
 }
 
 l9rEditor.Redo = function()
 {
-    if (!l9rTab.cols[l9rEditor.TabDefault].editor) {
+    if (!l9rTab.cols[l9rEditor.active_cm].editor) {
         return;
     }
     
-    l9rTab.cols[l9rEditor.TabDefault].editor.redo();
+    l9rTab.cols[l9rEditor.active_cm].editor.redo();
 }
 
 l9rEditor.Theme = function(theme)
 {
-    if (l9rTab.cols[l9rEditor.TabDefault].editor) {
+    if (l9rTab.cols[l9rEditor.active_cm].editor) {
 
         // console.log("~/codemirror/3.21.0/theme/"+ theme +".min.css");
-        seajs.use("~/codemirror/3.21.0/theme/"+ theme +".min.css", function() {
+        // seajs.use("~/codemirror/3.21.0/theme/"+ theme +".min.css", function() {
+        seajs.use("~/codemirror/5/theme/"+ theme +".min.css", function() {
             
             l9rEditor.Config.theme = theme;
             l4iCookie.SetByDay("editor_theme", theme, 365);
 
-            l9rTab.cols[l9rEditor.TabDefault].editor.setOption("theme", theme);
+            l9rTab.cols[l9rEditor.active_cm].editor.setOption("theme", theme);
 
             l9rLayout.Resize();
         });        
@@ -833,9 +833,9 @@ l9rEditor.SearchNext = function(rev)
     if (search_state_query != query) {
         l9rEditor.SearchClean();
         
-        for (var cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
+        for (var cursor = l9rTab.cols[l9rEditor.active_cm].editor.getSearchCursor(query, null, matchcase); cursor.findNext();) {
 
-            search_state_marked.push(l9rTab.cols[l9rEditor.TabDefault].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
+            search_state_marked.push(l9rTab.cols[l9rEditor.active_cm].editor.markText(cursor.from(), cursor.to(), "CodeMirror-searching"));
             
             search_state_posFrom = cursor.from();
             search_state_posTo = cursor.to();
@@ -844,22 +844,22 @@ l9rEditor.SearchNext = function(rev)
         search_state_query = query;
     }
     
-    var cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(
+    var cursor = l9rTab.cols[l9rEditor.active_cm].editor.getSearchCursor(
         search_state_query, 
         rev ? search_state_posFrom : search_state_posTo,
         matchcase);
     
     if (!cursor.find(rev)) {
-        cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(
+        cursor = l9rTab.cols[l9rEditor.active_cm].editor.getSearchCursor(
             search_state_query, 
-            rev ? {line: l9rTab.cols[l9rEditor.TabDefault].editor.lineCount() - 1} : {line: 0, ch: 0},
+            rev ? {line: l9rTab.cols[l9rEditor.active_cm].editor.lineCount() - 1} : {line: 0, ch: 0},
             matchcase);
         if (!cursor.find(rev)) {
             return;
         }
     }
     
-    l9rTab.cols[l9rEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
+    l9rTab.cols[l9rEditor.active_cm].editor.setSelection(cursor.from(), cursor.to());
     search_state_posFrom = cursor.from(); 
     search_state_posTo = cursor.to();
 }
@@ -879,9 +879,9 @@ l9rEditor.SearchReplace = function(all)
     
     if (all) {
 
-        for (var cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
+        for (var cursor = l9rTab.cols[l9rEditor.active_cm].editor.getSearchCursor(search_state_query, null, matchcase); cursor.findNext();) {
             if (typeof search_state_query != "string") {
-                var match = l9rTab.cols[l9rEditor.TabDefault].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
+                var match = l9rTab.cols[l9rEditor.active_cm].editor.getRange(cursor.from(), cursor.to()).match(search_state_query);
                 cursor.replace(text.replace(/\$(\d)/, function(w, i) {return match[i];}));
             } else {
                 cursor.replace(text);
@@ -890,16 +890,16 @@ l9rEditor.SearchReplace = function(all)
 
     } else {
           
-        var cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(search_state_query, l9rTab.cols[l9rEditor.TabDefault].editor.getCursor(), matchcase);
+        var cursor = l9rTab.cols[l9rEditor.active_cm].editor.getSearchCursor(search_state_query, l9rTab.cols[l9rEditor.active_cm].editor.getCursor(), matchcase);
 
         var start = cursor.from(), match;
         if (!(match = cursor.findNext())) {
-            cursor = l9rTab.cols[l9rEditor.TabDefault].editor.getSearchCursor(search_state_query, null, matchcase);
+            cursor = l9rTab.cols[l9rEditor.active_cm].editor.getSearchCursor(search_state_query, null, matchcase);
             if (!(match = cursor.findNext()) ||
                 (cursor.from().line == start.line && cursor.from().ch == start.ch)) {return;
             }
         }
-        l9rTab.cols[l9rEditor.TabDefault].editor.setSelection(cursor.from(), cursor.to());
+        l9rTab.cols[l9rEditor.active_cm].editor.setSelection(cursor.from(), cursor.to());
         
         cursor.replace(typeof search_state_query == "string" ? text :
             text.replace(/\$(\d)/, function(w, i) {return match[i];}));
