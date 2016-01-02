@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <title>{{T . "Creator"}}</title>
   <script src="{{HttpSrvBasePath "~/lessui/js/sea.js"}}"></script>
-  <script src="{{HttpSrvBasePath "~/lesscreator/js/main.js"}}"></script>  
+  <script src="{{HttpSrvBasePath "~/creator/js/main.js"}}"></script>  
   <link href="{{HttpSrvBasePath "~/lessui/less/lessui.less"}}" rel="stylesheet/less" />
-  <link href="{{HttpSrvBasePath "~/lesscreator/less/defx.less"}}" rel="stylesheet/less" />
+  <link href="{{HttpSrvBasePath "~/creator/less/defx.less"}}" rel="stylesheet/less" />
   <script src="{{HttpSrvBasePath "~/lessui/less/less.min.js"}}"></script>
-  <link href="{{HttpSrvBasePath "~/lesscreator/img/favicon.ico"}}" rel="shortcut icon" type="image/x-icon" />
+  <link href="{{HttpSrvBasePath "~/creator/img/favicon.ico"}}" rel="shortcut icon" type="image/x-icon" />
   <script type="text/javascript">
     var pandora_endpoint = "{{.pandora_endpoint}}/v1";
     var pandora_ext = "{{.pandora_endpoint}}/ext";

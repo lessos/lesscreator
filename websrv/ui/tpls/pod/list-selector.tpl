@@ -44,7 +44,7 @@
 <a class="pod-item" href="#pod/{[=v.meta.id]}" onclick="l9rPod.Open('{[=v.meta.id]}')">
 <table>
   <tr>
-    <td width="40px"><img class="licon" src="/lesscreator/~/lesscreator/img/gen/box01.png" /></td>
+    <td width="40px"><img class="licon" src="/lesscreator/~/creator/img/gen/box01.png" /></td>
     <td>
         <div class="title">{[=v.meta.name]}</div>
         <div class="spec" label="TODO">

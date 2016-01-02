@@ -53,7 +53,7 @@
 <a class="pod-item" href="#pod/new" onclick="l9rPod.PpNew()">
 <table>
   <tr>
-    <td width="40px"><img class="licon" src="/lesscreator/~/lesscreator/img/gen/box01.png" /></td>
+    <td width="40px"><img class="licon" src="/lesscreator/~/creator/img/gen/box01.png" /></td>
     <td>
         <div class="title">Create Pod Instance</div>
         <div class="spec">less Creator running in the Containerized environment, a Pod is a group of containers engined by Docker

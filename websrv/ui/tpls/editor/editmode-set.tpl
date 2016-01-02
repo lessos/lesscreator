@@ -17,7 +17,7 @@
 <tr>
   {[~it.list :v]}
   <td>
-    <img class="itemimg" src="/lesscreator/~/lesscreator/img/editor/mode-{[=v.id]}-128.png">
+    <img class="itemimg" src="/lesscreator/~/creator/img/editor/mode-{[=v.id]}-128.png">
     <label class="radio">
       <input type="radio" name="cfg_editor_mode" value="{[=v.id]}" 
         onclick="l9rEditor.ConfigEditModeSave('{[=v.id]}')" 

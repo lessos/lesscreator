@@ -17,7 +17,7 @@
 {[~it.items :v]}
 <tr id="projidx-{[=v.pid]}">
   <td valign="middle" width="18">
-    <img src="/lesscreator/~/lesscreator/img/app-t3-16.png" align="absmiddle" />
+    <img src="/lesscreator/~/creator/img/app-t3-16.png" align="absmiddle" />
   </td>
   <td>
     <strong><a href="#start-open" class="proj-start-open" path="{[=v.path]}">{[=v.summary]}</a></strong>
@@ -36,7 +36,7 @@
 <script id="l9rproj-startfs-tpl" type="text/html">
 
 <ul class="breadcrumb" style="margin:5px 0;">
-<li><img src="/lesscreator/~/lesscreator/img/house.png" align="absmiddle" /> <a class="fs-item-dir" href="#fs-list" path="/home/action">Home</a> <span class="divider">/</span></li>
+<li><img src="/lesscreator/~/creator/img/house.png" align="absmiddle" /> <a class="fs-item-dir" href="#fs-list" path="/home/action">Home</a> <span class="divider">/</span></li>
 {[~it.navs :v]}
   <li><a class="fs-item-dir" href="#fs-list" path="{[=v.path]}">{[=v.name]}</a> <span class="divider">/</span></li>
 {[~]}
@@ -47,9 +47,9 @@
 <tr>
   <td valign="middle" width="20">
     {[ if (v.name == "lcproject.json") { ]}
-      <img src="/lesscreator/~/lesscreator/img/app-t3-16.png" align="absmiddle" />
+      <img src="/lesscreator/~/creator/img/app-t3-16.png" align="absmiddle" />
     {[ } else if (v.isdir) { ]}
-      <img src="/lesscreator/~/lesscreator/img/folder.png" align="absmiddle" />
+      <img src="/lesscreator/~/creator/img/folder.png" align="absmiddle" />
     {[ } ]}
   </td>
   <td>

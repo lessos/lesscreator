@@ -6,10 +6,10 @@
 
         <div id="lcx-start-entry">
             <div>
-                <img class="lse-logo" src="/lesscreator/~/lesscreator/img/gen/creator-white-96.png" />
+                <img class="lse-logo" src="/lesscreator/~/creator/img/gen/creator-white-96.png" />
             </div>
             <div class="lcc-box-entered">
-                <img class="lse-logo-ar" src="/lesscreator/~/lesscreator/img/gen/arrow-b2-white-32.png" />
+                <img class="lse-logo-ar" src="/lesscreator/~/creator/img/gen/arrow-b2-white-32.png" />
             </div>
         </div>
 
@@ -17,7 +17,7 @@
 
             <div class="lc-head">
                 <div class="lc-logo">
-                    <img src="/lesscreator/~/lesscreator/img/gen/creator-white-96.png">
+                    <img src="/lesscreator/~/creator/img/gen/creator-white-96.png">
                 </div>
                 <div class="lc-title">less Creator <em id="lcbind-lc-version">{{.lc_version}}</em></div>
                 <div class="lc-close">&times;</div>
@@ -35,7 +35,7 @@
                     
                     <div class="less-tile flatui-bg-peter-river" onclick="l9rProj.New()">
                         <div class="lt-content icon">
-                            <img src="/lesscreator/~/lesscreator/img/gen/pen0-48.png">
+                            <img src="/lesscreator/~/creator/img/gen/pen0-48.png">
                         </div>
                         <div class="lt-status">
                             <div class="lts-name">{{T . "New Project"}}</div>
@@ -44,7 +44,7 @@
 
                     <div class="less-tile flatui-bg-nephritis" onclick="l9rProj.NavOpen()">
                         <div class="lt-content icon">
-                            <img src="/lesscreator/~/lesscreator/img/gen/pen0-48.png">
+                            <img src="/lesscreator/~/creator/img/gen/pen0-48.png">
                         </div>
                         <div class="lt-status">
                             <div class="lts-name">{{T . "Open Project"}}</div>
@@ -85,12 +85,12 @@
             </div><ul class="lcnav-tile-group" style="margin:0">
                 <li class="">
                     <a href="javascript:l9rPod.EntryStatus()" title="Pod Status">
-                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/box-32.png)"></i>
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/creator/img/std/box-32.png)"></i>
                     </a>
                 </li>
                 <li class="">
                     <a href="javascript:l9rPod.WebTermOpen()" title="Web Terminal">
-                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/term-32.png)"></i>
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/creator/img/std/term-32.png)"></i>
                     </a>
                 </li>
             </ul>
@@ -103,17 +103,17 @@
             </div><ul class="lcnav-tile-group" style="margin:0">
                 <li class="">
                     <a href="javascript:l9rProj.Set()" title="Project Settings">
-                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/set2-32.png)"></i>
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/creator/img/std/set2-32.png)"></i>
                     </a>
                 </li>
                 <li class="">
                     <a href="javascript:lcExt.ListRuntime()" title="Runtime, Dependent packages">
-                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/ext-32.png)"></i>
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/creator/img/std/ext-32.png)"></i>
                     </a>
                 </li>
                 <!-- <li class="">
                     <a href="javascript:l9rProj.Run()" title="Run this Project">
-                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/lesscreator/img/std/play-32.png)"></i>
+                    <i class="lcico32-white" style="background-image:url(/lesscreator/~/creator/img/std/play-32.png)"></i>
                     </a>
                 </li> -->
             </ul>
@@ -171,7 +171,7 @@
 </div>
 
 
-<audio src="/lesscreator/~/lesscreator/media/bell.ogg" id="bell" style="display: none;"></audio>
+<audio src="/lesscreator/~/creator/media/bell.ogg" id="bell" style="display: none;"></audio>
 
 <div id="lc_editor_tools" style="display:none">
     <script type="text/text" id="lc_editor_tools"></script>
@@ -199,13 +199,13 @@
         
         <!-- <div class="navline"></div>
         <div class="let-menu-item">
-            <div class="ico"><img src="/lesscreator/~/lesscreator/img/disk.png" align="absmiddle" /></div>
+            <div class="ico"><img src="/lesscreator/~/creator/img/disk.png" align="absmiddle" /></div>
             <div class="ctn"><input onclick="l9rEditor.ConfigSet('editor_autosave')" type="checkbox" id="editor_autosave" name="editor_autosave" value="on" /> Auto Saving</div>
         </div> -->
 
         <div class="navline"></div>
         <div class="let-menu-item" onclick="l9rEditor.ConfigEditMode()">
-            <div class="ico lc-editor-editmode"><img src="/lesscreator/~/lesscreator/img/editor/mode-win-48.png" class="_h5c_icon" /></div>
+            <div class="ico lc-editor-editmode"><img src="/lesscreator/~/creator/img/editor/mode-win-48.png" class="_h5c_icon" /></div>
             <div class="ctn">{{T . "Editor Mode"}}</div>
         </div>
 

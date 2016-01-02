@@ -27,7 +27,7 @@
 <a class="j4soeo" href="#project-new" onclick="l9rProj.New()">
 <table>
     <tr>
-        <td width="64px"><img src="/lesscreator/~/lesscreator/img/proj/proj-new0.png" class="icon"></td>
+        <td width="64px"><img src="/lesscreator/~/creator/img/proj/proj-new0.png" class="icon"></td>
         <td >
             <div class="title">{%New Project%}</div>
             <div class="desc">{%Start a project in a new directory%}</div>
@@ -42,7 +42,7 @@
 <a class="j4soeo" href="#project-recent" onclick="l9rProj.NavOpen()">
 <table>
     <tr class="line">
-        <td width="64px"><img src="/lesscreator/~/lesscreator/img/proj/proj-new1.png" class="icon"></td>
+        <td width="64px"><img src="/lesscreator/~/creator/img/proj/proj-new1.png" class="icon"></td>
         <td >
             <div class="title">{%Existing Directory%}</div>
             <div class="desc">{%Open a project from an existing working directory%}</div>
@@ -57,7 +57,7 @@
 <a class="j4soeo" href="#project-vc" onclick="l9rProj.NavVerCtrl()">
 <table>
     <tr class="line">
-        <td width="64px"><img src="/lesscreator/~/lesscreator/img/vs/git-100.png" class="icon"></td>
+        <td width="64px"><img src="/lesscreator/~/creator/img/vs/git-100.png" class="icon"></td>
         <td >
             <div class="title">{%Version Control%}</div>
             <div class="desc">{%Checkout a project from a version control repository%}</div> 
