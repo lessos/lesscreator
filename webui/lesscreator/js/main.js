@@ -2,7 +2,6 @@ var l9r = {
     _version : "0.0.1",
     base     : "/lesscreator/",
     basetpl  : "/lesscreator/-/",
-    basecm   : "~/codemirror/5/",
 }
 
 l9r.Version = function()
@@ -34,42 +33,36 @@ l9r.Boot = function()
         var version = BrowserDetect.version;
         var OS      = BrowserDetect.OS;
 
-        // // HTTP/2 protocol
-        // if (!((browser == 'Chrome' && version >= 41)
-        //     || (browser == 'Firefox' && version >= 36.0) 
-        //     || (browser == 'Safari' && version >= 9.0 && OS == 'Mac'))) {
-        //     $('body').load(l9r.base + "error/browser");
-        //     return;
-        // }
-
-        // debug
-        if (!((browser == 'Chrome' && version >= 27)
+        // HTTP/2 protocol
+        if (!((browser == 'Chrome' && version >= 41)
             || (browser == 'Firefox' && version >= 36.0) 
             || (browser == 'Safari' && version >= 9.0 && OS == 'Mac'))) {
             $('body').load(l9r.base + "error/browser");
             return;
         }
 
+        //
         seajs.use([
             "~/lessui/js/lessui.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/c.js?v={{.version}}",
             "~/lesscreator/js/gen.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/editor.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/db.js?v={{.version}}&_="+ l9r.Version(),
-            l9r.basecm +"lib/codemirror.js?v={{.version}}&_="+ l9r.Version(),
-            l9r.basecm +"lib/codemirror.css?v={{.version}}&_="+ l9r.Version(),
             
-            "~/twitter-bootstrap/3.3/css/bootstrap.min.css?v={{.version}}",
+            "~/cm/5/lib/codemirror.js?v={{.version}}",
+            "~/cm/5/lib/codemirror.css?v={{.version}}",
+            
+            "~/bs/3.3/css/bootstrap.min.css?v={{.version}}",
 
             // DEV
-            // "~/lessui/less/lessui.less",
-            // "~/lesscreator/less/defx.less",
-            // "~/lessui/less/less.min.js?v={{.version}}",
+            // "lessui/less/lessui.less",
+            // "lesscreator/less/defx.less",
+            // "lessui/less/less.min.js?v={{.version}}",
             // PUB
-            // "~/lessui/css/lessui.min.css?v={{.version}}",
-            // "~/lesscreator/css/defx.css?v={{.version}}",
+            // "lessui/css/lessui.min.css?v={{.version}}",
+            // "lesscreator/css/defx.css?v={{.version}}",
 
-            // "~/lesscreator/css/def.css?v={{.version}}",
+            // "lesscreator/css/def.css?v={{.version}}",
             "~/lessui/js/eventproxy.js?v={{.version}}",
 
             "~/lesscreator/js/term.js?v={{.version}}&_="+ l9r.Version(),
@@ -117,47 +110,30 @@ l9r.bootDepends = function()
             "~/lesscreator/js/project.fs.js?v={{.version}}&_="+ l9r.Version(),
             "~/lesscreator/js/ext.js?v={{.version}}&_="+ l9r.Version(),
 
-            // "~/codemirror/3.21.0/codemirror.min.css?v={{.version}}",
-            // "~/codemirror/3.21.0/addon/hint/show-hint.min.css?v={{.version}}",
-            // "~/codemirror/3.21.0/addon/mode/loadmode.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/addon/search/searchcursor.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/keymap/vim.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/keymap/emacs.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/addon/fold/foldcode.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/addon/fold/foldgutter.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/addon/fold/brace-fold.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/addon/hint/show-hint.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/addon/hint/javascript-hint.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/mode/all.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/addon/dialog/dialog.min.js?v={{.version}}",
-            // "~/codemirror/3.21.0/addon/dialog/dialog.min.css?v={{.version}}",
-            // "~/codemirror/3.21.0/theme/monokai.min.css?v={{.version}}",
-
             // TODO
-            // l9r.basecm +"keymap/vim.js?v={{.version}}",
-            // l9r.basecm +"keymap/emacs.js?v={{.version}}",
-            l9r.basecm +"keymap/sublime.js?v={{.version}}",
+            // "cm/5/keymap/vim.js?v={{.version}}",
+            // "cm/5/keymap/emacs.js?v={{.version}}",
+            "~/cm/5/keymap/sublime.js?v={{.version}}",
 
-            // l9r.basecm +"addon/hint/show-hint.css?v={{.version}}",
-            // l9r.basecm +"addon/mode/loadmode.js?v={{.version}}&_="+ l9r.Version(),
-            l9r.basecm +"addon/mode/simple.js?v={{.version}}&_="+ l9r.Version(),
-            // l9r.basecm +"addon/search/searchcursor.js?v={{.version}}",
-            // l9r.basecm +"addon/fold/foldcode.js?v={{.version}}",
-            // l9r.basecm +"addon/fold/foldgutter.js?v={{.version}}",
-            // l9r.basecm +"addon/fold/brace-fold.js?v={{.version}}",
-            // l9r.basecm +"addon/hint/show-hint.js?v={{.version}}",
-            // l9r.basecm +"addon/hint/javascript-hint.js?v={{.version}}",            
-            // l9r.basecm +"addon/dialog/dialog.js?v={{.version}}",
-            // l9r.basecm +"addon/dialog/dialog.css?v={{.version}}",
-            // l9r.basecm +"addon/selection/active-line.js?v={{.version}}",
-            // l9r.basecm +"addon/display/rulers.js?v={{.version}}",
-            // l9r.basecm +"addon/edit/closetag.js?v={{.version}}",
-            // l9r.basecm +"addon/edit/closebrackets.js?v={{.version}}",
-            // l9r.basecm +"addon/comment/comment.js?v={{.version}}",
+            // "cm/5/addon/hint/show-hint.css?v={{.version}}",
+            // "cm/5/addon/mode/loadmode.js?v={{.version}}&_="+ l9r.Version(),
+            "~/cm/5/addon/mode/simple.js?v={{.version}}&_="+ l9r.Version(),
+            // "cm/5/addon/search/searchcursor.js?v={{.version}}",
+            // "cm/5/addon/fold/foldcode.js?v={{.version}}",
+            // "cm/5/addon/fold/foldgutter.js?v={{.version}}",
+            // "cm/5/addon/fold/brace-fold.js?v={{.version}}",
+            // "cm/5/addon/hint/show-hint.js?v={{.version}}",
+            // "cm/5/addon/hint/javascript-hint.js?v={{.version}}",            
+            // "cm/5/addon/dialog/dialog.js?v={{.version}}",
+            // "cm/5/addon/dialog/dialog.css?v={{.version}}",
+            // "cm/5/addon/selection/active-line.js?v={{.version}}",
+            // "cm/5/addon/display/rulers.js?v={{.version}}",
+            // "cm/5/addon/edit/closetag.js?v={{.version}}",
+            // "cm/5/addon/edit/closebrackets.js?v={{.version}}",
+            // "cm/5/addon/comment/comment.js?v={{.version}}",
 
-            l9r.basecm +"mode/modes.js?v={{.version}}&_="+ l9r.Version(),
-
-            l9r.basecm +"theme/monokai.css?v={{.version}}&_="+ l9r.Version(),
+            "~/cm/5/mode/modes.js?v={{.version}}&_="+ l9r.Version(),
+            "~/cm/5/theme/monokai.css?v={{.version}}&_="+ l9r.Version(),
             
         ], function() {
 

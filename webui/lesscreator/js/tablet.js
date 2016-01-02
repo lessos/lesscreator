@@ -552,7 +552,7 @@ l9rTab.Close = function(urid, force)
 
     case 'webterm':
         l9rTab.CloseClean(urid);
-        l9rWebTerminal.Close(item.url.substr(5));
+        // l9rWebTerminal.Close(item.url.substr(5));
         break;
 
     case 'editor':
@@ -572,7 +572,7 @@ l9rTab.Close = function(urid, force)
 
                 l4iModal.Open({
                     title        : "Save changes before closing",
-                    tpluri       : l9r.base + "-/editor/changes2save.tpl",
+                    tpluri       : l9r.TemplatePath("editor/changes2save"),
                     width        : 500,
                     height       : 180,
                     data         : {urid: urid},
@@ -608,8 +608,7 @@ l9rTab.CloseClean = function(urid)
         return;
     }
 
-    var j = 0;
-    var cleanbody = false;
+    var opted = false, rp_id = 0, rp_type = null;
     for (var i in l9rTab.pool) {
 
         if (item.target != l9rTab.pool[i].target) {
@@ -623,49 +622,68 @@ l9rTab.CloseClean = function(urid)
 
         if (i == urid) {
             
+            //
             l9rData.Del("files", urid, function(rs) {
                 //console.log("del: "+ rs);
             });
 
+            //
             $('#pgtab'+ urid).hide(200, function() {
                 $('#pgtab'+ urid).remove()
             });
             delete l9rTab.pool[urid];
 
+            switch (item.type) {
+            
+            case "apidriven":
+            case "html":
+            case "webterm":
+                $("#tbitem-"+ urid).remove();
+                break;
+
+            default:
+                //
+            }
+
             if (urid != l9rTab.cols[item.target].urid) {
                 return;
             }
 
-            cleanbody = true;
+            $("#lctab-body"+ item.target).removeClass("lctab-body-bg-light");
 
-            // $("#lctab-body"+ item.target).empty();
-            // $("#lctab-bar"+ item.target).empty();
+            opted = true;
 
-            l9rTab.cols[item.target].urid = 0;
-            if (j != 0) {
+            if (rp_id != 0) {
                 break;
             }
 
         } else {            
-            j = i;            
-            if (l9rTab.cols[item.target].urid == 0) {
+
+            rp_id = i;
+            rp_type = l9rTab.pool[i].type;
+
+            if (opted) {
                 break;
             }
         }
     }
+
+    l9rTab.cols[item.target].type = null;
+    l9rTab.cols[item.target].urid = null;
     
-    if (j != 0) {
-        l9rTab.Switch(j);
-        l9rTab.cols[item.target].urid = j;
-    } else if (cleanbody)  {
-        // $("#lctab-body"+ item.target).slideUp(200, function() {
-        //     $("#lctab-body"+ item.target).empty();
-        // });
+    if (!rp_type || rp_type != "editor")  {
+
+        l9rTab.cols[item.target].editor = null;
+
         $("#lctab-bar"+ item.target).slideUp(100, function() {
             $("#lctab-bar"+ item.target).empty();
         });
-        $("#lctab-body"+ item.target).empty();
-        // $("#lctab-bar"+ item.target).empty();
+
+        $("#lctab-body"+ item.target).find(".CodeMirror").remove();
+    }
+
+    if (rp_id) {
+        l9rTab.Switch(rp_id);
     }
 
     l9rLayout.Resize();

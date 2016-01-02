@@ -114,7 +114,7 @@ l9rEditor.TabletOpen = function(urid, callback)
             l9rData.Put("files", entry, function(ret) {
                 
                 if (ret) {
-                    console.log("put.indexeded: "+ urid);
+                    // console.log("put.indexeded: "+ urid);
                     // $("#lctab-bar"+ item.target).empty();
                     // $("#lctab-body"+ item.target).empty();
 
@@ -322,9 +322,7 @@ l9rEditor.LoadInstance = function(entry)
                     }
                 },
                 "Shift-Space" : "autocomplete",
-                "Ctrl-S" : function() {
-                    l9rEditor.SaveCurrent();
-                }
+                "Ctrl-S"      : l9rEditor.SaveCurrent,
             }
         });
     }
@@ -782,10 +780,8 @@ l9rEditor.Theme = function(theme)
 {
     if (l9rTab.cols[l9rEditor.active_cm].editor) {
 
-        // console.log("~/codemirror/3.21.0/theme/"+ theme +".min.css");
-        // seajs.use("~/codemirror/3.21.0/theme/"+ theme +".min.css", function() {
-        seajs.use("~/codemirror/5/theme/"+ theme +".min.css", function() {
-            
+        seajs.use("~/cm/5/theme/"+ theme +".css", function() {
+
             l9rEditor.Config.theme = theme;
             l4iCookie.SetByDay("editor_theme", theme, 365);
 
@@ -923,7 +919,7 @@ l9rEditor.ConfigModal = function()
 {
     l4iModal.Open({
         title        : "Editor Settings",
-        tpluri       : l9r.base +"-/editor/editor-set.tpl",
+        tpluri       : l9r.TemplatePath("editor/editor-set"),
         width        : 800,
         height       : 500,
         position     : "center",

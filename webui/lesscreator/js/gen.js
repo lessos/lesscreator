@@ -17,7 +17,7 @@ function lcInitSetting()
     }
     l9rEditor.Config.theme = theme;
     if (theme != "default") {
-        seajs.use("/lesscreator/~/codemirror3/3.21.0/theme/"+theme+".css");
+        seajs.use("~/cm/5/theme/"+theme+".css");
     }
     
     var editor_editmode = l4iStorage.Get('editor_editmode');

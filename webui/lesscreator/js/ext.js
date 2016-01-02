@@ -59,7 +59,7 @@ lcExt.ListRuntime = function () {
         title        : "Runtime Environment Settings",
         width        : 600,
         height       : 400,
-        tpluri       : l9r.base +"-/package/list-runtime.tpl",
+        tpluri       : l9r.TemplatePath("package/list-runtime"),
         buttons      : [
             {
                 onclick : "l4iModal.Close()",

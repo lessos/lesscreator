@@ -34,7 +34,7 @@ var l9rProj = {
 l9rProj.NavStart = function()
 {
     l4iModal.Open({
-        tpluri : l9r.base +"-/project/nav-start.tpl",
+        tpluri : l9r.TemplatePath("project/nav-start"),
         width  : 700,
         height : 400,
         title  : "Start a Project from ...",
@@ -66,7 +66,7 @@ l9rProj.New = function()
 
     l4iModal.Open({
         id     : "proj-nav-new",
-        tpluri : l9r.base +"-/project/new.tpl",
+        tpluri : l9r.TemplatePath("project/new"),
         title  : "Create New Project",
         i18n   : true,
         data   : pinfo,
@@ -680,7 +680,7 @@ l9rProj.Set = function(proj)
             uri     : req.path,
             title   : "Project Settings",
             type    : "apidriven",
-            tpluri  : l9r.base +"-/project/set.tpl",
+            tpluri  : l9r.TemplatePath("project/set"),
             jsdata  : pinfo,
             icon    : "app-t3-16",
             success : function() {
