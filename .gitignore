@@ -1,9 +1,10 @@
 
+etc/config.json
 bin/lesscreator*
 *~
 
-webui/lesscreator/img/*
-webui/lesscreator/img/3d/*
+webui/creator/img/*
+webui/creator/img/3d/*
 
 misc/bash/bashrc.cd
 

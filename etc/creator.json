@@ -1,6 +1,0 @@
-{
-    "http_port": 9529,
-    "lessids_endpoint": "http://dev.local.net/ids",
-    "pandora_endpoint": "http://dev.local.net/pandora",
-    "pandora_dir": "/opt/src/rel/ngx"
-}

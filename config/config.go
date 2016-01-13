@@ -42,7 +42,6 @@ type ConfigCommon struct {
 	HttpPort        uint16 `json:"http_port"`
 	PandoraEndpoint string `json:"pandora_endpoint"`
 	LessIdsUrl      string `json:"lessids_endpoint"`
-	PandoraDir      string `json:"pandora_dir"`
 }
 
 func Initialize(prefix string) error {
@@ -57,7 +56,7 @@ func Initialize(prefix string) error {
 	reg, _ := regexp.Compile("/+")
 	prefix = "/" + strings.Trim(reg.ReplaceAllString(prefix, "/"), "/")
 
-	cfgfile := prefix + "/etc/creator.json"
+	cfgfile := prefix + "/etc/config.json"
 	if _, err := os.Stat(cfgfile); err != nil && os.IsNotExist(err) {
 		return errors.New("Error: config cfgfile is not exists")
 	}
